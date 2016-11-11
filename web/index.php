@@ -16,18 +16,41 @@
  * limitations under the License.
  */
 
+/*
+ * Big TODO: use ssome class loader to avoid dealing with requires.
+ */
+
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../services/Authenticator.php';
+require_once __DIR__ . '/../model/Principal.php';
+
+if (!session_start()){
+    // TODO error handling nicely
+    trigger_error("Couldn't start session", E_ERROR);
+}
+
+
+
+$eppn = filter_input(INPUT_SERVER,"eppn");
+$principal = new Principal(
+    filter_input(INPUT_SERVER,"eppn"),
+    filter_input(INPUT_SERVER,"display_name"),
+    filter_input(INPUT_SERVER,"email",FILTER_SANITIZE_EMAIL)
+);
+
+if (!$principal->getEppn()){
+    // TODO error handling nicely
+    trigger_error("No eppn value found.", E_ERROR);
+}
+
+/** @noinspection PhpUndefinedVariableInspection */
+$authenticator = new Authenticator($config, $principal);
 
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/../views/');
 $twig = new Twig_Environment($loader);
 
 $template = $twig->loadTemplate('startpage.html.twig');
 
-$eppn = filter_input(INPUT_SERVER,"eppn");
 
-if (!$eppn){
-    // TODO error handling nicely
-    trigger_error("No eppn value found.", E_ERROR);
-} 
-
-echo $template->render(array('user' => ['eppn' => $eppn]));
+echo $template->render(array('user' => $principal));
