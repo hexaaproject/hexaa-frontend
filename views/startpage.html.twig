@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+Copyright 2016 Mihály Héder <mihaly.heder@sztaki.mta.hu>.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html>
+    <head>
+        <title>HEXAA</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/hexaa.css">
+    </head>
+    <body>
+        <div id="topdiv">
+            <div id="topdivcontent">
+                <div id="cornerlogobox">
+                    <img id="cornerlogo" src="img/hexaa-logo-blue.png" alt="hexaa logo"/>
+                </div>
+                <div id="menu"></div>
+                <div id="loginstatus"><span id="usernamebox">{{ user.eppn }}</span></div>
+
+            </div>
+        </div>
+        <div id="welcomediv">
+            <div id="welcomecontent">
+                <span id="welcometext1">Welcome to</span><br/>
+                <img id="welcomeimage" alt="hexaa-logo" src="img/hexaa-logo-red.png"/><br/>
+                <span id="welcometext2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis lacinia ex. </span>
+                <div id="mobilemaincontrols">
+                    <div class="mobilebutton">Add organization</div>
+                    <div class="mobilebutton">Add service</div>
+                    <div class="mobilebutton">Edit profile</div>
+                </div>
+            </div>
+        </div>
+        <div id="maindiv">
+            <div id="maindivcontents">
+                <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/add-organization.png"/><br/>Add organization</div>
+                <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/add-service.png"/><br/>Add service</div>
+                <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/profile.png"/><br/>Edit profile</div>                    
+            </div>
+        </div>
+    </body>
+</html>
+
