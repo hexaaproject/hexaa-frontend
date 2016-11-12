@@ -12,8 +12,8 @@
         "guzzlehttp/guzzle": "6.2.x"
     },
     "autoload": {
-        "psr-0": {
-            "Hexaa": "src/"
+        "psr-4": {
+            "Hexaa\\": "src/Hexaa/"
     }
 }
 
