@@ -1,5 +1,12 @@
 <?php
 
+namespace Hexaa\Newui\Service;
+
+
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+use Hexaa\Newui\Model\Principal;
+use GuzzleHttp\Client;
 /**
  * Authenticator class for HEXAA.
  *
@@ -22,10 +29,10 @@ class Authenticator
         if (array_key_exists('token_set_at', $_SESSION) && isset($_SESSION['token_set_at'])
             && array_key_exists('token', $_SESSION) && isset($_SESSION['token'])
         ) {
-            $this->tokenAcquiredAt = new DateTime($_SESSION['token_set_at']);
+            $this->tokenAcquiredAt = new \DateTime($_SESSION['token_set_at']);
             $this->token = $_SESSION['token'];
         }
-        $this->client = new GuzzleHttp\Client([
+        $this->client = new Client([
             'base_uri' => $config['backendUrl'],
         ]);
     }
@@ -33,7 +40,7 @@ class Authenticator
     public function getToken():string
     {
         if ($this->token !== null) {
-            $now = new DateTime();
+            $now = new \DateTime();
             $diff = $now->diff($this->tokenAcquiredAt, true);
             if ($diff->h == 0 && $diff->d == 0 && $diff->m == 0 && $diff->y == 0) {
                 return $this->token;
@@ -63,7 +70,7 @@ class Authenticator
                 ]
             ]);
             $this->token = json_decode($response->getBody(), true)['token'];
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (ClientException $e) {
             $this->token = null;
             // TODO: pretty error handling
             echo('<br>___.--===(ClientException)===--.___<br>');
@@ -73,7 +80,7 @@ class Authenticator
             echo($e->getRequest()->getBody() . '<br>');
             echo('Response code: ' . $e->getResponse()->getStatusCode() . ', body: <br>');
             echo($e->getResponse()->getBody() . '<br>');
-        } catch (\GuzzleHttp\Exception\ServerException $e) {
+        } catch (ServerException $e) {
             $this->token = null;
             // TODO: pretty error handling
             echo('<br>___.--===(ServerException)===--.___<br>');

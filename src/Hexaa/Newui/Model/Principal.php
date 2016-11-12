@@ -1,5 +1,6 @@
 <?php
 
+namespace Hexaa\Newui\Model;
 /**
  * Created by PhpStorm.
  * User: baloo

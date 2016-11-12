@@ -10,5 +10,11 @@
     "require": {
         "twig/twig": "1.6.x",
         "guzzlehttp/guzzle": "6.2.x"
+    },
+    "autoload": {
+        "psr-0": {
+            "Hexaa": "src/"
     }
+}
+
 }

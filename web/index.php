@@ -22,8 +22,9 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../services/Authenticator.php';
-require_once __DIR__ . '/../model/Principal.php';
+
+use Hexaa\Newui\Model\Principal;
+use Hexaa\Newui\Service\Authenticator;
 
 if (!session_start()){
     // TODO error handling nicely
@@ -35,8 +36,8 @@ if (!session_start()){
 $eppn = filter_input(INPUT_SERVER,"eppn");
 $principal = new Principal(
     filter_input(INPUT_SERVER,"eppn"),
-    filter_input(INPUT_SERVER,"display_name"),
-    filter_input(INPUT_SERVER,"email",FILTER_SANITIZE_EMAIL)
+    filter_input(INPUT_SERVER,"displayName"),
+    filter_input(INPUT_SERVER,"mail",FILTER_SANITIZE_EMAIL)
 );
 
 if (!$principal->getEppn()){
