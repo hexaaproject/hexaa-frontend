@@ -1,0 +1,57 @@
+<?php
+
+/* 
+ * Copyright 2016 Mihály Héder <mihaly.heder@sztaki.mta.hu>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * Big TODO: use ssome class loader to avoid dealing with requires.
+ */
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../config.php';
+
+use Hexaa\Newui\Model\Principal;
+use Hexaa\Newui\Service\Authenticator;
+
+if (!session_start()){
+    // TODO error handling nicely
+    trigger_error("Couldn't start session", E_ERROR);
+}
+
+
+
+$eppn = filter_input(INPUT_SERVER,"eppn");
+$principal = new Principal(
+    filter_input(INPUT_SERVER,"eppn"),
+    filter_input(INPUT_SERVER,"displayName"),
+    filter_input(INPUT_SERVER,"mail",FILTER_SANITIZE_EMAIL)
+);
+
+if (!$principal->getEppn()){
+    // TODO error handling nicely
+    trigger_error("No eppn value found.", E_ERROR);
+}
+
+/** @noinspection PhpUndefinedVariableInspection */
+$authenticator = new Authenticator($config, $principal);
+
+$loader = new Twig_Loader_Filesystem(__DIR__ . '/../views/');
+$twig = new Twig_Environment($loader);
+
+$template = $twig->loadTemplate('startpage.html.twig');
+
+
+echo $template->render(array('user' => $principal));

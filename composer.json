@@ -1,0 +1,20 @@
+{
+    "name": "hexaa/hexaa-newui",
+    "description": "HEXAA new User Interface",
+    "authors": [
+        {
+            "name": "merlin",
+            "email": "your@email.here"
+        }
+    ],
+    "require": {
+        "twig/twig": "1.6.x",
+        "guzzlehttp/guzzle": "6.2.x"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hexaa\\": "src/Hexaa/"
+    }
+}
+
+}
