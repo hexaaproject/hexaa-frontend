@@ -11,8 +11,5 @@ namespace Hexaa\Newui\Model;
 
 class Organization extends BaseResource
 {
-    public function __construct()
-    {
-        self::$pathName = 'organizations';
-    }
+    protected static $pathName = 'organizations';
 }

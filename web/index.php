@@ -44,6 +44,7 @@ if (!$principal->getEppn()){
 /** @noinspection PhpUndefinedVariableInspection */
 $authenticator = new Authenticator($config, $principal);
 $client = new \GuzzleHttp\Client([
+    'base_uri' => $config['backendUrl'],
     'headers' => ['X-HEXAA-AUTH' => $authenticator->getToken()]
 ]);
 

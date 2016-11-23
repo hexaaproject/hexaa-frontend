@@ -15,7 +15,7 @@ abstract class BaseResource
 {
     protected static $pathName;
     public static function cget(Client $client) {
-        $response = $client->get(self::$pathName);
+        $response = $client->get(static::$pathName);
         return json_decode($response->getBody(), true);
     }
 }

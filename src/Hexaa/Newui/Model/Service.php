@@ -11,8 +11,5 @@ namespace Hexaa\Newui\Model;
 
 class Service extends BaseResource
 {
-    public function __construct()
-    {
-        self::$pathName = 'services';
-    }
+    protected static $pathName = 'services';
 }
