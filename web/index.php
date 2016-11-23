@@ -88,4 +88,4 @@ try {
 $template = $twig->loadTemplate('startpage.html.twig');
 
 
-echo $template->render(array('user' => $user, 'organizations' => $organizations));
+echo $template->render(array('user' => $user, 'organizations' => $organizations, 'services'=>$services));

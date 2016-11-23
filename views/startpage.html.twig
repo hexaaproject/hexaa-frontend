@@ -1,22 +1,55 @@
 {% include 'header.html.twig' %}
-
-<div id="welcomediv">
-    <div id="welcomecontent">
-        <span id="welcometext1">Welcome to</span><br/>
-        <img id="welcomeimage" alt="hexaa-logo" src="img/hexaa-logo-red.png"/><br/>
-        <span id="welcometext2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis lacinia ex. </span>
-        <div id="mobilemaincontrols">
-            <div class="mobilebutton">Add organization</div>
-            <div class="mobilebutton">Add service</div>
-            <div class="mobilebutton">Edit profile</div>
+{% if organizations is empty and services is empty %}
+    <div id="welcomediv">
+        <div id="welcomecontent">
+            <span id="welcometext1">Welcome to</span><br/>
+            <img id="welcomeimage" alt="hexaa-logo" src="img/hexaa-logo-red.png"/><br/>
+            <span id="welcometext2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis lacinia ex. </span>
+            <div id="mobilemaincontrols">
+                <div class="mobilebutton">Add organization</div>
+                <div class="mobilebutton">Add service</div>
+                <div class="mobilebutton">Edit profile</div>
+            </div>
         </div>
     </div>
-</div>
-<div id="maindiv">
-    <div id="maindivcontents">
-        <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/add-organization.png"/><br/>Add organization</div>
-        <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/add-service.png"/><br/>Add service</div>
-        <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/profile.png"/><br/>Edit profile</div>                    
+    <div id="maindiv">
+        <div id="maindivcontents">
+            <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/add-organization.png"/><br/>Add organization</div>
+            <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/add-service.png"/><br/>Add service</div>
+            <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/profile.png"/><br/>Edit profile</div>                    
+        </div>
     </div>
-</div>
+{% else %}
+    <div id="mainafterlogin">
+        <div id="welcomediv">
+            <div id="welcomecontent">
+                <span id="welcometext1"><b>Welcome to</b></span><br/>
+                <img id="welcomeimage" alt="hexaa-logo" src="img/hexaa-logo-red.png"/><br/>
+                <span id="welcometext2"><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis lacinia ex. </b></span>
+            </div>
+        </div>
+        <div id="maindivafterlogin">
+            <div id="maindivcontentsafterlogin">
+                <div class="desktopbutton"><img class="desktopbuttonimageafterlogin" alt="Add organization" src="img/add-organization.png"/><br/><br/>Add organization</div>
+                <div class="desktopbutton"><img class="desktopbuttonimageafterlogin" alt="Add organization" src="img/add-service.png"/><br/><br/>Add service</div>
+                <div class="desktopbutton"><img class="desktopbuttonimageafterlogin" alt="Add organization" src="img/profile.png"/><br/><br/>Edit profile</div>
+            </div>
+        </div>
+        <div class="hr"><hr/></div>
+        <div id="maintables">
+            <div id="orgtablemain">
+                <div id="orgtableheader"><b>ORGANIZATIONS</b></div>
+                <div id="orgtablecontent">Az organization</div>
+                <div id="orgtablecontent">Ez organization</div>
+                <div id="orgtablecontent">Nagyon hosszú nevű organization</div>
+                <div id="orgtablecontent">Rövidebb nevű organization</div>
+            </div>
+            <div id="servtablemain">
+                <div id="servtableheader"><b>SERVICES</b></div>                     
+                <div id="emptyservtable" style="font-style: italic">Not services yet</div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
 {% include 'footer.html.twig' %}
