@@ -16,10 +16,6 @@
  * limitations under the License.
  */
 
-/*
- * Big TODO: use ssome class loader to avoid dealing with requires.
- */
-
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config.php';
 
