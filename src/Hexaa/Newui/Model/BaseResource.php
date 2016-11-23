@@ -22,4 +22,9 @@ abstract class BaseResource
         ]]);
         return json_decode($response->getBody(), true);
     }
+    
+    public static function get(Client $client, string $id, int $offset = 0, int $pageSize = 25) {
+        $response = $client->get(static::$pathName.'/'.$id);
+        return json_decode($response->getBody(), true);
+    }
 }

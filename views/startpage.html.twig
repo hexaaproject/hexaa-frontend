@@ -29,13 +29,21 @@
         <div id="maintables">
             <div id="orgtablemain">
                 <div id="orgtableheader"><b>ORGANIZATIONS</b></div>
+                {% if organizations.items == null %}
+                    <div id="emptyorgtable" style="font-style: italic">Not organizations yet</div>
+                {% endif %}
                 {% for organization in organizations.items %}
                     <div id="orgtablecontent">{{ organization.name|e }}</div>
                 {% endfor %}
             </div>
             <div id="servtablemain">
-                <div id="servtableheader"><b>SERVICES</b></div>                     
-                <div id="emptyservtable" style="font-style: italic">Not services yet</div>
+                <div id="servtableheader"><b>SERVICES</b></div>
+                {% if services.items == null %}
+                    <div id="emptyservtable" style="font-style: italic">Not services yet</div>
+                {% endif %}
+                {% for service in services.items %}
+                    <div id="servtablecontent">{{ service.name|e }}</div>
+                {% endfor %}             
             </div>
         </div>
     </div>

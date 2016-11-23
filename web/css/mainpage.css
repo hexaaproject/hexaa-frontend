@@ -35,6 +35,11 @@
     width:90vw;
     padding-top: 5vh;
 }
+.desktopbutton {
+    display: inline-block;
+    padding: 2%;
+
+}
 .desktopbuttonimageafterlogin {
     max-width: 6vw;
     cursor: pointer;
@@ -59,7 +64,7 @@ div.hr{
 #maintables{
     margin:0 auto;
     overflow:auto;
-    width:35%;
+    width:50%;
     height:100%;
 }
 #orgtablemain{
@@ -73,7 +78,7 @@ div.hr{
     float:left;
 
 }
-#orgtablecontent{
+#orgtablecontent, #servtablecontent{
     padding: 2px;
 }
 
@@ -97,12 +102,13 @@ div.hr{
     padding-top: 15px;
     padding-bottom: 20px;
     text-align: left;
+    
 }
 
 #servtablecontent{
     padding: 2px;
 }
-#emptyservtable{
+#emptyservtable, #emptyorgtable{
     text-align: center;
 }
 
