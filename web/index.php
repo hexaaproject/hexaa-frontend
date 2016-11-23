@@ -19,7 +19,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config.php';
 
-use Hexaa\Newui\Model\Principal;
+use Hexaa\Newui\User;
 use Hexaa\Newui\Service\Authenticator;
 
 if (!session_start()){
@@ -30,19 +30,19 @@ if (!session_start()){
 
 
 $eppn = filter_input(INPUT_SERVER,"eppn");
-$principal = new Principal(
+$user = new User(
     filter_input(INPUT_SERVER,"eppn"),
     filter_input(INPUT_SERVER,"displayName"),
     filter_input(INPUT_SERVER,"mail",FILTER_SANITIZE_EMAIL)
 );
 
-if (!$principal->getEppn()){
+if (!$user->getEppn()){
     // TODO error handling nicely
     trigger_error("No eppn value found.", E_ERROR);
 }
 
 /** @noinspection PhpUndefinedVariableInspection */
-$authenticator = new Authenticator($config, $principal);
+$authenticator = new Authenticator($config, $user);
 $client = new \GuzzleHttp\Client([
     'base_uri' => $config['backendUrl'],
     'headers' => ['X-HEXAA-AUTH' => $authenticator->getToken()]
@@ -57,4 +57,4 @@ $services = \Hexaa\Newui\Model\Service::cget($client);
 $template = $twig->loadTemplate('startpage.html.twig');
 
 
-echo $template->render(array('user' => $principal, 'organizations' => $organizations));
+echo $template->render(array('user' => $user, 'organizations' => $organizations));

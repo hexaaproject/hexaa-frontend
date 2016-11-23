@@ -5,7 +5,7 @@ namespace Hexaa\Newui\Service;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
-use Hexaa\Newui\Model\Principal;
+use Hexaa\Newui\User;
 use GuzzleHttp\Client;
 /**
  * Authenticator class for HEXAA.
@@ -22,7 +22,7 @@ class Authenticator
     private $user;
     private $client;
 
-    public function __construct(array $config, Principal $user)
+    public function __construct(array $config, User $user)
     {
         $this->scopedKey = $config['scopedKey'];
         $this->user = $user;
