@@ -2,37 +2,27 @@
 {% if organizations is empty and services is empty %}
     <div id="welcomediv">
         <div id="welcomecontent">
-            <span id="welcometext1">Welcome to</span><br/>
-            <img id="welcomeimage" alt="hexaa-logo" src="img/hexaa-logo-red.png"/><br/>
-            <span id="welcometext2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis lacinia ex. </span>
+            {% include 'welcomediv.html.twig' %}
             <div id="mobilemaincontrols">
-                <div class="mobilebutton">Add organization</div>
-                <div class="mobilebutton">Add service</div>
-                <div class="mobilebutton">Edit profile</div>
+                {% include 'mobilebuttons.html.twig' %}
             </div>
         </div>
     </div>
     <div id="maindiv">
         <div id="maindivcontents">
-            <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/add-organization.png"/><br/>Add organization</div>
-            <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/add-service.png"/><br/>Add service</div>
-            <div class="desktopbutton"><img class="desktopbuttonimage" alt="Add organization" src="img/profile.png"/><br/>Edit profile</div>                    
+            {% include 'welcomepagebuttons.html.twig' %}
         </div>
     </div>
 {% else %}
     <div id="mainafterlogin">
         <div id="welcomediv">
             <div id="welcomecontent">
-                <span id="welcometext1"><b>Welcome to</b></span><br/>
-                <img id="welcomeimage" alt="hexaa-logo" src="img/hexaa-logo-red.png"/><br/>
-                <span id="welcometext2"><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis lacinia ex. </b></span>
+                {% include 'welcomediv.html.twig' %}
             </div>
         </div>
         <div id="maindivafterlogin">
             <div id="maindivcontentsafterlogin">
-                <div class="desktopbutton"><img class="desktopbuttonimageafterlogin" alt="Add organization" src="img/add-organization.png"/><br/><br/>Add organization</div>
-                <div class="desktopbutton"><img class="desktopbuttonimageafterlogin" alt="Add organization" src="img/add-service.png"/><br/><br/>Add service</div>
-                <div class="desktopbutton"><img class="desktopbuttonimageafterlogin" alt="Add organization" src="img/profile.png"/><br/><br/>Edit profile</div>
+                {% include 'welcomepagebuttons.html.twig' %}
             </div>
         </div>
         <div class="hr"><hr/></div>
