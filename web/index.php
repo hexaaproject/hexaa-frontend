@@ -43,11 +43,17 @@ if (!$principal->getEppn()){
 
 /** @noinspection PhpUndefinedVariableInspection */
 $authenticator = new Authenticator($config, $principal);
+$client = new \GuzzleHttp\Client([
+    'headers' => ['X-HEXAA-AUTH' => $authenticator->getToken()]
+]);
 
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/../views/');
 $twig = new Twig_Environment($loader);
 
+$organizations = \Hexaa\Newui\Model\Organization::cget($client);
+$services = \Hexaa\Newui\Model\Service::cget($client);
+
 $template = $twig->loadTemplate('startpage.html.twig');
 
 
-echo $template->render(array('user' => $principal));
+echo $template->render(array('user' => $principal, 'organizations' => $organizations));
