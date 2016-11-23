@@ -1,0 +1,53 @@
+{# empty Twig template #}
+{% include 'header.html.twig' %}
+
+{% if clientexception %}
+    <div id="exceptionclient">
+        <label>ClientException</label>
+        <br>
+        <label class="detailslabel">Message: </label>        
+        {{ clientexception->getMessage() }}
+        <br>
+        <label class="detailslabel">Call: </label>
+        {{ clientexception->getRequest()->getUri()}}
+        <br>
+        <label class="detailslabel">Request method: </label>
+        {{ clientexception->getRequest()->getMethod()}}
+        <br>
+        <label class="detailslabel">Request body: </label>
+        {{ clientexception->getRequest()->getBody()}}
+        <br>
+        <label class="detailslabel">Response code: </label>
+        {{ clientexception->getResponse()->getStatusCode()}}
+        <br>
+        <label class="detailslabel">Response body: </label>
+        {{ clientexception->getResponse()->getBody()}}
+        <br>
+    </div>
+{% endif %}
+{% if serverexception %}
+    <div id="exceptionserver">
+        <label>ServerException</label>
+        <br>
+        <label class="detailslabel">Message: </label>        
+        {{ serverexception->getMessage() }}
+        <br>
+        <label class="detailslabel">Call: </label>
+        {{ serverexception->getRequest()->getUri()}}
+        <br>
+        <label class="detailslabel">Request method: </label>
+        {{ serverexception->getRequest()->getMethod()}}
+        <br>
+        <label class="detailslabel">Request body: </label>
+        {{ serverexception->getRequest()->getBody()}}
+        <br>
+        <label class="detailslabel">Response code: </label>
+        {{ serverexception->getResponse()->getStatusCode()}}
+        <br>
+        <label class="detailslabel">Response body: </label>
+        {{ serverexception->getResponse()->getBody()}}
+        <br>
+    </div>
+{% endif %}
+
+{% include 'footer.html.twig' %}
