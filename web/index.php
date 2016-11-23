@@ -19,6 +19,8 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config.php';
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use Hexaa\Newui\User;
 use Hexaa\Newui\Service\Authenticator;
 
@@ -51,8 +53,37 @@ $client = new \GuzzleHttp\Client([
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/../views/');
 $twig = new Twig_Environment($loader);
 
-$organizations = \Hexaa\Newui\Model\Organization::cget($client);
-$services = \Hexaa\Newui\Model\Service::cget($client);
+try {
+    $organizations = \Hexaa\Newui\Model\Organization::cget($client);
+    $services = \Hexaa\Newui\Model\Service::cget($client);
+} catch (ClientException $e) {
+    $this->token = null;
+    // TODO: pretty error handling
+    echo('<br>___.--===(ClientException)===--.___<br>');
+    echo('Message: ' . $e->getMessage() . '<br>');
+    echo('Call: ' . $e->getRequest()->getUri() . '<br>');
+    echo('Request method: ' . $e->getRequest()->getMethod() . ', body: <br>');
+    echo($e->getRequest()->getBody() . '<br>');
+    echo('Response code: ' . $e->getResponse()->getStatusCode() . ', body: <br>');
+    echo($e->getResponse()->getBody() . '<br>');
+} catch (ServerException $e) {
+    $this->token = null;
+    // TODO: pretty error handling
+    echo('<br>___.--===(ServerException)===--.___<br>');
+    echo('Message: ' . $e->getMessage() . '<br>');
+    echo('Call: ' . $e->getRequest()->getUri() . '<br>');
+    echo('Request method: ' . $e->getRequest()->getMethod() . ', body: <br>');
+    echo($e->getRequest()->getBody() . '<br>');
+    echo('Response code: ' . $e->getResponse()->getStatusCode() . ', body: <br>');
+    echo($e->getResponse()->getBody() . '<br>');
+} finally {
+    if (!isset($organizations)){
+        $organizations = [];
+    }
+    if (!isset($services)){
+        $services = [];
+    }
+}
 
 $template = $twig->loadTemplate('startpage.html.twig');
 
