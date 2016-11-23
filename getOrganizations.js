@@ -7,7 +7,7 @@
 <script>
     $.ajax({
         type: "GET",
-        url: url,
+        url: "localhost/hexaa/api",
         dataType: json,
         success: function(data){
             
