@@ -1,4 +1,3 @@
-{# empty Twig template #}
 <html>
     <head>
         <title>HEXAA</title>
@@ -48,6 +47,9 @@
                     }
                 }
             }
+
+            
+            
         </script>
         <div id="topdiv">
             <div id="topdivcontent">
@@ -64,7 +66,7 @@
                             </button>
                             <div id="orgSelect" class="dropdown-content1">
                                 {% for organization in organizations.items %}
-                                    <a href="#" id="nameoneorg" onclick="appearsubmenu(this.innerHTML)">{{ organization.name|e }}</a>
+                                    <a href="organization.php" id="nameoneorg" onclick="location.href=this.href+'?id='+{{organization.id}};return false;">{{ organization.name|e }}</a>
                                 {% endfor %}                           
                             </div>
                         </div>
@@ -83,7 +85,7 @@
 
                         {% if user != null %}
                             <div id="loginstatus"><span id="usernamebox">{{ user.eppn }}</span></div>
-                        {% endif %}
+                            {% endif %}
                         <div id="logout">
                             <span id="logobox">
                                 <a href="login.html">                        

@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Copyright 2016 Annamari.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,4 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once '../initpage.php';
+include_once '../initpage.php';
+
+try {
+    $organizationid = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    if ($organizationid) {
+        $organization = \Hexaa\Newui\Model\Organization::get($client, $organizationid);
+    }
+} catch (ClientException $e) {
+    $this->token = null;
+    $templateerror = $twig->loadTemplate('error.html.twig');
+    echo $templateerror->render(array('clientexception' => $e));
+} catch (ServerException $e) {
+    $this->token = null;
+    $templateerror = $twig->loadTemplate('error.html.twig');
+    echo $templateerror->render(array('serverexception' => $e));
+} finally {
+    
+}
+
+$template = $twig->loadTemplate('organizationmain.html.twig');
+
+
+echo $template->render(array('user' => $user, 'organization' => $organization));
