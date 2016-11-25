@@ -1,0 +1,29 @@
+{% include 'header.html.twig' %}
+
+<div id="submenuservice">
+    <div id="subdivcontent">
+        <div id="organizationname"><span id="servicename">{{ service.name }}</span></div>
+        <div id="menupoints">
+            <button class="menupointsbutton" onclick="changestylepropserv();" id="propbuttonservice">
+                Properties
+            </button>
+            <button class="menupointsbutton" onclick="changestylemanager();" id="managerbutton">
+                Managers
+            </button>
+            <button class="menupointsbutton" onclick="changestyleattributes();" id="attributesbutton">
+                Attributes
+            </button>
+            <button class="menupointsbutton" onclick="changestylepermissions();" id="permissionsbutton">
+                Permissions
+            </button>
+            <button class="menupointsbutton" onclick="changestylepermissionsset();" id="permissionssetbutton">
+                Permission sets
+            </button>
+            <button class="menupointsbutton" onclick="changestyleorganizations();" id="organizationsbutton">
+                Connected organizations
+            </button>
+        </div>
+    </div>          
+</div>
+
+{% include 'footer.html.twig' %}
