@@ -1,29 +1,33 @@
 {% include 'header.html.twig' %}
 
-<div id="submenuservice">
-    <div id="subdivcontent">
-        <div id="organizationname"><span id="servicename">{{ service.name }}</span></div>
-        <div id="menupoints">
-            <button class="menupointsbutton" onclick="changestylepropserv();" id="propbuttonservice">
-                Properties
-            </button>
-            <button class="menupointsbutton" onclick="changestylemanager();" id="managerbutton">
-                Managers
-            </button>
-            <button class="menupointsbutton" onclick="changestyleattributes();" id="attributesbutton">
-                Attributes
-            </button>
-            <button class="menupointsbutton" onclick="changestylepermissions();" id="permissionsbutton">
-                Permissions
-            </button>
-            <button class="menupointsbutton" onclick="changestylepermissionsset();" id="permissionssetbutton">
-                Permission sets
-            </button>
-            <button class="menupointsbutton" onclick="changestyleorganizations();" id="organizationsbutton">
-                Connected organizations
-            </button>
-        </div>
+<div id="srvmenu">
+    <div id="srvmenucontent">
+        <span id="servicename">{{ service.name }}</span>
+        <span id="srvmenupoints">
+            <a class="srvlink{% if menu == "properties" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=properties">&nbsp;&nbsp;Properties&nbsp;&nbsp;</a>
+            <a class="srvlink{% if menu == "managers" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=managers">&nbsp;&nbsp;Managers&nbsp;&nbsp;</a>
+            <a class="srvlink{% if menu == "attributes" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=attributes">&nbsp;&nbsp;Attributes&nbsp;&nbsp;</a>
+            <a class="srvlink{% if menu == "permissions" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=permissions">&nbsp;&nbsp;Permissions&nbsp;&nbsp;</a>
+            <a class="srvlink{% if menu == "permissionsets" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=permissionsets">&nbsp;&nbsp;Permission sets&nbsp;&nbsp;</a>
+            <a class="srvlink{% if menu == "connectedorganizations" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=connectedorganizations">&nbsp;&nbsp;Connected organizations&nbsp;&nbsp;</a>
+        </span>
     </div>          
+</div>
+
+<div id="srvmain">
+    {% if menu == "properties" %}
+        <div class="infobox">
+            <table class="infotable">
+                <tr><th class="infohead">Properties</th><th></th></tr>
+                <tr><td class="infoleft">Name</td><td class="inforight">{{ service.name }}</td></tr>
+                <tr><td class="infoleft">Description</td><td class="inforight">{{ service.description }}</td></tr>
+                <tr><td class="infoleft">Home page</td><td class="inforight">{{ service.url }}</td></tr>        
+                <tr><td class="infoleft">SAML SP Entity Id</td><td class="inforight">{{ service.entityid }}</td></tr>
+                <tr><td class="infoleft">Created</td><td class="inforight">{{ service.created_at }}</td></tr>
+                <tr><td class="infoleft">Last updated</td><td class="inforight">{{ service.updated_at }}</td></tr>
+            </table>
+        </div>
+    {% endif %}
 </div>
 
 {% include 'footer.html.twig' %}

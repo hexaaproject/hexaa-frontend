@@ -20,6 +20,10 @@ include_once '../initpage.php';
 
 try {
     $serviceid = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $menu = filter_input(INPUT_GET,'menu');
+    if (!$menu) {
+        $menu = "properties";
+    }
     if ($serviceid) {
         $service = \Hexaa\Newui\Model\Service::get($client, $serviceid);
     }
@@ -32,9 +36,9 @@ try {
     $templateerror = $twig->loadTemplate('error.html.twig');
     echo $templateerror->render(array('serverexception' => $e));
 } finally {
-    
+    //?
 }
 
 $template = $twig->loadTemplate('servicemain.html.twig');
 
-echo $template->render(array('user' => $user, 'service' => $service));
+echo $template->render(array('user' => $user, 'service' => $service, 'menu' => $menu));
