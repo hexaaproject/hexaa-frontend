@@ -42,7 +42,7 @@
                     <div id="emptyservtable" style="font-style: italic">(No services yet)</div>
                 {% endif %}
                 {% for service in services.items %}
-                    <div id="servtablecontent"><a href="services.php?{{ service.id }}">{{ service.name|e }}</a></div>
+                    <div id="servtablecontent"><a href="service.php?{{ service.id }}">{{ service.name|e }}</a></div>
                 {% endfor %}             
             </div>
         </div>
