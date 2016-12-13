@@ -1,0 +1,149 @@
+#maindivcontroller{
+    display: box;
+    text-align: center;
+}
+
+table#centertable3{   
+    width:60%;
+    height:100%;
+    display:inline-table;   
+    padding-top:30px;
+}
+
+table#centertable3{
+    text-align: left
+}
+
+.uniqueproperty{
+    border:1px solid #61AFC5;
+    padding-top:10px;
+}
+
+#propertyname{
+    text-align: left;
+    padding-left: 1em;
+    padding-bottom: 1em;
+    padding-top: 0.5em;
+    color:#61AFC5;
+    font-size: x-large;
+    font-family: Georgia;
+}
+
+
+
+.inline{
+    display: inline;
+    float: left;
+    padding-left: 1.5em;
+}
+
+.descriptions{
+    text-align: left;
+    padding-left:15em;
+    padding-bottom: 0.5em;
+}
+.uniquebuttons{
+    border:1em solid #FFFFFF;
+    background-color: #FFFFFF;
+}
+.unique{
+    border:1em solid #61AFC5;
+}
+#labels{
+    padding-bottom: 3em;
+
+}
+#headerLabel{
+    color:#FFFFFF;
+    font-weight: bold;
+    font-size: 1.5em;
+    float:left;
+    font-family: Georgia;
+    padding-left: 1em;
+}
+
+#headerLabeltext{
+    color:#FFFFFF;
+    font-size: 11px;
+    font-style: italic;
+    font-weight: bold;
+    font-family: Georgia;
+    float: right;
+    padding-right: 3%;
+    padding-top: 1%;
+}
+
+#roles2{
+    display: block;
+    background-color: #61AFC5;
+    width: 70%;
+}
+
+div.accordion2 {
+    background-color: #FFFFFF;
+    color: #61AFC5;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    min-width: 130%;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    margin-bottom: 0.5em;
+    margin-top:0.5em;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+div.accordion2:before {
+    content: '\25BC';
+    font-size: 13px;
+    color: #61AFC5;
+    float: right;
+}
+
+div.accordion2.active{ 
+    color:#FA8072;
+}
+
+div.accordion2.active:before {
+    content: "\25B2";
+    font-size: 13px;
+    color: #FA8072;
+    float:right;
+}
+
+div.panel {
+    background-color: white;
+    display: none;
+    min-width: 130%;
+    transition: 0.4s;
+    padding: 10px;
+}
+
+/* The "show" class is added to the accordion panel when the user clicks on one of the buttons. This will show the panel content */
+div.panel.show {
+    display: inline-block;
+    text-align: left;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+div.panel p{
+    width:100%;
+    display: inline-block;
+    text-align: left;
+}
+
+.name{  
+    margin-left: 0%;
+}
+
+.firsttd{
+    width: 150px;
+    color: #61AFC5;
+}
+
+.long{
+    width:80%;
+}

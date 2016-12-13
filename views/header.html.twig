@@ -3,10 +3,11 @@
         <title>HEXAA</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="jquery-3.1.1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="css/mainpage.css">
         <link rel="stylesheet" type="text/css" href="css/menu.css">
-        <link rel="stylesheet" type="text/css" href="css/service.css">        
+        <link rel="stylesheet" type="text/css" href="css/service.css">
+        <link rel="stylesheet" type="text/css" href="css/organization.css">
     </head>
 
     <body>
@@ -48,8 +49,6 @@
                     }
                 }
             }
-
-            
             
         </script>
         <div id="topdiv">
@@ -67,8 +66,9 @@
                             </button>
                             <div id="orgSelect" class="dropdown-content1">
                                 {% for organization in organizations.items %}
-                                    <a href="organization.php" id="nameoneorg" onclick="location.href=this.href+'?id='+{{organization.id}};return false;">{{ organization.name|e }}</a>
-                                {% endfor %}                           
+                                    <a href="organization.php" id="nameoneorg" onclick="location.href = this.href + '?id=' +{{organization.id}} ;
+                                            return false;">{{ organization.name|e }}</a>
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="dropdown">
@@ -78,7 +78,7 @@
                             <div id="servSelect" class="dropdown-content2">
                                 {% for service in services.items %}
                                     <a href="#" id="nameoneserv" onclick="appearsubmenu(this.innerHTML)">{{ service.name|e }}</a>
-                                {% endfor %} 
+                                {% endfor %}
                             </div>
                         </div>
                     {% endif %}
@@ -89,8 +89,8 @@
                             {% endif %}
                         <div id="logout">
                             <span id="logobox">
-                                <a href="login.html">                        
-                                    <img id="logpng" src="img/logout.png">                           
+                                <a href="login.html">
+                                    <img id="logpng" src="img/logout.png">
                                 </a>
                             </span>
                         </div>

@@ -27,4 +27,12 @@ abstract class BaseResource
         $response = $client->get(static::$pathName.'/'.$id);
         return json_decode($response->getBody(), true);
     }
+    
+    public static function rget(Client $client, string $id) {
+        $response = $client->get(static::$pathName.'/'.$id.'/'.'roles');
+        return json_decode($response->getBody(), true);
+    }
+    
+     
+    
 }

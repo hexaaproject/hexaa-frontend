@@ -33,7 +33,7 @@
                     <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
                 {% endif %}
                 {% for organization in organizations.items %}
-                    <div id="orgtablecontent">{{ organization.name|e }}</div>
+                    <div id="orgtablecontent"><a href="organization.php?id={{ organization.id }}">{{ organization.name|e }}</a></div>
                 {% endfor %}
             </div>
             <div id="servtablemain">

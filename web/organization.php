@@ -17,11 +17,29 @@
  */
 include_once '../initpage.php';
 
+
 try {
     $organizationid = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $menu = filter_input(INPUT_GET,'menu');
+    if (!$menu) {
+        $menu = "properties";
+    }
     if ($organizationid) {
         $organization = \Hexaa\Newui\Model\Organization::get($client, $organizationid);
+        $droleid=$organization['default_role_id'];
+        $roles=\Hexaa\Newui\Model\Organization::rget($client, $organizationid);
+        $name='';
+        foreach ($roles as $value){
+            if($value['id']==$droleid){
+                $name=$value['name'];
+            }      
+        }
     }
+    $organizations = \Hexaa\Newui\Model\Organization::cget($client);
+ 
+    $services = \Hexaa\Newui\Model\Service::cget($client);
+    
+    
 } catch (ClientException $e) {
     $this->token = null;
     $templateerror = $twig->loadTemplate('error.html.twig');
@@ -31,10 +49,15 @@ try {
     $templateerror = $twig->loadTemplate('error.html.twig');
     echo $templateerror->render(array('serverexception' => $e));
 } finally {
-    
+    if (!isset($organizations)){
+        $organizations = [];
+    }
+    if (!isset($services)){
+        $services = [];
+    }
 }
 
 $template = $twig->loadTemplate('organizationmain.html.twig');
 
 
-echo $template->render(array('user' => $user, 'organization' => $organization));
+echo $template->render(array('user' => $user, 'organization' => $organization, 'organizations' => $organizations, 'services' => $services, 'menu' => $menu, 'drolename' => $name));
