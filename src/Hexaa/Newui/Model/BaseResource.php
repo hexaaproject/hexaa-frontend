@@ -28,8 +28,11 @@ abstract class BaseResource
         return json_decode($response->getBody(), true);
     }
     
-    public static function rget(Client $client, string $id) {
-        $response = $client->get(static::$pathName.'/'.$id.'/'.'roles');
+    public static function rget(Client $client, string $id, string $verbose = normal) {
+        $response = $client->get(static::$pathName.'/'.$id.'/'.'roles', [
+            'query' => [
+                'verbose' => $verbose          
+        ]]);
         return json_decode($response->getBody(), true);
     }
     

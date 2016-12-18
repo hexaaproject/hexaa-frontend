@@ -27,15 +27,12 @@ try {
     if ($organizationid) {
         $organization = \Hexaa\Newui\Model\Organization::get($client, $organizationid);
         $droleid=$organization['default_role_id'];
-        $roles=\Hexaa\Newui\Model\Organization::rget($client, $organizationid);
+        $verbose="expanded";
+        $roles=\Hexaa\Newui\Model\Organization::rget($client, $organizationid, $verbose);
         $name='';
-        $principals=array();
         foreach ($roles as $value){
             if($value['id']==$droleid){
                 $name=$value['name'];
-            }
-            foreach ($value['principals'] as $valueprincip){
-                array_push($principals, $valueprincip);
             }
         }
     }
