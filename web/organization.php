@@ -22,17 +22,21 @@ try {
     $organizationid = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     $menu = filter_input(INPUT_GET,'menu');
     if (!$menu) {
-        $menu = "properties";
+        $menu = "main";
     }
     if ($organizationid) {
         $organization = \Hexaa\Newui\Model\Organization::get($client, $organizationid);
         $droleid=$organization['default_role_id'];
         $roles=\Hexaa\Newui\Model\Organization::rget($client, $organizationid);
         $name='';
+        $principals=array();
         foreach ($roles as $value){
             if($value['id']==$droleid){
                 $name=$value['name'];
-            }      
+            }
+            foreach ($value['principals'] as $valueprincip){
+                array_push($principals, $valueprincip);
+            }
         }
     }
     $organizations = \Hexaa\Newui\Model\Organization::cget($client);
@@ -60,4 +64,4 @@ try {
 $template = $twig->loadTemplate('organizationmain.html.twig');
 
 
-echo $template->render(array('user' => $user, 'organization' => $organization, 'organizations' => $organizations, 'services' => $services, 'menu' => $menu, 'drolename' => $name));
+echo $template->render(array('user' => $user, 'organization' => $organization, 'organizations' => $organizations, 'services' => $services, 'menu' => $menu, 'drolename' => $name, 'roles'=>$roles, 'principals'=>$principals));

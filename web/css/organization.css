@@ -5,17 +5,13 @@
 
 table#centertable3{   
     width:60%;
-    height:100%;
     display:inline-table;   
     padding-top:30px;
-}
-
-table#centertable3{
     text-align: left
 }
 
 .uniqueproperty{
-    border:1px solid #61AFC5;
+    border:0.2em solid #61AFC5;
     padding-top:10px;
 }
 
@@ -23,13 +19,11 @@ table#centertable3{
     text-align: left;
     padding-left: 1em;
     padding-bottom: 1em;
-    padding-top: 0.5em;
+    padding-top: 3px;
     color:#61AFC5;
     font-size: x-large;
     font-family: Georgia;
 }
-
-
 
 .inline{
     display: inline;
@@ -40,7 +34,8 @@ table#centertable3{
 .descriptions{
     text-align: left;
     padding-left:15em;
-    padding-bottom: 0.5em;
+    padding-bottom: 5px;
+    padding-right:1em;
 }
 .uniquebuttons{
     border:1em solid #FFFFFF;
@@ -51,7 +46,6 @@ table#centertable3{
 }
 #labels{
     padding-bottom: 3em;
-
 }
 #headerLabel{
     color:#FFFFFF;
@@ -146,4 +140,23 @@ div.panel p{
 
 .long{
     width:80%;
+}
+
+#maindiv {
+    display: box;
+    text-align: center;
+}
+#maindivcontents{
+    display: inline-block;
+    width:90vw;
+    padding-top: 5vh;
+}
+
+.desktopbuttonorg{
+    display: inline-block;
+    padding: 4%;
+}
+.desktopbuttonimage {
+    min-width: 12vw;
+    cursor: pointer;
 }

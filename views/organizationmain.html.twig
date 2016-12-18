@@ -13,219 +13,144 @@
 </div>
 
 <div id="srvmain">
+    {% if menu == "main" %}
+        <div id="maindivcontents">
+            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/create_role.svg"/><br/> <p><b>Create role</b></p></div>
+            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/connect_to_service.svg"/><br/><p><b>Connect to service</b></p></div>
+            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/edit_attributes.svg"/><br/><p><b>Edit attributes</b></p></div>
+            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/manage_users.svg"/><br/><p><b>Manage users</b></p></div>
+            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/edit_properties.svg"/><br/><p><b>Edit properties</b></p></div>
+            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/view_history.svg"/><br/><p><b>View history</b></p></div>
+            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/delete_organization.svg"/><br/><p><b>Delete organization</b></p></div> 
+        </div>
+    {% endif %}
     {% if menu == "properties" %}
-        
+
         <table id=centertable3>
-            <td class="uniqueproperty" style="background-color: #FFFFFF" width="110%" height="110%">
+            <td class="uniqueproperty" style="background-color: #FFFFFF">
                 <div id="propertyname">
                     <b> Properties </b>
-                  
+
                 </div>
                 <div >
                     {% if organization.name %}
-                    <div class="inline"><b>Name</b></div>      
-                    <div class="descriptions" >{{ organization.name }}</div>
+                        <div class="inline"><b>Name</b></div>      
+                        <div class="descriptions" >{{ organization.name }}</div>
                     {% endif %}
                 </div>
                 <div>
                     {% if organization.description %}
-                    <div class="inline"><b>Description</b></div>
-                    <div class="descriptions" >{{ organization.description }}</div>
+                        <div class="inline"><b>Description</b></div>
+                        <div class="descriptions" >{{ organization.description }}</div>
                     {% endif %}
                 </div>
                 <div>
                     {% if organization.url %}
-                    <div class="inline"><b>Home Page</b></div>
-                    <div class="descriptions">{{ organization.url }}</div>
+                        <div class="inline"><b>Home Page</b></div>
+                        <div class="descriptions">{{ organization.url }}</div>
                     {% endif %}
                 </div>
                 <div>
                     {% if drolename %}
-                    <div class="inline"><b>Default role</b></div>
-                    <div class="descriptions">{{ drolename }}</div>
+                        <div class="inline"><b>Default role</b></div>
+                        <div class="descriptions">{{ drolename }}</div>
                     {% endif %}
                 </div>
             </td>
             <tr>
-                <td class="uniquebuttons" style="background-color: #FFFFFF" width="110%" height="110%"></td>
+                <td class="uniquebuttons" style="background-color: #FFFFFF"></td>
             </tr>
             <tr>
-            <tr>
-                <td class="unique" style="background-color: #61AFC5" width="100%" height="100%" valign="middle">                
+                {% if roles %}
+                <tr>
+                    <td class="unique" style="background-color: #61AFC5" >                
 
-                    <div id="labels">
-                        <label id="headerLabel">
-                            Roles
-                        </label>
-                        <label id="headerLabeltext">
-                            A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni.
-                        </label>
-                    </div>
-                    <div id="roles2">
-                        <div class="accordion2">
-                            <span class="name">hallgató</span>
+                        <div id="labels">
+                            <label id="headerLabel">
+                                Roles
+                            </label>
+                            <label id="headerLabeltext">
+                                A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni.
+                            </label>
+                        </div>
+                        <div id="roles2">
+                            {% for role in roles %}
+                                <div class="accordion2">
+                                    <span class="name">{{role.name}}</span>
+                                </div>
+
+                                <div class="panel">
+                                    <table id="paneltable">
+                                        <tr id="row">
+                                            <td rowspan="4" class="firsttd">
+                                                Permissions 
+                                            </td>
+
+                                            <td class="long">
+                                                {{role.principals[0].display_name}}
+                                            </td>
+                                        </tr>
+                                        {%for princip in principals.items%}
+                                            <tr>
+                                                <td class="long">
+                                                    jog erre
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+
+
+                                        <tr>
+                                            <td rowspan="5" class="firsttd">
+                                                Members  
+                                            </td>
+
+                                            <td class="long">
+                                                Almás Tamás
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="long">
+                                                Farkas Péter
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="long">
+                                                Székely Szintia
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="long">
+                                                Teniszütő Ernő 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="long">
+                                                Vas István
+                                            </td>
+                                        </tr>                                                
+                                    </table>
+                                </div>
+
+                            {% endfor %}
 
                         </div>
-                        <div class="panel">
-                            <table id="paneltable">
-                                <tr id="row">
-                                    <td rowspan="4" class="firsttd">
-                                        Permissions 
-                                    </td>
-
-                                    <td class="long">
-                                        jog arra
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="long">
-                                        jog erre
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="long">
-                                        meg ilyenolyanjog
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="long">
-                                        továbbijog
-
-                                    </td>
-                                </tr>                                       
-                            </table>
-                        </div>
-                        <div class="accordion2">
-                            <span class="name">role2</span>
-
-                        </div>
-
-
-                        <div class="panel">
-                            <table id="paneltable">
-                                <tr id="row">
-                                    <td rowspan="4" class="firsttd">
-                                        Permissions 
-                                    </td>
-
-                                    <td class="long">
-                                        jog arra
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="long">
-                                        jog erre
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="long">
-                                        meg ilyenolyanjog
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="long">
-                                        továbbijog
-                                        <hr>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td rowspan="5" class="firsttd">
-                                        Members  
-                                    </td>
-
-                                    <td class="long">
-                                        Almás Tamás
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="long">
-                                        Farkas Péter
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="long">
-                                        Székely Szintia
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="long">
-                                        Teniszütő Ernő 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="long">
-                                        Vas István
-                                    </td>
-                                </tr>                                                
-                            </table>
-                        </div>
-
-                        <div class="accordion2">
-                            <span class="name">role3</span>
-
-                        </div>
-                        <div class="panel">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-
-                        <div class="accordion2">
-                            <span class="name">role4</span>
-
-                        </div>
-
-                        <div class="panel">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-
-                        <div class="accordion2">
-                            <span class="name">role5</span>
-
-                        </div>
-                        <div class="panel">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-
-                        <div class="accordion2">
-                            <span class="name">role6</span>
-
-                        </div>
-                        <div class="panel">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-
-                        <div class="accordion2">
-                            <span class="name">role7</span>
-
-                        </div>
-                        <div class="panel">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-
-                        <div class="accordion2">
-                            <span class="name">role8</span>
-
-                        </div>
-                        <div class="panel">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            {% endif %}
         </table>
 
     {% endif %}
 </div>
 <script>
-   var acc = document.getElementsByClassName("accordion2");
-            var i;
+    var acc = document.getElementsByClassName("accordion2");
+    var i;
 
-            for (i = 0; i < acc.length; i++) {
-                acc[i].onclick = function () {
-                    this.classList.toggle("active");
-                    this.nextElementSibling.classList.toggle("show");
-                }
-            }
+    for (i = 0; i < acc.length; i++) {
+        acc[i].onclick = function () {
+            this.classList.toggle("active");
+            this.nextElementSibling.classList.toggle("show");
+        }
+    }
 </script>
 
 {% include 'footer.html.twig' %}
