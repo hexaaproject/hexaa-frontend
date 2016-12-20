@@ -36,10 +36,12 @@ try {
             }
         }
     }
+    
     $organizations = \Hexaa\Newui\Model\Organization::cget($client);
- 
     $services = \Hexaa\Newui\Model\Service::cget($client);
     
+    $managers = \Hexaa\Newui\Model\Organization::managersget($client, $organizationid);
+    $members = \Hexaa\Newui\Model\Organization::membersget($client, $organizationid);
     
 } catch (ClientException $e) {
     $this->token = null;
@@ -61,4 +63,4 @@ try {
 $template = $twig->loadTemplate('organizationmain.html.twig');
 
 
-echo $template->render(array('user' => $user, 'organization' => $organization, 'organizations' => $organizations, 'services' => $services, 'menu' => $menu, 'drolename' => $name, 'roles'=>$roles, 'principals'=>$principals));
+echo $template->render(array('user' => $user, 'organization' => $organization, 'organizations' => $organizations, 'services' => $services, 'menu' => $menu, 'drolename' => $name, 'roles'=>$roles, 'principals'=>$principals, 'managers'=>$managers, 'members'=>$members));

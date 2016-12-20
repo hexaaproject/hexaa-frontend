@@ -9,7 +9,7 @@
             <a class="srvlink{% if menu == "roles" %} srvlinkactive{% endif %}" href="organization.php?id={{ organization.id }}&menu=roles">&nbsp;&nbsp;Roles&nbsp;&nbsp;</a>
             <a class="srvlink{% if menu == "connectedservices" %} srvlinkactive{% endif %}" href="organization.php?id={{ organization.id }}&menu=connectedservices">&nbsp;&nbsp;Connected services&nbsp;&nbsp;</a>
         </span>
-    </div>          
+    </div>
 </div>
 
 <div id="srvmain">
@@ -21,7 +21,7 @@
             <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/manage_users.svg"/><br/><p><b>Manage users</b></p></div>
             <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/edit_properties.svg"/><br/><p><b>Edit properties</b></p></div>
             <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/view_history.svg"/><br/><p><b>View history</b></p></div>
-            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/delete_organization.svg"/><br/><p><b>Delete organization</b></p></div> 
+            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="img/delete_organization.svg"/><br/><p><b>Delete organization</b></p></div>
         </div>
     {% endif %}
     {% if menu == "properties" %}
@@ -30,11 +30,10 @@
             <td class="uniqueproperty" style="background-color: #FFFFFF">
                 <div id="propertyname">
                     <b> Properties </b>
-
                 </div>
                 <div >
                     {% if organization.name %}
-                        <div class="inline"><b>Name</b></div>      
+                        <div class="inline"><b>Name</b></div>
                         <div class="descriptions" >{{ organization.name }}</div>
                     {% endif %}
                 </div>
@@ -63,7 +62,7 @@
             <tr>
                 {% if roles %}
                 <tr>
-                    <td class="unique" style="background-color: #61AFC5" >                
+                    <td class="unique" style="background-color: #61AFC5" >
 
                         <div id="labels">
                             <label id="headerLabel">
@@ -83,7 +82,7 @@
                                     <table id="paneltable">
                                         <tr id="row">
                                             <td rowspan="4" class="firsttd">
-                                                Permissions 
+                                                Permissions
                                             </td>
 
                                             <td class="long">
@@ -101,7 +100,7 @@
 
                                         <tr>
                                             <td rowspan="5" class="firsttd">
-                                                Members  
+                                                Members
                                             </td>
 
                                             <td class="long">
@@ -120,14 +119,14 @@
                                         </tr>
                                         <tr>
                                             <td class="long">
-                                                Teniszütő Ernő 
+                                                Teniszütő Ernő
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="long">
                                                 Vas István
                                             </td>
-                                        </tr>                                                
+                                        </tr>
                                     </table>
                                 </div>
 
@@ -138,10 +137,57 @@
                 </tr>
             {% endif %}
         </table>
-
     {% endif %}
+    {% if menu=="users" %}
+        <div id="tablemanagers">
+            <table id=centertable>
+                <tr>
+                    <td width="100%"valign="middle" align="center">
+                        <div id="firstrow" style="width: 70%">
+                            <div class="flexcontainer" align="left">
+                                <input type="checkbox" onclick="toggle(this)" class="togglecheck" id="toggleAll"/>
+                                <input type="text" class="inputfield" style="width: 250px">
+                                <button id="search" type="submit"></button>
+                                <button class="firstrowbuttons" >Change roles</button>
+                                <button class="firstrowbuttons" >Proposal</button>
+                                <button class="firstrowbuttons" >Revoke</button>
+                                <button class="firstrowbuttons" >Message</button>
+                                <button class="firstrowbuttons" >Remove</button>
+                                <button id="firstrowinvite" >Invite</button>
+                            </div>
+                        </div>
+                        {% if managers %}
+                            <table style="width:70%" id="managertable">
+                                <caption>Managers</caption>
+                                {% for manager in managers %}
+                                    <tr class="colororgman"><td class="check"><input type="checkbox" name="foo" onclick="backgroundcolororgman()" class="managercheck"></td><td><b>{{manager.display_name}}</b></td><td>{{manager.email}}</td></tr>
+                                        {% endfor %}
+                            </table>
+                        {% endif %}
+                        {% if members %}
+                            <table style="width:70%" id="usertable">
+                                <caption>Users</caption>
+                                {% for member in members %}
+                                    <tr class="colororgus"><td class="check"><input type="checkbox" name="foouser" onclick="backgroundcolororguser()" class="usercheck"></td><td><b>{{member.display_name}}</b></td><td>{{member.email}}</td></tr>
+                                        {% endfor %}
+                            </table>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        {% endif %}
+    </div>
 </div>
 <script>
+
+  var b=document.getElementsByClassName("servicecl");
+        for (i = 0; i < b.length; i++) {
+            b[i].style.backgroundColor = "#2e2d2d";
+        }
+         var b2=document.getElementsByClassName("dropbtn");
+        for (i = 0; i < b2.length; i++) {
+            b2[i].style.backgroundColor = "#61AFC5";
+        }
     var acc = document.getElementsByClassName("accordion2");
     var i;
 
@@ -151,6 +197,55 @@
             this.nextElementSibling.classList.toggle("show");
         }
     }
+
+    function backgroundcolororgman() {
+        checkboxes = document.getElementsByName('foo');
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            trchecks = document.getElementsByClassName('colororgman');
+            if (checkboxes[i].checked == true) {
+                trchecks[i].style.backgroundColor = "#FA8072";
+            } else {
+                trchecks[i].style.backgroundColor = "#FFFFFF";
+            }
+        }
+    }
+
+    function backgroundcolororguser() {
+        checkboxes = document.getElementsByName('foouser');
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            trchecks = document.getElementsByClassName('colororgus');
+            if (checkboxes[i].checked == true) {
+                trchecks[i].style.backgroundColor = "#61AFC5";
+            } else {
+                trchecks[i].style.backgroundColor = "#FFFFFF";
+            }
+        }
+    }
+    var isClickedCheckboxorg = [false];
+    function toggle(source) {
+        isClickedCheckboxorg.push(true);
+        checkboxes = document.getElementsByName('foo');
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = source.checked;
+            trchecks = document.getElementsByClassName('colororgman');
+            if ((isClickedCheckboxorg.length) % 2 == 0) {
+                trchecks[i].style.backgroundColor = "#FA8072";
+            } else {
+                trchecks[i].style.backgroundColor = "#FFFFFF";
+            }
+        }
+        checkboxesuser = document.getElementsByName('foouser');
+        for (var i = 0, n = checkboxesuser.length; i < n; i++) {
+            checkboxesuser[i].checked = source.checked;
+            trchecksuser = document.getElementsByClassName('colororgus');
+            if ((isClickedCheckboxorg.length) % 2 == 0) {
+                trchecksuser[i].style.backgroundColor = "#61AFC5";
+            } else {
+                trchecksuser[i].style.backgroundColor = "#FFFFFF";
+            }
+        }
+    }
+
 </script>
 
 {% include 'footer.html.twig' %}

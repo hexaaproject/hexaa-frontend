@@ -36,6 +36,14 @@ abstract class BaseResource
         return json_decode($response->getBody(), true);
     }
     
+    public static function managersget(Client $client, string $id) {
+        $response = $client->get(static::$pathName.'/'.$id.'/'.'managers');
+        return json_decode($response->getBody(), true);
+    }
      
+    public static function membersget(Client $client, string $id) {
+        $response = $client->get(static::$pathName.'/'.$id.'/'.'members');
+        return json_decode($response->getBody(), true);
+    } 
     
 }
