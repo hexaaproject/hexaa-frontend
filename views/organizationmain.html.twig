@@ -59,8 +59,8 @@
             <tr>
                 <td class="uniquebuttons" style="background-color: #FFFFFF"></td>
             </tr>
-            <tr>
-                {% if roles %}
+
+            {% if roles %}
                 <tr>
                     <td class="unique" style="background-color: #61AFC5" >
 
@@ -80,54 +80,49 @@
 
                                 <div class="panel">
                                     <table id="paneltable">
-                                        <tr id="row">
-                                            <td rowspan="4" class="firsttd">
-                                                Permissions
-                                            </td>
-
-                                            <td class="long">
-                                                {{role.principals[0].display_name}}
-                                            </td>
-                                        </tr>
-                                        {%for princip in principals.items%}
-                                            <tr>
+                                        {% for entitlement in role.entitlements %}
+                                            {% if loop.first %}
+                                            <tr id="row">
+                                                <td  class="firsttd" rowspan={{loop.length}}>
+                                                    Permissions
+                                                </td>
                                                 <td class="long">
-                                                    jog erre
+                                                    {{entitlement.name}}
                                                 </td>
                                             </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <td class="long">
+                                                     {{entitlement.name}}
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% for princip in role.principals %}
+
+                                            {% if loop.first %}
+                                                <tr>
+                                                    <td class="firsttd" rowspan={{loop.length}}>
+                                                        Members
+                                                    </td>
+                                                    <td class="long">
+                                                        {{princip.principal.display_name}}
+                                                    </td>
+                                                </tr>
+
+                                            {% else %}
+
+                                                <tr>
+                                                    <td class="long">
+                                                        {{princip.principal.display_name}}
+                                                    </td>
+                                                </tr>
+
+                                            {% endif %}
                                         {% endfor %}
 
-
-                                        <tr>
-                                            <td rowspan="5" class="firsttd">
-                                                Members
-                                            </td>
-
-                                            <td class="long">
-                                                Almás Tamás
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="long">
-                                                Farkas Péter
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="long">
-                                                Székely Szintia
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="long">
-                                                Teniszütő Ernő
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="long">
-                                                Vas István
-                                            </td>
-                                        </tr>
                                     </table>
+
                                 </div>
 
                             {% endfor %}
