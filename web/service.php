@@ -22,11 +22,15 @@ try {
     $serviceid = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     $menu = filter_input(INPUT_GET,'menu');
     if (!$menu) {
-        $menu = "properties";
+        $menu = "main";
     }
     if ($serviceid) {
         $service = \Hexaa\Newui\Model\Service::get($client, $serviceid);
     }
+    $organizations = \Hexaa\Newui\Model\Organization::cget($client);
+ 
+    $services = \Hexaa\Newui\Model\Service::cget($client);
+    
 } catch (ClientException $e) {
     $this->token = null;
     $templateerror = $twig->loadTemplate('error.html.twig');
@@ -41,4 +45,4 @@ try {
 
 $template = $twig->loadTemplate('servicemain.html.twig');
 
-echo $template->render(array('user' => $user, 'service' => $service, 'menu' => $menu));
+echo $template->render(array('user' => $user, 'service' => $service, 'organizations' => $organizations, 'services' => $services, 'menu' => $menu, ));

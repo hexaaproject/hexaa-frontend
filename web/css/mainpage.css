@@ -52,7 +52,7 @@ hr {
     display: block;
     height: 1px;
     border: 0;
-    border-top: 1px solid #00CED1;
+    border-top: 1px solid #61AFC5;
     padding: 0; 
 }
 div.hr{
@@ -68,7 +68,7 @@ div.hr{
     height:100%;
 }
 #orgtablemain{
-    border: 1px solid #00CED1;
+    border: 1px solid #61AFC5;
     padding-left:30px;
     padding-right: 20px;
     padding-top: 15px;
@@ -84,7 +84,7 @@ div.hr{
 
 #orgtableheader{
     text-align: center;
-    color: #00CED1;
+    color: #61AFC5;
     padding-bottom: 20px;
 }
 #servtableheader{

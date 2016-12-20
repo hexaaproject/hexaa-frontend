@@ -33,7 +33,7 @@ table#centertable3{
 
 .descriptions{
     text-align: left;
-    padding-left:15em;
+    padding-left:10em;
     padding-bottom: 5px;
     padding-right:1em;
 }
@@ -157,6 +157,6 @@ div.panel p{
     padding: 4%;
 }
 .desktopbuttonimage {
-    min-width: 12vw;
+    width: 12vw;
     cursor: pointer;
 }
