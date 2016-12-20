@@ -180,14 +180,14 @@
 </div>
 <script>
 
-  var b=document.getElementsByClassName("servicecl");
-        for (i = 0; i < b.length; i++) {
-            b[i].style.backgroundColor = "#2e2d2d";
-        }
-         var b2=document.getElementsByClassName("dropbtn");
-        for (i = 0; i < b2.length; i++) {
-            b2[i].style.backgroundColor = "#61AFC5";
-        }
+    var b = document.getElementsByClassName("servicecl");
+    for (i = 0; i < b.length; i++) {
+        b[i].style.backgroundColor = "#2e2d2d";
+    }
+    var b2 = document.getElementsByClassName("dropbtn");
+    for (i = 0; i < b2.length; i++) {
+        b2[i].style.backgroundColor = "#61AFC5";
+    }
     var acc = document.getElementsByClassName("accordion2");
     var i;
 
@@ -204,8 +204,10 @@
             trchecks = document.getElementsByClassName('colororgman');
             if (checkboxes[i].checked == true) {
                 trchecks[i].style.backgroundColor = "#FA8072";
+                trchecks[i].style.color = "#FFFFFF";
             } else {
                 trchecks[i].style.backgroundColor = "#FFFFFF";
+                trchecks[i].style.color = "#000000";
             }
         }
     }
@@ -216,8 +218,10 @@
             trchecks = document.getElementsByClassName('colororgus');
             if (checkboxes[i].checked == true) {
                 trchecks[i].style.backgroundColor = "#61AFC5";
+                trchecks[i].style.color = "#FFFFFF";
             } else {
                 trchecks[i].style.backgroundColor = "#FFFFFF";
+                trchecks[i].style.color = "#000000";
             }
         }
     }
@@ -230,8 +234,10 @@
             trchecks = document.getElementsByClassName('colororgman');
             if ((isClickedCheckboxorg.length) % 2 == 0) {
                 trchecks[i].style.backgroundColor = "#FA8072";
+                trchecks[i].style.color = "#FFFFFF";
             } else {
                 trchecks[i].style.backgroundColor = "#FFFFFF";
+                trchecks[i].style.color = "#000000";
             }
         }
         checkboxesuser = document.getElementsByName('foouser');
@@ -240,8 +246,10 @@
             trchecksuser = document.getElementsByClassName('colororgus');
             if ((isClickedCheckboxorg.length) % 2 == 0) {
                 trchecksuser[i].style.backgroundColor = "#61AFC5";
+                trchecksuser[i].style.color = "#FFFFFF";
             } else {
                 trchecksuser[i].style.backgroundColor = "#FFFFFF";
+                trchecksuser[i].style.color = "#000000";
             }
         }
     }
