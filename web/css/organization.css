@@ -73,7 +73,7 @@ table#centertable3{
     width: 70%;
 }
 
-div.accordion2 {
+div.accordion2, div.accordionroles{
     background-color: #FFFFFF;
     color: #61AFC5;
     font-weight: bold;
@@ -89,18 +89,18 @@ div.accordion2 {
     margin-right: 4%;
 }
 
-div.accordion2:before {
+div.accordion2:before , div.accordionroles:before{
     content: '\25BC';
     font-size: 13px;
     color: #61AFC5;
     float: right;
 }
 
-div.accordion2.active{ 
+div.accordion2.active, div.accordionroles.active{ 
     color:#FA8072;
 }
 
-div.accordion2.active:before {
+div.accordion2.active:before, div.accordionroles:before {
     content: "\25B2";
     font-size: 13px;
     color: #FA8072;
@@ -353,6 +353,51 @@ table#usertable caption {
     color: #61AFC5;
 }
 
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #61AFC5;
+    padding: 0; 
+}
 
+#newrole{
+    border:1px solid #FFFFFF;
+    background: url(../img/newrole.PNG) no-repeat;
+    width:240px;
+    height: 55px;
+    display: inline-flex;
+    background-size: cover;
+}
+
+#addrole{
+    border:1px solid #FFFFFF;
+    background: url(../img/addrole.PNG) no-repeat;
+    width:240px;
+    height: 55px;
+    display: inline-flex;
+    background-size: cover;
+}
+
+.buttonedit, .buttonbin, .buttonmessage {
+    float: right;
+    height:15px;
+    width:17px;
+    border: #FFFFFF;
+    margin-right:2%;
+    display: none;
+}
+
+.buttonbin{
+    background: url(../img/red_rubbishbin.svg) no-repeat;  
+}
+
+.buttonmessage{
+    background: url(../img/red_message.svg) no-repeat;
+}
+
+.buttonedit{
+    background: url(../img/red_pencil.svg) no-repeat;
+}
 
 

@@ -30,7 +30,7 @@
             <td class="uniqueproperty" style="background-color: #FFFFFF">
                 <div id="propertyname">
                     <b> Properties </b>
-                     <button class="editproperty"></button>
+                    <button class="editproperty"></button>
                 </div>
                 <div >
                     {% if organization.name %}
@@ -83,19 +83,26 @@
                                     <table id="paneltable">
                                         {% for entitlement in role.entitlements %}
                                             {% if loop.first %}
-                                            <tr id="row">
-                                                <td  class="firsttd" rowspan={{loop.length}}>
-                                                    Permissions
-                                                </td>
-                                                <td class="long">
-                                                    {{entitlement.name}}
-                                                </td>
-                                            </tr>
+                                                <tr id="row">
+                                                    <td  class="firsttd" rowspan={{loop.length}}>
+                                                        Permissions
+                                                    </td>
+                                                    <td class="long">
+                                                        {{entitlement.name}}
+                                                        {% if loop.last %}
+                                                            <hr>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+
                                             {% else %}
                                                 <tr>
                                                     <td class="long">
-                                                     {{entitlement.name}}
+                                                        {{entitlement.name}}
                                                     </td>
+                                                    {% if loop.last %}
+                                                    <hr>
+                                                {% endif %}
                                                 </tr>
                                             {% endif %}
                                         {% endfor %}
@@ -171,8 +178,107 @@
                     </td>
                 </tr>
             </table>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
+
+    {% if menu == "roles" %}
+        <table id=centertable3>
+            <tr>     
+                <td class="uniquebuttons" width="110%" height="110%" style="text-align: center">
+                    <button id="newrole"></button>
+                    <button id="addrole"></button>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="uniquebuttons" style="background-color: #FFFFFF"></td>
+            </tr>
+
+            {% if roles %}
+                <tr>
+                    <td class="unique" style="background-color: #61AFC5" >
+
+                        <div id="labels">
+                            <label id="headerLabel">
+                                Roles
+                            </label>
+                            <label id="headerLabeltext">
+                                A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni.
+                            </label>
+                        </div>
+                        <div id="roles2">
+                            {% for role in roles %}
+                                <div class="accordionroles">
+                                    <span class="name">{{role.name}}</span>
+                                    <span class="buttonbar">
+                                        <button class="buttonbin"></button>
+                                        <button class="buttonmessage"></button>
+                                        <button class="buttonedit"></button>
+                                    </span>
+                                </div>
+
+                                <div class="panel">
+                                    <table id="paneltable">
+                                        {% for entitlement in role.entitlements %}
+                                            {% if loop.first %}
+                                                <tr id="row">
+                                                    <td  class="firsttd" rowspan={{loop.length}}>
+                                                        Permissions
+                                                    </td>
+                                                    <td class="long">
+                                                        {{entitlement.name}}
+                                                        {% if loop.last %}
+                                                            <hr>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+
+                                            {% else %}
+                                                <tr>
+                                                    <td class="long">
+                                                        {{entitlement.name}}
+                                                    </td>
+                                                    {% if loop.last %}
+                                                    <hr>
+                                                {% endif %}
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% for princip in role.principals %}
+
+                                            {% if loop.first %}
+                                                <tr>
+                                                    <td class="firsttd" rowspan={{loop.length}}>
+                                                        Members
+                                                    </td>
+                                                    <td class="long">
+                                                        {{princip.principal.display_name}}
+                                                    </td>
+                                                </tr>
+
+                                            {% else %}
+
+                                                <tr>
+                                                    <td class="long">
+                                                        {{princip.principal.display_name}}
+                                                    </td>
+                                                </tr>
+
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    </table>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+        </table>
+    {% endif %}
 </div>
 <script>
 
@@ -189,10 +295,48 @@
 
     for (i = 0; i < acc.length; i++) {
         acc[i].onclick = function () {
+
             this.classList.toggle("active");
             this.nextElementSibling.classList.toggle("show");
+
         }
     }
+    var accroles = document.getElementsByClassName("accordionroles");
+    for (i = 0; i < accroles.length; i++) {
+        accroles[i].onclick = function () {
+            this.classList.toggle("active");
+            this.nextElementSibling.classList.toggle("show");
+
+            var elementbuttonbin = document.getElementsByClassName("buttonbin");
+            var elementbuttonmessage = document.getElementsByClassName("buttonmessage");
+            var elementbuttonedit = document.getElementsByClassName("buttonedit");
+            for (j = 0; j < elementbuttonbin.length; j++) {
+                var name = accroles[j].className;
+                if ((accroles[j].className) == "accordionroles active") {
+                    elementbuttonbin[j].style.display = "inline-block";
+                } else {
+                    elementbuttonbin[j].style.display = "none";
+                }
+            }
+            for (j = 0; j < elementbuttonmessage.length; j++) {
+                var name = accroles[j].className;
+                if ((accroles[j].className) == "accordionroles active") {
+                    elementbuttonmessage[j].style.display = "inline-block";
+                } else {
+                    elementbuttonmessage[j].style.display = "none";
+                }
+            }
+            for (j = 0; j < elementbuttonedit.length; j++) {
+                var name = accroles[j].className;
+                if ((accroles[j].className) == "accordionroles active") {
+                    elementbuttonedit[j].style.display = "inline-block";
+                } else {
+                    elementbuttonedit[j].style.display = "none";
+                }
+            }
+        }
+    }
+
 
     function backgroundcolororgman() {
         checkboxes = document.getElementsByName('foo');
