@@ -89,7 +89,52 @@ div.accordion2, div.accordionroles{
     margin-right: 4%;
 }
 
-div.accordion2:before , div.accordionroles:before{
+div.accordionservices {
+    background-color: #61AFC5;
+    color: #FFFFFF;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    min-width: 130%;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    margin-top:0.5em;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+div.accordionpermissions {
+    background-color: #FFFFFF;
+    color: #61AFC5;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    width:97.4%;
+    border: 1px solid #61AFC5;
+    outline: none;
+    transition: 0.4s;
+    margin-top: 0.5em;
+
+}
+
+div.accordionservices:before {
+    content: '\25BC';
+    font-size: 13px;
+    color: #FFFFFF;
+    float: right;
+
+}
+div.accordionservices.active{ 
+    color:#FFFFFF;
+}
+
+div.accordionpermissions.active{ 
+    color:#FA8072;
+    border: 1px solid #FA8072;
+}
+
+div.accordion2:before , div.accordionroles:before, div.accordionpermissions:before{
     content: '\25BC';
     font-size: 13px;
     color: #61AFC5;
@@ -400,4 +445,105 @@ hr {
     background: url(../img/red_pencil.svg) no-repeat;
 }
 
+.buttonbinservice{
+    background: url(../img/bin.PNG) no-repeat;
+    cursor:pointer;
+    width:24px;;
+    height:25px;
+    border:1px solid #FFFFFF;
+}
 
+table#centertable4{   
+    width:60%;
+    display:inline-table;
+    text-align: left;
+    padding-top:30px;
+}
+
+#roles3{
+    background-color: #FFFFFF;
+    width: 70%;
+}
+
+.format{
+    width: 80%;
+    display: none;
+}
+
+.servicemanager{
+    font-size: small;
+    color:#FFFFFF;
+    font-style: italic;
+
+}
+
+.flexcontainerservice {
+    display: inline-flex;
+    float: left;
+    padding-left: 3%;
+}
+
+.inputfieldservice, .inputfieldmanager, .inputfieldpermission, .inputfieldpermissionset{
+    flex: 1;
+    border:2px solid #61AFC5;
+}
+
+#search, #searchservice{
+    background: url(../img/search.PNG) no-repeat;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #61AFC5;
+    margin-right: 1em;
+    background-size: cover;
+}
+
+.servicemanager{
+    font-size: small;
+    color:#FFFFFF;
+    font-style: italic;
+
+}
+
+#newconnection{
+    background: url(../img/newconnection.PNG) no-repeat;
+    width:200px;
+    height: 40px;
+    float:right;
+    margin-right: 4%;
+    border:1px solid #FA8072;
+}
+
+#headerpermission{
+    color:#61AFC5;
+    font-size: large;
+}
+
+#headerLabelService{
+    color:#61AFC5;
+    font-weight: bold;
+    font-size: 1.5em;
+    float:left;
+    font-family: Georgia;
+    padding-left: 1em;
+}
+
+div.panelservice{
+    background-color: white;
+    display: none;
+    width:129.5%;
+    transition: 0.4s;
+    padding: 10px;
+}
+div.panelservice.show{
+    display: inline-block;
+    text-align: left;
+    margin-left: 4%;
+    margin-right: 4%;
+    border: 1px solid #00CEF1;
+
+}
+div.panelservice p{
+    width:100%;
+    display: inline-block;
+    text-align: left;
+}
