@@ -28,8 +28,6 @@ if (!session_start()){
     // TODO error handling nicely
     trigger_error("Couldn't start session", E_ERROR);
 }
-var_dump(filter_input(INPUT_SERVER, 'eduPersonPrincipalName'));
-var_dump($_SERVER);
 
 $attribute_mapping = array(
 	'eppn' => 'eduPersonPrincipalName',
@@ -39,7 +37,7 @@ $attribute_mapping = array(
 $attribute_errors = array();
 foreach ($attribute_mapping as $key => $value) {
 	if (! filter_input(INPUT_SERVER, $attribute_mapping[$key])) {
-		
+		$attribute_errors[]=$key;
 	}
 }
 if (! empty($attribute_errors)) {
