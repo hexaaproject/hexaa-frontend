@@ -1,0 +1,39 @@
+version: '2'
+services:
+  app:
+    image: szabogyula/saml-webapp-runner:ubuntu16.04
+    volumes:
+        - ../:/var/www/project
+    ports:
+        - 80:80
+        - 443:443
+        - 8080:8080
+    links:
+        - hexaa-backend
+    extra_hosts:
+        - project.local:127.0.0.1
+    container_name: app
+  hexaa-backend:
+    image: hexaaproject/hexaa-backend-for-dev
+    ports:
+        - "81:80"
+    depends_on:
+        - db
+    links:
+        - db
+        - memcached
+    container_name: hexaa-backend
+    
+  db:
+    image: mysql
+    container_name: mysql
+    environment:
+        - MYSQL_ALLOW_EMPTY_PASSWORD=true
+        - MYSQL_USER=someuser
+        - MYSQL_PASSWORD=somepass
+        - MYSQL_DATABASE=hexaa
+
+  memcached:
+    image: memcached
+    container_name: memcached
+

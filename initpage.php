@@ -41,14 +41,14 @@ foreach ($attribute_mapping as $key => $value) {
 	}
 }
 if (! empty($attribute_errors)) {
-		throw new Exception("Required attributes not found: ".implode(', ', $attribute_errors), 1);
+		throw new \Exception("Required attributes not found: ".implode(', ', $attribute_errors), 1);
 }
 
 $eppn = filter_input(INPUT_SERVER, $attribute_mapping["eppn"]);
 $user = new User(
     filter_input(INPUT_SERVER, $attribute_mapping["eppn"]),
     filter_input(INPUT_SERVER, $attribute_mapping["displayName"]),
-    filter_input(INPUT_SERVER, $attribute_mapping["mail"],FILTER_SANITIZE_EMAIL)
+    filter_input(INPUT_SERVER, $attribute_mapping["mail"], FILTER_SANITIZE_EMAIL)
 );
 
 if (!$user->getEppn()){
