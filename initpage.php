@@ -28,12 +28,29 @@ if (!session_start()){
     // TODO error handling nicely
     trigger_error("Couldn't start session", E_ERROR);
 }
+var_dump(filter_input(INPUT_SERVER, 'eduPersonPrincipalName'));
+var_dump($_SERVER);
 
-$eppn = filter_input(INPUT_SERVER,"eppn");
+$attribute_mapping = array(
+	'eppn' => 'eduPersonPrincipalName',
+	'displayName' => 'displayName',
+	'mail' => 'mail',
+	);
+$attribute_errors = array();
+foreach ($attribute_mapping as $key => $value) {
+	if (! filter_input(INPUT_SERVER, $attribute_mapping[$key])) {
+		
+	}
+}
+if (! empty($attribute_errors)) {
+		throw new Exception("Required attributes not found: ".implode(', ', $attribute_errors), 1);
+}
+
+$eppn = filter_input(INPUT_SERVER, $attribute_mapping["eppn"]);
 $user = new User(
-    filter_input(INPUT_SERVER,"eppn"),
-    filter_input(INPUT_SERVER,"displayName"),
-    filter_input(INPUT_SERVER,"mail",FILTER_SANITIZE_EMAIL)
+    filter_input(INPUT_SERVER, $attribute_mapping["eppn"]),
+    filter_input(INPUT_SERVER, $attribute_mapping["displayName"]),
+    filter_input(INPUT_SERVER, $attribute_mapping["mail"],FILTER_SANITIZE_EMAIL)
 );
 
 if (!$user->getEppn()){
