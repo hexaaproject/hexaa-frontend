@@ -25,9 +25,8 @@ Teszt
 
 2. írjunk egy ütős feature-t és hozzá tartozó forgatókönyveket a `features` könyvtárban. Tippek: [features and scenarios](http://docs.behat.org/en/latest/user_guide/features_scenarios.html)
 	
-3. kódoljunk
+3. kódoljunk app: https://project.local, logok: localhost:8080
 
-
-4. teszteljünk, hogy sikerült-e a kódunk: `vendor/bin/behat`
+4. teszteljünk, hogy sikerült-e a kódunk: `vendor/bin/behat`, a tesztet localhoston futó VNC szerveren keresztül hátradőlve élvezhetjük
 
 5. sikeresesen lefutó teszt után `git commit` és `git push`
