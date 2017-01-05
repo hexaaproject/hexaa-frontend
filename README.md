@@ -30,3 +30,15 @@ Teszt
 4. teszteljünk, hogy sikerült-e a kódunk: `vendor/bin/behat`, a tesztet localhoston futó VNC szerveren keresztül hátradőlve élvezhetjük
 
 5. sikeresesen lefutó teszt után `git commit` és `git push`
+
+
+Demo környezet
+--------------
+
+https://server.hexaa.eu/ui/
+
+
+UX specifikáció
+---------------
+
+[ui-design](doc/ui-design)
