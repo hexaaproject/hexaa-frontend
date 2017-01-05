@@ -14,7 +14,7 @@ services:
         - project.local:127.0.0.1
     container_name: app
   hexaa-backend:
-    image: hexaaproject/hexaa-backend-for-dev
+    image: hexaaproject/hexaa-backend:for-dev
     ports:
         - "81:80"
     depends_on:
@@ -36,4 +36,3 @@ services:
   memcached:
     image: memcached
     container_name: memcached
-

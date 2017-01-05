@@ -1,0 +1,32 @@
+# selenium teszt:
+# docker run --rm --name=grid -p 4444:24444 -p 5900:25900 --shm-size=1g --add-host="project.local:172.17.0.1" elgalu/selenium hogy a host gép külső ip címét támadja, mert csak azon válaszol.
+default:
+    extensions:
+        # Behat\Symfony2Extension: ~
+        Behat\MinkExtension:
+            base_url:  https://project.local/
+            sessions:
+                # my_session:
+                #     symfony2: ~
+                selenium2:
+                    selenium2:
+                       wd_host: http://grid:4444/wd/hub
+            # show_cmd: '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome %s'
+            show_cmd: 'firefox %s'
+        # Knp\FriendlyContexts\Extension:
+        #     entities:
+        #         namespaces:
+        #             - AppBundle
+        Knp\FriendlyContexts\Extension: ~
+
+    suites:
+        my_suite:
+            # type: symfony_bundle
+            # bundle: AppBundle
+            mink_session: selenium2
+            contexts:
+                # - AppBundle\Features\Context\FeatureContext
+                - Knp\FriendlyContexts\Context\MinkContext
+                # - Knp\FriendlyContexts\Context\TableContext
+                # - Knp\FriendlyContexts\Context\EntityContext
+                # - Knp\FriendlyContexts\Context\AliceContext
