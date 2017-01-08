@@ -20,14 +20,13 @@ Fejlesztő környezet
 Teszt
 -----
 
-1. indítsuk el a selenium dockert, ami helyettünk kattintgatgat a böngészőben: `docker run --rm --name=grid -p 4444:24444 -p 5900:25900 --shm-size=1g --add-host="project.local:172.17.0.1" elgalu/selenium`
-
+1. indítsuk el a dev környezetet, ahogy felül írva vagyon.
 
 2. írjunk egy ütős feature-t és hozzá tartozó forgatókönyveket a `features` könyvtárban. Tippek: [features and scenarios](http://docs.behat.org/en/latest/user_guide/features_scenarios.html)
 	
 3. kódoljunk app: https://project.local, logok: localhost:8080
 
-4. teszteljünk, hogy sikerült-e a kódunk: `vendor/bin/behat`, a tesztet localhoston futó VNC szerveren keresztül hátradőlve élvezhetjük
+4. teszteljünk, hogy sikerült-e a kódunk: `docker exec -ti project.local /var/www/project/test.sh -c /var/www/project`, a tesztet localhoston futó VNC szerveren keresztül hátradőlve élvezhetjük. A test.sh a behat wrapper-e, a második argumentuma után fogadja a behat argumentumokat. pl. `docker exec -ti project.local /var/www/project/test.sh -c /var/www/project --help`
 
 5. sikeresesen lefutó teszt után `git commit` és `git push`
 
