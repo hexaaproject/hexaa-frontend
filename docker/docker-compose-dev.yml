@@ -3,7 +3,7 @@ services:
   app:
     image: szabogyula/saml-webapp-runner:ubuntu16.04
     volumes:
-        - ../:/var/www/project
+        - ../app/:/var/www/project
     ports:
         - 80:80
         - 443:443
@@ -13,6 +13,9 @@ services:
     extra_hosts:
         - project.local:127.0.0.1
     container_name: project.local
+    environment:
+        - SYMFONY__CACHE_DIR=/tmp/cache
+        - SYMFONY__LOGS_DIR=/tmp/logs
   hexaa-backend:
     image: hexaaproject/hexaa-backend:for-dev
     ports:

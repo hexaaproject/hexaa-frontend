@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+{% block body %}
+{% if organizations is empty and services is empty %}
+    <div id="welcomediv">
+        <div id="welcomecontent">
+            {% include 'AppBundle:Default:welcomediv.html.twig' %}
+            <div id="mobilemaincontrols">
+                {% include 'AppBundle:Default:mobilebuttons.html.twig' %}
+            </div>
+        </div>
+    </div>
+    <div id="maindiv">
+        <div id="maindivcontents">
+            {% include 'AppBundle:Default:welcomepagebuttons.html.twig' %}
+        </div>
+    </div>
+{% else %}
+    <div id="mainafterlogin">
+        <div id="welcomediv">
+            <div id="welcomecontent">
+                {% include 'AppBundle:Default:welcomediv.html.twig' %}
+            </div>
+        </div>
+        <div id="maindivafterlogin">
+            <div id="maindivcontentsafterlogin">
+                {% include 'AppBundle:Default:welcomepagebuttons.html.twig' %}
+            </div>
+        </div>
+        <div class="hr"><hr/></div>
+        <div id="maintables">
+            <div id="orgtablemain">
+                <div id="orgtableheader"><b>ORGANIZATIONS</b></div>
+                {% if organizations.items == null %}
+                    <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
+                {% endif %}
+                {% for organization in organizations.items %}
+                    <div id="orgtablecontent"><a href="organization.php?id={{ organization.id }}">{{ organization.name|e }}</a></div>
+                {% endfor %}
+            </div>
+            <div id="servtablemain">
+                <div id="servtableheader"><b>SERVICES</b></div>
+                {% if services.items == null %}
+                    <div id="emptyservtable" style="font-style: italic">(No services yet)</div>
+                {% endif %}
+                {% for service in services.items %}
+                    <div id="servtablecontent"><a href="service.php?id={{ service.id }}">{{ service.name|e }}</a></div>
+                {% endfor %}             
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
