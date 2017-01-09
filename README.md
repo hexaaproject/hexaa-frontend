@@ -26,7 +26,7 @@ Teszt
 	
 3. kódoljunk app: https://project.local, logok: localhost:8080
 
-4. teszteljünk, hogy sikerült-e a kódunk: `docker exec -ti project.local /var/www/project/test.sh -c /var/www/project`, a tesztet localhoston futó VNC szerveren keresztül hátradőlve élvezhetjük. A test.sh a behat wrapper-e, a második argumentuma után fogadja a behat argumentumokat. pl. `docker exec -ti project.local /var/www/project/test.sh -c /var/www/project --help`
+4. teszteljünk, hogy sikerült-e a kódunk: `docker exec -ti project.local /var/www/project/test.sh /var/www/project`, a tesztet localhoston futó VNC szerveren keresztül hátradőlve élvezhetjük. A test.sh a behat wrapper-e, a második argumentuma után fogadja a behat argumentumokat. pl. `docker exec -ti project.local /var/www/project/test.sh /var/www/project --help`
 
 5. sikeresesen lefutó teszt után `git commit` és `git push`
 
