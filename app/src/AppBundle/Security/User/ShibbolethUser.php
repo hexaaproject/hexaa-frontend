@@ -11,9 +11,9 @@ use GuzzleHttp\Exception\ServerException;
 
 class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializable
 {
-    private $eppn;
-    private $displayName;
-    private $email;
+    private $eppn = "";
+    private $displayName = "";
+    private $email = "";
 
     private $client;
     private $token = null;
@@ -30,9 +30,6 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
         }
         $this->base_uri=$base_uri;
         $this->hexaaScopedKey=$hexaaScopedKey;
-        $this->client=new Client(array('base_uri' => $base_uri, 'headers' => array('X-HEXAA-AUTH' => $this->getToken())));
-        // dump($this->client); exit;
-
     }
 
     public function __toString()
@@ -66,8 +63,7 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
 
     public function getClient()
     {
-        // dump($this->getToken());exit;
-
+        $this->client=new Client(array('base_uri' => $this->base_uri, 'headers' => array('X-HEXAA-AUTH' => $this->getToken())));
         return $this->client;
     }
 
@@ -136,6 +132,7 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
 
     private function getToken():string
     {
+        // TODO session-ben tárolni a tokent, különben minden hívásnál NULL jön
         if ($this->token !== null) {
             $now = new \DateTime();
             $diff = $now->diff($this->tokenAcquiredAt, true);

@@ -1,4 +1,8 @@
-{% include 'header.html.twig' %}
+{% extends "::base.html.twig" %}
+
+{% block title %}HEXAA Organizations{% endblock %}
+
+{% block body %}
 
 <div id="srvmenu">
     <div id="srvmenucontent">
@@ -543,6 +547,4 @@
 
 </script>
 
-{% include 'footer.html.twig' %}
-
-
+{% endblock %}
