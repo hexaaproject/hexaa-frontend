@@ -1,6 +1,8 @@
 Fejlesztő környezet
 -------------------
 
+Az alábbiak előfeltétele, hogy az app mappában nyomjunk egy `composer install`-t. Ez valószínűleg nincs lokálisan telepítve, így ajánlott a [telepítési útmutatót](https://getcomposer.org/download/) követni.
+
 1. Telepítsünk egy kellemes docker környezetet a gépünkre. Ne bízzunk a oprendszer disztribúcióban, a docker valószínűleg el van már avulva. Járjunk el a hivatalos telepítés mentén [docker.io](http://docker.io)
 
 2. telepítsük a `docker-composer` rendszert is

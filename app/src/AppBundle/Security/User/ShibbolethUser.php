@@ -16,6 +16,7 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
     private $email = "";
 
     private $client;
+    private $base_uri = "";
     private $token = null;
     private $tokenAcquiredAt;
     private $hexaaScopedKey;
