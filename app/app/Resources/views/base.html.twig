@@ -62,7 +62,7 @@
                     </a>
                 </div>
                 <div id="menudiv">
-                    {% if user != null %}
+                    {% if app.user != null %}
                         <div class="dropdown">
                             <button onclick="orgClick()" class="dropbtn">
                                 Organizations
@@ -88,8 +88,8 @@
                     {% endif %}
                     <div id="container">
 
-                        {% if user != null %}
-                            <div id="loginstatus"><span id="usernamebox">{{ user.eppn }}</span></div>
+                        {% if app.user != null %}
+                            <div id="loginstatus"><span id="usernamebox">{{ app.user.username }}</span></div>
                             {% endif %}
                         <div id="logout">
                             <span id="logobox">

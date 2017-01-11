@@ -7,3 +7,10 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     shib_auth_username_attribute: eduPersonPrincipalName
+    shib_attribute_map:
+      eppn: eduPersonPrincipalName
+      displayName: displayName
+      email: mail
+    hexaa_base_uri: http://hexaa-backend/api
+    # to be acquired from hexaa_backend_dir/app/config/parameters.yml
+    hexaa_scoped_key: InsertSomeSecretHere

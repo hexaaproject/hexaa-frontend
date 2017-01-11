@@ -7,9 +7,10 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-   organization:
-       class: AppBundle\Model\Organization
-   service:
-       class: AppBundle\Model\Service
-   shibboleth.user.provider:
-        class: AppBundle\Security\User\ShibbolethUser
+    organization:
+      class: AppBundle\Model\Organization
+    service:
+      class: AppBundle\Model\Service
+    shibboleth.user.provider:
+      class: AppBundle\Security\User\ShibbolethUser
+      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%"]
