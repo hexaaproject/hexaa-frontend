@@ -65,7 +65,7 @@
 #cornerlogobox {
     display:inline-block;
     position: absolute;
-    padding-top: 10px;
+    padding-top: 12px;
     padding-bottom: 10px;
 }
 #cornerlogo {
@@ -97,7 +97,7 @@
     float:right;
     display:inline-block;
     padding-top: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
 }
 
 #logpng{
