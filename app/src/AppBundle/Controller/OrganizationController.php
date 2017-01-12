@@ -1,10 +1,10 @@
 <?php
-
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Model\Organization;
 use AppBundle\Model\Service;
 
@@ -15,7 +15,7 @@ class OrganizationController extends Controller
 {
     /**
      * @Route("/")
-     * xx@Template()
+     * @Template()
      */
     public function indexAction()
     {
@@ -68,6 +68,15 @@ class OrganizationController extends Controller
 
 		return $this->render('AppBundle:Organization:index.html.twig', array('organization' => $organization, 'organizations' => $organizations, 'services' => $services, 'menu' => $menu, 'drolename' => $name, 'roles'=>$roles, 'principals'=>$principals, 'managers'=>$managers, 'members'=>$members));
 		// return array('organization' => $organization, 'organizations' => $organizations, 'services' => $services, 'menu' => $menu, 'drolename' => $name, 'roles'=>$roles, 'principals'=>$principals, 'managers'=>$managers, 'members'=>$members); TODO template para a twig engine-ben : https://github.com/symfony/symfony/pull/21177
+    }
+
+    /**
+     * @Route("/add")
+     * @Template()
+     */
+    public function addAction(Request $request)
+    {
+    	return $this->render('AppBundle:Organization:add.html.twig', array());
     }
 
 }

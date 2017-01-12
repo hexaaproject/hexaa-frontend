@@ -36,6 +36,6 @@ class DefaultController extends Controller
             }
         }
 
-        return array('organizations' => $organizations, 'services'=>$services);
+        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services'=>$services));
     }
 }
