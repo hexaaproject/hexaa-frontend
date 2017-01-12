@@ -36,7 +36,7 @@ class ProfileController extends Controller
         }
 
         return $this->render('AppBundle:Profile:index.html.twig', array(
-            'organizations' => $organizations, 'services'=>$services
+            'organizations' => $organizations, 'services'=>$services, 'client'=>$client
         ));
     }
 
