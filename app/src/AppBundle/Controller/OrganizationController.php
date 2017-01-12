@@ -71,12 +71,39 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/add")
+     * @Route("/addStepOne")
      * @Template()
      */
-    public function addAction(Request $request)
+    public function addStepOneAction(Request $request)
     {
-    	return $this->render('AppBundle:Organization:add.html.twig', array());
+    	return $this->render('AppBundle:Organization:addStepOne.html.twig', array());
+    }
+
+    /**
+     * @Route("/addStepTwo")
+     * @Template()
+     */
+    public function addStepTwoAction(Request $request)
+    {
+    	return $this->render('AppBundle:Organization:addStepTwo.html.twig', array());
+    }
+
+    /**
+     * @Route("/addStepThree")
+     * @Template()
+     */
+    public function addStepThreeAction(Request $request)
+    {
+    	return $this->render('AppBundle:Organization:addStepThree.html.twig', array());
+    }
+
+    /**
+     * @Route("/addStepFour")
+     * @Template()
+     */
+    public function addStepFourAction(Request $request)
+    {
+    	return $this->render('AppBundle:Organization:addStepFour.html.twig', array());
     }
 
     /**
