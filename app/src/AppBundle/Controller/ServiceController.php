@@ -36,7 +36,8 @@ class ServiceController extends Controller
 		    return $this->render('error.html.twig', array('serverexception'=>$e));
 		} finally {
 		    //?
-
+		}
+		
         return $this->render('AppBundle:Service:index.html.twig', array(
             'service' => $service,
             'organizations' => $organizations,
