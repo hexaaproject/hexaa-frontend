@@ -79,4 +79,12 @@ class OrganizationController extends Controller
     	return $this->render('AppBundle:Organization:add.html.twig', array());
     }
 
+    /**
+     * @Route("/show/{id}")
+     */
+    public function showAction($id)
+    {
+    	return $this->render('AppBundle:Organization:show.html.twig', array());
+    }
+
 }

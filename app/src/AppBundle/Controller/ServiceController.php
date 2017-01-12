@@ -47,4 +47,12 @@ class ServiceController extends Controller
         );
     }
 
+    /**
+     * @Route("/show/{id}")
+     */
+    public function showAction($id)
+    {
+    	return $this->render('AppBundle:Service:show.html.twig', array());
+    }
+
 }

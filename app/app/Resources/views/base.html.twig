@@ -4,10 +4,10 @@
         <meta charset="UTF-8" />
         <title>{% block title %}HEXAA{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="stylesheet" type="text/css" href="css/mainpage.css">
-            <link rel="stylesheet" type="text/css" href="css/menu.css">
-            <link rel="stylesheet" type="text/css" href="css/service.css">
-            <link rel="stylesheet" type="text/css" href="css/organization.css">
+            <link rel="stylesheet" type="text/css" href="/css/mainpage.css">
+            <link rel="stylesheet" type="text/css" href="/css/menu.css">
+            <link rel="stylesheet" type="text/css" href="/css/service.css">
+            <link rel="stylesheet" type="text/css" href="/css/organization.css">
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,7 +58,7 @@
             <div id="topdivcontent">
                 <div id="cornerlogobox">
                     <a href="index.html">
-                        <img id="cornerlogo" src="img/hexaa-logo-blue.png" alt="hexaa logo"/>
+                        <img id="cornerlogo" src="/img/hexaa-logo-blue.png" alt="hexaa logo"/>
                     </a>
                 </div>
                 <div id="menudiv">
@@ -68,11 +68,12 @@
                                 Organizations
                             </button>
                             <div id="orgSelect" class="dropdown-content1">
-                                
-                                {% for organization in organizations.items %}
-                                    <a href="organization.php" id="nameoneorg" onclick="location.href = this.href + '?id=' +{{organization.id}} ;
-                                        return false;">{{ organization.name|e }}</a>
-                                {% endfor %}
+                                {% if organizations is defined %}
+                                    {% for organization in organizations.items %}
+                                        <a href="{{ path("app_organization_show", { id: organization.id }) }}" id="nameoneorg">{{ organization.name|e }}</a>
+                                    {% endfor %}
+                                {% endif %}
+
                             </div>
                         </div>
                         <div class="dropdown">
@@ -80,9 +81,11 @@
                                 Services
                             </button>
                             <div id="servSelect" class="dropdown-content2">
-                                {% for service in services.items %}
-                                    <a href="service.php" id="nameoneserv" onclick="location.href = this.href + '?id=' +{{service.id}} ; return false;"> {{ service.name|e }}</a>
-                                {% endfor %}
+                                {% if services is defined %}
+                                    {% for service in services.items %}
+                                        <a href=""{{ path("app_service_show", { id: service.id }) }}""> {{ service.name|e }}</a>
+                                    {% endfor %}
+                                {% endif %}
                             </div>
                         </div>
                     {% endif %}
@@ -93,8 +96,8 @@
                             {% endif %}
                         <div id="logout">
                             <span id="logobox">
-                                <a href="login.html">
-                                    <img id="logpng" src="img/logout.png">
+                                <a href="">
+                                    <img id="logpng" src="/img/logout.png">
                                 </a>
                             </span>
                         </div>
