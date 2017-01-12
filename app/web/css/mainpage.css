@@ -45,13 +45,7 @@
 .desktopbuttonimageafterlogin {
     max-width: 6vw;
     cursor: pointer;
-}
-
-#editprofilebutton{
-   background-image: url(../img/edit_profile.svg);
-   background-size:cover;
-   width: 10em;
-   height: 8em;
+    
 }
 
 #maindivafterlogin  {
