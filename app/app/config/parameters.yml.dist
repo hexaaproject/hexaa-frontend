@@ -11,6 +11,6 @@ parameters:
       eppn: eduPersonPrincipalName
       displayName: displayName
       email: mail
-    hexaa_base_uri: http://hexaa-backend/api
+    hexaa_base_uri: http://hexaa-backend/api/
     # to be acquired from hexaa_backend_dir/app/config/parameters.yml
     hexaa_scoped_key: InsertSomeSecretHere
