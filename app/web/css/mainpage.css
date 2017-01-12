@@ -40,6 +40,8 @@
 .desktopbutton {
     display: inline-block;
     padding: 2%;
+    height: 8em;
+    width: 7em;
 
 }
 .desktopbuttonimageafterlogin {
