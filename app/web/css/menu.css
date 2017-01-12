@@ -16,6 +16,13 @@
     position:relative;
     display: inline-block;
     text-align: center;
+    height: 100%;
+}
+
+#leftpanel{
+    float:left;
+    height:100%;
+    display:inline-block;
 }
 
 .dropdown-content1, .dropdown-content2{
@@ -36,7 +43,7 @@
 
 #menudiv{
     margin-left: 12em;
-    height: 50px;
+    height: 100%;
 }
 
 #menupoints{
@@ -52,6 +59,7 @@
 #topdivcontent {
     position: relative;
     width: 100%;
+    height:100%;
 }
 
 #cornerlogobox {

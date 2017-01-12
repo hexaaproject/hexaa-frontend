@@ -10,6 +10,8 @@
     font-size:xx-large;
 }
 
+
+
 #welcomeimage {
     max-width: 70vw;
     max-height: 10vh;
@@ -44,6 +46,14 @@
     max-width: 6vw;
     cursor: pointer;
 }
+
+#editprofilebutton{
+   background-image: url(../img/edit_profile.svg);
+   background-size:cover;
+   width: 10em;
+   height: 8em;
+}
+
 #maindivafterlogin  {
     display: box;
     text-align: center;

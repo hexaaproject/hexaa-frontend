@@ -63,6 +63,7 @@
                 </div>
                 <div id="menudiv">
                     {% if app.user != null %}
+                        <div id="leftpanel">
                         <div class="dropdown">
                             <button onclick="orgClick()" class="dropbtn">
                                 Organizations
@@ -87,6 +88,7 @@
                                     {% endfor %}
                                 {% endif %}
                             </div>
+                        </div>
                         </div>
                     {% endif %}
                     <div id="container">
