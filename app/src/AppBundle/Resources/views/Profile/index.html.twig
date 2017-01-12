@@ -3,5 +3,32 @@
 {% block title %}AppBundle:Profile:index{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Profile:index page</h1>
+
+    <div id="profilemain">
+        <table id="profilecentertable">
+            <tr>
+                <td id="properties" style="background-color: #FFFFFF" width="110%" height="110%">
+                    <div id="propertyname">
+                        <b> Properties </b>
+                        <button class="editproperty"></button>
+                    </div>
+                    <div >
+                        <div class="inline"><b>Name</b></div>
+                        <div class="descriptions" ></div>
+                    </div>
+                    <div>
+                        <div class="inline"><b>Email</b></div>
+                        <div class="descriptions" ></div>
+
+                    </div>
+                    <div>
+                        <div class="inline"><b>Federal ID</b></div>
+                        <div class="descriptions"></div>
+                    </div>      
+                </td>
+            </tr>
+            <tr>
+                <td class="uniquebuttons" style="background-color: #FFFFFF" width="110%" height="110%"></td>
+            </tr>
+    </div>
 {% endblock %}
