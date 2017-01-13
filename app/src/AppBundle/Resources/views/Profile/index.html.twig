@@ -44,14 +44,16 @@
                     </div>
                     
                     <div id="attributes">
+                    {% for userattribute in userattributes %}
                         <div class="accordionattributes">
                             <span class="name">
-                                könyvtár
+                                {{userattribute.principal.name}}
                             </span>
                         </div>
                         <div class="panelattributes">
 
                         </div>
+                    {% endfor %}
                     </div>
                 </td>
             </tr>
