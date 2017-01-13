@@ -44,7 +44,8 @@ Given delete all hexaa data
 Given setup the basic hexaa test data
 ```
 
-A stepek itt vannak kifejtve: (app/src/AppBundle/Features/hexaa-test-data-manager.feature)
+Bővebben kifejtve: [hexaa-test-data-manager.feature](app/src/AppBundle/Features/hexaa-test-data-manager.feature)
+
 
 Demo környezet
 --------------
