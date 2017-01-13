@@ -4,4 +4,36 @@
 
 {% block body %}
 <h2>Create virtual organization</h2>
+Készítsd el a szervezeted szerepköreit.
+<form action="{{ path('app_organization_addstepthree')}}" method="POST" role="form">
+	<legend>Szerepkörök</legend>
+	<a href="{{ path('app_organization_addstepone') }}" type="button" class="btn btn-default">Back</a>
+	<button type="submit" class="btn btn-primary">Next</button>
+	<div class="progress" data-step="2">progressbar 2</div>
+	<div class="form-group">
+		<input type="text" class="form-control" id="" value="Tagság">
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" value="" name="default">
+			</label>
+		</div>
+	</div>
+
+	<button class="btn btn-default">+ New</button>
+	
+	<div class="accordion">Haladó beállítások</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" value="isolatemember">
+				Tagok listázásának tiltása a szervezetben
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" value="isolaterolemember">
+				Tagok listázásának tiltása a szerepkörökben
+			</label>
+		</div>
+	</div>
+</form>
 {% endblock %}

@@ -4,4 +4,21 @@
 
 {% block body %}
 <h2>Create virtual organization</h2>
+
+Hívj meg embereket 
+<form action="{{ path('app_organization_addstepfive')}}" method="POST" role="form">
+	<legend>Meghívó</legend>
+	<a href="{{ path('app_organization_addstepfour') }}" type="button" class="btn btn-default">Back</a>
+	<button type="submit" class="btn btn-primary">Next</button>
+	<div class="progress" data-step="4">progressbar 4</div>
+	<div class="form-group">
+		<input type="text" class="form-control" id="" placeholder="email">
+	</div>
+	<div class="hint">
+		<div>
+			A tag a meghívó elfogadása után automatikusan a Tagok szerepkörbe kerül, amit később megváltoztathatsz a Szerepkörök menüpontban.
+		</div>
+	</div>
+</form>
+
 {% endblock %}
