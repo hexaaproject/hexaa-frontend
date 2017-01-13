@@ -65,47 +65,45 @@
                 <div id="menudiv">
                     {% if app.user != null %}
                         <div id="leftpanel">
-                            <div class="dropdown">
-                                <button onclick="orgClick()" class="dropbtn">
-                                    Organizations
-                                </button>
-                                <div id="orgSelect" class="dropdown-content1">
-                                    {% if organizations is defined %}
+                            {% if organizations is defined %}
+                                <div class="dropdown">
+                                    <button onclick="orgClick()" class="dropbtn">
+                                        Organizations
+                                    </button>
+                                    <div id="orgSelect" class="dropdown-content1">
                                         {% for organization in organizations.items %}
                                             <a href="{{ path("app_organization_show", { id: organization.id }) }}" id="nameoneorg">{{ organization.name|e }}</a>
                                         {% endfor %}
-                                    {% endif %}
-
-                                </div>
-                                {% if organizations is defined and organizations.items != null %}
-                                    <div id="orgSelect" class="dropdown-content1">
-
-                                        {% for organization in organizations.items %}
-                                            <a href="organization.php" id="nameoneorg" onclick="location.href = this.href + '?id=' +{{organization.id}} ;
-                                        return false;">{{ organization.name|e }}</a>
-                                        {% endfor %}
                                     </div>
-                                {% endif %}
-                            </div>
-                            <div class="dropdown">
-                                <button onclick="servClick()" class="servicecl">
-                                    Services
-                                </button>
-                                <div id="servSelect" class="dropdown-content2">
-                                    {% if services is defined %}
+                                    {% if organizations.items != null %}
+                                        <div id="orgSelect" class="dropdown-content1">
+                                            {% for organization in organizations.items %}
+                                                <a href="organization.php" id="nameoneorg" onclick="location.href = this.href + '?id=' +{{organization.id}} ;
+                                            return false;">{{ organization.name|e }}</a>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            {% if services is defined %}
+                                <div class="dropdown">
+                                    <button onclick="servClick()" class="servicecl">
+                                        Services
+                                    </button>
+                                    <div id="servSelect" class="dropdown-content2">
                                         {% for service in services.items %}
                                             <a href=""{{ path("app_service_show", { id: service.id }) }}""> {{ service.name|e }}</a>
                                         {% endfor %}
+                                    </div>
+                                    {% if services.items != null %}
+                                        <div id="servSelect" class="dropdown-content2">
+                                            {% for service in services.items %}
+                                                <a href="service.php" id="nameoneserv" onclick="location.href = this.href + '?id=' +{{service.id}} ; return false;"> {{ service.name|e }}</a>
+                                            {% endfor %}
+                                        </div>
                                     {% endif %}
                                 </div>
-                                {% if services is defined and services.items != null %}
-                                    <div id="servSelect" class="dropdown-content2">
-                                        {% for service in services.items %}
-                                            <a href="service.php" id="nameoneserv" onclick="location.href = this.href + '?id=' +{{service.id}} ; return false;"> {{ service.name|e }}</a>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
+                            {% endif %}
                         </div>
                     {% endif %}
                     <div id="container">
