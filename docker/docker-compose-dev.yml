@@ -19,7 +19,7 @@ services:
   hexaa-backend:
     image: hexaaproject/hexaa-backend:for-dev
     ports:
-        - "81:80"
+        - "8081:80"
     depends_on:
         - db
     links:
@@ -27,7 +27,17 @@ services:
         - memcached
         - grid
     container_name: hexaa-backend
-    
+  hexaa-test-data-manager:
+    image: hexaaproject/hexaa-test-data-manager:for-dev
+    ports:
+        - "8082:80"
+    depends_on:
+        - db
+        - hexaa-backend
+    links:
+        - db
+        - hexaa-backend
+    container_name: hexaa-test-data-manager
   db:
     image: mysql
     container_name: mysql
