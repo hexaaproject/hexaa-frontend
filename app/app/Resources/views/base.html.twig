@@ -8,6 +8,7 @@
             <link rel="stylesheet" type="text/css" href="/css/menu.css">
             <link rel="stylesheet" type="text/css" href="/css/service.css">
             <link rel="stylesheet" type="text/css" href="/css/organization.css">
+            <link rel="stylesheet" type="text/css" href="/css/profile.css">
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,41 +18,41 @@
     <body>
         <script>
             function orgClick() {
-            document.getElementById("orgSelect").classList.toggle("show");
+                document.getElementById("orgSelect").classList.toggle("show");
             }
             function servClick() {
-            document.getElementById("servSelect").classList.toggle("show");
+                document.getElementById("servSelect").classList.toggle("show");
             }
             window.onclick = function (event) {
-            if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
-            var dropdowns1 = document.getElementsByClassName("dropdown-content1");
-            var dropdowns2 = document.getElementsByClassName("dropdown-content2");
-            var i;
-            for (i = 0; i < dropdowns1.length; i++) {
-            var openDropdown = dropdowns1[i];
-            if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-            }
-            }
-            for (i = 0; i < dropdowns2.length; i++) {
-            var openDropdown = dropdowns2[i];
-            if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-            }
-            }
-            }
-            if (event.target.matches('.servicecl')) {
-            var dropdownorg = document.getElementById("orgSelect");
-            if (dropdownorg.classList.contains('show')) {
-            dropdownorg.classList.remove('show');
-            }
-            }
-            if (event.target.matches('.dropbtn')) {
-            var dropdownorg = document.getElementById("servSelect");
-            if (dropdownorg.classList.contains('show')) {
-            dropdownorg.classList.remove('show');
-            }
-            }
+                if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
+                    var dropdowns1 = document.getElementsByClassName("dropdown-content1");
+                    var dropdowns2 = document.getElementsByClassName("dropdown-content2");
+                    var i;
+                    for (i = 0; i < dropdowns1.length; i++) {
+                        var openDropdown = dropdowns1[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                    for (i = 0; i < dropdowns2.length; i++) {
+                        var openDropdown = dropdowns2[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+                if (event.target.matches('.servicecl')) {
+                    var dropdownorg = document.getElementById("orgSelect");
+                    if (dropdownorg.classList.contains('show')) {
+                        dropdownorg.classList.remove('show');
+                    }
+                }
+                if (event.target.matches('.dropbtn')) {
+                    var dropdownorg = document.getElementById("servSelect");
+                    if (dropdownorg.classList.contains('show')) {
+                        dropdownorg.classList.remove('show');
+                    }
+                }
             }
         </script>
         <div id="topdiv">
@@ -63,28 +64,46 @@
                 </div>
                 <div id="menudiv">
                     {% if app.user != null %}
-                        <div class="dropdown">
-                            <button onclick="orgClick()" class="dropbtn">
-                                Organizations
-                            </button>
-                            <div id="orgSelect" class="dropdown-content1">
-                                {% if organizations is defined %}
-                                    {% for organization in organizations.items %}
-                                        <a href="{{ path("app_organization_show", { id: organization.id }) }}" id="nameoneorg">{{ organization.name|e }}</a>
-                                    {% endfor %}
-                                {% endif %}
+                        <div id="leftpanel">
+                            <div class="dropdown">
+                                <button onclick="orgClick()" class="dropbtn">
+                                    Organizations
+                                </button>
+                                <div id="orgSelect" class="dropdown-content1">
+                                    {% if organizations is defined %}
+                                        {% for organization in organizations.items %}
+                                            <a href="{{ path("app_organization_show", { id: organization.id }) }}" id="nameoneorg">{{ organization.name|e }}</a>
+                                        {% endfor %}
+                                    {% endif %}
 
+                                </div>
+                                {% if organizations.items != null %}
+                                    <div id="orgSelect" class="dropdown-content1">
+
+                                        {% for organization in organizations.items %}
+                                            <a href="organization.php" id="nameoneorg" onclick="location.href = this.href + '?id=' +{{organization.id}} ;
+                                        return false;">{{ organization.name|e }}</a>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
-                        </div>
-                        <div class="dropdown">
-                            <button onclick="servClick()" class="servicecl">
-                                Services
-                            </button>
-                            <div id="servSelect" class="dropdown-content2">
-                                {% if services is defined %}
-                                    {% for service in services.items %}
-                                        <a href=""{{ path("app_service_show", { id: service.id }) }}""> {{ service.name|e }}</a>
-                                    {% endfor %}
+                            <div class="dropdown">
+                                <button onclick="servClick()" class="servicecl">
+                                    Services
+                                </button>
+                                <div id="servSelect" class="dropdown-content2">
+                                    {% if services is defined %}
+                                        {% for service in services.items %}
+                                            <a href=""{{ path("app_service_show", { id: service.id }) }}""> {{ service.name|e }}</a>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                {% if services.items != null %}
+                                    <div id="servSelect" class="dropdown-content2">
+                                        {% for service in services.items %}
+                                            <a href="service.php" id="nameoneserv" onclick="location.href = this.href + '?id=' +{{service.id}} ; return false;"> {{ service.name|e }}</a>
+                                        {% endfor %}
+                                    </div>
                                 {% endif %}
                             </div>
                         </div>
@@ -105,9 +124,9 @@
                 </div>
             </div>
         </div>
-        
-        {% block body %}{% endblock %}
 
-        {% block javascripts %}{% endblock %}
-    </body>
+    {% block body %}{% endblock %}
+
+{% block javascripts %}{% endblock %}
+</body>
 </html>

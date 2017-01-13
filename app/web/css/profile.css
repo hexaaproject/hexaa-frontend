@@ -1,0 +1,16 @@
+
+#profilemain{
+    text-align: center;
+}
+
+table#profilecentertable{
+    width: 60%;
+    display: inline-table;
+    text-align: left;
+    padding-top: 30px;
+}
+
+#properties{
+    border: 0.2em solid #61AFC5;
+    padding-top: 10px;
+}

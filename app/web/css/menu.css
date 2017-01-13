@@ -16,6 +16,13 @@
     position:relative;
     display: inline-block;
     text-align: center;
+    height: 100%;
+}
+
+#leftpanel{
+    float:left;
+    height:100%;
+    display:inline-block;
 }
 
 .dropdown-content1, .dropdown-content2{
@@ -36,7 +43,7 @@
 
 #menudiv{
     margin-left: 12em;
-    height: 50px;
+    height: 100%;
 }
 
 #menupoints{
@@ -52,12 +59,13 @@
 #topdivcontent {
     position: relative;
     width: 100%;
+    height:100%;
 }
 
 #cornerlogobox {
     display:inline-block;
     position: absolute;
-    padding-top: 10px;
+    padding-top: 12px;
     padding-bottom: 10px;
 }
 #cornerlogo {
@@ -89,7 +97,7 @@
     float:right;
     display:inline-block;
     padding-top: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
 }
 
 #logpng{

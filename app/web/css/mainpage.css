@@ -10,6 +10,8 @@
     font-size:xx-large;
 }
 
+
+
 #welcomeimage {
     max-width: 70vw;
     max-height: 10vh;
@@ -38,12 +40,16 @@
 .desktopbutton {
     display: inline-block;
     padding: 2%;
+    height: 8em;
+    width: 7em;
 
 }
 .desktopbuttonimageafterlogin {
     max-width: 6vw;
     cursor: pointer;
+    
 }
+
 #maindivafterlogin  {
     display: box;
     text-align: center;
