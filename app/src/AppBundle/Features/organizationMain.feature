@@ -32,20 +32,23 @@ Feature: When I go to organizations
 	@current
 	Scenario: Navigate Org wizard step two: roles
 	   Given I am on "/organization/addStepTwo"
-	     And I should see "Szerepek"
-	     And I should see "Alapértelmezett"
-	     And I should see "ebbe a szerepkörbe kerülnek azok a meghívott felhasználók, akikhez meghíváskor nem rendelünk szerepkört."
-	     And I should see "Felhasználók szerepkörök szerinti izolálása"
-	     And I should see "Később több szerepet is létrehozhat a Szerepek menüpontban"
+	     And I should see "Szerepkörök"
+	     And I should see "Tagok listázásának tiltása a szervezetben"
+	     And I should see "Tagok listázásának tiltása a szerepkörökben"
 
 	Scenario: Add organization step three: permissions
 	   Given I am on "/organization/addStepThree"
-	     And I should see "Token"
-	     And I should see "Később több szolgáltatást is kapcsolhat szervezetéhez a Szolgáltatások menüpontban"
+	     And I should see "Szolgáltatás"
+	     And I should see "A szolgáltatás összes jogosultsága a Tagok szerepkörben lesz elérhető."
 
 	Scenario: Add organization step four: people
 	   Given I am on "/organization/addStepFour"
-	     And I should see "Meghívás"
-	     And I should see "Szerepkör"
-	     And I should see "Felhasználók izolálása"
-	     And I should see "Később felhasználót is meghívhat szervezetéhez"
+	     And I should see "Meghívó"
+
+	Scenario: Add organization step five: summary
+	   Given I am on "/organization/addStepFive"
+	     And I should see "Összegzés"
+
+	Scenario: Add organization step five: success
+	   Given I am on "/organization/addStepSix"
+	     And I should see "Siker"
