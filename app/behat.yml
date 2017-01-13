@@ -21,7 +21,7 @@ default:
             bundle: AppBundle
             mink_session: selenium2
             contexts:
-                # - AppBundle\Features\Context\FeatureContext
+                - AppBundle\Features\Context\FeatureContext
                 - Knp\FriendlyContexts\Context\MinkContext
                 # - Knp\FriendlyContexts\Context\TableContext
                 # - Rezzza\RestApiBehatExtension\Json\JsonContext

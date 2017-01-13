@@ -106,6 +106,26 @@ class OrganizationController extends Controller {
     }
 
     /**
+     * @Route("/addStepFive")
+     * @Template()
+     */
+    public function addStepFiveAction(Request $request)
+    {
+        return $this->render('AppBundle:Organization:addStepFive.html.twig', array());
+    }
+
+
+    /**
+     * @Route("/addStepSix")
+     * @Template()
+     */
+    public function addStepSixAction(Request $request)
+    {
+        $id = 1; // TODO, ez az org id lesz, miután rendesen sikeresen perzisztálódott az org, és ezt kaptuk vissza
+        return $this->render('AppBundle:Organization:addStepSix.html.twig', array('id' => $id));
+    }
+
+    /**
      * @Route("/show/{id}")
      */
     public function showAction($id) {
