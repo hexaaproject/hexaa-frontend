@@ -5,7 +5,7 @@
 {% block body %}
 
     <div id="profilemain">
-        <table id="profilecentertable">
+        <table id="profileproperties">
             <tr>
                 <td id="properties" style="background-color: #FFFFFF" width="110%" height="110%">
                     <div id="propertyname">
@@ -13,22 +13,48 @@
                         <button class="editproperty"></button>
                     </div>
                     <div >
-                        <div class="inline"><b>Name</b></div>
-                        <div class="descriptions" ></div>
+                        <div class="inlineprofile"><b>Name</b></div>
+                        <div class="descriptionsprofile">{{user.display_name}}</div>
                     </div>
+                    <br/>
                     <div>
-                        <div class="inline"><b>Email</b></div>
-                        <div class="descriptions" ></div>
-
+                        <div class="inlineprofile"><b>Email</b></div>
+                        <div class="descriptionsprofile">{{user.email}}</div>
                     </div>
+                    <br/>
                     <div>
-                        <div class="inline"><b>Federal ID</b></div>
-                        <div class="descriptions"></div>
-                    </div>      
+                        <div class="inlineprofile"><b>Federal ID</b></div>
+                        <div class="descriptionsprofile">{{user.fedid}}</div>
+                    </div>
+                    <br/>
+                </td>
+                <td>
+                    <div class="accountbutton"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="/img/account_history.svg"/><br/><br/>Account history</a></div>
                 </td>
             </tr>
+        </table>
+        <table id="profileattributes">
             <tr>
-                <td class="uniquebuttons" style="background-color: #FFFFFF" width="110%" height="110%"></td>
+                <td class="uniqueprofile" style="background-color: #FFFFFF" valign="middle">
+
+                    <div id="labels">
+                        <label id="headerlabelprofile">
+                            Attributes
+                        </label>
+                    </div>
+                    
+                    <div id="attributes">
+                        <div class="accordionattributes">
+                            <span class="name">
+                                könyvtár
+                            </span>
+                        </div>
+                        <div class="panelattributes">
+
+                        </div>
+                    </div>
+                </td>
             </tr>
+        </table>
     </div>
 {% endblock %}

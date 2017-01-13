@@ -11,6 +11,8 @@ services:
       class: AppBundle\Model\Organization
     service:
       class: AppBundle\Model\Service
+    principal:
+      class: AppBundle\Model\Principal
     shibboleth.user.provider:
       class: AppBundle\Security\User\ShibbolethUser
       arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%"]

@@ -3,5 +3,5 @@ namespace AppBundle\Model;
 
 class Principal extends BaseResource
 {
-    protected static $pathName = 'principals';
+    protected static $pathName = 'principal';
 }

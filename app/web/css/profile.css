@@ -3,7 +3,7 @@
     text-align: center;
 }
 
-table#profilecentertable{
+table#profileproperties, #profileattributes{
     width: 60%;
     display: inline-table;
     text-align: left;
@@ -11,6 +11,96 @@ table#profilecentertable{
 }
 
 #properties{
-    border: 0.2em solid #61AFC5;
+    border: 0.2em solid #808080;
     padding-top: 10px;
+}
+
+.accountbutton{
+    display: inline-block;
+    margin-left: 100px;
+    width: 150px;
+    text-align: center;
+}
+
+.accountimage{
+   width: 100px;
+}
+
+.descriptionsprofile{
+    text-align: left;
+    padding-left: 11em;
+    padding-right: 1em;
+}
+
+.inlineprofile{
+    display: inline;
+    float: left;
+    padding-left: 1.5em;  
+}
+
+#headerlabelprofile{
+    color: #61AFC5;
+    font-weight: bold;
+    font-size: 1.5em;
+    float: left;
+    font-family: Georgia;
+}
+
+.uniqueprofile{
+    
+}
+
+#attributes{
+
+}
+
+.accordionattributes{
+    background-color: #808080;
+    color: #FFFFFF;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    margin-top: 0.5em;
+}
+
+.accordionattributes:before{
+    content: '\25BC';
+    font-size: 13px;
+    color: #FFFFFF;
+    float: right;
+}
+
+.accordionattributes.active{ 
+    color:#EA7E73;
+}
+
+.accordionattributes.active:before{
+    content: "\25B2";
+    font-size: 13px;
+    color: #FFFFFF;
+    float:right;
+}
+
+.panelattributes{
+    background-color: white;
+    display: none;
+    min-width: 130%;
+    transition: 0.4s;
+    padding: 10px;
+}
+
+.panelattributes.show {
+    display: inline-block;
+    text-align: left;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+.panelattributes p{
+    width:100%;
+    display: inline-block;
+    text-align: left;
 }

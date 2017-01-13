@@ -19,6 +19,10 @@ class ProfileController extends Controller
         try {
             $organizations = $this->get('organization')->cget($client);
             $services = $this->get('service')->cget($client);
+            $user = $this->get('principal')->principalinfo($client);
+            
+            $verbose = "expanded";
+            $userattributes = $this->get('principal')->attributeget($client, $verbose);
 
         } catch (ClientException $e) {            
             $this->token = null;
@@ -33,11 +37,21 @@ class ProfileController extends Controller
             if (!isset($services)){
                 $services = [];
             }
+            if (!isset($user)){
+                $user = [];
+            }
         }
 
         return $this->render('AppBundle:Profile:index.html.twig', array(
-            'organizations' => $organizations, 'services'=>$services, 'client'=>$client
+            'organizations' => $organizations, 'services'=>$services, 'user'=>$user, 'userattributes'=>$userattributes
         ));
+    }
+    
+     /**
+     * @Route("/history")
+     */
+    public function historyAction(){
+        
     }
 
 }

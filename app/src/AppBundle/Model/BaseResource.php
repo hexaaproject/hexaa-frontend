@@ -36,6 +36,19 @@ abstract class BaseResource
     public static function membersget(Client $client, string $id) {
         $response = $client->get(static::$pathName.'/'.$id.'/'.'members');
         return json_decode($response->getBody(), true);
-    } 
+    }
+    
+    public static function principalinfo(Client $client) {
+       $response = $client->get(static::$pathName.'/'.'self');
+       return json_decode($response->getBody(), true);
+    }
+    
+    public static function attributeget(Client $client, string $verbose = normal) {
+        $response = $client->get(static::$pathName.'/'.'attributevalueprincipal', [
+            'query' => [
+                'verbose' => $verbose          
+        ]]);
+        return json_decode($response->getBody(), true);
+    }
     
 }
