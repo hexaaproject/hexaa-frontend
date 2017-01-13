@@ -33,6 +33,19 @@ Teszt
 5. sikeresesen lefutó teszt után `git commit` és `git push`
 
 
+Features
+--------
+
+Újból felhasználható step-eket csináltunk, amivel resetelni lehet a hexaa adatokat (delete all), valamint alap teszt adatokkal lehet feltölteni. [Bővebben](https://git.hbit.sztaki.hu/solazs/hexaa-test-data-manager/tree/master)
+
+A stepek:
+```
+Given delete all hexaa data
+Given setup the basic hexaa test data
+```
+
+A stepek itt vannak kifejtve: (app/src/AppBundle/Features/hexaa-test-data-manager.feature)
+
 Demo környezet
 --------------
 
