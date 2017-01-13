@@ -77,7 +77,7 @@
                                     {% endif %}
 
                                 </div>
-                                {% if organizations.items != null %}
+                                {% if organizations is defined and organizations.items != null %}
                                     <div id="orgSelect" class="dropdown-content1">
 
                                         {% for organization in organizations.items %}
@@ -98,7 +98,7 @@
                                         {% endfor %}
                                     {% endif %}
                                 </div>
-                                {% if services.items != null %}
+                                {% if services is defined and services.items != null %}
                                     <div id="servSelect" class="dropdown-content2">
                                         {% for service in services.items %}
                                             <a href="service.php" id="nameoneserv" onclick="location.href = this.href + '?id=' +{{service.id}} ; return false;"> {{ service.name|e }}</a>
