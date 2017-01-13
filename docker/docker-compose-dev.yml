@@ -55,4 +55,4 @@ services:
     image: elgalu/selenium
     container_name: grid
     ports:
-        - 5900:5900
+        - 5900:25900
