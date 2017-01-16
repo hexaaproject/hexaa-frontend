@@ -34,7 +34,7 @@
                     <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
                 {% endif %}
                 {% for organization in organizations.items %}
-                    <div id="orgtablecontent"><a href="organization.php?id={{ organization.id }}">{{ organization.name|e }}</a></div>
+                    <div id="orgtablecontent"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name|e }}</a></div>
                 {% endfor %}
             </div>
             <div id="servtablemain">
@@ -43,7 +43,7 @@
                     <div id="emptyservtable" style="font-style: italic">(No services yet)</div>
                 {% endif %}
                 {% for service in services.items %}
-                    <div id="servtablecontent"><a href="service.php?id={{ service.id }}">{{ service.name|e }}</a></div>
+                    <div id="servtablecontent"><a href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|e }}</a></div>
                 {% endfor %}             
             </div>
         </div>
