@@ -131,12 +131,12 @@ class OrganizationController extends Controller {
      */
     public function showAction($id) {
         $organization = $this->getOrganization($id);
-        $menu = null;
         return $this->render(
             'AppBundle:Organization:show.html.twig',
             array(
                 'organization' => $organization,
-                'menu' => $menu
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
             )
         );
     }
@@ -151,7 +151,6 @@ class OrganizationController extends Controller {
             'AppBundle:Organization:properties.html.twig',
             array(
                 "organization" => $this->getOrganization($id),
-                "menu" => null
             )
         );
     }
@@ -166,7 +165,6 @@ class OrganizationController extends Controller {
             'AppBundle:Organization:users.html.twig',
             array(
                 "organization" => $this->getOrganization($id),
-                "menu" => null
             )
         );
     }
@@ -180,8 +178,7 @@ class OrganizationController extends Controller {
         return $this->render(
             'AppBundle:Organization:roles.html.twig',
             array(
-                "organization" => $this->getOrganization($id),
-                "menu" => null
+                "organization" => $this->getOrganization($id)
             )
         );
     }
@@ -199,10 +196,26 @@ class OrganizationController extends Controller {
             )
         );
     }
+
+
     private function getOrganization($id)
     {
         $client = $this->getUser()->getClient();
         $organization = Organization::get($client, $id);
+        return $organization;
+    }
+
+    private function getOrganizations()
+    {
+        $client = $this->getUser()->getClient();
+        $organization = Organization::cget($client);
+        return $organization;
+    }
+
+    private function getServices()
+    {
+        $client = $this->getUser()->getClient();
+        $organization = Service::cget($client);
         return $organization;
     }
 }
