@@ -15,7 +15,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     </head>
     <body>
-    <body>
         <script>
             function orgClick() {
                 document.getElementById("orgSelect").classList.toggle("show");
@@ -112,8 +111,9 @@
             </div>
         </div>
 
-    {% block body %}{% endblock %}
+        {% block body %}{% endblock %}
 
-{% block javascripts %}{% endblock %}
-</body>
+        {% block javascripts %}{% endblock %}
+
+    </body>
 </html>

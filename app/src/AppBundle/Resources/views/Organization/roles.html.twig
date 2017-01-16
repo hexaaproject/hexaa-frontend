@@ -1,0 +1,100 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block container %}
+    <table id=centertable3>
+        <tr>     
+            <td class="uniquebuttons" width="110%" height="110%" style="text-align: center">
+                <button id="newrole"></button>
+                <button id="addrole"></button>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="uniquebuttons" style="background-color: #FFFFFF"></td>
+        </tr>
+
+        {% if roles is defined and roles|length %}
+            <tr>
+                <td class="unique" style="background-color: #61AFC5" >
+
+                    <div id="labels">
+                        <label id="headerLabel">
+                            Roles
+                        </label>
+                        <label id="headerLabeltext">
+                            A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni.
+                        </label>
+                    </div>
+                    <div id="roles2">
+                        {% for role in roles %}
+                            <div class="accordionroles">
+                                <span class="name">{{role.name}}</span>
+                                <span class="buttonbar">
+                                    <button class="buttonbin"></button>
+                                    <button class="buttonmessage"></button>
+                                    <button class="buttonedit"></button>
+                                </span>
+                            </div>
+
+                            <div class="panel">
+                                <table id="paneltable">
+                                    {% for entitlement in role.entitlements %}
+                                        {% if loop.first %}
+                                            <tr id="row">
+                                                <td  class="firsttd" rowspan={{loop.length}}>
+                                                    Permissions
+                                                </td>
+                                                <td class="long">
+                                                    {{entitlement.name}}
+                                                    {% if loop.last %}
+                                                        <hr>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+
+                                        {% else %}
+                                            <tr>
+                                                <td class="long">
+                                                    {{entitlement.name}}
+                                                </td>
+                                                {% if loop.last %}
+                                                <hr>
+                                            {% endif %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% for princip in role.principals %}
+
+                                        {% if loop.first %}
+                                            <tr>
+                                                <td class="firsttd" rowspan={{loop.length}}>
+                                                    Members
+                                                </td>
+                                                <td class="long">
+                                                    {{princip.principal.display_name}}
+                                                </td>
+                                            </tr>
+
+                                        {% else %}
+
+                                            <tr>
+                                                <td class="long">
+                                                    {{princip.principal.display_name}}
+                                                </td>
+                                            </tr>
+
+                                        {% endif %}
+                                    {% endfor %}
+
+                                </table>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+{% endblock %}

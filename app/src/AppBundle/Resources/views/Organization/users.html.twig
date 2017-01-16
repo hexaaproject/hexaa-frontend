@@ -1,0 +1,41 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block container %}
+    <div id="tablemanagers">
+        <table id=centertable>
+            <tr>
+                <td width="100%"valign="middle" align="center">
+                    <div id="firstrow" style="width: 70%">
+                        <div class="flexcontainer" align="left">
+                            <input type="checkbox" onclick="toggle(this)" class="togglecheck" id="toggleAll"/>
+                            <input type="text" class="inputfield" style="width: 250px">
+                            <button id="search" type="submit"></button>
+                            <button class="firstrowbuttons" >Change roles</button>
+                            <button class="firstrowbuttons" >Proposal</button>
+                            <button class="firstrowbuttons" >Revoke</button>
+                            <button class="firstrowbuttons" >Message</button>
+                            <button class="firstrowbuttons" >Remove</button>
+                            <button id="firstrowinvite" >Invite</button>
+                        </div>
+                    </div>
+                    {% if managers is defined and managers|length %}
+                        <table style="width:70%" id="managertable">
+                            <caption>Managers</caption>
+                            {% for manager in managers %}
+                                <tr class="colororgman"><td class="check"><input type="checkbox" name="foo" onclick="backgroundcolororgman()" class="managercheck"></td><td><b>{{manager.display_name}}</b></td><td>{{manager.email}}</td></tr>
+                                    {% endfor %}
+                        </table>
+                    {% endif %}
+                    {% if members is defined and members|length %}
+                        <table style="width:70%" id="usertable">
+                            <caption>Users</caption>
+                            {% for member in members %}
+                                <tr class="colororgus"><td class="check"><input type="checkbox" name="foouser" onclick="backgroundcolororguser()" class="usercheck"></td><td><b>{{member.display_name}}</b></td><td>{{member.email}}</td></tr>
+                                    {% endfor %}
+                        </table>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}
