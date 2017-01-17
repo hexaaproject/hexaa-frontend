@@ -60,7 +60,6 @@ Feature: When I go to a specific organization
 	     And I follow "Roles"
 	    Then I should see "New role"
 	     And I should see "Add role to user"
-	     And I should see "Invite"
 
 	Scenario: Navigate to organization connected services
 	   Given I am on "/"
