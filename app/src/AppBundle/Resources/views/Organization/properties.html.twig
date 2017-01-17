@@ -1,0 +1,120 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block container %}
+    <div id="srvmain">
+            <table id=centertable3>
+                <td class="uniqueproperty" style="background-color: #FFFFFF">
+                    <div id="propertyname">
+                        <b> Properties </b>
+                        <button class="editproperty"></button>
+                    </div>
+                    <div >
+                        {% if organization.name %}
+                            <div class="inline"><b>Name</b></div>
+                            <div class="descriptions" >{{ organization.name }}</div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% if organization.description %}
+                            <div class="inline"><b>Description</b></div>
+                            <div class="descriptions" >{{ organization.description }}</div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% if organization.url %}
+                            <div class="inline"><b>Home Page</b></div>
+                            <div class="descriptions">{{ organization.url }}</div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% if drolename is defined and drolename|length %}
+                            <div class="inline"><b>Default role</b></div>
+                            <div class="descriptions">{{ drolename }}</div>
+                        {% endif %}
+                    </div>
+                </td>
+                <tr>
+                    <td class="uniquebuttons" style="background-color: #FFFFFF"></td>
+                </tr>
+
+                {% if roles is defined and roles|length %}
+                    <tr>
+                        <td class="unique" style="background-color: #61AFC5" >
+
+                            <div id="labels">
+                                <label id="headerLabel">
+                                    Roles
+                                </label>
+                                <label id="headerLabeltext">
+                                    A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni.
+                                </label>
+                            </div>
+                            <div id="roles2">
+                                {% for role in roles %}
+                                    <div class="accordion2">
+                                        <span class="name">{{role.name}}</span>
+                                    </div>
+
+                                    <div class="panel">
+                                        <table id="paneltable">
+                                            {% for entitlement in role.entitlements %}
+                                                {% if loop.first %}
+                                                    <tr id="row">
+                                                        <td  class="firsttd" rowspan={{loop.length}}>
+                                                            Permissions
+                                                        </td>
+                                                        <td class="long">
+                                                            {{entitlement.name}}
+                                                            {% if loop.last %}
+                                                                <hr>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+
+                                                {% else %}
+                                                    <tr>
+                                                        <td class="long">
+                                                            {{entitlement.name}}
+                                                        </td>
+                                                        {% if loop.last %}
+                                                        <hr>
+                                                    {% endif %}
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% for princip in role.principals %}
+
+                                                {% if loop.first %}
+                                                    <tr>
+                                                        <td class="firsttd" rowspan={{loop.length}}>
+                                                            Members
+                                                        </td>
+                                                        <td class="long">
+                                                            {{princip.principal.display_name}}
+                                                        </td>
+                                                    </tr>
+
+                                                {% else %}
+
+                                                    <tr>
+                                                        <td class="long">
+                                                            {{princip.principal.display_name}}
+                                                        </td>
+                                                    </tr>
+
+                                                {% endif %}
+                                            {% endfor %}
+
+                                        </table>
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            </table>
+    </div>
+{% endblock %}

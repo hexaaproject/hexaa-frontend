@@ -16,7 +16,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     </head>
     <body>
-    <body>
         <script>
             function orgClick() {
             document.getElementById("orgSelect").classList.toggle("show");
@@ -59,7 +58,7 @@
         <div id="topdiv">
             <div id="topdivcontent">
                 <div id="cornerlogobox">
-                    <a href="index.html">
+                    <a href="{{ path('homepage')}}">
                         <img id="cornerlogo" src="/img/hexaa-logo-blue.png" alt="hexaa logo"/>
                     </a>
                 </div>
@@ -72,16 +71,10 @@
                                     <button onclick="orgClick()" class="dropbtn">
                                         Organizations
                                     </button>
-                                    <div id="orgSelect" class="dropdown-content1">
-                                        {% for organization in organizations.items %}
-                                            <a href="{{ path("app_organization_show", { id: organization.id }) }}" id="nameoneorg">{{ organization.name|e }}</a>
-                                        {% endfor %}
-                                    </div>
                                     {% if organizations.items != null %}
                                         <div id="orgSelect" class="dropdown-content1">
                                             {% for organization in organizations.items %}
-                                                <a href="organization.php" id="nameoneorg" onclick="location.href = this.href + '?id=' +{{organization.id}} ;
-                                                    return false;">{{ organization.name|e }}</a>
+                                                <a href="{{ path("app_organization_show", { id: organization.id }) }}" id="nameoneorg">{{ organization.name|e }}</a>
                                             {% endfor %}
                                         </div>
                                     {% endif %}
@@ -92,15 +85,10 @@
                                     <button onclick="servClick()" class="servicecl">
                                         Services
                                     </button>
-                                    <div id="servSelect" class="dropdown-content2">
-                                        {% for service in services.items %}
-                                            <a href=""{{ path("app_service_show", { id: service.id }) }}""> {{ service.name|e }}</a>
-                                        {% endfor %}
-                                    </div>
                                     {% if services.items != null %}
                                         <div id="servSelect" class="dropdown-content2">
                                             {% for service in services.items %}
-                                                <a href="service.php" id="nameoneserv" onclick="location.href = this.href + '?id=' +{{service.id}} ; return false;"> {{ service.name|e }}</a>
+                                                <a href="{{ path("app_service_show", { id: service.id }) }}"> {{ service.name|e }}</a>
                                             {% endfor %}
                                         </div>
                                     {% endif %}
@@ -132,8 +120,9 @@
             </div>
         </div>
 
-    {% block body %}{% endblock %}
+        {% block body %}{% endblock %}
 
-{% block javascripts %}{% endblock %}
-</body>
+        {% block javascripts %}{% endblock %}
+
+    </body>
 </html>

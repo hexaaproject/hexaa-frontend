@@ -22,10 +22,8 @@ class DefaultController extends Controller
             $services = $this->get('service')->cget($client);
 
         } catch (ClientException $e) {            
-            $this->token = null;
             return $this->render('error.html.twig', array('clientexception'=>$e));
         } catch (ServerException $e) {
-            $this->token = null;
             return $this->render('error.html.twig', array('serverexception'=>$e));
         } finally {
             if (!isset($organizations)){

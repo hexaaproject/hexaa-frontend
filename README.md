@@ -30,7 +30,23 @@ Teszt
 
 4. teszteljünk, hogy sikerült-e a kódunk: `docker exec -ti project.local /var/www/project/test.sh /var/www/project`, a tesztet localhoston futó VNC szerveren keresztül hátradőlve élvezhetjük. A test.sh a behat wrapper-e, a második argumentuma után fogadja a behat argumentumokat. pl. `docker exec -ti project.local /var/www/project/test.sh /var/www/project --help`
 
-5. sikeresesen lefutó teszt után `git commit` és `git push`
+5. `vncviewer localhost`, és hátradőlve nézhetjük, ahogy a robot helyettünk kattintgatva tesztel
+
+6. sikeresesen lefutó teszt után `git commit` és `git push`
+
+
+Features
+--------
+
+Újból felhasználható step-eket csináltunk, amivel resetelni lehet a hexaa adatokat (delete all), valamint alap teszt adatokkal lehet feltölteni. [Bővebben](https://git.hbit.sztaki.hu/solazs/hexaa-test-data-manager/tree/master)
+
+A stepek:
+```
+Given delete all hexaa data
+Given setup the basic hexaa test data
+```
+
+Bővebben kifejtve: [hexaa-test-data-manager.feature](app/src/AppBundle/Features/hexaa-test-data-manager.feature)
 
 
 Demo környezet

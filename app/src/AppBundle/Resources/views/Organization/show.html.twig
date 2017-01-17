@@ -1,7 +1,21 @@
-{% extends "::base.html.twig" %}
+{% extends "AppBundle:Organization:layout.html.twig" %}
 
-{% block title %}AppBundle:Organization:show{% endblock %}
+{% block container %}
+    <div id="srvmain">
+            <div id="maindivcontents">
+                <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/create_role.svg"/><br/> <p><b>Create role</b></p></div>
 
-{% block body %}
-<h1>Welcome to the Organization:show page</h1>
+                <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/connect_to_service.svg"/><br/><p><b>Connect to service</b></p></div>
+                
+                <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/edit_attributes.svg"/><br/><p><b>Edit attributes</b></p></div>
+                
+                <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/manage_users.svg"/><br/><p><b>Manage users</b></p></div>
+                
+                <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/edit_properties.svg"/><br/><p><b>Edit properties</b></p></div>
+                
+                <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/view_history.svg"/><br/><p><b>View history</b></p></div>
+                
+                <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/delete_organization.svg"/><br/><p><b>Delete organization</b></p></div>
+            </div>
+    </div>
 {% endblock %}

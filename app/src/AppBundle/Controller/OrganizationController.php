@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Model\Organization;
 use AppBundle\Model\Service;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * @Route("/organization")
@@ -129,7 +130,79 @@ class OrganizationController extends Controller {
      * @Route("/show/{id}")
      */
     public function showAction($id) {
-        return $this->render('AppBundle:Organization:show.html.twig', array());
+        $organization = $this->getOrganization($id);
+        $menu = null;
+        return $this->render(
+            'AppBundle:Organization:show.html.twig',
+            array(
+                'organization' => $organization,
+                'menu' => $menu
+            )
+        );
     }
 
+    /**
+     * @Route("/properties/{id}")
+     * @Template()
+     */
+    public function propertiesAction($id)
+    {
+        return $this->render(
+            'AppBundle:Organization:properties.html.twig',
+            array(
+                "organization" => $this->getOrganization($id),
+                "menu" => null
+            )
+        );
+    }
+
+    /**
+     * @Route("/users/{id}")
+     * @Template()
+     */
+    public function usersAction($id)
+    {
+        return $this->render(
+            'AppBundle:Organization:users.html.twig',
+            array(
+                "organization" => $this->getOrganization($id),
+                "menu" => null
+            )
+        );
+    }
+
+    /**
+     * @Route("/roles/{id}")
+     * @Template()
+     */
+    public function rolesAction($id)
+    {
+        return $this->render(
+            'AppBundle:Organization:roles.html.twig',
+            array(
+                "organization" => $this->getOrganization($id),
+                "menu" => null
+            )
+        );
+    }
+
+    /**
+     * @Route("/connectedservices/{id}")
+     * @Template()
+     */
+    public function connectedservicesAction($id)
+    {
+        return $this->render(
+            'AppBundle:Organization:connectedservices.html.twig',
+            array(
+                "organization" => $this->getOrganization($id)
+            )
+        );
+    }
+    private function getOrganization($id)
+    {
+        $client = $this->getUser()->getClient();
+        $organization = Organization::get($client, $id);
+        return $organization;
+    }
 }
