@@ -1,6 +1,14 @@
 {% extends "AppBundle:Organization:layout.html.twig" %}
 
 {% block container %}
+    
+    {% set defaultrole = null %}
+    {% for role in roles %}
+        {% if role.id == organization.default_role_id %}
+            {% set defaultrole = role %}
+        {% endif %}
+    {% endfor %}
+
     <div id="srvmain">
             <table id=centertable3>
                 <td class="uniqueproperty" style="background-color: #FFFFFF">
@@ -27,17 +35,15 @@
                         {% endif %}
                     </div>
                     <div>
-                        {% if drolename is defined and drolename|length %}
+                        {% if defaultrole|length %}
                             <div class="inline"><b>Default role</b></div>
-                            <div class="descriptions">{{ drolename }}</div>
+                            <div class="descriptions">{{ defailtrole.name }}</div>
                         {% endif %}
                     </div>
                 </td>
                 <tr>
                     <td class="uniquebuttons" style="background-color: #FFFFFF"></td>
                 </tr>
-
-                {% if roles is defined and roles|length %}
                     <tr>
                         <td class="unique" style="background-color: #61AFC5" >
 
@@ -49,10 +55,12 @@
                                     A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni.
                                 </label>
                             </div>
+                            {% if roles|length %}
                             <div id="roles2">
                                 {% for role in roles %}
                                     <div class="accordion2">
                                         <span class="name">{{role.name}}</span>
+                                        {% if defaultrole == role %}TODO ez a default role{% endif %}
                                     </div>
 
                                     <div class="panel">
@@ -110,11 +118,10 @@
                                     </div>
 
                                 {% endfor %}
-
                             </div>
+                            {% endif %}
                         </td>
                     </tr>
-                {% endif %}
             </table>
     </div>
 {% endblock %}
