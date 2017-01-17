@@ -1,0 +1,41 @@
+@media only screen and (max-width: 480px) {
+    #maindiv, #logout{
+        display:none;
+    }
+    #welcomediv {
+        color: #FFFFFF;
+        text-align: center;
+        padding-top:3%;
+        padding-bottom:3%;
+        background: linear-gradient(to right,#a5d5bc,#4377a7);
+        height:80vh;
+        position: relative;
+    }
+
+    .mobilebutton{
+        border:white 1px solid;
+        padding: 2%;
+        width: 90%;
+        margin:5% auto;
+        cursor: pointer;
+        display:inline-block;
+    }
+
+    #mobilemaincontrols{
+        display:inline-block;
+    }
+
+    .dropdown{
+        display:none;
+    }
+
+    #hamburger{
+        background: url(/img/hamburger.svg) no-repeat;
+        border:none;
+        width:30px;
+        height:30px;
+        background-size: cover;
+        cursor: pointer;
+        margin-top:-5px;
+    }
+}
