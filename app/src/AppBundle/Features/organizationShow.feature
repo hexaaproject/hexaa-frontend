@@ -38,6 +38,8 @@ Feature: When I go to a specific organization
 	    When I follow "testOrg1"
 	     And I follow "Properties"
 	    Then I should see "Ez a szervezet teszteléshez készült. Remélhetőleg majd jól tesztelve is lesz vele az alkalmazás."
+	    And I should see "Roles"
+	    And I should see "A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni."
 
 	Scenario: Navigate to organization users
 	   Given I am on "/"
@@ -45,7 +47,12 @@ Feature: When I go to a specific organization
 	     And I follow "Users"
 	    Then I should see "Change roles"
 	     And I should see "Proposal"
+	     And I should see "Revoke"
+	     And I should see "Message"
+	     And I should see "Remove"
 	     And I should see "Invite"
+	     And I should see "Managers"
+	     And I should see "Users"
 
 	Scenario: Navigate to organization roles
 	   Given I am on "/"

@@ -311,13 +311,26 @@ table#usertable td:nth-child(odd){
     border:1px solid #61AFC5;
 }
 
-#firstrowinvite{
-    background-color: #FA8072;
-    color:white;
+
+/*bootstrap terminológia*/
+.btn{
     margin-right: 2px;
     margin-left: 8em;
+}
+
+.btn-primary{
+    background-color: #FA8072;
+    color:white;
     border:1px solid #FA8072;
 }
+
+.btn-success{
+    background-color: #61AFC5;
+    color:white;
+    border:1px solid #61AFC5;
+}
+
+
 
 table#managertable caption {
     display: table-caption;
@@ -405,14 +418,6 @@ hr {
     padding: 0; 
 }
 
-#newrole{
-    border:1px solid #FFFFFF;
-    background: url(../img/newrole.PNG) no-repeat;
-    width:240px;
-    height: 55px;
-    display: inline-flex;
-    background-size: cover;
-}
 
 #addrole{
     border:1px solid #FFFFFF;

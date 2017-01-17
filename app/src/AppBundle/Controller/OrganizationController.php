@@ -153,7 +153,9 @@ class OrganizationController extends Controller {
             'AppBundle:Organization:roles.html.twig',
             array(
                 "organization" => $organization,
-                "roles" => $this->getRoles($organization)
+                "roles" => $this->getRoles($organization),
+                "organizations" => $this->getOrganizations(),
+                "services" => $this->getServices()
             )
         );
     }
@@ -167,7 +169,9 @@ class OrganizationController extends Controller {
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
             array(
-                "organization" => $this->getOrganization($id)
+                "organization" => $this->getOrganization($id),
+                "organizations" => $this->getOrganizations(),
+                "services" => $this->getServices()
             )
         );
     }
