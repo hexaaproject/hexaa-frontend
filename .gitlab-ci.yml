@@ -31,7 +31,7 @@ before_script:
   # - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - whoami
-  - docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5500
+  # - docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5500
 
 variables:
   CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5500/solazs/hexaa-newui:$CI_BUILD_REF_NAME
@@ -40,9 +40,9 @@ variables:
 build:
   stage: build
   script:
-    - docker-clean
+    # - docker-clean
     - docker build -t $CONTAINER_TEST_IMAGE .
-    - docker push $CONTAINER_TEST_IMAGE
+    # - docker push $CONTAINER_TEST_IMAGE
   tags:
     - dind
 
