@@ -315,13 +315,14 @@ table#usertable td:nth-child(odd){
 /*bootstrap terminológia*/
 .btn{
     margin-right: 2px;
-    margin-left: 8em;
+    height: 30px;
 }
 
 .btn-primary{
     background-color: #FA8072;
     color:white;
     border:1px solid #FA8072;
+    margin-left: 8em;
 }
 
 .btn-success{
