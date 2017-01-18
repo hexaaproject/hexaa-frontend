@@ -2,10 +2,6 @@
 
 {% block container %}
 
-    {# table #}
-    {% set checkbox = true %}
-    {% set tier = "tier1" %}
-
     {% block stylesheets %}
         {% stylesheets 'css/tables.css' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
@@ -13,51 +9,13 @@
     {% endblock %}
 
     {% block javascripts %}    
-        {% set checkbox = true %}
-
         {% javascripts
             '@datatables_js'
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        <script type="text/javascript">
-        $('.datatable').DataTable( {
-            {% if checkbox %}
-                "order": [[ 1, "desc" ]],
-            {% endif %}
-        });
-        </script>
     {% endblock %}
 
-    <table class="datatable datatable-{{ tier }}">
-    <caption>Caption</caption>
-        <thead>
-            <tr>
-                {% if checkbox %}
-                    <th></th>
-                {% endif %}
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in range(0, 30) %}
-            <tr>
-                {% if checkbox %}
-                    <td><input type="checkbox" name="checkbox"></td>
-                {% endif %}
-                <td><strong>item {{item}} kettő</strong></td>
-                <td>item {{item}} három</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {# /table #}
-
-    <div id="tablemanagers">
-        <table id=centertable>
-            <tr>
-                <td width="100%"valign="middle" align="center">
                     <div id="firstrow">
                         <div class="flexcontainer" align="left">
                             <input type="checkbox" onclick="toggle(this)" class="togglecheck" id="toggleAll"/>
@@ -71,25 +29,11 @@
                             <button class="btn btn-primary" >+ Invite</button>
                         </div>
                     </div>
-                    {% if managers is defined and managers|length %}
-
-                        <table style="width:70%" id="managertable">
-                            <caption>Managers</caption>
-                            {% for manager in managers %}
-                                <tr class="colororgman"><td class="check"><input type="checkbox" name="foo" onclick="backgroundcolororgman()" class="managercheck"></td><td><b>{{manager.display_name}}</b></td><td>{{manager.email}}</td></tr>
-                                    {% endfor %}
-                        </table>
-                    {% endif %}
-                    {% if members is defined and members|length %}
-                        <table style="width:70%" id="usertable">
-                            <caption>Users</caption>
-                            {% for member in members %}
-                                <tr class="colororgus"><td class="check"><input type="checkbox" name="foouser" onclick="backgroundcolororguser()" class="usercheck"></td><td><b>{{member.display_name}}</b></td><td>{{member.email}}</td></tr>
-                                    {% endfor %}
-                        </table>
-                    {% endif %}
-                </td>
-            </tr>
-        </table>
-    </div>
+                
+        {% if managers is defined and managers|length %}
+            {{ include('::tables.html.twig', {tier: 'tier1', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table' }) }}
+        {% endif %}
+        {% if members is defined and members|length %}
+            {{ include('::tables.html.twig', {tier: 'tier2', caption: 'Members', checkbox: true, users: members, table_id: 'members_table' }) }}
+        {% endif %}
 {% endblock %}

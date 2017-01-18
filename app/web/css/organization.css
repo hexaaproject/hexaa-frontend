@@ -205,47 +205,6 @@ div.panel p{
     cursor: pointer;
 }
 
-#tablemanagers{
-    text-align: center;
-}
-
-table#centertable{
-    border:0; 
-    width:90%;
-    padding-top: 30px;
-    display: inline-table;
-}
-
-table#managertable{
-    border: 2px solid #FA8072;
-    border-collapse: collapse;
-}
-
-table#usertable{
-    border: 2px solid #61AFC5;
-    border-collapse: collapse;
-}
-
-table#usertable td{
-    border-bottom: 2px solid #61AFC5;
-    padding: 5px;
-    text-align: left;
-}
-
-table#managertable td{
-    border-bottom: 2px solid #FA8072;
-    padding: 5px;
-    text-align: left;
-}
-
-table#managertable td:nth-child(odd){
-    padding-left: 15px;
-}
-
-table#usertable td:nth-child(odd){
-    padding-left: 15px;
-}
-
 .flexcontainer {
     display: inline-flex;
 }
@@ -332,84 +291,6 @@ table#usertable td:nth-child(odd){
 }
 
 
-
-table#managertable caption {
-    display: table-caption;
-    text-align: left;
-    color:#FA8072;
-    font-weight:bold;
-    font-size:larger;
-    font-family: Georgia;
-    margin-bottom: 0.5em;
-    margin-top: 1em;
-}
-
-table#usertable caption {
-    display: table-caption;
-    text-align: left;
-    color:#61AFC5;
-    font-weight:bold;
-    font-size:larger;
-    font-family: Georgia;
-    margin-bottom: 0.5em;
-    margin-top: 2em;
-}
-
-.check{
-    width:40px;   
-}
-
-.managercheck{
-    -webkit-appearance: none;
-    background-color: #fafafa;
-    border: 2px solid #FA8072;	
-
-    border-radius: 2px;
-    display: inline-block;
-    position: relative;
-    width: 20px;
-    height: 20px;
-
-}
-
-.managercheck:checked {	
-    border: 2px solid #FA8072;
-    color: #99a1a7;
-}
-
-.managercheck:checked:after {
-    content: '\2714';
-    font-size: 14px;
-    position: absolute;
-    top: 0px;
-    left: 3px;
-    color: #FA8072;
-}
-
-.usercheck{
-    -webkit-appearance: none;
-    background-color: #fafafa;
-    border: 2px solid #61AFC5;		
-    border-radius: 2px;
-    display: inline-block;
-    position: relative;
-    width: 20px;
-    height: 20px;
-
-}  
-.usercheck:checked {	
-    border: 2px solid #61AFC5;
-    color: #99a1a7;
-}
-
-.usercheck:checked:after {
-    content: '\2714';
-    font-size: 14px;
-    position: absolute;
-    top: 0px;
-    left: 3px;
-    color: #61AFC5;
-}
 
 hr {
     display: block;

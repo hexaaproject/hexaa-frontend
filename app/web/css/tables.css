@@ -4,8 +4,9 @@
     width: 100%;
 }
 
-.datatable-tier1 {
-	border: 2px solid #FA8072;
+.datatable td{
+    padding: 5px;
+    text-align: left;
 }
 
 .datatable caption {
@@ -17,6 +18,154 @@
     margin-top: 1em;
 }
 
+.datatable checkbox {
+    width:40px;
+}
+
+.datatable input{
+    -webkit-appearance: none;
+    border-radius: 2px;
+    display: inline-block;
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.datatable input:checked {
+	color: #99a1a7;
+}
+
+.datatable input:checked:after {
+    content: '\2714';
+    font-size: 14px;
+    position: absolute;
+    top: 0px;
+    left: 3px;
+    color: #FA8072;
+}
+
+.datatable input:checked:after {
+    content: '\2714';
+    font-size: 14px;
+    position: absolute;
+    top: 0px;
+    left: 3px;
+}
+
+.datatable td{
+    padding: 5px;
+    text-align: left;
+}
+
+.datatable td:nth-child(odd){
+    padding-left: 15px;
+}
+
+
+
+.datatable-tier1 {
+	border: 2px solid #FA8072;
+}
+
 .datatable-tier1 caption {
     color:#FA8072;
+}
+
+.datatable-tier1 td{
+    border-bottom: 2px solid #FA8072;
+}
+
+/* checkbox */
+.datatable-tier1 input{
+    background-color: #fafafa;
+    border: 2px solid #FA8072;	
+}
+
+.datatable-tier1 input:checked{
+    background-color: #fafafa;
+    border: 2px solid #FA8072;	
+}
+
+.datatable-tier1 input:checked:after {
+    color: #FA8072;
+}
+
+.datatable-tier1 td{
+    border-bottom: 2px solid #FA8072;
+}
+
+.datatable-tier2 {
+	border: 2px solid #61AFC5;
+}
+
+.datatable-tier2 caption {
+    color:#61AFC5;
+}
+
+.datatable-tier2 td{
+    border-bottom: 2px solid #61AFC5;
+}
+
+.datatable-tier2 input{
+    background-color: #fafafa;
+    border: 2px solid #61AFC5;	
+}
+
+.datatable-tier2 input:checked{
+    background-color: #fafafa;
+    border: 2px solid #61AFC5;	
+}
+
+.datatable-tier2 input:checked:after {
+    color: #61AFC5;
+}
+
+.datatable-tier2 td{
+    border-bottom: 2px solid #61AFC5;
+}
+
+
+
+/* datatables */
+.dataTables_wrapper {
+  position: relative;
+  clear: both;
+  *zoom: 1;
+  zoom: 1;
+}
+.dataTables_wrapper .dataTables_length {
+  float: left;
+}
+.dataTables_wrapper .dataTables_filter {
+  float: right;
+  text-align: right;
+}
+.dataTables_wrapper .dataTables_filter input {
+  margin-left: 0.5em;
+}
+
+.dataTables_wrapper .dataTables_info {
+  clear: both;
+  float: left;
+  padding-top: 0.755em;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+  float: right;
+  text-align: right;
+  padding-top: 0.25em;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  box-sizing: border-box;
+  display: inline-block;
+  min-width: 1.5em;
+  padding: 0.5em 1em;
+  margin-left: 2px;
+  text-align: center;
+  text-decoration: none !important;
+  cursor: pointer;
+  *cursor: hand;
+  border: 1px solid transparent;
+  border-radius: 2px;
 }

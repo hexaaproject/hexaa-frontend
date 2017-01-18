@@ -1,0 +1,44 @@
+{#
+
+{{ include('::tables.html.twig', {tier: 'tier1', caption: 'Nagy caption', checkbox: true, users: managers, table_id: managers_table}) }}
+
+ahol:
+tier: tier1|tier2
+checkbox: true|false
+table_id: the id of the table tag
+
+#}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#{{ table_id }}').DataTable( {
+            {% if checkbox %}
+                "order": [[ 1, "desc" ]],
+            {% endif %}
+        });
+    });
+</script>
+
+<table class="datatable datatable-{{ tier }}" id="{{ table_id }}">
+    <caption>{{ caption }}</caption>
+    <thead>
+        <tr>
+            {% if checkbox %}
+                <th></th>
+            {% endif %}
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            {% if checkbox %}
+                <td><input type="checkbox" name="checkbox"></td>
+            {% endif %}
+            <td><strong>{{user.display_name}}</strong></td>
+            <td>{{user.email}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
