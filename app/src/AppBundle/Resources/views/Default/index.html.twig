@@ -14,15 +14,16 @@
                 {% include 'AppBundle:Default:welcomepagebuttons.html.twig' %}
             </div>
         </div>
-    {% else %}
-        <div id="mainafterlogin">
-            <div id="welcomediv">
-                <div id="welcomecontent">
-                    {% include 'AppBundle:Default:welcomediv.html.twig' %}
-                    <div id="mobilemaincontrols">
-                        {% include 'AppBundle:Default:mobilebuttons.html.twig' %}
-                    </div>
-                </div>
+        <div class="hr"><hr/></div>
+        <div id="maintables">
+            <div id="orgtablemain">
+                <div id="orgtableheader"><b>ORGANIZATIONS</b></div>
+                {% if organizations.items == null %}
+                    <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
+                {% endif %}
+                {% for organization in organizations.items %}
+                    <div id="orgtablecontent"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name|e }}</a></div>
+                {% endfor %}
             </div>
             <div id="container">
                 <div id="maindivafterlogin">
