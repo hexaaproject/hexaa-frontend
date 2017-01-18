@@ -29,7 +29,10 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "niif/shib-auth-bundle": "^1.2",
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "datatables/datatables": "^1.10",
+        "symfony/assetic-bundle": "^2.8",
+        "drmonty/datatables-plugins": "^1.10"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

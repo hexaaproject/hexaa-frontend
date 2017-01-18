@@ -1,6 +1,59 @@
 {% extends "AppBundle:Organization:layout.html.twig" %}
 
 {% block container %}
+
+    {# table #}
+    {% set checkbox = true %}
+    {% set tier = "tier1" %}
+
+    {% block stylesheets %}
+        {% stylesheets 'css/tables.css' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+
+    {% block javascripts %}    
+        {% set checkbox = true %}
+
+        {% javascripts
+            '@datatables_js'
+        %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script type="text/javascript">
+        $('.datatable').DataTable( {
+            {% if checkbox %}
+                "order": [[ 1, "desc" ]],
+            {% endif %}
+        });
+        </script>
+    {% endblock %}
+
+    <table class="datatable datatable-{{ tier }}">
+    <caption>Caption</caption>
+        <thead>
+            <tr>
+                {% if checkbox %}
+                    <th></th>
+                {% endif %}
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in range(0, 30) %}
+            <tr>
+                {% if checkbox %}
+                    <td><input type="checkbox" name="checkbox"></td>
+                {% endif %}
+                <td><strong>item {{item}} kettő</strong></td>
+                <td>item {{item}} három</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {# /table #}
+
     <div id="tablemanagers">
         <table id=centertable>
             <tr>
@@ -19,6 +72,7 @@
                         </div>
                     </div>
                     {% if managers is defined and managers|length %}
+
                         <table style="width:70%" id="managertable">
                             <caption>Managers</caption>
                             {% for manager in managers %}
