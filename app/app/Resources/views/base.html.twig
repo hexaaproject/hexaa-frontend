@@ -9,50 +9,56 @@
             <link rel="stylesheet" type="text/css" href="/css/service.css">
             <link rel="stylesheet" type="text/css" href="/css/organization.css">
             <link rel="stylesheet" type="text/css" href="/css/profile.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
             <link rel="stylesheet" type="text/css" href="/css/mobile.css">
+            <link rel="stylesheet" type="text/css" href="/css/navbar.css">
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </head>
     <body>
         <script>
             function orgClick() {
-            document.getElementById("orgSelect").classList.toggle("show");
+                document.getElementById("orgSelect").classList.toggle("show");
             }
             function servClick() {
-            document.getElementById("servSelect").classList.toggle("show");
+                document.getElementById("servSelect").classList.toggle("show");
+            }
+            function hamburgerClick() {
+                document.getElementById("hamburgerSelect").classList.toggle("show");
             }
             window.onclick = function (event) {
-            if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
-            var dropdowns1 = document.getElementsByClassName("dropdown-content1");
-            var dropdowns2 = document.getElementsByClassName("dropdown-content2");
-            var i;
-            for (i = 0; i < dropdowns1.length; i++) {
-            var openDropdown = dropdowns1[i];
-            if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-            }
-            }
-            for (i = 0; i < dropdowns2.length; i++) {
-            var openDropdown = dropdowns2[i];
-            if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-            }
-            }
-            }
-            if (event.target.matches('.servicecl')) {
-            var dropdownorg = document.getElementById("orgSelect");
-            if (dropdownorg.classList.contains('show')) {
-            dropdownorg.classList.remove('show');
-            }
-            }
-            if (event.target.matches('.dropbtn')) {
-            var dropdownorg = document.getElementById("servSelect");
-            if (dropdownorg.classList.contains('show')) {
-            dropdownorg.classList.remove('show');
-            }
-            }
+                if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
+                    var dropdowns1 = document.getElementsByClassName("dropdown-content1");
+                    var dropdowns2 = document.getElementsByClassName("dropdown-content2");
+                    var i;
+                    for (i = 0; i < dropdowns1.length; i++) {
+                        var openDropdown = dropdowns1[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                    for (i = 0; i < dropdowns2.length; i++) {
+                        var openDropdown = dropdowns2[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+                if (event.target.matches('.servicecl')) {
+                    var dropdownorg = document.getElementById("orgSelect");
+                    if (dropdownorg.classList.contains('show')) {
+                        dropdownorg.classList.remove('show');
+                    }
+                }
+                if (event.target.matches('.dropbtn')) {
+                    var dropdownorg = document.getElementById("servSelect");
+                    if (dropdownorg.classList.contains('show')) {
+                        dropdownorg.classList.remove('show');
+                    }
+                }
             }
         </script>
         <div id="topdiv">
@@ -67,7 +73,7 @@
                     {% if app.user != null %}
                         <div id="leftpanel">
                             {% if organizations is defined %}
-                                <div class="dropdown">
+                                <div class="dropdowns">
                                     <button onclick="orgClick()" class="dropbtn">
                                         Organizations
                                     </button>
@@ -81,7 +87,7 @@
                                 </div>
                             {% endif %}
                             {% if services is defined %}
-                                <div class="dropdown">
+                                <div class="dropdowns">
                                     <button onclick="servClick()" class="servicecl">
                                         Services
                                     </button>
@@ -96,17 +102,78 @@
                             {% endif %}
                         </div>
                     {% endif %}
+
+                    <button onclick="hamburgerClick()" id="hamburger">
+                        <span class="glyphicon glyphicon-menu-hamburger white" aria-hidden="true"></span>
+                    </button>
+                    <div id="hamburgerSelect" class="hamburgerClass">
+                        <div class="accordionhamburger">
+                            <span class="hamburgercontentname">
+                                Organizations
+                            </span>
+                        </div>
+                        <div class="panelaccordionhamburger">
+
+                        </div>
+                        <div class="accordionhamburger">
+                            <span class="hamburgercontentname">
+                                Services
+                            </span>
+                        </div>
+                        <div class="panelaccordionhamburger">
+
+                        </div>
+                        <div class="link">
+                            <a href="" class="hamburgercontentname"><span class="glyphicon glyphicon-user user"></span>Profile</a>
+                        </div>
+                        <div class="link">
+                            <a href="" class="hamburgercontentname"><span class="glyphicon glyphicon-off off"></span>Log out</a>
+                        </div>
+                    </div> 
+
                     <div id="container">
 
                         {% if app.user != null %}
                             <div id="loginstatus"><span id="usernamebox">{{ app.user.username }}</span></div>
                             {% endif %}
+                        <!--<li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="/img/hamburger.svg"></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>-->
 
-                        
-                            <button id="hamburger" type="button">
-                          
-                            </button>
-                        
+
+                        <!-- <button onclick="hamburgerClick()" id="hamburger">
+ 
+                         </button>
+                         <div id="hamburgerSelect" class="hamburgerClass">
+                             <div class="accordionhamburger">
+                                 <span class="hamburgercontentname">
+                                     Organizations
+                                 </span>
+                             </div>
+                             <div class="panelaccordionhamburger">
+ 
+                             </div>
+                             <div class="accordionhamburger">
+                                 <span class="hamburgercontentname">
+                                     Services
+                                 </span>
+                             </div>
+                             <div class="panelaccordionhamburger">
+ 
+                             </div>
+                             <a href="">Profile</a>
+                             <a href="">Logout</a>
+                         </div> -->
+
 
                         <div id="logout">
                             <span id="logobox">
@@ -115,14 +182,26 @@
                                 </a>
                             </span>
                         </div>
+
+
                     </div>
+
                 </div>
+
+
             </div>
+
         </div>
 
-        {% block body %}{% endblock %}
+    {% block body %}{% endblock %}
 
-        {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+        <script>
+            function hamburgerClick() {
+                document.getElementById("hamburgerSelect").classList.toggle("show");
+            }
+        </script>
+    {% endblock %}
 
-    </body>
+</body>
 </html>
