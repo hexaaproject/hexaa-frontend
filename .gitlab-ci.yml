@@ -31,6 +31,7 @@ before_script:
   # - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - whoami
+  - hostname
   - docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000
 
 variables:
