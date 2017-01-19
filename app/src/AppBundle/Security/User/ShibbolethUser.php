@@ -21,9 +21,10 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
     private $tokenAcquiredAt;
     private $hexaaScopedKey;
 
-    public function __construct($shibAttributeMap, $hexaaScopedKey, $base_uri)
+    private $session;
+
+    public function __construct($shibAttributeMap, $hexaaScopedKey, $base_uri, $session)
     {
-        // dump($shibAttributeMap);
         foreach (array('eppn', 'displayName', 'email') as $key) {
             if (array_key_exists($shibAttributeMap[$key], $_SERVER)) {        
                 $this->$key = $_SERVER[$shibAttributeMap[$key]];
@@ -31,6 +32,7 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
         }
         $this->base_uri=$base_uri;
         $this->hexaaScopedKey=$hexaaScopedKey;
+        $this->session = $session;
     }
 
     public function __toString()
@@ -133,19 +135,18 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
 
     private function getToken():string
     {
-        // TODO session-ben tárolni a tokent, különben minden hívásnál NULL jön
-        if ($this->token !== null) {
+        if ($this->session->has('token')) {
             $now = new \DateTime();
-            $diff = $now->diff($this->tokenAcquiredAt, true);
+            $diff = $now->diff($this->session->get('tokenAcquiredAt'), true);
             if ($diff->h == 0 && $diff->d == 0 && $diff->m == 0 && $diff->y == 0) {
-                return $this->token;
+                return $this->session->get('token');
             } else {
                 $this->requestNewToken();
             }
         } else {
             $this->requestNewToken();
         }
-        return $this->token ?? '';
+        return $this->session->get('token') ?? '';
     }
 
     private function requestNewToken()
@@ -165,9 +166,11 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
                     'apikey' => $apiKey
                 ]
             ]);
-            $this->token = json_decode($response->getBody(), true)['token'];
+            $this->session->set('token', json_decode($response->getBody(), true)['token']);
+            $this->session->set('tokenAcquiredAt', $time);
         } catch (ClientException $e) {
-            $this->token = null;
+            $this->session->unset('token');
+            $this->session->unset('tokenAcquiredAt'); 
             // TODO: pretty error handling
             echo('<br>___.--===(ClientException)===--.___<br>');
             echo('Message: ' . $e->getMessage() . '<br>');
@@ -177,7 +180,8 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
             echo('Response code: ' . $e->getResponse()->getStatusCode() . ', body: <br>');
             echo($e->getResponse()->getBody() . '<br>');
         } catch (ServerException $e) {
-            $this->token = null;
+            $this->session->unset('token');
+            $this->session->unset('tokenAcquiredAt'); 
             // TODO: pretty error handling
             echo('<br>___.--===(ServerException)===--.___<br>');
             echo('Message: ' . $e->getMessage() . '<br>');

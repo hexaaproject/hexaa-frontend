@@ -20,54 +20,15 @@ class OrganizationController extends Controller {
      * @Template()
      */
     public function indexAction() {
-        try {
-            $organizationid = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-            $menu = filter_input(INPUT_GET, 'menu');
-            if (!$menu) {
-                $menu = "main";
-            }
-            $client = $this->getUser()->getClient();
-
-            $organization = null;
-            $name = '';
-            $roles = array();
-            $principals = array();
-            $managers = array();
-            $members = array();
-
-            if ($organizationid) {
-                $organization = Organization::get($client, $organizationid);
-                $droleid = $organization['default_role_id'];
-                $verbose = "expanded";
-                $roles = Organization::rget($client, $organizationid, $verbose);
-                foreach ($roles as $value) {
-                    if ($value['id'] == $droleid) {
-                        $name = $value['name'];
-                    }
-                }
-            }
-            $organizations = Organization::cget($client);
-            $services = Service::cget($client);
-
-            $managers = Organization::managersget($client, $organizationid);
-            $members = Organization::membersget($client, $organizationid);
-        } catch (ClientException $e) {
-            $this->token = null;
-            return $this->render('error.html.twig', array('clientexception' => $e));
-        } catch (ServerException $e) {
-            $this->token = null;
-            return $this->render('error.html.twig', array('serverexception' => $e));
-        } finally {
-            if (!isset($organizations)) {
-                $organizations = [];
-            }
-            if (!isset($services)) {
-                $services = [];
-            }
-        }
-
-        return $this->render('AppBundle:Organization:index.html.twig', array('organization' => $organization, 'organizations' => $organizations, 'services' => $services, 'menu' => $menu, 'drolename' => $name, 'roles' => $roles, 'principals' => $principals, 'managers' => $managers, 'members' => $members));
-        // return array('organization' => $organization, 'organizations' => $organizations, 'services' => $services, 'menu' => $menu, 'drolename' => $name, 'roles'=>$roles, 'principals'=>$principals, 'managers'=>$managers, 'members'=>$members); TODO template para a twig engine-ben : https://github.com/symfony/symfony/pull/21177
+        $organizations = $this->getOrganizations();
+        $services = $this->getServices();
+        return $this->render(
+            'AppBundle:Organization:index.html.twig',
+                array(
+                    'organizations' => $organizations,
+                    'services' => $services
+                )
+        );
     }
 
     /**
@@ -131,12 +92,12 @@ class OrganizationController extends Controller {
      */
     public function showAction($id) {
         $organization = $this->getOrganization($id);
-        $menu = null;
         return $this->render(
             'AppBundle:Organization:show.html.twig',
             array(
                 'organization' => $organization,
-                'menu' => $menu
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
             )
         );
     }
@@ -147,11 +108,15 @@ class OrganizationController extends Controller {
      */
     public function propertiesAction($id)
     {
+        $organization = $this->getOrganization($id);
+        $roles = $this->getRoles($organization);
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
-                "organization" => $this->getOrganization($id),
-                "menu" => null
+                "organization" => $organization,
+                "roles" => $roles,
+                "organizations" => $this->getOrganizations(),
+                "services" => $this->getServices()
             )
         );
     }
@@ -162,11 +127,17 @@ class OrganizationController extends Controller {
      */
     public function usersAction($id)
     {
+        $organization = $this->getOrganization($id);
+        $managers = $this->getManagers($organization);
+        $members = $this->getMembers($organization);
         return $this->render(
             'AppBundle:Organization:users.html.twig',
             array(
-                "organization" => $this->getOrganization($id),
-                "menu" => null
+                "managers" => $managers,
+                "members" => $members,
+                "organization" => $organization,
+                "organizations" => $this->getOrganizations(),
+                "services" => $this->getServices()
             )
         );
     }
@@ -177,11 +148,14 @@ class OrganizationController extends Controller {
      */
     public function rolesAction($id)
     {
+        $organization = $this->getOrganization($id);
         return $this->render(
             'AppBundle:Organization:roles.html.twig',
             array(
-                "organization" => $this->getOrganization($id),
-                "menu" => null
+                "organization" => $organization,
+                "roles" => $this->getRoles($organization),
+                "organizations" => $this->getOrganizations(),
+                "services" => $this->getServices()
             )
         );
     }
@@ -195,14 +169,49 @@ class OrganizationController extends Controller {
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
             array(
-                "organization" => $this->getOrganization($id)
+                "organization" => $this->getOrganization($id),
+                "organizations" => $this->getOrganizations(),
+                "services" => $this->getServices()
             )
         );
     }
+
+
     private function getOrganization($id)
     {
         $client = $this->getUser()->getClient();
         $organization = Organization::get($client, $id);
         return $organization;
+    }
+
+    private function getOrganizations()
+    {
+        $client = $this->getUser()->getClient();
+        $organization = Organization::cget($client);
+        return $organization;
+    }
+
+    private function getServices()
+    {
+        $client = $this->getUser()->getClient();
+        $organization = Service::cget($client);
+        return $organization;
+    }
+
+    private function getRoles($organization)
+    {
+        $verbose = "expanded";
+        $roles = Organization::rget($this->getUser()->getClient(), $organization['id'], $verbose);
+        return $roles;
+    }
+
+    private function getManagers($organization)
+    {
+        return Organization::managersget($this->getUser()->getClient(), $organization['id']);
+    }
+
+    private function getMembers($organization)
+    {
+        return Organization::membersget($this->getUser()->getClient(), $organization['id']);
     }
 }

@@ -31,28 +31,22 @@ before_script:
   # - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - whoami
-  # - docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5500
+  - docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000
 
 variables:
-  CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5500/solazs/hexaa-newui:$CI_BUILD_REF_NAME
-  CONTAINER_RELEASE_IMAGE: docker.hbit.sztaki.hu:5500/solazs/hexaa-newui:latest
+  CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:$CI_BUILD_REF_NAME
+  CONTAINER_RELEASE_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:latest
 
 build:
   stage: build
   script:
     # - docker-clean
     - docker build -t $CONTAINER_TEST_IMAGE .
-    # - docker push $CONTAINER_TEST_IMAGE
+    - docker push $CONTAINER_TEST_IMAGE
   tags:
     - dind
 
-# test:
-#   stage: test
-#   script:
-#     - docker run -d --name smtp tophfr/mailcatcher;  docker run -d --name grid elgalu/selenium; docker run --rm --link smtp:smtp --link grid:grid  -t $CONTAINER_TEST_IMAGE /tmp/test.sh
-#   tags:
-#     - dind
-
+# s
 # release-image:
 #   stage: release
 #   script:

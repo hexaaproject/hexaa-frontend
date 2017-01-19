@@ -42,7 +42,7 @@ Features
 
 A stepek:
 ```
-Given delete all hexaa data
+Given emtpy hexaa data
 Given setup the basic hexaa test data
 ```
 

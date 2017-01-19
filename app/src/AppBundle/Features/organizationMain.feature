@@ -29,7 +29,6 @@ Feature: When I go to organizations
 	     And a field should contain placeholder "Organization name"
 	     And a field should contain placeholder "Description"
 
-	@current
 	Scenario: Navigate Org wizard step two: roles
 	   Given I am on "/organization/addStepTwo"
 	     And I should see "Szerepkörök"

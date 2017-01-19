@@ -40,6 +40,22 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
 
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+    assets:
+        datatables_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/datatables/datatables/media/css/dataTables.bootstrap.css"
+                - "%kernel.root_dir%/../vendor/drmonty/datatables-plugins/integration/font-awesome/dataTables.fontAwesome.css"         
+            filters: [cssrewrite]
+        datatables_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.js"
+                - "%kernel.root_dir%/../vendor/datatables/datatables/media/js/dataTables.bootstrap.js"
+
 # Doctrine Configuration
 # doctrine:
 #     dbal:
