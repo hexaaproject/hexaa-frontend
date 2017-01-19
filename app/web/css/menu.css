@@ -123,4 +123,20 @@
         display: none;
     }
 
+    .panelaccordionhamburger{
+        display:none;
+    }
+
+    .link{
+        display:none;
+    }
+    
+    .accordionhamburger{
+        display:none;
+    }
+    
+    .linksubmenu{
+        display:none;
+    }
+
 }

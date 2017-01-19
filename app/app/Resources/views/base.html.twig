@@ -33,6 +33,7 @@
                 if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
                     var dropdowns1 = document.getElementsByClassName("dropdown-content1");
                     var dropdowns2 = document.getElementsByClassName("dropdown-content2");
+                    var dropdowns3 = document.getElementsByClassName("hamburgerclass");
                     var i;
                     for (i = 0; i < dropdowns1.length; i++) {
                         var openDropdown = dropdowns1[i];
@@ -42,6 +43,12 @@
                     }
                     for (i = 0; i < dropdowns2.length; i++) {
                         var openDropdown = dropdowns2[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                    for (i = 0; i < dropdowns3.length; i++) {
+                        var openDropdown = dropdowns3[i];
                         if (openDropdown.classList.contains('show')) {
                             openDropdown.classList.remove('show');
                         }
@@ -113,7 +120,9 @@
                             </span>
                         </div>
                         <div class="panelaccordionhamburger">
-
+                            <div class="link">
+                                <a href="#" class="hamburgercontentpanelname" onclick="showorgsubmenu();">Egy org</a>
+                            </div>
                         </div>
                         <div class="accordionhamburger">
                             <span class="hamburgercontentname">
@@ -121,13 +130,52 @@
                             </span>
                         </div>
                         <div class="panelaccordionhamburger">
-
+                            <div class="link">
+                                <a href="#" class="hamburgercontentpanelname" onclick="showservsubmenu();">Egy services</a>
+                            </div>
+                            <div class="link">
+                                <a href="#" class="hamburgercontentpanelname" onclick="showservsubmenu();">Két services</a>
+                            </div>
                         </div>
                         <div class="link">
                             <a href="" class="hamburgercontentname"><span class="glyphicon glyphicon-user user"></span>Profile</a>
                         </div>
                         <div class="link">
                             <a href="" class="hamburgercontentname"><span class="glyphicon glyphicon-off off"></span>Log out</a>
+                        </div>
+                        <div id="organizationssubmenu" class="orgsubclass">
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Properties</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Users</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Roles</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Connected services</a>
+                            </div>
+                        </div>
+                        <div id="servicesssubmenu" class="servsubclass">
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Properties</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Managers</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Attributes</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Permissions</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Permissions sets</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Connected organizatons</a>
+                            </div>
                         </div>
                     </div> 
 
@@ -136,45 +184,7 @@
                         {% if app.user != null %}
                             <div id="loginstatus"><span id="usernamebox">{{ app.user.username }}</span></div>
                             {% endif %}
-                        <!--<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="/img/hamburger.svg"></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>-->
-
-
-                        <!-- <button onclick="hamburgerClick()" id="hamburger">
- 
-                         </button>
-                         <div id="hamburgerSelect" class="hamburgerClass">
-                             <div class="accordionhamburger">
-                                 <span class="hamburgercontentname">
-                                     Organizations
-                                 </span>
-                             </div>
-                             <div class="panelaccordionhamburger">
- 
-                             </div>
-                             <div class="accordionhamburger">
-                                 <span class="hamburgercontentname">
-                                     Services
-                                 </span>
-                             </div>
-                             <div class="panelaccordionhamburger">
- 
-                             </div>
-                             <a href="">Profile</a>
-                             <a href="">Logout</a>
-                         </div> -->
-
-
+                       
                         <div id="logout">
                             <span id="logobox">
                                 <a href="">
@@ -199,6 +209,42 @@
         <script>
             function hamburgerClick() {
                 document.getElementById("hamburgerSelect").classList.toggle("show");
+            }
+
+            var acc = document.getElementsByClassName("accordionhamburger");
+            var i;
+
+            for (i = 0; i < acc.length; i++) {
+                acc[i].onclick = function () {
+                    this.classList.toggle("active");
+                    this.nextElementSibling.classList.toggle("show");
+                    if (document.getElementById("servicesssubmenu").classList.contains("show")) {
+                        document.getElementById("servicesssubmenu").classList.remove("show");
+                    }
+                    if (document.getElementById("organizationssubmenu").classList.contains("show")) {
+                        document.getElementById("organizationssubmenu").classList.remove("show");
+                    }
+                }
+            }
+
+            function showorgsubmenu() {
+                if (document.getElementById("servicesssubmenu").classList.contains("show")) {
+                    document.getElementById("servicesssubmenu").classList.remove("show");
+                }
+                if (document.getElementById("organizationssubmenu").classList.contains("show")) {
+                    document.getElementById("organizationssubmenu").classList.remove("show");
+                }
+                document.getElementById("organizationssubmenu").classList.toggle("show");
+            }
+
+            function showservsubmenu() {
+                if (document.getElementById("organizationssubmenu").classList.contains("show")) {
+                    document.getElementById("organizationssubmenu").classList.remove("show");
+                }
+                if (document.getElementById("servicesssubmenu").classList.contains("show")) {
+                    document.getElementById("servicesssubmenu").classList.remove("show");
+                }
+                document.getElementById("servicesssubmenu").classList.toggle("show");
             }
         </script>
     {% endblock %}

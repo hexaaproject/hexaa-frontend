@@ -6,7 +6,6 @@
     .hamburgerClass.show{
         display:inline-block;
         background-color: #2e2d2d;
-
         position:fixed;
         width:100%;
         margin-top: 50px;
@@ -32,13 +31,35 @@
         height:100%;
         padding-top: 10px;
         padding-bottom: 10px;
+        cursor:pointer;
+    }
+
+    .accordionhamburger:before{
+        content: '\25BC';
+        font-size: 15px;
+        color: white;
+        float:right;
+        padding-right: 10px;
+    }
+    
+    .accordionhamburger.active:before{
+        content: '\25B2';
+        font-size: 15px;
+        color: white;
+        float:right;
+        padding-right: 10px;
     }
 
     .hamburgercontentname{
         color:white;
         font-size:20px;
         padding-left: 12px;
+    }
 
+    .hamburgercontentpanelname{
+        color:white;
+        font-size:15px;
+        padding-left: 12px;
     }
 
     .link{
@@ -49,14 +70,36 @@
 
     .panelaccordionhamburger{
         display: none;
-        transition: 0.4s;
-        padding: 10px;
     }
 
     .panelaccordionhamburger.show {
         display: inline-block;
         text-align: left;
-        margin-left: 4%;
-        margin-right: 4%;
+        background-color: grey;
     }
+    
+    .linksubmenu{
+        background-color: #61AFC5;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom:2px solid white;
+    }
+    
+    #organizationssubmenu{
+        display: none;
+    }
+    
+    #servicesssubmenu{
+        display: none;
+    }
+    
+    .orgsubclass.show{
+        display: inline-block;
+    }
+    
+    .servsubclass.show{
+        display: inline-block;
+    }
+    
+    
 }
