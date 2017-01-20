@@ -55,6 +55,18 @@ assetic:
             inputs:
                 - "%kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.js"
                 - "%kernel.root_dir%/../vendor/datatables/datatables/media/js/dataTables.bootstrap.js"
+        bootstrap_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.css"
+            filters: [cssrewrite]
+        bootstrap_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.js"
+        jquery_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/components/jquery/jquery.js"
+
+
 
 # Doctrine Configuration
 # doctrine:

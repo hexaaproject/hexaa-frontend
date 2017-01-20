@@ -32,7 +32,9 @@
         "guzzlehttp/guzzle": "^6.2",
         "datatables/datatables": "^1.10",
         "symfony/assetic-bundle": "^2.8",
-        "drmonty/datatables-plugins": "^1.10"
+        "drmonty/datatables-plugins": "^1.10",
+        "components/jquery": "^3.1",
+        "twbs/bootstrap": "^3.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
