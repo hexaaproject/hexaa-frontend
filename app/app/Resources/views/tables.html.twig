@@ -16,6 +16,13 @@ table_id: the id of the table tag
                 "order": [[ 1, "desc" ]],
             {% endif %}
         });
+
+        {# hide pagination if one page #}
+        if ($('#{{ table_id }}').DataTable().page.info().pages == 1) {
+            $('#{{ table_id }}_info').parent().parent().hide();
+            $('#{{ table_id }}_length').hide();
+        }
+
     });
 </script>
 
