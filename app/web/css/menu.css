@@ -1,3 +1,5 @@
+
+
 .dropbtn, .servicecl {
     background-color: #2e2d2d;
     color: white;
@@ -12,7 +14,7 @@
     text-align: center;
 }
 
-.dropdown {
+.dropdowns {
     position:relative;
     display: inline-block;
     text-align: center;
@@ -69,8 +71,8 @@
     padding-bottom: 10px;
 }
 #cornerlogo {
-   height:60%;
-   width: 70%; 
+    height:60%;
+    width: 70%; 
 }
 
 #topdiv {
@@ -84,23 +86,57 @@
 
 #loginstatus {    
     display:inline-block;
-   
+    padding-top: 15px;
     padding-right:2em;
+    height:100%;
 }
 
 #logout{   
     display: inline-block;
     padding-right:0.5em;
+    padding-top: 15px;
+    height:100%;
 }
 
 #container{
     float:right;
     display:inline-block;
-    padding-top: 15px;
-    padding-bottom: 10px;
+    height:100%;
+
 }
 
 #logpng{
     cursor: pointer;
     vertical-align: middle;
+}
+
+@media only screen and (min-width: 481px) {
+    #hamburger{
+        display:none;
+    }
+
+    #hamburgerSelect{
+        display:none;
+    }
+
+    .dropdown{
+        display: none;
+    }
+
+    .panelaccordionhamburger{
+        display:none;
+    }
+
+    .link{
+        display:none;
+    }
+    
+    .accordionhamburger{
+        display:none;
+    }
+    
+    .linksubmenu{
+        display:none;
+    }
+
 }

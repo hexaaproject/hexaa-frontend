@@ -56,7 +56,7 @@ body {
 .desktopbuttonimageafterlogin {
     max-width: 6vw;
     cursor: pointer;
-    
+
 }
 
 #maindivafterlogin  {
@@ -117,7 +117,7 @@ div.hr{
     padding-top: 15px;
     padding-bottom: 20px;
     text-align: left;
-    
+
 }
 
 #servtablecontent{
@@ -128,5 +128,9 @@ div.hr{
 }
 
 #submenucontroller{
+    display:none;
+}
+
+#mobilemaincontrols {
     display:none;
 }

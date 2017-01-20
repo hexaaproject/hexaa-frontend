@@ -8,11 +8,15 @@
             <link rel="stylesheet" type="text/css" href="/css/service.css">
             <link rel="stylesheet" type="text/css" href="/css/organization.css">
             <link rel="stylesheet" type="text/css" href="/css/profile.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+            <link rel="stylesheet" type="text/css" href="/css/mobile.css">
+            <link rel="stylesheet" type="text/css" href="/css/navbar.css">
         {% block stylesheets %}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </head>
     <body>
         <script>
@@ -22,10 +26,14 @@
             function servClick() {
                 document.getElementById("servSelect").classList.toggle("show");
             }
+            function hamburgerClick() {
+                document.getElementById("hamburgerSelect").classList.toggle("show");
+            }
             window.onclick = function (event) {
                 if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
                     var dropdowns1 = document.getElementsByClassName("dropdown-content1");
                     var dropdowns2 = document.getElementsByClassName("dropdown-content2");
+                    var dropdowns3 = document.getElementsByClassName("hamburgerclass");
                     var i;
                     for (i = 0; i < dropdowns1.length; i++) {
                         var openDropdown = dropdowns1[i];
@@ -35,6 +43,12 @@
                     }
                     for (i = 0; i < dropdowns2.length; i++) {
                         var openDropdown = dropdowns2[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                    for (i = 0; i < dropdowns3.length; i++) {
+                        var openDropdown = dropdowns3[i];
                         if (openDropdown.classList.contains('show')) {
                             openDropdown.classList.remove('show');
                         }
@@ -61,11 +75,12 @@
                         <img id="cornerlogo" src="/img/hexaa-logo-blue.png" alt="hexaa logo"/>
                     </a>
                 </div>
+
                 <div id="menudiv">
                     {% if app.user != null %}
                         <div id="leftpanel">
                             {% if organizations is defined %}
-                                <div class="dropdown">
+                                <div class="dropdowns">
                                     <button onclick="orgClick()" class="dropbtn">
                                         Organizations
                                     </button>
@@ -79,7 +94,7 @@
                                 </div>
                             {% endif %}
                             {% if services is defined %}
-                                <div class="dropdown">
+                                <div class="dropdowns">
                                     <button onclick="servClick()" class="servicecl">
                                         Services
                                     </button>
@@ -94,11 +109,82 @@
                             {% endif %}
                         </div>
                     {% endif %}
+
+                    <button onclick="hamburgerClick()" id="hamburger">
+                        <span class="glyphicon glyphicon-menu-hamburger white" aria-hidden="true"></span>
+                    </button>
+                    <div id="hamburgerSelect" class="hamburgerClass">
+                        <div class="accordionhamburger">
+                            <span class="hamburgercontentname">
+                                Organizations
+                            </span>
+                        </div>
+                        <div class="panelaccordionhamburger">
+                            <div class="link">
+                                <a href="#" class="hamburgercontentpanelname" onclick="showorgsubmenu();">Egy org</a>
+                            </div>
+                        </div>
+                        <div class="accordionhamburger">
+                            <span class="hamburgercontentname">
+                                Services
+                            </span>
+                        </div>
+                        <div class="panelaccordionhamburger">
+                            <div class="link">
+                                <a href="#" class="hamburgercontentpanelname" onclick="showservsubmenu();">Egy services</a>
+                            </div>
+                            <div class="link">
+                                <a href="#" class="hamburgercontentpanelname" onclick="showservsubmenu();">Két services</a>
+                            </div>
+                        </div>
+                        <div class="link">
+                            <a href="" class="hamburgercontentname"><span class="glyphicon glyphicon-user user"></span>Profile</a>
+                        </div>
+                        <div class="link">
+                            <a href="" class="hamburgercontentname"><span class="glyphicon glyphicon-off off"></span>Log out</a>
+                        </div>
+                        <div id="organizationssubmenu" class="orgsubclass">
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Properties</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Users</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Roles</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Connected services</a>
+                            </div>
+                        </div>
+                        <div id="servicesssubmenu" class="servsubclass">
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Properties</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Managers</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Attributes</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Permissions</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Permissions sets</a>
+                            </div>
+                            <div class="linksubmenu">
+                                <a href="" class="hamburgercontentname">Connected organizatons</a>
+                            </div>
+                        </div>
+                    </div> 
+
                     <div id="container">
 
                         {% if app.user != null %}
                             <div id="loginstatus"><span id="usernamebox">{{ app.user.username }}</span></div>
                             {% endif %}
+                       
                         <div id="logout">
                             <span id="logobox">
                                 <a href="">
@@ -106,14 +192,62 @@
                                 </a>
                             </span>
                         </div>
+
+
                     </div>
+
                 </div>
+
+
             </div>
+
         </div>
 
-        {% block body %}{% endblock %}
+    {% block body %}{% endblock %}
 
-        {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+        <script>
+            function hamburgerClick() {
+                document.getElementById("hamburgerSelect").classList.toggle("show");
+            }
 
-    </body>
+            var acc = document.getElementsByClassName("accordionhamburger");
+            var i;
+
+            for (i = 0; i < acc.length; i++) {
+                acc[i].onclick = function () {
+                    this.classList.toggle("active");
+                    this.nextElementSibling.classList.toggle("show");
+                    if (document.getElementById("servicesssubmenu").classList.contains("show")) {
+                        document.getElementById("servicesssubmenu").classList.remove("show");
+                    }
+                    if (document.getElementById("organizationssubmenu").classList.contains("show")) {
+                        document.getElementById("organizationssubmenu").classList.remove("show");
+                    }
+                }
+            }
+
+            function showorgsubmenu() {
+                if (document.getElementById("servicesssubmenu").classList.contains("show")) {
+                    document.getElementById("servicesssubmenu").classList.remove("show");
+                }
+                if (document.getElementById("organizationssubmenu").classList.contains("show")) {
+                    document.getElementById("organizationssubmenu").classList.remove("show");
+                }
+                document.getElementById("organizationssubmenu").classList.toggle("show");
+            }
+
+            function showservsubmenu() {
+                if (document.getElementById("organizationssubmenu").classList.contains("show")) {
+                    document.getElementById("organizationssubmenu").classList.remove("show");
+                }
+                if (document.getElementById("servicesssubmenu").classList.contains("show")) {
+                    document.getElementById("servicesssubmenu").classList.remove("show");
+                }
+                document.getElementById("servicesssubmenu").classList.toggle("show");
+            }
+        </script>
+    {% endblock %}
+
+</body>
 </html>
