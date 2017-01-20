@@ -3,21 +3,36 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}HEXAA{% endblock %}</title>
-            <link rel="stylesheet" type="text/css" href="/css/mainpage.css">
-            <link rel="stylesheet" type="text/css" href="/css/menu.css">
-            <link rel="stylesheet" type="text/css" href="/css/service.css">
-            <link rel="stylesheet" type="text/css" href="/css/organization.css">
-            <link rel="stylesheet" type="text/css" href="/css/profile.css">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-            <link rel="stylesheet" type="text/css" href="/css/mobile.css">
-            <link rel="stylesheet" type="text/css" href="/css/navbar.css">
-            <link rel="stylesheet" type="text/css" href="/css/buttons.css">
+        
+        {% stylesheets
+            '@bootstrap_css'
+            'css/mainpage.css'
+            'css/menu.css'
+            'css/service.css'
+            'css/organization.css'
+            'css/profile.css'
+            'css/mobile.css'
+            'css/navbar.css'
+            'css/buttons.css'
+            'css/tables.css'
+            filter='cssrewrite'
+        %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
         {% block stylesheets %}
         {% endblock %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        
+        {% javascripts
+            '@jquery_js'
+            '@bootstrap_js'
+        %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        
     </head>
     <body>
         <script>
@@ -207,7 +222,6 @@
 
     {% block body %}{% endblock %}
 
-    {% block javascripts %}
         <script>
             function hamburgerClick() {
                 document.getElementById("hamburgerSelect").classList.toggle("show");
@@ -249,6 +263,7 @@
                 document.getElementById("servicesssubmenu").classList.toggle("show");
             }
         </script>
+    {% block javascripts %}
     {% endblock %}
 
 </body>
