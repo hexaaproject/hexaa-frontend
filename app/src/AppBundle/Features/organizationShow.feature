@@ -37,7 +37,7 @@ Feature: When I go to a specific organization
 	   Given I am on "/"
 	    When I follow "testOrg1"
 	     And I follow "Properties"
-	    Then I should see "Ez a szervezet teszteléshez készült. Remélhetőleg majd jól tesztelve is lesz vele az alkalmazás."
+	    Then I should see "Ez a szervezet teszteléshez készült. Jól tesztelve is lesz vele az alkalmazás."
 	    And I should see "Roles"
 	    And I should see "A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni."
 
