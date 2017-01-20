@@ -11,6 +11,7 @@
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
             <link rel="stylesheet" type="text/css" href="/css/mobile.css">
             <link rel="stylesheet" type="text/css" href="/css/navbar.css">
+            <link rel="stylesheet" type="text/css" href="/css/buttons.css">
         {% block stylesheets %}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -120,9 +121,11 @@
                             </span>
                         </div>
                         <div class="panelaccordionhamburger">
+                            {% for organization in organizations.items %}
                             <div class="link">
-                                <a href="#" class="hamburgercontentpanelname" onclick="showorgsubmenu();">Egy org</a>
+                                <a href="#" class="hamburgercontentpanelname" onclick="showorgsubmenu();">{{ organization.name|e }}</a>
                             </div>
+                            {% endfor %}
                         </div>
                         <div class="accordionhamburger">
                             <span class="hamburgercontentname">
@@ -130,12 +133,11 @@
                             </span>
                         </div>
                         <div class="panelaccordionhamburger">
+                             {% for service in services.items %}
                             <div class="link">
-                                <a href="#" class="hamburgercontentpanelname" onclick="showservsubmenu();">Egy services</a>
+                                <a href="#" class="hamburgercontentpanelname" onclick="showservsubmenu();">{{ service.name|e }}</a>
                             </div>
-                            <div class="link">
-                                <a href="#" class="hamburgercontentpanelname" onclick="showservsubmenu();">Két services</a>
-                            </div>
+                            {% endfor %}
                         </div>
                         <div class="link">
                             <a href="" class="hamburgercontentname"><span class="glyphicon glyphicon-user user"></span>Profile</a>
