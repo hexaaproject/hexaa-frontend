@@ -19,6 +19,20 @@ Az alábbiak előfeltétele, hogy az app mappában nyomjunk egy `composer instal
 7. egy átlagos user azonosítója `e` jelszava `pass`
 
 
+FAQ
+-----
+
+__Ha nem töltődnek be bizonyos build-elt js-ek és css-ek.__
+
+Lépj be a szerverre és buildeltesd le az assetic-kel:
+
+```
+ssh ubuntu@newaai.niif.hu
+cd hexaa-newui/app
+php bin/console assetic:dump
+```
+
+
 Teszt
 -----
 
