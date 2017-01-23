@@ -54,7 +54,7 @@ build:
 test:
   stage: test
   script:
-    - docker run -d --name db --environment MYSQL_ALLOW_EMPTY_PASSWORD=true MYSQL_USER=someuser MYSQL_PASSWORD=somepass MYSQL_DATABASE=hexaa mysql
+    - docker run -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
     - docker run -d --name memcached memcached
     - docker run -d --name hexaa-backend --link db:db hexaaproject/hexaabackend:for_dev
     - docker run -d --name grid elgalu/selenium
