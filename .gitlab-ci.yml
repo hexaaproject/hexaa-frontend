@@ -11,6 +11,7 @@ stages:
 - deploy
 
 before_script:
+  - docker info
   # Install ssh-agent if not already installed, it is required by Docker.
   # (change apt-get to yum if you use a CentOS-based image)
   # - 'which ssh-agent || ( apk update && apk add openssh-client )'
