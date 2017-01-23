@@ -26,34 +26,32 @@
 
 {% block javascripts %}
 	<script>
-        var b = document.getElementsByClassName("servicecl");
+        var b = $(".servicecl");
         for (i = 0; i < b.length; i++) {
             b[i].style.backgroundColor = "#2e2d2d";
         }
-        var b2 = document.getElementsByClassName("dropbtn");
+        var b2 = $(".dropbtn");
         for (i = 0; i < b2.length; i++) {
             b2[i].style.backgroundColor = "#61AFC5";
         }
-        var acc = document.getElementsByClassName("accordion2");
+        var acc = $(".accordion2");
         var i;
 
         for (i = 0; i < acc.length; i++) {
             acc[i].onclick = function () {
-
                 this.classList.toggle("active");
                 this.nextElementSibling.classList.toggle("show");
-
             }
         }
-        var accroles = document.getElementsByClassName("accordionroles");
+        var accroles = $(".accordionroles");
         for (i = 0; i < accroles.length; i++) {
             accroles[i].onclick = function () {
                 this.classList.toggle("active");
                 this.nextElementSibling.classList.toggle("show");
 
-                var elementbuttonbin = document.getElementsByClassName("buttonbin");
-                var elementbuttonmessage = document.getElementsByClassName("buttonmessage");
-                var elementbuttonedit = document.getElementsByClassName("buttonedit");
+                var elementbuttonbin = $(".buttonbin");
+                var elementbuttonmessage = $(".buttonmessage");
+                var elementbuttonedit = $(".buttonedit");
                 for (j = 0; j < elementbuttonbin.length; j++) {
                     var name = accroles[j].className;
                     if ((accroles[j].className) == "accordionroles active") {
@@ -83,9 +81,9 @@
 
 
         function backgroundcolororgman() {
-            checkboxes = document.getElementsByName('foo');
+            checkboxes = $("[name='foo']");
             for (var i = 0, n = checkboxes.length; i < n; i++) {
-                trchecks = document.getElementsByClassName('colororgman');
+                trchecks = $(".colororgman");
                 if (checkboxes[i].checked == true) {
                     trchecks[i].style.backgroundColor = "#FA8072";
                     trchecks[i].style.color = "#FFFFFF";
@@ -97,9 +95,9 @@
         }
 
         function backgroundcolororguser() {
-            checkboxes = document.getElementsByName('foouser');
+            checkboxes = $("[name='foouser']");
             for (var i = 0, n = checkboxes.length; i < n; i++) {
-                trchecks = document.getElementsByClassName('colororgus');
+                trchecks = $('.colororgus');
                 if (checkboxes[i].checked == true) {
                     trchecks[i].style.backgroundColor = "#61AFC5";
                     trchecks[i].style.color = "#FFFFFF";
@@ -112,10 +110,10 @@
         var isClickedCheckboxorg = [false];
         function toggle(source) {
             isClickedCheckboxorg.push(true);
-            checkboxes = document.getElementsByName('foo');
+            checkboxes = $("[name='foo']");;
             for (var i = 0, n = checkboxes.length; i < n; i++) {
                 checkboxes[i].checked = source.checked;
-                trchecks = document.getElementsByClassName('colororgman');
+                trchecks = $(".colororgman");
                 if ((isClickedCheckboxorg.length) % 2 == 0) {
                     trchecks[i].style.backgroundColor = "#FA8072";
                     trchecks[i].style.color = "#FFFFFF";
@@ -124,10 +122,10 @@
                     trchecks[i].style.color = "#000000";
                 }
             }
-            checkboxesuser = document.getElementsByName('foouser');
+            checkboxesuser = $("[name='foouser']");
             for (var i = 0, n = checkboxesuser.length; i < n; i++) {
                 checkboxesuser[i].checked = source.checked;
-                trchecksuser = document.getElementsByClassName('colororgus');
+                trchecksuser = $('.colororgus');
                 if ((isClickedCheckboxorg.length) % 2 == 0) {
                     trchecksuser[i].style.backgroundColor = "#61AFC5";
                     trchecksuser[i].style.color = "#FFFFFF";

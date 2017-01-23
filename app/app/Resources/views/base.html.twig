@@ -35,56 +35,6 @@
 
     </head>
     <body>
-        <script>
-            function orgClick() {
-                document.getElementById("orgSelect").classList.toggle("show");
-            }
-            function servClick() {
-                document.getElementById("servSelect").classList.toggle("show");
-            }
-            function hamburgerClick() {
-                document.getElementById("hamburgerSelect").classList.toggle("show");
-            }
-            window.onclick = function (
-                    event) {
-                if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
-                    var dropdowns1 = document.getElementsByClassName("dropdown-content1");
-                    var dropdowns2 = document.getElementsByClassName("dropdown-content2");
-                    var dropdowns3 = document.getElementsByClassName("hamburgerclass");
-                    var i;
-                    for (i = 0; i < dropdowns1.length; i++) {
-                        var openDropdown = dropdowns1[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
-                    for (i = 0; i < dropdowns2.length; i++) {
-                        var openDropdown = dropdowns2[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
-                    for (i = 0; i < dropdowns3.length; i++) {
-                        var openDropdown = dropdowns3[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
-                }
-                if (event.target.matches('.servicecl')) {
-                    var dropdownorg = document.getElementById("orgSelect");
-                    if (dropdownorg.classList.contains('show')) {
-                        dropdownorg.classList.remove('show');
-                    }
-                }
-                if (event.target.matches('.dropbtn')) {
-                    var dropdownorg = document.getElementById("servSelect");
-                    if (dropdownorg.classList.contains('show')) {
-                        dropdownorg.classList.remove('show');
-                    }
-                }
-            }
-        </script>
         <div id="topdiv">
             <div id="topdivcontent">
                 <div id="cornerlogobox">
@@ -186,46 +136,94 @@
     {% block body %}{% endblock %}
 
     <script>
+        function orgClick() {
+            $("#orgSelect")[0].classList.toggle("show");
+        }
+        function servClick() {
+            $("#servSelect")[0].classList.toggle("show");
+        }
         function hamburgerClick() {
-            document.getElementById("hamburgerSelect").classList.toggle("show");
+            $("#hamburgerSelect")[0].classList.toggle("show");
+        }
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
+                var dropdowns1 = $(".dropdown-content1");
+                var dropdowns2 = $(".dropdown-content2");
+                var dropdowns3 = $(".hamburgerclass");
+                var i;
+                for (i = 0; i < dropdowns1.length; i++) {
+                    var openDropdown = dropdowns1[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                for (i = 0; i < dropdowns2.length; i++) {
+                    var openDropdown = dropdowns2[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                for (i = 0; i < dropdowns3.length; i++) {
+                    var openDropdown = dropdowns3[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+            if (event.target.matches('.servicecl')) {
+                var dropdownorg = $("#orgSelect")[0];
+                if (dropdownorg.classList.contains('show')) {
+                    dropdownorg.classList.remove('show');
+                }
+            }
+            if (event.target.matches('.dropbtn')) {
+                var dropdownorg = $("#servSelect")[0];
+                if (dropdownorg.classList.contains('show')) {
+                    dropdownorg.classList.remove('show');
+                }
+            }
         }
 
-        var acc = document.getElementsByClassName("accordionhamburger");
+        function hamburgerClick() {
+            $("#hamburgerSelect")[0].classList.toggle("show");
+        }
+
+        var acc = $(".accordionhamburger");
         var i;
 
         for (i = 0; i < acc.length; i++) {
             acc[i].onclick = function () {
                 this.classList.toggle("active");
                 this.nextElementSibling.classList.toggle("show");
-                if (document.getElementById("servicesssubmenu").classList.contains("show")) {
-                    document.getElementById("servicesssubmenu").classList.remove("show");
+                if ($("#servicesssubmenu")[0].classList.contains("show")) {
+                    $("#servicesssubmenu")[0].classList.remove("show");
                 }
-                if (document.getElementById("organizationssubmenu").classList.contains("show")) {
-                    document.getElementById("organizationssubmenu").classList.remove("show");
+                if ($("#organizationssubmenu")[0].classList.contains("show")) {
+                    $("#organizationssubmenu")[0].classList.remove("show");
                 }
             }
         }
 
         function showorgsubmenu(orgid) {
-            
+
             if ($("#servicesssubmenu")[0].classList.contains("show")) {
                 $("#servicesssubmenu")[0].classList.remove("show");
             }
             if ($("#organizationssubmenu")[0].classList.contains("show")) {
                 $("#organizationssubmenu")[0].classList.remove("show");
             }
-            
+
             $("#organizationssubmenu").empty();
-            
+
             $("<div class='linksubmenu' id='orgprop'></div>").appendTo("#organizationssubmenu");
             $("<a class='hamburgercontentname' id='linktoprop'>Properties</a>").appendTo("#orgprop");
-            
+
             $("<div class='linksubmenu' id='orgusers'></div>").appendTo("#organizationssubmenu");
             $("<a class='hamburgercontentname' id='linktousers'>Users</a>").appendTo("#orgusers");
-            
+
             $("<div class='linksubmenu' id='orgroles'></div>").appendTo("#organizationssubmenu");
             $("<a class='hamburgercontentname' id='linktoroles'>Roles</a>").appendTo("#orgroles");
-            
+
             $("<div class='linksubmenu' id='orgservices'></div>").appendTo("#organizationssubmenu");
             $("<a class='hamburgercontentname' id='linktoservices'>Connected services</a>").appendTo("#orgservices");
 
@@ -234,19 +232,19 @@
                 url = url.replace("orgid", orgid);
                 window.location = url;
             });
-            
+
             $("#linktousers").click(function () {
                 var url = '{{ path("app_organization_users", {'id': 'orgid'}) }}';
                 url = url.replace("orgid", orgid);
                 window.location = url;
             });
-            
+
             $("#linktoroles").click(function () {
                 var url = '{{ path("app_organization_roles", {'id': 'orgid'}) }}';
                 url = url.replace("orgid", orgid);
                 window.location = url;
             });
-            
+
             $("#linktoservices").click(function () {
                 var url = '{{ path("app_organization_connectedservices", {'id': 'orgid'}) }}';
                 url = url.replace("orgid", orgid);
@@ -265,61 +263,61 @@
                 $("#servicesssubmenu")[0].classList.remove("show");
             }
             $("#servicesssubmenu")[0].classList.toggle("show");
-            
+
             $("#servicesssubmenu").empty();
-            
+
             $("<div class='linksubmenu' id='servprop'></div>").appendTo("#servicesssubmenu");
             $("<a class='hamburgercontentname' id='linktoprop'>Properties</a>").appendTo("#servprop");
-            
+
             $("<div class='linksubmenu' id='servman'></div>").appendTo("#servicesssubmenu");
             $("<a class='hamburgercontentname' id='linktoman'>Managers</a>").appendTo("#servman");
-            
+
             $("<div class='linksubmenu' id='servattr'></div>").appendTo("#servicesssubmenu");
             $("<a class='hamburgercontentname' id='linktoattr'>Roles</a>").appendTo("#servattr");
-            
+
             $("<div class='linksubmenu' id='servperm'></div>").appendTo("#servicesssubmenu");
             $("<a class='hamburgercontentname' id='linktoperm'>Permissions</a>").appendTo("#servperm");
-                   
+
             $("<div class='linksubmenu' id='servpermsets'></div>").appendTo("#servicesssubmenu");
             $("<a class='hamburgercontentname' id='linktopermsets'>Permissions sets</a>").appendTo("#servpermsets");
-            
+
             $("<div class='linksubmenu' id='servorg'></div>").appendTo("#servicesssubmenu");
             $("<a class='hamburgercontentname' id='linktoorg'>Connected organizations</a>").appendTo("#servorg");
-            
+
             $("#linktoprop").click(function () {
-               /* var url = '{/{ path("app_service_properties", {'id': 'servid'}) }}';
-                url = url.replace("servid", servid);*/
-                 window.location = window.location.href;
+                /* var url = '{/{ path("app_service_properties", {'id': 'servid'}) }}';
+                 url = url.replace("servid", servid);*/
+                window.location = window.location.href;
             });
-            
+
             $("#linktoman").click(function () {
-               /* var url = '{/{ path("app_service_managers", {'id': 'servid'}) }}';
-                url = url.replace("servid", servid);*/
-                 window.location = window.location.href;
+                /* var url = '{/{ path("app_service_managers", {'id': 'servid'}) }}';
+                 url = url.replace("servid", servid);*/
+                window.location = window.location.href;
             });
-            
+
             $("#linktoattr").click(function () {
                 /*var url = '{/{ path("app_serices_attributes", {'id': 'servid'}) }}';
-                url = url.replace("servid", servid);*/
-                 window.location = window.location.href;
+                 url = url.replace("servid", servid);*/
+                window.location = window.location.href;
             });
-            
+
             $("#linktoperm").click(function () {
                 /*var url = '{/{ path("app_service_permissions", {'id': 'servid'}) }}';
-                url = url.replace("servid", servid);*/
-                 window.location = window.location.href;
+                 url = url.replace("servid", servid);*/
+                window.location = window.location.href;
             });
-            
+
             $("#linktopermsets").click(function () {
-               /* var url = '{/{ path("app_service_permissionssets", {'id': 'servid'}) }}';
-                url = url.replace("servid", servid);*/
-                 window.location = window.location.href;
+                /* var url = '{/{ path("app_service_permissionssets", {'id': 'servid'}) }}';
+                 url = url.replace("servid", servid);*/
+                window.location = window.location.href;
             });
-            
+
             $("#linktoorg").click(function () {
                 /*var url = '{/{ path("app_service_connectedorganizations", {'id': 'servid'}) }}';
-                url = url.replace("servid", servid);*/
-                
+                 url = url.replace("servid", servid);*/
+
                 window.location = window.location.href;
             });
         }
