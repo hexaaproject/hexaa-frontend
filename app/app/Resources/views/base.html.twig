@@ -160,7 +160,7 @@
                         <div class="link">
                             <a href="" class="hamburgercontentname"><span class="glyphicon glyphicon-off off"></span>Log out</a>
                         </div>
-                        <div id="organizationssubmenu" class="orgsubclass">
+                        <!--<div id="organizationssubmenu" class="orgsubclass">
                             <div class="linksubmenu">
                                 <a href="" class="hamburgercontentname">Properties</a>
                             </div>
@@ -173,7 +173,7 @@
                             <div class="linksubmenu">
                                 <a href="" class="hamburgercontentname">Connected services</a>
                             </div>
-                        </div>
+                        </div>-->
                         <div id="servicesssubmenu" class="servsubclass">
                             <div class="linksubmenu">
                                 <a href="" class="hamburgercontentname">Properties</a>
@@ -250,6 +250,24 @@
                 if (document.getElementById("organizationssubmenu").classList.contains("show")) {
                     document.getElementById("organizationssubmenu").classList.remove("show");
                 }
+                
+                $("#hamburgerSelect").html("\
+                        <div id=\"organizationssubmenu\" class=\"orgsubclass\">\
+                            <div class=\"linksubmenu\">\
+                                <a href=\"#\" class=\"hamburgercontentname\">Properties</a>\
+                            </div>\
+                            <div class=\"linksubmenu\">\
+                                <a href=\"#\" class=\"hamburgercontentname\">Users</a>\
+                            </div>\
+                            <div class=\"linksubmenu\">\
+                                <a href=\"#\" class=\"hamburgercontentname\">Roles</a>\
+                            </div>\
+                            <div class=\"linksubmenu\">\
+                                <a href=\"#\" class=\"hamburgercontentname\">Connected services</a>\
+                            </div>\
+                        </div>\
+                    ");
+                
                 document.getElementById("organizationssubmenu").classList.toggle("show");
             }
 
