@@ -1,5 +1,8 @@
 ---
-image: docker:latest
+image: gitlab/dind
+
+variables:
+  DOCKER_DRIVER: overlay
 
 services:
 - docker:dind
@@ -11,6 +14,7 @@ stages:
 - deploy
 
 before_script:
+  - docker info
   # Install ssh-agent if not already installed, it is required by Docker.
   # (change apt-get to yum if you use a CentOS-based image)
   # - 'which ssh-agent || ( apk update && apk add openssh-client )'
@@ -47,17 +51,18 @@ build:
   tags:
     - dind
 
-# s
-# release-image:
-#   stage: release
-#   script:
-#     - docker pull $CONTAINER_TEST_IMAGE
-#     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-#     - docker push $CONTAINER_RELEASE_IMAGE
-#   only:
-#     - master
-#   tags:
-#     - dind
+test:
+  stage: test
+  script:
+    - docker run -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
+    - docker run -d --name memcached memcached
+    - docker run -d --name hexaa-backend --link db:db hexaaproject/hexaa-backend:for-dev
+    - docker run -d --name grid elgalu/selenium
+    - docker run -d --name hexaa-test-data-manager --link db:db --link hexaa-backend:hexaa-backend hexaaproject/hexaa-test-data-manager:for-dev
+    - docker run --rm --link db:db --link grid:grid -t $CONTAINER_TEST_IMAGE /tmp/test.sh
+  tags:
+    - dind
+
 
 # deploy:
 #   stage: deploy
