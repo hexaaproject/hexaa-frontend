@@ -56,7 +56,7 @@ test:
   script:
     - docker run -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
     - docker run -d --name memcached memcached
-    - docker run -d --name hexaa-backend --link db:db hexaaproject/hexaabackend:for_dev
+    - docker run -d --name hexaa-backend --link db:db hexaaproject/hexaa-backend:for-dev
     - docker run -d --name grid elgalu/selenium
     - docker run -d --name hexaa-test-data-manager --link db:db --link hexaa-backend:hexaa-backend hexaaproject/hexaa-test-data-manager:for-dev
     - docker run --rm --link db:db --link grid:grid -t $CONTAINER_TEST_IMAGE /tmp/test.sh
