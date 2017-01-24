@@ -18,6 +18,16 @@ limitations under the License.
     Author     : Mihály Héder <mihaly.heder@sztaki.mta.hu>
 */
 
+.container{
+    text-align: center;
+}
+
+.uniquebuttons{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border:none;
+}
+
 #srvmenu{
     color:#ffffff;
     padding-top: 1vh;

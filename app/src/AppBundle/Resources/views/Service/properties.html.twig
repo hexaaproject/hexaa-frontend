@@ -3,5 +3,119 @@
 {% block title %}AppBundle:Service:show{% endblock %}
 
 {% block container %}
-  
+
+    {% block stylesheets %}
+        {% stylesheets 'css/service.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+
+    <table id="centertableservicesprop">
+        <tr>
+            <td class="uniqueproperty" style="background-color: #FFFFFF" width="110%" height="110%">
+                <div id="propertyname">
+                    <b> Properties </b>
+                    <button class="editproperty"></button>
+                </div>            
+                {% if service.name %}
+                    <div>
+                        <div class="inline"><b>Name</b></div>
+                        <div class="descriptions" >{{service.name}}</div>
+                    </div>
+                {% endif %}
+                {% if service.description %}
+                    <div>
+                        <div class="inline"><b>Description</b></div>
+                        <div class="descriptions" >{{service.description}}</div>
+                    </div>
+                {% endif %}
+                {% if service.url %}
+                    <div>
+                        <div class="inline"><b>Home Page</b></div>
+                        <div class="descriptions">{{service.url}}</div>
+                    </div>
+                {% endif %}
+                {% if service.entityid %}
+                    <div>
+                        <div class="inline"><b>SAML SP Entity ID</b></div>
+                        <div class="descriptions">{{service.entityid}}</div>
+                    </div>
+                {% endif %}
+                {% if service.created_at %}
+                    <div>
+                        <div class="inline"><b>Created</b></div>
+                        <div class="descriptions">{{service.created_at}}</div>
+                    </div>
+                {% endif %}
+                {% if service.updated_at %}
+                    <div>
+                        <div class="inline"><b>Last updated</b></div>
+                        <div class="descriptions">{{service.updated_at}}</div>
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td class="uniquebuttons" style="background-color: #FFFFFF" width="100%" height="100%">
+        </tr>
+        <tr>
+            <td class="uniqueproperty" style="background-color: #FFFFFF" width="110%" height="110%">
+                <div id="propertyname">
+                    <b> Owner Details </b>
+                    <button class="editproperty"></button>
+                </div>
+
+                {% if service.org_name %}
+                    <div >
+                        <div class="inline"><b>Name</b></div>
+                        <div class="descriptions" >{{service.org_name}}</div>
+                    </div>
+                {% endif %}
+
+                {% if service.org_short_name %}
+                    <div>
+                        <div class="inline"><b>Short name</b></div>
+                        <div class="descriptions" >{{service.org_short_name}}</div>
+                    </div>
+                {% endif %}
+
+                {% if service.org_description %}
+                    <div>
+                        <div class="inline"><b>Description</b></div>
+                        <div class="descriptions">{{service.org_description}}</div>
+                    </div>
+                {% endif %}
+
+                {% if service.org_url %}
+                    <div>
+                        <div class="inline"><b>Home page</b></div>
+                        <div class="descriptions">{{service.org_url}}</div>
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td class="uniquebuttons" style="background-color: #FFFFFF" width="100%" height="100%">
+        </tr>
+        <tr>
+            <td class="uniqueproperty" style="background-color: #FFFFFF" width="110%" height="110%">
+                <div id="propertyname">
+                    <b> Privacy Information </b>
+                    <button class="editproperty"></button>
+                </div>
+                {% if service.priv_url %}
+                    <div>
+                        <div class="inline"><b>URL</b></div>
+                        <div class="descriptions" >{{service.priv_url}}</div>
+                    </div>
+                {% endif %}
+                {% if service.priv_description %}
+                    <div>
+                        <div class="inline"><b>Description</b></div>
+                        <div class="descriptions" >{{service.priv_description}}</div>
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
 {% endblock %}
