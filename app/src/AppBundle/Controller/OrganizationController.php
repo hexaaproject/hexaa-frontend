@@ -116,7 +116,7 @@ class OrganizationController extends Controller {
             'AppBundle:Organization:properties.html.twig',
             array(
                 "organization" => $organization,
-                // "roles" => $roles,
+                "roles" => $roles, // TODO ez majd remélhetőleg nem kell!
                 "organizations" => $this->getOrganizations(),
                 "services" => $this->getServices(),
                 "roles_accordion" => $roles_accordion
