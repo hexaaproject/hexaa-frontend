@@ -110,13 +110,39 @@ class OrganizationController extends Controller {
     {
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
+        $roles_accordion = array();
+
+        foreach ($roles as $role) {
+            $roles_accordion[$role['id']]['title'] = $role['name'];
+            $members = array();
+            $permissions = array();
+            
+            foreach ($role['principals'] as $principal) {
+                $members[] = $principal['principal']['display_name'];
+            }
+            foreach ($role['entitlements'] as $entitlement) {
+                $permissions[] = $entitlement['name'];
+            }
+
+            $roles_accordion[$role['id']]['contents'] = array(
+                array(
+                    'key' => 'Permissions',
+                    'values' => $permissions
+                    ),
+                array(
+                    'key' => 'Members',
+                    'values' => $members
+                    )
+                );
+        }
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
                 "organization" => $organization,
                 "roles" => $roles,
                 "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices()
+                "services" => $this->getServices(),
+                "roles_accordion" => $roles_accordion
             )
         );
     }

@@ -1,6 +1,11 @@
 {% extends "AppBundle:Organization:layout.html.twig" %}
 
 {% block container %}
+    {% block stylesheets %}
+        {% stylesheets 'css/accordions.css' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
     
     {% set defaultrole = null %}
     {% for role in roles %}
@@ -9,8 +14,10 @@
         {% endif %}
     {% endfor %}
 
+
+
     <div id="srvmain">
-            <table id=centertable3>
+            <table id="centertable3">
                 <td class="uniqueproperty" style="background-color: #FFFFFF">
                     <div id="propertyname">
                         <b> Properties </b>
@@ -44,84 +51,7 @@
                 <tr>
                     <td class="uniquebuttons" style="background-color: #FFFFFF"></td>
                 </tr>
-                    <tr>
-                        <td class="unique" style="background-color: #61AFC5" >
-
-                            <div id="labels">
-                                <label id="headerLabel">
-                                    Roles
-                                </label>
-                                <label id="headerLabeltext">
-                                    A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni.
-                                </label>
-                            </div>
-                            {% if roles|length %}
-                            <div id="roles2">
-                                {% for role in roles %}
-                                    <div class="accordion2">
-                                        <span class="name">{{role.name}}</span>
-                                        {% if defaultrole == role %}TODO ez a default role{% endif %}
-                                    </div>
-
-                                    <div class="panel">
-                                        <table id="paneltable">
-                                            {% for entitlement in role.entitlements %}
-                                                {% if loop.first %}
-                                                    <tr id="row">
-                                                        <td  class="firsttd" rowspan={{loop.length}}>
-                                                            Permissions
-                                                        </td>
-                                                        <td class="long">
-                                                            {{entitlement.name}}
-                                                            {% if loop.last %}
-                                                                <hr>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-
-                                                {% else %}
-                                                    <tr>
-                                                        <td class="long">
-                                                            {{entitlement.name}}
-                                                        </td>
-                                                        {% if loop.last %}
-                                                        <hr>
-                                                    {% endif %}
-                                                    </tr>
-                                                {% endif %}
-                                            {% endfor %}
-                                            {% for princip in role.principals %}
-
-                                                {% if loop.first %}
-                                                    <tr>
-                                                        <td class="firsttd" rowspan={{loop.length}}>
-                                                            Members
-                                                        </td>
-                                                        <td class="long">
-                                                            {{princip.principal.display_name}}
-                                                        </td>
-                                                    </tr>
-
-                                                {% else %}
-
-                                                    <tr>
-                                                        <td class="long">
-                                                            {{princip.principal.display_name}}
-                                                        </td>
-                                                    </tr>
-
-                                                {% endif %}
-                                            {% endfor %}
-
-                                        </table>
-
-                                    </div>
-
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </td>
-                    </tr>
             </table>
     </div>
+    {{ include('::accordions.html.twig', { heading: "Roles", variant: "dark", items: roles_accordion }) }}
 {% endblock %}

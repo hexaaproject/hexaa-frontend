@@ -31,9 +31,9 @@
                     </div>
                 
         {% if managers is defined and managers|length %}
-            {{ include('::tables.html.twig', {tier: 'tier1', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table' }) }}
+            {{ include('::tables.html.twig', {variant: 'red', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table' }) }}
         {% endif %}
         {% if members is defined and members|length %}
-            {{ include('::tables.html.twig', {tier: 'tier2', caption: 'Members', checkbox: true, users: members, table_id: 'members_table' }) }}
+            {{ include('::tables.html.twig', {variant: 'blue', caption: 'Members', checkbox: true, users: members, table_id: 'members_table' }) }}
         {% endif %}
 {% endblock %}
