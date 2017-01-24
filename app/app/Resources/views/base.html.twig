@@ -273,7 +273,7 @@
             $("<a class='hamburgercontentname' id='linktoman'>Managers</a>").appendTo("#servman");
 
             $("<div class='linksubmenu' id='servattr'></div>").appendTo("#servicesssubmenu");
-            $("<a class='hamburgercontentname' id='linktoattr'>Roles</a>").appendTo("#servattr");
+            $("<a class='hamburgercontentname' id='linktoattr'>Attributes</a>").appendTo("#servattr");
 
             $("<div class='linksubmenu' id='servperm'></div>").appendTo("#servicesssubmenu");
             $("<a class='hamburgercontentname' id='linktoperm'>Permissions</a>").appendTo("#servperm");
@@ -285,40 +285,39 @@
             $("<a class='hamburgercontentname' id='linktoorg'>Connected organizations</a>").appendTo("#servorg");
 
             $("#linktoprop").click(function () {
-                /* var url = '{/{ path("app_service_properties", {'id': 'servid'}) }}';
-                 url = url.replace("servid", servid);*/
-                window.location = window.location.href;
+                var url = '{{ path("app_service_properties", {'id': 'servid'}) }}';
+                url = url.replace("servid", servid);
+                window.location = url;
             });
 
             $("#linktoman").click(function () {
-                /* var url = '{/{ path("app_service_managers", {'id': 'servid'}) }}';
-                 url = url.replace("servid", servid);*/
-                window.location = window.location.href;
+                var url = '{{ path("app_service_managers", {'id': 'servid'}) }}';
+                url = url.replace("servid", servid);
+                window.location = url;
             });
 
             $("#linktoattr").click(function () {
-                /*var url = '{/{ path("app_serices_attributes", {'id': 'servid'}) }}';
-                 url = url.replace("servid", servid);*/
-                window.location = window.location.href;
+                var url = '{{ path("app_service_attributes", {'id': 'servid'}) }}';
+                url = url.replace("servid", servid);
+                window.location = url;
             });
 
             $("#linktoperm").click(function () {
-                /*var url = '{/{ path("app_service_permissions", {'id': 'servid'}) }}';
-                 url = url.replace("servid", servid);*/
-                window.location = window.location.href;
+                var url = '{{ path("app_service_permissions", {'id': 'servid'}) }}';
+                url = url.replace("servid", servid);
+                window.location = url;
             });
 
             $("#linktopermsets").click(function () {
-                /* var url = '{/{ path("app_service_permissionssets", {'id': 'servid'}) }}';
-                 url = url.replace("servid", servid);*/
-                window.location = window.location.href;
+                var url = '{{ path("app_service_permissionssets", {'id': 'servid'}) }}';
+                url = url.replace("servid", servid);
+                window.location = url;
             });
 
             $("#linktoorg").click(function () {
-                /*var url = '{/{ path("app_service_connectedorganizations", {'id': 'servid'}) }}';
-                 url = url.replace("servid", servid);*/
-
-                window.location = window.location.href;
+                var url = '{{ path("app_service_connectedorganizations", {'id': 'servid'}) }}';
+                url = url.replace("servid", servid);
+                window.location = url;
             });
         }
     </script>
