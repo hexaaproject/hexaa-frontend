@@ -29,11 +29,20 @@
                             <button class="btnhexaa btn-red pull-right"><i class="glyphicon glyphicon-plus"></i> Invite</button>
                         </div>
                     </div>
-                
+
+
         {% if managers is defined and managers|length %}
-            {{ include('::tables.html.twig', {variant: 'red', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table' }) }}
+        <div class="row">
+            <div class="col-md-15">
+                {{ include('::tables.html.twig', {variant: 'red', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table' }) }}
+            </div>
+        </div>
         {% endif %}
         {% if members is defined and members|length %}
-            {{ include('::tables.html.twig', {variant: 'blue', caption: 'Members', checkbox: true, users: members, table_id: 'members_table' }) }}
+        <div class="row">
+            <div class="col-md-15">
+                {{ include('::tables.html.twig', {variant: 'blue', caption: 'Members', checkbox: true, users: members, table_id: 'members_table' }) }}            
+            </div>
+        </div>
         {% endif %}
 {% endblock %}

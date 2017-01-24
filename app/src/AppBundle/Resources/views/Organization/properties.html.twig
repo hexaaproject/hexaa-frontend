@@ -53,5 +53,11 @@
                 </tr>
             </table>
     </div>
-    {{ include('::accordions.html.twig', { heading: "Roles", variant: "dark", items: roles_accordion }) }}
+
+    <div class="row">
+        <div class="col-md-11 col-md-offset-2">
+        {{ include('::accordions.html.twig', { heading: "Roles", variant: "dark", items: roles_accordion }) }}
+        </div>
+    </div>
+    
 {% endblock %}

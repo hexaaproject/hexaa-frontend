@@ -3,6 +3,12 @@
 {% block title %}HEXAA Organizations{% endblock %}
 
 {% block body %}	
+    {% stylesheets
+        'css/hexaagrid.css'
+        filter='cssrewrite'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
     <div id="srvmenu">
         <div id="srvmenucontent">
             <span id="servicename"><a class="srvlink" href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name }}</a></span>
@@ -22,6 +28,7 @@
 	<div class="container">
 		{% block container %}{% endblock %}
 	</div>
+
 {% endblock %}
 
 {% block javascripts %}

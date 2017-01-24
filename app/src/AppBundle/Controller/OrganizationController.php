@@ -110,36 +110,13 @@ class OrganizationController extends Controller {
     {
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
-        $roles_accordion = array();
+        $roles_accordion = $this->rolesToAccordion($roles);
 
-        foreach ($roles as $role) {
-            $roles_accordion[$role['id']]['title'] = $role['name'];
-            $members = array();
-            $permissions = array();
-            
-            foreach ($role['principals'] as $principal) {
-                $members[] = $principal['principal']['display_name'];
-            }
-            foreach ($role['entitlements'] as $entitlement) {
-                $permissions[] = $entitlement['name'];
-            }
-
-            $roles_accordion[$role['id']]['contents'] = array(
-                array(
-                    'key' => 'Permissions',
-                    'values' => $permissions
-                    ),
-                array(
-                    'key' => 'Members',
-                    'values' => $members
-                    )
-                );
-        }
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
                 "organization" => $organization,
-                "roles" => $roles,
+                "roles" => $roles, // TODO ez majd remélhetőleg nem kell!
                 "organizations" => $this->getOrganizations(),
                 "services" => $this->getServices(),
                 "roles_accordion" => $roles_accordion
@@ -175,13 +152,17 @@ class OrganizationController extends Controller {
     public function rolesAction($id)
     {
         $organization = $this->getOrganization($id);
+        $roles = $this->getRoles($organization);
+        $roles_accordion = $this->rolesToAccordion($roles);
+
         return $this->render(
             'AppBundle:Organization:roles.html.twig',
             array(
                 "organization" => $organization,
-                "roles" => $this->getRoles($organization),
                 "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices()
+                "roles" => $roles,
+                "services" => $this->getServices(),
+                "roles_accordion" => $roles_accordion
             )
         );
     }
@@ -239,5 +220,35 @@ class OrganizationController extends Controller {
     private function getMembers($organization)
     {
         return Organization::membersget($this->getUser()->getClient(), $organization['id']);
+    }
+
+    private function rolesToAccordion($roles)
+    {
+        $roles_accordion = array();
+
+        foreach ($roles as $role) {
+            $roles_accordion[$role['id']]['title'] = $role['name'];
+            $members = array();
+            $permissions = array();
+            
+            foreach ($role['principals'] as $principal) {
+                $members[] = $principal['principal']['display_name'];
+            }
+            foreach ($role['entitlements'] as $entitlement) {
+                $permissions[] = $entitlement['name'];
+            }
+
+            $roles_accordion[$role['id']]['contents'] = array(
+                array(
+                    'key' => 'Permissions',
+                    'values' => $permissions
+                    ),
+                array(
+                    'key' => 'Members',
+                    'values' => $members
+                    )
+                );
+        }
+        return $roles_accordion;
     }
 }
