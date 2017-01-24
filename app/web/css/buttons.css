@@ -3,7 +3,6 @@
     padding: 6px 12px;
     font-size: 14px;
     font-weight: normal;
-    font-family: Verdana;
     line-height: 1.42857143;
     text-align: center;
     white-space: nowrap;
@@ -18,9 +17,21 @@
     color: white;
 }
 
+.btn-red-inverse{
+    background-color: white;
+    color: #EA7373;
+    border-color: #EA7373;
+}
+
 .btn-blue{
     background-color: #61AFC5;
     color:white;
+}
+
+.btn-blue-inverse{
+    background-color: white;
+    color: #61AFC5;
+    border-color: #61AFC5;
 }
 
 .btn-white{
