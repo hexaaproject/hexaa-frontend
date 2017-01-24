@@ -63,64 +63,64 @@
 
 
 
-.datatable-tier1 {
+.datatable-red {
 	border: 2px solid #FA8072;
 }
 
-.datatable-tier1 caption {
+.datatable-red caption {
     color:#FA8072;
 }
 
-.datatable-tier1 td{
+.datatable-red td{
     border-bottom: 2px solid #FA8072;
 }
 
 /* checkbox */
-.datatable-tier1 input{
+.datatable-red input{
     background-color: #fafafa;
     border: 2px solid #FA8072;	
 }
 
-.datatable-tier1 input:checked{
+.datatable-red input:checked{
     background-color: #fafafa;
     border: 2px solid #FA8072;	
 }
 
-.datatable-tier1 input:checked:after {
+.datatable-red input:checked:after {
     color: #FA8072;
 }
 
-.datatable-tier1 td{
+.datatable-red td{
     border-bottom: 2px solid #FA8072;
 }
 
-.datatable-tier2 {
+.datatable-blue {
 	border: 2px solid #61AFC5;
 }
 
-.datatable-tier2 caption {
+.datatable-blue caption {
     color:#61AFC5;
 }
 
-.datatable-tier2 td{
+.datatable-blue td{
     border-bottom: 2px solid #61AFC5;
 }
 
-.datatable-tier2 input{
+.datatable-blue input{
     background-color: #fafafa;
     border: 2px solid #61AFC5;	
 }
 
-.datatable-tier2 input:checked{
+.datatable-blue input:checked{
     background-color: #fafafa;
     border: 2px solid #61AFC5;	
 }
 
-.datatable-tier2 input:checked:after {
+.datatable-blue input:checked:after {
     color: #61AFC5;
 }
 
-.datatable-tier2 td{
+.datatable-blue td{
     border-bottom: 2px solid #61AFC5;
 }
 

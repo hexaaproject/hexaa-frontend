@@ -1,9 +1,9 @@
 {#
 
-{{ include('::tables.html.twig', {tier: 'tier1', caption: 'Nagy caption', checkbox: true, users: managers, table_id: managers_table}) }}
+{{ include('::tables.html.twig', {variant: 'red', caption: 'Nagy caption', checkbox: true, users: managers, table_id: managers_table}) }}
 
 ahol:
-tier: tier1|tier2
+variant: red|blue
 checkbox: true|false
 table_id: the id of the table tag
 
@@ -26,7 +26,7 @@ table_id: the id of the table tag
     });
 </script>
 
-<table class="datatable datatable-{{ tier }}" id="{{ table_id }}">
+<table class="datatable datatable-{{ variant }}" id="{{ table_id }}">
     <caption>{{ caption }}</caption>
     <thead>
         <tr>
