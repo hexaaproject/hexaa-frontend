@@ -1,4 +1,41 @@
 {# 
+usage in twig:
+{{ include('::tables.html.twig', {heading: 'foobar', variant: 'dark/light', items: items}) }}
+
+usage in symfony:
+return $this->render(
+            'AppBundle:Whatever.html.twig',
+            array(
+                "items" => array(
+                // accordion 1
+                array(
+                    "title" => "Accord1",
+                    "contents" => array(
+                        // accordion1 content 1
+                        array(
+                            "key" => "property a",
+                            "values" => array("x")
+                        ),
+                        // accordion1 content 2
+                        array(
+                            "key" => "property b",
+                            "values" => array("a", "b", "c")
+                        )
+                    )
+                ),
+                // accordion 2
+                array(
+                    "title" => "Accord2",
+                    "contents" => array(
+                        // accordion2 content 1
+                        array(
+                            "key" => "property dzs",
+                            "values" => array("e", "f")
+                        )
+                    )
+                ),
+            )
+        );
 
 usage in php: 
 
@@ -40,7 +77,8 @@ echo $twig->render('accordions.html.twig', array(
 
 #}
 <script>
-    function toggleAccordion(e) {
+    function toggleAccordion(
+            e) {
         e.classList.toggle("active");
 
         var panel = e.nextElementSibling;
