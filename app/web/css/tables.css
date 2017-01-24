@@ -94,6 +94,8 @@
     border-bottom: 2px solid #FA8072;
 }
 
+
+/* kék #61AFC5 */
 .datatable-blue {
 	border: 2px solid #61AFC5;
 }
@@ -124,6 +126,36 @@
     border-bottom: 2px solid #61AFC5;
 }
 
+/* lila #8496d4 */
+.datatable-purple {
+  border: 2px solid #8496d4;
+}
+
+.datatable-purple caption {
+    color:#8496d4;
+}
+
+.datatable-purple td{
+    border-bottom: 2px solid #8496d4;
+}
+
+.datatable-purple input{
+    background-color: #fafafa;
+    border: 2px solid #8496d4;  
+}
+
+.datatable-purple input:checked{
+    background-color: #fafafa;
+    border: 2px solid #8496d4;  
+}
+
+.datatable-purple input:checked:after {
+    color: #8496d4;
+}
+
+.datatable-purple td{
+    border-bottom: 2px solid #8496d4;
+}
 
 
 /* datatables */
