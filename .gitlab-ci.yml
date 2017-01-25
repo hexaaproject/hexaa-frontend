@@ -42,14 +42,14 @@ variables:
   CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:latest
 
-build:
-  stage: build
-  script:
-    # - docker-clean
-    - docker build -t $CONTAINER_TEST_IMAGE .
-    - docker push $CONTAINER_TEST_IMAGE
-  tags:
-    - dind
+# build:
+#   stage: build
+#   script:
+#     # - docker-clean
+#     - docker build -t $CONTAINER_TEST_IMAGE .
+#     - docker push $CONTAINER_TEST_IMAGE
+#   tags:
+#     - dind
 
 test:
   stage: test
