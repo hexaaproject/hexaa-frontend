@@ -10,6 +10,4 @@ RUN cd /var/www/project \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer install --no-interaction \
     && bin/console assetic:dump \
-    && ls -la \
-    && pwd
-RUN ls -la /var/www/project
+    && chown -R www-data var
