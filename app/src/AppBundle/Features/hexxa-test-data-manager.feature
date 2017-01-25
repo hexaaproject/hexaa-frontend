@@ -11,5 +11,4 @@ Feature: Behat hexaa data manager tesztek
 	Scenario: setup the basic hexaa test data
 	   Given I prepare a GET request on "/setup"
 		When I send the request
-		Then print last api response
 		 And I should receive a 204 response
