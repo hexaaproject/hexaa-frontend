@@ -70,9 +70,24 @@ class ServiceController extends Controller {
             'AppBundle:Service:properties.html.twig', array(
             'organizations' => $this->getOrganizations(),
             'services' => $this->getServices(),
-            'service' => $this->getService($id)
+            'service' => $this->getService($id),
+            'main' => $this->getService($id),
+            'propertiesbox' => $this->getPropertiesBox()    
             )
         );
+    }
+    
+    private function getPropertiesBox(){
+        $propertiesbox = array(
+            "Name" => "name",
+            "Description" => "description",
+            "Home page" => "url",
+            "SAML SP Entity ID" => "entityid",
+            "Created" => "created_at",
+            "Last updated" => "updated_at"
+        );
+        
+        return $propertiesbox;
     }
 
     /**

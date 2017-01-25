@@ -23,6 +23,8 @@ class ProfileController extends Controller
             
             $verbose = "expanded";
             $userattributes = $this->get('principal')->attributeget($client, $verbose);
+            $newuserattribute = $this->get('principal')->attributespecsget($client, $verbose);
+
 
         } catch (ClientException $e) {            
             $this->token = null;
@@ -43,7 +45,7 @@ class ProfileController extends Controller
         }
 
         return $this->render('AppBundle:Profile:index.html.twig', array(
-            'organizations' => $organizations, 'services'=>$services, 'user'=>$user, 'userattributes'=>$userattributes
+            'organizations' => $organizations, 'services'=>$services, 'user'=>$user, 'userattributes'=>$userattributes, 'userattr'=>$newuserattribute
         ));
     }
     

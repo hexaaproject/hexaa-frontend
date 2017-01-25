@@ -1,0 +1,34 @@
+{# 
+usage in twig:
+{{ include('::panel.html.twig', {heading: 'foobar', main: service/organization, items: items}) }}
+
+usage in symfony (example:key1=Name, value1=name):
+return $this->render(
+            'AppBundle:Whatever.html.twig',
+            array(
+                "items" => array(
+                    "key1" => "value1", 
+                    "key2" => "value2"
+                    .
+                    .
+                    .
+                ),
+                "main" => service/organization
+            )
+        );
+#}
+<div class="propertiespanel">
+        <div class="header">
+            {{heading}}
+        </div>
+    {% for key, value in items %}
+            {% if main[value]%}
+            <div>
+                <div class="propname">{{key}}</div>
+                <div class="propdescription" >{{main[value]}}</div>
+            </div>
+            {% endif %}
+    {% endfor %}
+</div>
+    
+    

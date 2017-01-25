@@ -1,0 +1,31 @@
+.propertiespanel{
+    border: 2px solid #61AFC5;
+    width:100%;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.propname {
+    display: inline;
+    float: left; 
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+}
+
+.propdescription {
+    text-align: left;
+    padding-bottom: 0.5em;
+    padding-left: 11em;
+    padding-right: 1em;
+}
+
+.header {
+    text-align: left;  
+    color: #61AFC5;
+    font-size: x-large;
+    font-family: Verdana;
+    font-weight: bold;
+    padding-left: 1em;
+    padding-bottom: 0.5em;
+}

@@ -9,6 +9,7 @@
             <tr>
                 <td id="properties" style="background-color: #FFFFFF" width="110%" height="110%">
                     <div id="propertyname">
+
                         <b> Properties </b>
                         <button class="editproperty"></button>
                     </div>
@@ -44,10 +45,10 @@
                     </div>
                     
                     <div id="attributes">
-                    {% for userattribute in userattributes %}
+                    {% for us in userattr %}
                         <div class="accordionattributes">
                             <span class="name">
-                                {{userattribute.attribute_spec.name}}
+                                {{us.name}}
                             </span>
                         </div>
                         <div class="panelattributes">

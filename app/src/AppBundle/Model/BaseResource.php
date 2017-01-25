@@ -51,4 +51,12 @@ abstract class BaseResource
         return json_decode($response->getBody(), true);
     }
     
+    public static function attributespecsget(Client $client, string $verbose = normal) {
+        $response = $client->get(static::$pathName.'/'.'attributespecs', [
+            'query' => [
+                'verbose' => $verbose          
+        ]]);
+        return json_decode($response->getBody(), true);
+    }
+    
 }
