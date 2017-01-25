@@ -57,11 +57,13 @@ test:
     - docker run -d --name db --network=hexaa-test -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
     - docker run -d --name memcached --network=hexaa-test memcached
     - docker run -d --name grid --network=hexaa-test elgalu/selenium
+    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
     - docker run -d --name hexaa-backend --network=hexaa-test hexaaproject/hexaa-backend:for-dev
     - docker run -d --name hexaa-test-data-manager --network=hexaa-test hexaaproject/hexaa-test-data-manager:for-dev
     - docker run -d --name project.local --network=hexaa-test $CONTAINER_TEST_IMAGE
     - docker logs hexaa-backend
     - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
+    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
     - docker exec -t project.local /var/www/project/test.sh /var/www/project
   tags:
     - dind
