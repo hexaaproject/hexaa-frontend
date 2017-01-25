@@ -101,12 +101,3 @@ table#centertableservicesprop{
     padding-top:30px;
 }
 
-.editproperty{
-    background: url(../img/red_pencil.svg) no-repeat;
-    cursor:pointer;
-    width:24px;;
-    height:25px;
-    border:1px solid #FFFFFF;
-    margin-right: 1em;
-    float:right;
-}

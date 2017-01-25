@@ -1,6 +1,6 @@
 {# 
 usage in twig:
-{{ include('::panel.html.twig', {heading: 'foobar', main: service/organization, items: items}) }}
+{{ include('::panel.html.twig', {heading: 'foobar', buttonappear:'none/inline' main: service/organization, items: items}) }}
 
 usage in symfony (example:key1=Name, value1=name):
 return $this->render(
@@ -20,6 +20,7 @@ return $this->render(
 <div class="propertiespanel">
         <div class="header">
             {{heading}}
+            <button class="editbutton" style="display: {{buttonappear}}"></button>
         </div>
     {% for key, value in items %}
             {% if main[value]%}

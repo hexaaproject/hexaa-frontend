@@ -29,3 +29,13 @@
     padding-left: 1em;
     padding-bottom: 0.5em;
 }
+
+.editbutton{
+    background: url(../img/red_pencil.svg) no-repeat;
+    cursor:pointer;
+    width:24px;
+    height:25px;
+    border:none;
+    margin-right: 0.5em;
+    float:right;
+}
