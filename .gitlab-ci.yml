@@ -42,30 +42,25 @@ variables:
   CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:latest
 
-# build:
-#   stage: build
-#   script:
-#     - docker build -t $CONTAINER_TEST_IMAGE .
-#     - docker push $CONTAINER_TEST_IMAGE
-#   tags:
-#     - dind
+build:
+  stage: build
+  script:
+    - docker build -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+  tags:
+    - dind
 
 test:
   stage: test
   script:
-    - docker run -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
-    - docker ps
-    - docker run -d --name memcached memcached
-    - docker ps
-    - docker run -d --name grid elgalu/selenium
-    - docker ps
-    - docker run -d --name hexaa-backend --link db:db --link memcached:memcached hexaaproject/hexaa-backend:for-dev
-    - docker ps
-    - docker run -d --name hexaa-test-data-manager --link hexaa-backend:hexaa-backend hexaaproject/hexaa-test-data-manager:for-dev
-    - docker ps
-    - docker run --rm --link grid:grid --link hexaa-test-data-manager:hexaa-test-data-manager -t $CONTAINER_TEST_IMAGE /var/www/project/test.sh /var/www/project
-    - docker logs hexaa-test-data-manager
-    - docker logs hexaa-backend
+    - docker network create hexaa-test
+    - docker run -d --name db --network=hexaa-test -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
+    - docker run -d --name memcached --network=hexaa-test memcached
+    - docker run -d --name grid --network=hexaa-test elgalu/selenium
+    - docker run -d --name hexaa-backend --network=hexaa-test hexaaproject/hexaa-backend:for-dev
+    - docker run -d --name hexaa-test-data-manager --network=hexaa-test hexaaproject/hexaa-test-data-manager:for-dev
+    - docker run -d --name project.local --network=hexaa-test $CONTAINER_TEST_IMAGE
+
   tags:
     - dind
 
