@@ -15,25 +15,6 @@ stages:
 
 before_script:
   - docker info
-  # Install ssh-agent if not already installed, it is required by Docker.
-  # (change apt-get to yum if you use a CentOS-based image)
-  # - 'which ssh-agent || ( apk update && apk add openssh-client )'
-
-  # Run ssh-agent (inside the build environment)
-  # - eval $(ssh-agent -s)
-
-  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
-  # append public key to target .ssh/authorized_keys file.
-  # - echo "$SSH_PRIVATE_KEY" > id_rsa; chmod 600 id_rsa; ssh-add id_rsa
-  # - echo $SSH_PRIVATE_KEY > id_rsa; chmod 600 id_rsa
-
-  # For Docker builds disable host key checking. Be aware that by adding that
-  # you are suspectible to man-in-the-middle attacks.
-  # WARNING: Use this only with the Docker executor, if you use it with shell
-  # you will overwrite your user's SSH config.
-  # - mkdir -p ~/.ssh
-  # - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - whoami
   - hostname
   - docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000
@@ -42,13 +23,13 @@ variables:
   CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:latest
 
-# build:
-#   stage: build
-#   script:
-#     - docker build -t $CONTAINER_TEST_IMAGE .
-#     - docker push $CONTAINER_TEST_IMAGE
-#   tags:
-#     - dind
+build:
+  stage: build
+  script:
+    - docker build -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+  tags:
+    - dind
 
 test:
   stage: test
@@ -57,11 +38,13 @@ test:
     - docker run -d --name db --network=hexaa-test -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
     - docker run -d --name memcached --network=hexaa-test memcached
     - docker run -d --name grid --network=hexaa-test elgalu/selenium
+    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
     - docker run -d --name hexaa-backend --network=hexaa-test hexaaproject/hexaa-backend:for-dev
     - docker run -d --name hexaa-test-data-manager --network=hexaa-test hexaaproject/hexaa-test-data-manager:for-dev
     - docker run -d --name project.local --network=hexaa-test $CONTAINER_TEST_IMAGE
-    - echo sleep 24 sec for wake up services
-    - sleep 24
+    - docker logs hexaa-backend
+    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
+    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
     - docker exec -t project.local /var/www/project/test.sh /var/www/project
   tags:
     - dind
