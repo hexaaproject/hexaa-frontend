@@ -10,7 +10,8 @@ Feature: When I go to organizations
 		 And I fill in "password" with "pass"
 		 And I press "Login"
 		Then I should be on "/"
-		 And I should see "Welcome to"
+		When I wait for 3 seconds
+		Then I should see "Welcome to"
 		 And I should see "employee@project.local"
 
 	Scenario: Navigate to Add org
