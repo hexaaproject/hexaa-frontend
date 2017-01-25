@@ -60,8 +60,7 @@ test:
     - docker run -d --name hexaa-backend --network=hexaa-test hexaaproject/hexaa-backend:for-dev
     - docker run -d --name hexaa-test-data-manager --network=hexaa-test hexaaproject/hexaa-test-data-manager:for-dev
     - docker run -d --name project.local --network=hexaa-test $CONTAINER_TEST_IMAGE
-    - echo sleep 18 sec for wake up services
-    - sleep 18
+    - docker run dmfenton/wait hexaa-backend:80
     - docker exec -t project.local /var/www/project/test.sh /var/www/project
   tags:
     - dind
