@@ -16,5 +16,8 @@ docker run -d --name hexaa-backend --network=hexaa-test hexaaproject/hexaa-backe
 docker run -d --name hexaa-test-data-manager --network=hexaa-test hexaaproject/hexaa-test-data-manager:for-dev
 docker run -d --name project.local --network=hexaa-test solazs/hexaa-newui
 
-sleep 18
+docker logs hexaa-backend
+
+docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 60
+
 docker exec -t project.local /var/www/project/test.sh /var/www/project
