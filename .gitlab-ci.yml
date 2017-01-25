@@ -60,7 +60,7 @@ test:
     - docker run -d --name hexaa-backend --network=hexaa-test hexaaproject/hexaa-backend:for-dev
     - docker run -d --name hexaa-test-data-manager --network=hexaa-test hexaaproject/hexaa-test-data-manager:for-dev
     - docker run -d --name project.local --network=hexaa-test $CONTAINER_TEST_IMAGE
-    - docker run dmfenton/wait hexaa-backend:80
+    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80
     - docker exec -t project.local /var/www/project/test.sh /var/www/project
   tags:
     - dind
