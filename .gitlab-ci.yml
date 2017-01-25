@@ -51,23 +51,23 @@ build:
   tags:
     - dind
 
-test:
-  stage: test
-  script:
-    - docker run -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
-    - docker ps
-    - docker run -d --name memcached memcached
-    - docker ps
-    - docker run -d --name hexaa-backend --link db:db --link memcached:memcached hexaaproject/hexaa-backend:for-dev
-    - docker ps
-    - docker run -d --name grid elgalu/selenium
-    - docker ps
-    - docker run -d --name hexaa-test-data-manager --link hexaa-backend:hexaa-backend hexaaproject/hexaa-test-data-manager:for-dev
-    - docker ps
-    - docker run --rm --link db:db --link grid:grid --link hexaa-test-data-manager:hexaa-test-data-manager -t solazs/hexaa-newui /var/www/project/test.sh /var/www/project
-    - docker ps
-  tags:
-    - dind
+# test:
+#   stage: test
+#   script:
+#     - docker run -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
+#     - docker ps
+#     - docker run -d --name memcached memcached
+#     - docker ps
+#     - docker run -d --name hexaa-backend --link db:db --link memcached:memcached hexaaproject/hexaa-backend:for-dev
+#     - docker ps
+#     - docker run -d --name grid elgalu/selenium
+#     - docker ps
+#     - docker run -d --name hexaa-test-data-manager --link hexaa-backend:hexaa-backend hexaaproject/hexaa-test-data-manager:for-dev
+#     - docker ps
+#     - docker run --rm --link db:db --link grid:grid --link hexaa-test-data-manager:hexaa-test-data-manager -t solazs/hexaa-newui /var/www/project/test.sh /var/www/project
+#     - docker ps
+#   tags:
+#     - dind
 
 
 # deploy:
