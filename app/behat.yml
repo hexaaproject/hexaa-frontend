@@ -25,6 +25,7 @@ default:
             mink_session: selenium2
             contexts:
                 - AppBundle\Features\Context\FeatureContext
+                - AppBundle\Features\Context\MyApiContext
                 - Knp\FriendlyContexts\Context\MinkContext
-                - Knp\FriendlyContexts\Context\ApiContext
+                # - Knp\FriendlyContexts\Context\ApiContext
                 # - Knp\FriendlyContexts\Context\TableContext
