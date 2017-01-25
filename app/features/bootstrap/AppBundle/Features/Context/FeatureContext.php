@@ -37,4 +37,14 @@ class FeatureContext extends RawMinkContext
         }
         throw new \Exception("Not found this placeholder on this page", 1);
     }
+
+    /**
+     * @When I wait for :arg1 seconds
+     */
+    public function iWaitForSeconds($arg1)
+    {
+        sleep($arg1);
+    }
+
+
 }

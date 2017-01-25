@@ -13,8 +13,8 @@ Feature: When I go to a specific organization
 		 And I fill in "password" with "pass"
 		 And I press "Login"
 		Then I should be on "/"
-		 And I should see "Welcome to"
-		 And I should see "employee@project.local"
+		When I wait for 3 seconds
+		Then I should see "employee@project.local"
 		 And I should see "testOrg1"
 
 	Scenario: Navigate to organization show page
@@ -39,7 +39,8 @@ Feature: When I go to a specific organization
 	     And I follow "Properties"
 	    Then I should see "Ez a szervezet teszteléshez készült. Jól tesztelve is lesz vele az alkalmazás."
 	    And I should see "Roles"
-	    And I should see "A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni."
+	    And I should see "Test role 1"
+	    And I should see "Test role 2"
 
 	Scenario: Navigate to organization users
 	   Given I am on "/"
