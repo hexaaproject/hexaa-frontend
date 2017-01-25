@@ -19,7 +19,8 @@ table_id: the id of the table tag
 
         {# hide pagination if one page #}
         if ($('#{{ table_id }}').DataTable().page.info().pages == 1) {
-            $('#{{ table_id }}_info').parent().parent().hide();
+            $('#{{ table_id }}_info').hide();
+            $('#{{ table_id }}_paginate').hide();
             $('#{{ table_id }}_length').hide();
         }
 
