@@ -8,6 +8,7 @@ Feature: When I go to a specific organization
 	   # Given empty hexaa data
     #    Given setup the basic hexaa test data
 	   Given I am on "/Shibboleth.sso/Login"
+		When I wait for 3 seconds
 		Then I should see "Username"
 		When I fill in "username" with "e"
 		 And I fill in "password" with "pass"
