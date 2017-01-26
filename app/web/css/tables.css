@@ -7,13 +7,14 @@
 .datatable td{
     padding: 5px;
     text-align: left;
+    font-size: 15px;
 }
 
 .datatable caption {
     display: table-caption;
     text-align: left;
     font-weight:bold;
-    font-size:larger;
+    font-size: 25px;
     margin-bottom: 0.5em;
     margin-top: 1em;
 }
