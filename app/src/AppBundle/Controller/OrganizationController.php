@@ -109,17 +109,30 @@ class OrganizationController extends Controller {
     public function propertiesAction($id)
     {
         $organization = $this->getOrganization($id);
-        $roles = $this->getRoles($organization);
-        $roles_accordion = $this->rolesToAccordion($roles);
+        $roles = $this->rolesToAccordion($this->getRoles($organization));
+        $organization['default_role_name'] = null;
+        foreach ($this->getRoles($organization) as $role) {
+            if ($role['id'] == $organization['default_role_id']) {
+                $defaultrole = $role;
+                $organization['default_role_name'] = $role["name"];
+            }
+        }
+
+        $propertiesbox = array(
+            "Name" => "name",
+            "Description" => "description",
+            "Home page" => "url",
+            "Default role" => "default_role_name"
+            );
 
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
-                "organization" => $organization,
-                "roles" => $roles, // TODO ez majd remélhetőleg nem kell!
                 "organizations" => $this->getOrganizations(),
                 "services" => $this->getServices(),
-                "roles_accordion" => $roles_accordion
+                "organization" => $organization,
+                "roles" => $roles,
+                "propertiesbox" => $propertiesbox
             )
         );
     }
