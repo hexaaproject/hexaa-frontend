@@ -5,6 +5,7 @@ Feature: When I go to organizations
 
 	Background:
 	   Given I am on "/Shibboleth.sso/Login"
+		 And I wait for 3 seconds
 		Then I should see "Username"
 		When I fill in "username" with "e"
 		 And I fill in "password" with "pass"
@@ -16,6 +17,7 @@ Feature: When I go to organizations
 
 	Scenario: Navigate to Add org
 	   Given I am on "/"
+		 And I wait for 3 seconds
 	    Then I should see "Add organization"
 	    When I follow "Add organization"
 	    Then I should be on "/organization/addStepOne"
@@ -23,6 +25,7 @@ Feature: When I go to organizations
 
 	Scenario: Add organization step one: base data
 	   Given I am on "/organization/addStepOne"
+		 And I wait for 3 seconds
 	     And I should see "Create virtual organization"
 	     And I should see a "Next" button
 	     And I should see 2 "input" elements
@@ -32,23 +35,28 @@ Feature: When I go to organizations
 
 	Scenario: Navigate Org wizard step two: roles
 	   Given I am on "/organization/addStepTwo"
+		 And I wait for 3 seconds
 	     And I should see "Szerepkörök"
 	     And I should see "Tagok listázásának tiltása a szervezetben"
 	     And I should see "Tagok listázásának tiltása a szerepkörökben"
 
 	Scenario: Add organization step three: permissions
 	   Given I am on "/organization/addStepThree"
+		 And I wait for 3 seconds
 	     And I should see "Szolgáltatás"
 	     And I should see "A szolgáltatás összes jogosultsága a Tagok szerepkörben lesz elérhető."
 
 	Scenario: Add organization step four: people
 	   Given I am on "/organization/addStepFour"
+		 And I wait for 3 seconds
 	     And I should see "Meghívó"
 
 	Scenario: Add organization step five: summary
 	   Given I am on "/organization/addStepFive"
+		 And I wait for 3 seconds
 	     And I should see "Összegzés"
 
 	Scenario: Add organization step five: success
 	   Given I am on "/organization/addStepSix"
+		 And I wait for 3 seconds
 	     And I should see "Siker"

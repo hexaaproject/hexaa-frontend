@@ -5,6 +5,7 @@ Feature: Login
 
 	Scenario: Login
 	   Given I am on "/Shibboleth.sso/Login"
+		 And I wait for 3 seconds
 		Then I should see "Username"
 		When I fill in "username" with "e"
 		 And I fill in "password" with "pass"
@@ -16,6 +17,7 @@ Feature: Login
 
 	Scenario: Failed login
 	   Given I am on "/Shibboleth.sso/Login"
+		 And I wait for 3 seconds
 		Then I should see "Username"
 		When I fill in "username" with "e"
 		 And I fill in "password" with "not too good pass"
