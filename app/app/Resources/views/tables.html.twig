@@ -24,6 +24,9 @@ table_id: the id of the table tag
             $('#{{ table_id }}_length').hide();
         }
 
+        {# hide filter label (text: Search:) #}
+        $('#{{ table_id }}_filter').children('label').contents().first().remove();
+        $('#{{ table_id }}_filter input').addClass('hexaaSearchField');
     });
 </script>
 

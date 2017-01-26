@@ -142,3 +142,10 @@
         width: 12vw;
         cursor: pointer;
     }
+
+    .hexaaSearchField {
+        border: 2px solid #61AFC5;
+        background-image: url(../img/search.PNG);
+        background-position: right;
+        background-repeat: no-repeat;
+    }
