@@ -133,3 +133,12 @@
     #mobilemaincontrols {
         display:none;
     }
+
+    .desktopbuttonorg{
+        display: inline-block;
+        padding: 4%;
+    }
+    .desktopbuttonimage {
+        width: 12vw;
+        cursor: pointer;
+    }
