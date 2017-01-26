@@ -9,6 +9,7 @@ Feature: Login
 		When I fill in "username" with "e"
 		 And I fill in "password" with "pass"
 		 And I press "Login"
+		 And I wait for 3 seconds
 		Then I should be on "/"
 		 And I should see "Welcome to"
 		 And I should see "employee@project.local"
@@ -19,4 +20,5 @@ Feature: Login
 		When I fill in "username" with "e"
 		 And I fill in "password" with "not too good pass"
 		 And I press "Login"
+		 And I wait for 3 seconds
 		Then I should see "Incorrect username or password"
