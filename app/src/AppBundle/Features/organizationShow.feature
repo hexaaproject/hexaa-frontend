@@ -19,7 +19,8 @@ Feature: When I go to a specific organization
 
 	Scenario: Navigate to organization show page
 	   Given I am on "/"
-	    When I follow "testOrg1"
+	    When I wait for 3 seconds
+	    Then I follow "testOrg1"
 	    Then I should see "testOrg1"
 	     And I should see "Properties"
 	     And I should see "Users"
@@ -35,7 +36,8 @@ Feature: When I go to a specific organization
 
 	Scenario: Navigate to organization properties
 	   Given I am on "/"
-	    When I follow "testOrg1"
+	    When I wait for 3 seconds
+	    Then I follow "testOrg1"
 	     And I wait for 3 seconds
 	     And I follow "Properties"
 	    Then I should see "Ez a szervezet teszteléshez készült. Jól tesztelve is lesz vele az alkalmazás."
@@ -45,7 +47,8 @@ Feature: When I go to a specific organization
 
 	Scenario: Navigate to organization users
 	   Given I am on "/"
-	    When I follow "testOrg1"
+	    When I wait for 3 seconds
+	    Then I follow "testOrg1"
 	     And I wait for 3 seconds 
 	     And I follow "Users"
 	    Then I should see "Change roles"
@@ -59,7 +62,8 @@ Feature: When I go to a specific organization
 
 	Scenario: Navigate to organization roles
 	   Given I am on "/"
-	    When I follow "testOrg1"
+	    When I wait for 3 seconds
+	    Then I follow "testOrg1"
 	     And I wait for 3 seconds
 	     And I follow "Roles"
 	    Then I should see "New role"
@@ -67,7 +71,8 @@ Feature: When I go to a specific organization
 
 	Scenario: Navigate to organization connected services
 	   Given I am on "/"
-	    When I follow "testOrg1"
+	    When I wait for 3 seconds
+	    Then I follow "testOrg1"
 	     And I wait for 3 seconds
 	     And I follow "Connected services"
 	    Then I should see "New connection"
