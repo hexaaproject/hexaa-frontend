@@ -191,10 +191,6 @@ div.panel p{
     display: box;
     text-align: center;
 }
-#maindivcontents{
-    display: inline-block;
-    padding-top: 5vh;
-}
 
 .flexcontainer {
     display: inline-flex;

@@ -43,6 +43,12 @@
         position: relative;
     }
 
+    #maindivcontents {
+        display: inline-block;
+        padding-top: 5vh;
+        text-align: center;
+    }
+
     #maindivcontentsafterlogin {
         display: inline-block;
         width:90vw;
