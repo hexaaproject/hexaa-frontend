@@ -1,11 +1,24 @@
 {#
 
-{{ include('::tables.html.twig', {variant: 'red', caption: 'Nagy caption', checkbox: true, users: managers, table_id: managers_table}) }}
+{{ include('::tables.html.twig', {variant: 'red', caption: 'Nagy caption', checkbox: true, users: managers, table_id: managers_table, buttons: buttons, search_placeholder: 'Search managers'}) }}
 
 ahol:
 variant: red|blue
 checkbox: true|false
 table_id: the id of the table tag
+
+buttons array:
+
+ ....
+ "id1" => array(
+    "class" => "btn-blue",
+    "text" => "Revoke"
+    ),
+ "id2" => array(
+    "class" => "btn-red pull-right",
+    "text" => '<i class="glyphicon glyphicon-plus"></i>Invite'
+    )
+ ...
 
 #}
 
@@ -15,6 +28,7 @@ table_id: the id of the table tag
             {% if checkbox %}
                 "order": [[ 1, "desc" ]],
             {% endif %}
+            "dom": 'trlip'
         });
 
         {# hide pagination if one page #}
@@ -27,8 +41,23 @@ table_id: the id of the table tag
         {# hide filter label (text: Search:) #}
         $('#{{ table_id }}_filter').children('label').contents().first().remove();
         $('#{{ table_id }}_filter input').addClass('hexaaSearchField');
+
+        $('#{{ table_id }}_hexaaSearchField').on( 'keyup', function () {
+            $('#{{ table_id }}').DataTable().search( this.value ).draw();
+        } );
+
     });
 </script>
+
+    <div class="{{ table_id }}_actionButtons" style="margin-top: 12px;">
+        <input class="hexaaCheckBox" type="checkbox" value="">
+        <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField" {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
+        {% if buttons is defined and buttons %}
+            {% for id, button in buttons %}
+                <button class="btnhexaa {{ button.class }}" id="{{ id }}">{{ button.text|raw }}</button>
+            {% endfor %}
+        {% endif %}
+    </div>
 
 <table class="datatable datatable-{{ variant }}" id="{{ table_id }}">
     <caption>{{ caption }}</caption>

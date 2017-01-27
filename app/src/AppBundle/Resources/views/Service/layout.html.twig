@@ -2,7 +2,13 @@
 
 {% block title %}HEXAA Services{% endblock %}
 
-{% block body %}	
+{% block body %}
+    {% stylesheets
+        'css/service.css'
+        filter='cssrewrite'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
     <div id="srvmenu">
         <div id="srvmenucontent">
             <span id="servicename"><a class="srvlink" href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name }}</a></span>
