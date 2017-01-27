@@ -152,6 +152,24 @@
     .hexaaSearchField {
         border: 2px solid #61AFC5;
         background-image: url(../img/search.PNG);
+        background-size: 34px;
         background-position: right;
         background-repeat: no-repeat;
+        padding: 6px 12px;
+        margin: 0px 4px;
+        font-size: 14px;
+        font-weight: normal;
+        vertical-align: middle;
+    }
+
+    .hexaaCheckBox {
+        background-color: #fafafa;
+        border: 2px solid #61AFC5;
+        -webkit-appearance: none;
+        display: inline-block;
+        padding: 6px 12px !important;
+        margin: 0px 4px !important;
+        width: 34px;
+        height: 34px;
+        vertical-align: middle;
     }
