@@ -44,7 +44,6 @@ Feature: When I go to a specific organization
 	     And I should see "Test role 1"	     
 	     And I should see "Test role 2"
 
-	@current
 	Scenario: Organization properties, role accordion
 	   Given I am on "/"
 	    When I wait for 3 seconds
@@ -78,6 +77,22 @@ Feature: When I go to a specific organization
 	     And I should see "Invite"
 	     And I should see "Managers"
 	     And I should see "Users"
+
+	Scenario: Organization users tables and buttons
+	   Given I am on "/"
+	    When I wait for 3 seconds
+	    Then I follow "testOrg1"
+	     And I wait for 3 seconds 
+	     And I follow "Users"
+	    Then I should see a table with 1 row
+	     And I should see a table with 4 rows
+	    When I fill in "Search member" with "nolocal"
+	    Then I should see a table with 2 rows
+	    When I fill in "Search manager" with "Harry Potter"
+	    Then I should see the following table portion
+	       | No matching records found |
+
+
 
 	Scenario: Navigate to organization roles
 	   Given I am on "/"
