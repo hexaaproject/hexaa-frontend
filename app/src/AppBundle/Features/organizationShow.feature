@@ -5,20 +5,20 @@ Feature: When I go to a specific organization
 		 I want to see the organization all properties
 
 	Background:
+
 	   Given I am on "/Shibboleth.sso/Login"
-		When I wait for 3 seconds
-		Then I should see "Username"
+		Then I wait for "Username" to appear
 		When I fill in "username" with "e"
 		 And I fill in "password" with "pass"
 		 And I press "Login"
 		Then I should be on "/"
-		When I wait for 3 seconds
+		Then I wait for "Welcome to" to appear
 		Then I should see "employee@project.local"
 		 And I should see "testOrg1"
 
 	Scenario: Navigate to organization show page
 	   Given I am on "/"
-	    When I wait for 3 seconds
+		Then I wait for "testOrg1" to appear
 	    Then I follow "testOrg1"
 	    Then I should see "testOrg1"
 	     And I should see "Properties"
@@ -35,9 +35,9 @@ Feature: When I go to a specific organization
 
 	Scenario: Navigate to organization properties
 	   Given I am on "/"
-	    When I wait for 3 seconds
+		 And I wait for "testOrg1" to appear	    
 	    Then I follow "testOrg1"
-	     And I wait for 3 seconds
+		 And I wait for "Properties" to appear	    
 	     And I follow "Properties"
 	    Then I should see "Ez a szervezet teszteléshez készült. Jól tesztelve is lesz vele az alkalmazás."
 	     And I should see "Roles"
@@ -46,9 +46,9 @@ Feature: When I go to a specific organization
 
 	Scenario: Organization properties, role accordion
 	   Given I am on "/"
-	    When I wait for 3 seconds
+		 And I wait for "Welcome to" to appear
 	    Then I follow "testOrg1"
-	     And I wait for 3 seconds
+		 And I wait for "testOrg1" to appear	    
 	     And I follow "Properties"
 	     And I should see "Test role 1"	     
 	     And I should see "Test role 2"
@@ -78,13 +78,15 @@ Feature: When I go to a specific organization
 	     And I should see "Managers"
 	     And I should see "Users"
 
+    @current
 	Scenario: Organization users tables and buttons
 	   Given I am on "/"
 	    When I wait for 3 seconds
 	    Then I follow "testOrg1"
-	     And I wait for 3 seconds 
+	    When I wait for 3 seconds
 	     And I follow "Users"
-	    Then I should see a table with 1 row
+	    Then I wait for "Managers" to appear
+	     And I should see a table with 1 row
 	     And I should see a table with 4 rows
 	    When I fill in "Search member" with "nolocal"
 	    Then I should see a table with 2 rows

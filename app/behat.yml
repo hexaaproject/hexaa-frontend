@@ -26,5 +26,4 @@ default:
             contexts:
                 - AppBundle\Features\Context\FeatureContext
                 - AppBundle\Features\Context\MyApiContext
-                - Knp\FriendlyContexts\Context\MinkContext
                 - Knp\FriendlyContexts\Context\TableContext
