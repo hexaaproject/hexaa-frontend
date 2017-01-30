@@ -48,7 +48,7 @@ class FeatureContext extends MinkContext
         sleep($arg1);
     }
 
-    
+
     /**
      * @When I wait for :text to appear
      * @Then I should see :text appear
@@ -67,6 +67,20 @@ class FeatureContext extends MinkContext
                 // NOOP
             }
             return false;
+        });
+    }
+
+    /**
+     * @When I wait for :text to disappear
+     * @Then I should see :text disappear
+     * @param $text
+     * @throws \Exception
+     */
+    public function iWaitForTextToDisappear($text)
+    {
+        $this->spin(function($context) use ($text) {
+            /** @var $context FeatureContext */
+            return !$context->getSession()->getPage()->hasContent($text);
         });
     }
 

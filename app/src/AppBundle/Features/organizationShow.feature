@@ -65,9 +65,9 @@ Feature: When I go to a specific organization
 
 	Scenario: Navigate to organization users
 	   Given I am on "/"
-	    When I wait for 3 seconds
+	    When I wait for "testOrg1" to appear
 	    Then I follow "testOrg1"
-	     And I wait for 3 seconds 
+	     And I wait for "Users" to appear 
 	     And I follow "Users"
 	    Then I should see "Change roles"
 	     And I should see "Proposal"
@@ -78,12 +78,11 @@ Feature: When I go to a specific organization
 	     And I should see "Managers"
 	     And I should see "Users"
 
-    @current
 	Scenario: Organization users tables and buttons
 	   Given I am on "/"
-	    When I wait for 3 seconds
+	    When I wait for "testOrg1" to appear
 	    Then I follow "testOrg1"
-	    When I wait for 3 seconds
+	    When I wait for "Users" to appear
 	     And I follow "Users"
 	    Then I wait for "Managers" to appear
 	     And I should see a table with 1 row
@@ -98,17 +97,17 @@ Feature: When I go to a specific organization
 
 	Scenario: Navigate to organization roles
 	   Given I am on "/"
-	    When I wait for 3 seconds
+	    When I wait for "testOrg1" to appear
 	    Then I follow "testOrg1"
-	     And I wait for 3 seconds
+	    When I wait for "Roles" to appear
 	     And I follow "Roles"
 	    Then I should see "New role"
 	     And I should see "Add role to user"
 
 	Scenario: Navigate to organization connected services
 	   Given I am on "/"
-	    When I wait for 3 seconds
+	    When I wait for "testOrg1" to appear
 	    Then I follow "testOrg1"
-	     And I wait for 3 seconds
+	    When I wait for "Connected services" to appear
 	     And I follow "Connected services"
 	    Then I should see "New connection"
