@@ -80,8 +80,7 @@ variables:
 deploy:
   stage: deploy
   script:
-    - ssh-add -l
-    - ssh -v -A ubuntu@$DEPLOY_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS git.hbit.sztaki.hu:5000; \
+    - ssh -A ubuntu@$DEPLOY_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS git.hbit.sztaki.hu:5000; \
              docker pull $CONTAINER_RELEASE_IMAGE; \
              docker stop hexaa-newui; \ 
              docker rm hexaa-newui; \
