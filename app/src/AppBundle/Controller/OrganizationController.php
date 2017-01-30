@@ -146,6 +146,50 @@ class OrganizationController extends Controller {
         $organization = $this->getOrganization($id);
         $managers = $this->getManagers($organization);
         $members = $this->getMembers($organization);
+        $managers_buttons = array(
+            "change_roles" => array(
+                "class" => "btn-blue",
+                "text" => "Change roles"
+                ),
+            "revoke" => array(
+                "class" => "btn-blue",
+                "text" => "Revoke"
+                ),
+            "message" => array(
+                "class" => "btn-blue",
+                "text" => "Message"
+                ),
+            "remove" => array(
+                "class" => "btn-blue",
+                "text" => "Remove"
+                ),
+            "invite" => array(
+                "class" => "btn-red pull-right",
+                "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
+                ),
+            );
+        $members_buttons = array(
+            "change_roles" => array(
+                "class" => "btn-blue",
+                "text" => "Change roles"
+                ),
+            "proposal" => array(
+                "class" => "btn-blue",
+                "text" => "Proposal"
+                ),
+            "message" => array(
+                "class" => "btn-blue",
+                "text" => "Message"
+                ),
+            "remove" => array(
+                "class" => "btn-blue",
+                "text" => "Remove"
+                ),
+            "invite" => array(
+                "class" => "btn-red pull-right",
+                "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
+                ),
+            );
         return $this->render(
             'AppBundle:Organization:users.html.twig',
             array(
@@ -153,7 +197,9 @@ class OrganizationController extends Controller {
                 "members" => $members,
                 "organization" => $organization,
                 "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices()
+                "services" => $this->getServices(),
+                "managers_buttons" => $managers_buttons,
+                "members_buttons" => $members_buttons
             )
         );
     }
