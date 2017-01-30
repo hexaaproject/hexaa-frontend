@@ -5,8 +5,6 @@ Feature: When I go to a specific organization
 		 I want to see the organization all properties
 
 	Background:
-	   # Given empty hexaa data
-    #    Given setup the basic hexaa test data
 	   Given I am on "/Shibboleth.sso/Login"
 		When I wait for 3 seconds
 		Then I should see "Username"
@@ -43,8 +41,28 @@ Feature: When I go to a specific organization
 	     And I follow "Properties"
 	    Then I should see "Ez a szervezet teszteléshez készült. Jól tesztelve is lesz vele az alkalmazás."
 	     And I should see "Roles"
-	     And I should see "Test role 1"
+	     And I should see "Test role 1"	     
 	     And I should see "Test role 2"
+
+	@current
+	Scenario: Organization properties, role accordion
+	   Given I am on "/"
+	    When I wait for 3 seconds
+	    Then I follow "testOrg1"
+	     And I wait for 3 seconds
+	     And I follow "Properties"
+	     And I should see "Test role 1"	     
+	     And I should see "Test role 2"
+	     And I should not see "Permissions"
+	     And I should not see "Members"
+	    When I press "Test role 1"
+	    Then I should see "Permissions"
+	     And I should see "Members"
+	     And I should see "Student Student"
+	    When I press "Test role 1"
+	    Then I should not see "Permissions"
+	     And I should not see "Members"
+	     And I should not see "Student Student"
 
 	Scenario: Navigate to organization users
 	   Given I am on "/"
