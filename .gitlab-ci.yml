@@ -19,6 +19,23 @@ before_script:
   - hostname
   - docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000
 
+  # Install ssh-agent if not already installed, it is required by Docker.
+  # (change apt-get to yum if you use a CentOS-based image)
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+
+  # Run ssh-agent (inside the build environment)
+  - eval $(ssh-agent -s)
+
+  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+
+  # For Docker builds disable host key checking. Be aware that by adding that
+  # you are suspectible to man-in-the-middle attacks.
+  # WARNING: Use this only with the Docker executor, if you use it with shell
+  # you will overwrite your user's SSH config.
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
 variables:
   CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:latest
@@ -60,12 +77,11 @@ release:
   tags:
     - dind
 
-# deploy:
-#   stage: deploy
-#   script:
-#     # - ssh -A $DEPLOY_TARGET "docker-clean.sh ; docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN git.hbit.sztaki.hu:5500; docker pull $CONTAINER_RELEASE_IMAGE; docker stop hexaa-newui; docker rm hexaa-newui; docker run -d --name smtp -p 1080:1080 -p 25:25 tophfr/mailcatcher; docker run -d --name hexaa-newui -p 80:80 -p 443:443 --link smtp:smtp $CONTAINER_RELEASE_IMAGE;"
-#     - ssh -A $DEPLOY_TARGET "docker-clean ; docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN git.hbit.sztaki.hu:5500; docker pull $CONTAINER_TEST_IMAGE; docker stop hexaa-newui; docker rm hexaa-newui; docker stop smtp; docker rm smtp; docker run -d --name smtp -p 1080:80 tophfr/mailcatcher; docker run -d --name hexaa-newui -e GMAP_API_KEY=$GMAP_API_KEY -p 80:80 -p 443:443 --link smtp:smtp $CONTAINER_TEST_IMAGE;"
-#   only:
-#     - master
-#   tags:
-#     - hexaa-newui
+deploy:
+  stage: deploy
+  script:
+    - ssh -A ubuntu@$DEPLOY_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000; docker pull $CONTAINER_RELEASE_IMAGE; docker stop hexaa-newui; docker rm hexaa-newui; docker run -d --name hexaa-newui --network=hexaa-test -e PROJECT_HOSTNAME=$DEPLOY_TARGET -p 80:80 -p 443:443 $CONTAINER_RELEASE_IMAGE;"
+  only:
+    - master
+  tags:
+    - dind

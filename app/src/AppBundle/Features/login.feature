@@ -5,7 +5,8 @@ Feature: Login
 
 	Scenario: Login
 	   Given I am on "/Shibboleth.sso/Login"
-		Then I wait for "Username" to appear		
+	    Then I reload the page
+		 And I wait for "Username" to appear		
 		When I fill in "username" with "e"
 		 And I fill in "password" with "pass"
 		 And I press "Login"
