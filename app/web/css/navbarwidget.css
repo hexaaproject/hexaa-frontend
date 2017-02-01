@@ -1,0 +1,181 @@
+
+.mainname{
+    font-size: large;
+    font-weight: bold;
+    font-family: Verdana;
+}
+
+.mainnamelink{
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 1.3vh;
+}
+
+.hamburgercontainer{
+    display:none;
+}
+
+.hamburgercontentname{
+    color: white;
+    font-size: 20px;
+    padding-left: 12px;
+    cursor: pointer;
+}
+
+#navbarmenupoints{
+    margin-left: 10vh;
+}
+
+.navbarlink{
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 1.3vh;
+}
+
+.navbarlinkactive{
+    padding-bottom: 0.3vh;
+    border-bottom: 1.2vh solid #ec666a;
+}
+
+.desktoplinkdivstyle{
+    font-size: large;
+    font-weight: bold;
+    font-family: serif;
+}
+
+
+.desktopcontainer{
+    color: #ffffff;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-color: #61AFC5;
+    min-height: 5vh;
+    position: relative;
+}
+
+@media only screen and (max-width: 480px) {
+    #hamburgerSelect{
+        display: none;
+    }
+
+    .desktopcontainer{
+        display:none;
+    }
+
+    .hamburgerlinkdivstyle{
+        background-color: #61AFC5;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid white;
+        display:block;
+    }
+
+    .hamburgercontainer{
+        display:block;
+    }
+
+    .hamburgerClass.show{
+        display:block;
+        background-color: #2e2d2d;
+        position:fixed;
+        width:100%;
+        border-top:2px solid black;
+        z-index:1000;
+    }
+
+    .off{
+        color:white;
+        font-size: 20px;
+        padding-right:10px;
+    }
+
+    .user{
+        color:white;
+        font-size: 20px;
+        padding-right:10px;
+    }
+
+    .accordionhamburger{
+        border-bottom:2px solid black;
+        width:100%;
+        height:100%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        cursor:pointer;
+    }
+
+    .accordionhamburger:before{
+        content: '\25BC';
+        font-size: 15px;
+        color: white;
+        float:right;
+        padding-right: 10px;
+    }
+
+    .accordionhamburger.active:before{
+        content: '\25B2';
+        font-size: 15px;
+        color: white;
+        float:right;
+        padding-right: 10px;
+    }
+
+    .hamburgercontentname{
+        color:white;
+        font-size:20px;
+        padding-left: 12px;
+        cursor:pointer;
+    }
+
+    .hamburgercontentpanelname{
+        color:white;
+        font-size:15px;
+        padding-left: 12px;
+    }
+
+    .link{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom:2px solid black;
+    }
+
+    .panelaccordionhamburger{
+        display: none;
+    }
+
+    .panelaccordionhamburger.show {
+        display: inline-block;
+        text-align: left;
+        background-color: grey;
+    }
+
+    .linksubmenu{
+        background-color: #61AFC5;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom:2px solid white;
+    }
+
+    #organizationssubmenu{
+        display: none;
+    }
+
+    #servicesssubmenu{
+        display: none;
+    }
+
+    .orgsubclass.show{
+        display: inline-block;
+    }
+
+    .servsubclass.show{
+        display: inline-block;
+    }
+    
+    #logout{
+        display:none;
+    }
+
+}

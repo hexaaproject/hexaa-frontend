@@ -101,3 +101,11 @@ table#centertableservicesprop{
     padding-top:30px;
 }
 
+.desktopbuttonorg{
+    display: inline-block;
+    padding: 4%;
+}
+.desktopbuttonimage {
+    width: 12vw;
+    cursor: pointer;
+}
