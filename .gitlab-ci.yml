@@ -15,28 +15,26 @@ stages:
 
 before_script:
   - docker info
+  - whoami
+  - hostname
+  - docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000
+
   # Install ssh-agent if not already installed, it is required by Docker.
   # (change apt-get to yum if you use a CentOS-based image)
-  # - 'which ssh-agent || ( apk update && apk add openssh-client )'
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
 
   # Run ssh-agent (inside the build environment)
-  # - eval $(ssh-agent -s)
+  - eval $(ssh-agent -s)
 
   # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
-  # append public key to target .ssh/authorized_keys file.
-  # - echo "$SSH_PRIVATE_KEY" > id_rsa; chmod 600 id_rsa; ssh-add id_rsa
-  # - echo $SSH_PRIVATE_KEY > id_rsa; chmod 600 id_rsa
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
 
   # For Docker builds disable host key checking. Be aware that by adding that
   # you are suspectible to man-in-the-middle attacks.
   # WARNING: Use this only with the Docker executor, if you use it with shell
   # you will overwrite your user's SSH config.
-  # - mkdir -p ~/.ssh
-  # - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-  - whoami
-  - hostname
-  - docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 variables:
   CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5000/solazs/hexaa-newui:$CI_BUILD_REF_NAME
@@ -45,37 +43,45 @@ variables:
 build:
   stage: build
   script:
-    # - docker-clean
     - docker build -t $CONTAINER_TEST_IMAGE .
     - docker push $CONTAINER_TEST_IMAGE
   tags:
     - dind
 
-# test:
-#   stage: test
-#   script:
-#     - docker run -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
-#     - docker ps
-#     - docker run -d --name memcached memcached
-#     - docker ps
-#     - docker run -d --name hexaa-backend --link db:db --link memcached:memcached hexaaproject/hexaa-backend:for-dev
-#     - docker ps
-#     - docker run -d --name grid elgalu/selenium
-#     - docker ps
-#     - docker run -d --name hexaa-test-data-manager --link hexaa-backend:hexaa-backend hexaaproject/hexaa-test-data-manager:for-dev
-#     - docker ps
-#     - docker run --rm --link db:db --link grid:grid --link hexaa-test-data-manager:hexaa-test-data-manager -t solazs/hexaa-newui /var/www/project/test.sh /var/www/project
-#     - docker ps
-#   tags:
-#     - dind
+test:
+  stage: test
+  script:
+    - docker network create hexaa-test
+    - docker run -d --name db --network=hexaa-test -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
+    - docker run -d --name memcached --network=hexaa-test memcached
+    - docker run -d --name grid --network=hexaa-test elgalu/selenium
+    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
+    - docker run -d --name hexaa-backend --network=hexaa-test hexaaproject/hexaa-backend:for-dev
+    - docker run -d --name hexaa-test-data-manager --network=hexaa-test hexaaproject/hexaa-test-data-manager:for-dev
+    - docker run -d --name project.local --network=hexaa-test $CONTAINER_TEST_IMAGE
+    - docker logs hexaa-backend
+    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
+    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
+    - docker exec -t project.local /var/www/project/test.sh /var/www/project
+  tags:
+    - dind
 
+release:
+  stage: release
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
+  only:
+    - master
+  tags:
+    - dind
 
-# deploy:
-#   stage: deploy
-#   script:
-#     # - ssh -A $DEPLOY_TARGET "docker-clean.sh ; docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN git.hbit.sztaki.hu:5500; docker pull $CONTAINER_RELEASE_IMAGE; docker stop hexaa-newui; docker rm hexaa-newui; docker run -d --name smtp -p 1080:1080 -p 25:25 tophfr/mailcatcher; docker run -d --name hexaa-newui -p 80:80 -p 443:443 --link smtp:smtp $CONTAINER_RELEASE_IMAGE;"
-#     - ssh -A $DEPLOY_TARGET "docker-clean ; docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN git.hbit.sztaki.hu:5500; docker pull $CONTAINER_TEST_IMAGE; docker stop hexaa-newui; docker rm hexaa-newui; docker stop smtp; docker rm smtp; docker run -d --name smtp -p 1080:80 tophfr/mailcatcher; docker run -d --name hexaa-newui -e GMAP_API_KEY=$GMAP_API_KEY -p 80:80 -p 443:443 --link smtp:smtp $CONTAINER_TEST_IMAGE;"
-#   only:
-#     - master
-#   tags:
-#     - hexaa-newui
+deploy:
+  stage: deploy
+  script:
+    - ssh -A ubuntu@$DEPLOY_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000; docker pull $CONTAINER_RELEASE_IMAGE; docker stop hexaa-newui; docker rm hexaa-newui; docker run -d --name hexaa-newui --network=hexaa-test -e PROJECT_HOSTNAME=$DEPLOY_TARGET -p 80:80 -p 443:443 $CONTAINER_RELEASE_IMAGE;"
+  only:
+    - master
+  tags:
+    - dind

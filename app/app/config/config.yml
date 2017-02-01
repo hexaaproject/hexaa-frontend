@@ -41,6 +41,8 @@ twig:
     strict_variables: "%kernel.debug%"
 
 assetic:
+    bundles:
+        - AppBundle
     debug:          '%kernel.debug%'
     use_controller: '%kernel.debug%'
     filters:
@@ -65,6 +67,10 @@ assetic:
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff'
             output: fonts/glyphicons-halflings-regular.woff
+        bootstrap_fonts_woff2:
+            inputs:
+                - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2'
+            output: fonts/glyphicons-halflings-regular.woff2
         bootstrap_fonts_ttf:            
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf'

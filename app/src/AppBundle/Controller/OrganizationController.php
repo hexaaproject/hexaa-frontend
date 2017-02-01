@@ -37,7 +37,7 @@ class OrganizationController extends Controller {
      */
     public function addStepOneAction(Request $request)
     {
-    	return $this->render('AppBundle:Organization:addStepOne.html.twig', array());
+        return $this->render('AppBundle:Organization:addStepOne.html.twig', array());
     }
 
     /**
@@ -46,7 +46,7 @@ class OrganizationController extends Controller {
      */
     public function addStepTwoAction(Request $request)
     {
-    	return $this->render('AppBundle:Organization:addStepTwo.html.twig', array());
+        return $this->render('AppBundle:Organization:addStepTwo.html.twig', array());
     }
 
     /**
@@ -55,7 +55,7 @@ class OrganizationController extends Controller {
      */
     public function addStepThreeAction(Request $request)
     {
-    	return $this->render('AppBundle:Organization:addStepThree.html.twig', array());
+        return $this->render('AppBundle:Organization:addStepThree.html.twig', array());
     }
 
     /**
@@ -64,7 +64,7 @@ class OrganizationController extends Controller {
      */
     public function addStepFourAction(Request $request)
     {
-    	return $this->render('AppBundle:Organization:addStepFour.html.twig', array());
+        return $this->render('AppBundle:Organization:addStepFour.html.twig', array());
     }
 
     /**
@@ -110,17 +110,30 @@ class OrganizationController extends Controller {
     public function propertiesAction($id)
     {
         $organization = $this->getOrganization($id);
-        $roles = $this->getRoles($organization);
-        $roles_accordion = $this->rolesToAccordion($roles);
+        $roles = $this->rolesToAccordion($this->getRoles($organization));
+        $organization['default_role_name'] = null;
+        foreach ($this->getRoles($organization) as $role) {
+            if ($role['id'] == $organization['default_role_id']) {
+                $defaultrole = $role;
+                $organization['default_role_name'] = $role["name"];
+            }
+        }
+
+        $propertiesbox = array(
+            "Name" => "name",
+            "Description" => "description",
+            "Home page" => "url",
+            "Default role" => "default_role_name"
+            );
 
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
-                "organization" => $organization,
-                "roles" => $roles, // TODO ez majd remélhetőleg nem kell!
                 "organizations" => $this->getOrganizations(),
                 "services" => $this->getServices(),
-                "roles_accordion" => $roles_accordion
+                "organization" => $organization,
+                "roles" => $roles,
+                "propertiesbox" => $propertiesbox
             )
         );
     }
@@ -134,6 +147,50 @@ class OrganizationController extends Controller {
         $organization = $this->getOrganization($id);
         $managers = $this->getManagers($organization);
         $members = $this->getMembers($organization);
+        $managers_buttons = array(
+            "change_roles" => array(
+                "class" => "btn-blue",
+                "text" => "Change roles"
+                ),
+            "revoke" => array(
+                "class" => "btn-blue",
+                "text" => "Revoke"
+                ),
+            "message" => array(
+                "class" => "btn-blue",
+                "text" => "Message"
+                ),
+            "remove" => array(
+                "class" => "btn-blue",
+                "text" => "Remove"
+                ),
+            "invite" => array(
+                "class" => "btn-red pull-right",
+                "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
+                ),
+            );
+        $members_buttons = array(
+            "change_roles" => array(
+                "class" => "btn-blue",
+                "text" => "Change roles"
+                ),
+            "proposal" => array(
+                "class" => "btn-blue",
+                "text" => "Proposal"
+                ),
+            "message" => array(
+                "class" => "btn-blue",
+                "text" => "Message"
+                ),
+            "remove" => array(
+                "class" => "btn-blue",
+                "text" => "Remove"
+                ),
+            "invite" => array(
+                "class" => "btn-red pull-right",
+                "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
+                ),
+            );
         return $this->render(
             'AppBundle:Organization:users.html.twig',
             array(
@@ -141,7 +198,9 @@ class OrganizationController extends Controller {
                 "members" => $members,
                 "organization" => $organization,
                 "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices()
+                "services" => $this->getServices(),
+                "managers_buttons" => $managers_buttons,
+                "members_buttons" => $members_buttons
             )
         );
     }
@@ -184,16 +243,6 @@ class OrganizationController extends Controller {
         );
     }
 
-    private function getorgsubmenupoints(){
-        $submenubox = array(
-            "app_organization_properties" => "Properties",
-            "app_organization_users" => "Users",
-            "app_organization_roles" => "Roles",
-            "app_organization_connectedservices" => "Conencted services",
-        );
-        
-        return $submenubox;
-    }
 
     private function getOrganization($id)
     {
@@ -261,5 +310,16 @@ class OrganizationController extends Controller {
                 );
         }
         return $roles_accordion;
+    }
+
+    private function getorgsubmenupoints(){
+        $submenubox = array(
+            "app_organization_properties" => "Properties",
+            "app_organization_users" => "Users",
+            "app_organization_roles" => "Roles",
+            "app_organization_connectedservices" => "Connected services",
+        );
+        
+        return $submenubox;
     }
 }

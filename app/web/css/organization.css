@@ -191,19 +191,6 @@ div.panel p{
     display: box;
     text-align: center;
 }
-#maindivcontents{
-    display: inline-block;
-    padding-top: 5vh;
-}
-
-.desktopbuttonorg{
-    display: inline-block;
-    padding: 4%;
-}
-.desktopbuttonimage {
-    width: 12vw;
-    cursor: pointer;
-}
 
 .flexcontainer {
     display: inline-flex;

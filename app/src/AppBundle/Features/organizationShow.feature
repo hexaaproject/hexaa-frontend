@@ -5,21 +5,21 @@ Feature: When I go to a specific organization
 		 I want to see the organization all properties
 
 	Background:
-	   # Given empty hexaa data
-    #    Given setup the basic hexaa test data
+
 	   Given I am on "/Shibboleth.sso/Login"
-		Then I should see "Username"
+		Then I wait for "Username" to appear
 		When I fill in "username" with "e"
 		 And I fill in "password" with "pass"
 		 And I press "Login"
 		Then I should be on "/"
-		 And I should see "Welcome to"
-		 And I should see "employee@project.local"
+		Then I wait for "Welcome to" to appear
+		Then I should see "employee@project.local"
 		 And I should see "testOrg1"
 
 	Scenario: Navigate to organization show page
 	   Given I am on "/"
-	    When I follow "testOrg1"
+		Then I wait for "testOrg1" to appear
+	    Then I follow "testOrg1"
 	    Then I should see "testOrg1"
 	     And I should see "Properties"
 	     And I should see "Users"
@@ -35,15 +35,39 @@ Feature: When I go to a specific organization
 
 	Scenario: Navigate to organization properties
 	   Given I am on "/"
-	    When I follow "testOrg1"
+		 And I wait for "testOrg1" to appear	    
+	    Then I follow "testOrg1"
+		 And I wait for "Properties" to appear	    
 	     And I follow "Properties"
 	    Then I should see "Ez a szervezet teszteléshez készült. Jól tesztelve is lesz vele az alkalmazás."
-	    And I should see "Roles"
-	    And I should see "A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni."
+	     And I should see "Roles"
+	     And I should see "Test role 1"	     
+	     And I should see "Test role 2"
+
+	Scenario: Organization properties, role accordion
+	   Given I am on "/"
+		 And I wait for "Welcome to" to appear
+	    Then I follow "testOrg1"
+		 And I wait for "testOrg1" to appear	    
+	     And I follow "Properties"
+	     And I should see "Test role 1"	     
+	     And I should see "Test role 2"
+	     And I should not see "Permissions"
+	     And I should not see "Members"
+	    When I press "Test role 1"
+	    Then I should see "Permissions"
+	     And I should see "Members"
+	     And I should see "Student Student"
+	    When I press "Test role 1"
+	    Then I should not see "Permissions"
+	     And I should not see "Members"
+	     And I should not see "Student Student"
 
 	Scenario: Navigate to organization users
 	   Given I am on "/"
-	    When I follow "testOrg1"
+	    When I wait for "testOrg1" to appear
+	    Then I follow "testOrg1"
+	     And I wait for "Users" to appear 
 	     And I follow "Users"
 	    Then I should see "Change roles"
 	     And I should see "Proposal"
@@ -54,15 +78,36 @@ Feature: When I go to a specific organization
 	     And I should see "Managers"
 	     And I should see "Users"
 
+	Scenario: Organization users tables and buttons
+	   Given I am on "/"
+	    When I wait for "testOrg1" to appear
+	    Then I follow "testOrg1"
+	    When I wait for "Users" to appear
+	     And I follow "Users"
+	    Then I wait for "Managers" to appear
+	     And I should see a table with 1 row
+	     And I should see a table with 4 rows
+	    When I fill in "Search member" with "nolocal"
+	    Then I should see a table with 2 rows
+	    When I fill in "Search manager" with "Harry Potter"
+	    Then I should see the following table portion
+	       | No matching records found |
+
+
+
 	Scenario: Navigate to organization roles
 	   Given I am on "/"
-	    When I follow "testOrg1"
+	    When I wait for "testOrg1" to appear
+	    Then I follow "testOrg1"
+	    When I wait for "Roles" to appear
 	     And I follow "Roles"
 	    Then I should see "New role"
 	     And I should see "Add role to user"
 
 	Scenario: Navigate to organization connected services
 	   Given I am on "/"
-	    When I follow "testOrg1"
+	    When I wait for "testOrg1" to appear
+	    Then I follow "testOrg1"
+	    When I wait for "Connected services" to appear
 	     And I follow "Connected services"
 	    Then I should see "New connection"

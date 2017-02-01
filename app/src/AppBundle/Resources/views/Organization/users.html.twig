@@ -16,33 +16,19 @@
         {% endjavascripts %}
     {% endblock %}
 
-                    <div id="firstrow">
-                        <div class="flexcontainer" align="left">
-                            <input type="checkbox" onclick="toggle(this)" class="togglecheck" id="toggleAll"/>
-                            <input type="text" class="inputfield" style="width: 250px">
-                            <button id="search" type="submit"></button>
-                            <button class="btnhexaa btn-blue">Change roles</button>
-                            <button class="btnhexaa btn-blue">Proposal</button>
-                            <button class="btnhexaa btn-blue">Revoke</button>
-                            <button class="btnhexaa btn-blue">Message</button>
-                            <button class="btnhexaa btn-blue">Remove</button>
-                            <button class="btnhexaa btn-red pull-right"><i class="glyphicon glyphicon-plus"></i> Invite</button>
-                        </div>
-                    </div>
-
-
-        {% if managers is defined and managers|length %}
-        <div class="row">
-            <div class="col-md-15">
-                {{ include('::tables.html.twig', {variant: 'red', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table' }) }}
-            </div>
+    {% if managers is defined and managers|length %}
+    <div class="row">
+        <div class="col-md-15">
+            {{ include('::tables.html.twig', {variant: 'red', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table', buttons: managers_buttons, search_placeholder: 'Search manager' }) }}
         </div>
-        {% endif %}
-        {% if members is defined and members|length %}
-        <div class="row">
-            <div class="col-md-15">
-                {{ include('::tables.html.twig', {variant: 'blue', caption: 'Members', checkbox: true, users: members, table_id: 'members_table' }) }}            
-            </div>
+    </div>
+    {% endif %}
+
+    {% if members is defined and members|length %}
+    <div class="row" style="margin-top: 48px;">
+        <div class="col-md-15">
+            {{ include('::tables.html.twig', {variant: 'blue', caption: 'Members', checkbox: true, users: members, table_id: 'members_table', buttons: members_buttons, search_placeholder: 'Search member' }) }}            
         </div>
-        {% endif %}
+    </div>
+    {% endif %}
 {% endblock %}

@@ -5,17 +5,18 @@ Feature: Login
 
 	Scenario: Login
 	   Given I am on "/Shibboleth.sso/Login"
-		Then I should see "Username"
+	    Then I reload the page
+		 And I wait for "Username" to appear		
 		When I fill in "username" with "e"
 		 And I fill in "password" with "pass"
 		 And I press "Login"
+		Then I wait for "Welcome to" to appear		
 		Then I should be on "/"
-		 And I should see "Welcome to"
 		 And I should see "employee@project.local"
 
 	Scenario: Failed login
 	   Given I am on "/Shibboleth.sso/Login"
-		Then I should see "Username"
+		 And I wait for "Username" to appear		
 		When I fill in "username" with "e"
 		 And I fill in "password" with "not too good pass"
 		 And I press "Login"

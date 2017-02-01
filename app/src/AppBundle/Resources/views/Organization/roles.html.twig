@@ -13,10 +13,10 @@
 
     <div class="row" style="margin-bottom: 24px;">
         <div class="col-md-4 col-md-offset-3">
-            <button class="btnhexaa btn-red btn-block"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> New role</button>
+            <button class="btnhexaa btn-red btn-block btnhexaa-lg"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> New role</button>
         </div>
         <div class="col-md-4 col-md-offset-1">
-            <button class="btnhexaa btn-red-inverse btn-block">Add role to user</button>
+            <button class="btnhexaa btn-red-inverse btn-block btnhexaa-lg">Add role to user</button>
         </div>
     </div>
     <div class="row">
@@ -24,93 +24,4 @@
             {{ include('::accordions.html.twig', { heading: "Roles", variant: "dark", items: roles_accordion }) }}
         </div>
     </div>
-
-    {####################################}
-
-    <div style="margin-top: 240px;"></div>
-
-    <div class="alert alert-info">bennthagyom mintának az alábbit</div>
-    <table id="centertable3">
-        <tr>
-            <td class="unique" style="background-color: #61AFC5" >
-
-                <div id="labels">
-                    <label id="headerLabel">
-                        Roles
-                    </label>
-                    <label id="headerLabeltext">
-                        A szerepköröket a szerepkörök menüpont alatt tudod szerkeszteni.
-                    </label>
-                </div>
-                {% if roles|length %}
-                <div id="roles2">
-                    {% for role in roles %}
-                        <div class="accordionroles">
-                            <span class="name">{{role.name}}</span>
-                            <span class="buttonbar">
-                                <button class="buttonbin"></button>
-                                <button class="buttonmessage"></button>
-                                <button class="buttonedit"></button>
-                            </span>
-                        </div>
-
-                        <div class="panel">
-                            <table id="paneltable">
-                                {% for entitlement in role.entitlements %}
-                                    {% if loop.first %}
-                                        <tr id="row">
-                                            <td  class="firsttd" rowspan={{loop.length}}>
-                                                Permissions
-                                            </td>
-                                            <td class="long">
-                                                {{entitlement.name}}
-                                                {% if loop.last %}
-                                                    <hr>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-
-                                    {% else %}
-                                        <tr>
-                                            <td class="long">
-                                                {{entitlement.name}}
-                                            </td>
-                                            {% if loop.last %}
-                                            <hr>
-                                        {% endif %}
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                                {% for princip in role.principals %}
-
-                                    {% if loop.first %}
-                                        <tr>
-                                            <td class="firsttd" rowspan={{loop.length}}>
-                                                Members
-                                            </td>
-                                            <td class="long">
-                                                {{princip.principal.display_name}}
-                                            </td>
-                                        </tr>
-
-                                    {% else %}
-                                        <tr>
-                                            <td class="long">
-                                                {{princip.principal.display_name}}
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                            </table>
-                        </div>
-                    {% endfor %}
-                </div>
-               {% endif %}
-            </td>
-        </tr>
-    </table>
-
-    
-
-
 {% endblock %}
