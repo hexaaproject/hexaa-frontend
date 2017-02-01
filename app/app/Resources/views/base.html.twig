@@ -93,7 +93,9 @@
                 </div>
             </div>
         </div>
-        {{ include('::navbar.html.twig', {names:null}) }}
+        {% if app.request.get('_route')=="homepage" %}
+            {{ include('::navbar.html.twig', {names:null}) }}
+        {% endif %}
         {% block body %}
 
         {% endblock %}

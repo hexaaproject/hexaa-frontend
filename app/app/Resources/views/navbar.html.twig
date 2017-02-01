@@ -3,73 +3,69 @@
         $("#hamburgerSelect")[0].classList.toggle("show");
     }
 
-
 </script>
 
 <button onclick="hamburgerClick()" id="hamburger">
     <span class="glyphicon glyphicon-menu-hamburger white" aria-hidden="true"></span>
 </button>
-<div id="hamburgerSelect" class="hamburgerClass">
+<div id="befoglalo">
+    <div id="hamburgerSelect" class="hamburgerClass">
 
-    <div class="accordionhamburger" id="orgaccordion">
-        <span class="hamburgercontentname">
-            Organizations
-        </span>
-    </div>
-    <div class="panelaccordionhamburger">
-        {% for organization in organizations.items %}
-            <div class="link">
-                <a href="{{ path('app_organization_show', {id: organization.id}) }}" class="hamburgercontentpanelname">{{ organization.name|e }}</a>
-            </div>
-        {% endfor %}
-    </div>
-
-    <div class="accordionhamburger" id="servaccordion">
-        <span class="hamburgercontentname">
-            Services
-        </span>
-    </div>
-    <div class="panelaccordionhamburger">
-        {% for service in services.items %}
-            <div class="link">
-                <a href="{{ path('app_service_show', {id: service.id}) }}" class="hamburgercontentpanelname">{{ service.name|e }}</a>
-            </div>
-        {% endfor %}
-    </div>
-
-    <div class="link">
-        <a href="{{ path('app_profile_index') }}" class="hamburgercontentname"><span class="glyphicon glyphicon-user user"></span>Profile</a>
-    </div>
-    <div class="link">
-        <a href="" class="hamburgercontentname"><span class="glyphicon glyphicon-off off"></span>Log out</a>
-    </div>
-    
-        {{ dump("macska") }}
-
-    {% if organization is defined and names %}
-        {{ dump(organization) }}
-        <div class="hamburgercontainer">
-            {% for key,value in names %}
-                <div class="hamburgerlinkdivstyle">
-                    <a class="hamburgercontentname" href="{{ path(key, {id: organization.id}) }}">{{value}}</a>
+        <div class="accordionhamburger" id="orgaccordion">
+            <span class="hamburgercontentname">
+                Organizations
+            </span>
+        </div>
+        <div class="panelaccordionhamburger">
+            {% for organization in organizations.items %}
+                <div class="link">
+                    <a href="{{ path('app_organization_show', {id: organization.id}) }}" class="hamburgercontentpanelname">{{ organization.name|e }}</a>
                 </div>
             {% endfor %}
         </div>
-    {% endif %}
-    {% if service is defined and names %}
-        <div class="hamburgercontainer">
-            {% for key,value in names %}
-                <div class="hamburgerlinkdivstyle">
-                    <a class="hamburgercontentname" href="{{ path(key, {id: service.id}) }}">{{value}}</a>
+
+        <div class="accordionhamburger" id="servaccordion">
+            <span class="hamburgercontentname">
+                Services
+            </span>
+        </div>
+        <div class="panelaccordionhamburger">
+            {% for service in services.items %}
+                <div class="link">
+                    <a href="{{ path('app_service_show', {id: service.id}) }}" class="hamburgercontentpanelname">{{ service.name|e }}</a>
                 </div>
             {% endfor %}
         </div>
-    {% endif %}
-            {{ dump("kutya") }}
 
+        <div class="link">
+            <a href="{{ path('app_profile_index') }}" class="hamburgercontentname"><span class="glyphicon glyphicon-user user"></span>Profile</a>
+        </div>
+        <div class="link">
+            <a href="" class="hamburgercontentname"><span class="glyphicon glyphicon-off off"></span>Log out</a>
+        </div>
 
-</div> 
+        {% if organization is defined and names %}
+            {{ dump(organization) }}
+            <div class="hamburgercontainer">
+                {% for key,value in names %}
+                    <div class="hamburgerlinkdivstyle">
+                        <a class="hamburgercontentname" href="{{ path(key, {id: organization.id}) }}">{{value}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if service is defined and names %}
+            <div class="hamburgercontainer">
+                {% for key,value in names %}
+                    <div class="hamburgerlinkdivstyle">
+                        <a class="hamburgercontentname" href="{{ path(key, {id: service.id}) }}">{{value}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
+    </div> 
+</div>
 
 
 {% if organization is defined and names %}
@@ -126,6 +122,7 @@
             this.nextElementSibling.classList.toggle("show");
         }
     }
+
     if ($("#container").find($("#hamburger")).length > 0) {
         $("#hamburger").remove();
         $("#container").append($("#hamburger"));
