@@ -98,7 +98,6 @@ class OrganizationController extends Controller {
                 'organization' => $organization,
                 'organizations' => $this->getOrganizations(),
                 'services' => $this->getServices(),
-                'orgsubmenubox' => $this->getorgsubmenupoints()
             )
         );
     }
@@ -312,14 +311,4 @@ class OrganizationController extends Controller {
         return $roles_accordion;
     }
 
-    private function getorgsubmenupoints(){
-        $submenubox = array(
-            "app_organization_properties" => "Properties",
-            "app_organization_users" => "Users",
-            "app_organization_roles" => "Roles",
-            "app_organization_connectedservices" => "Connected services",
-        );
-        
-        return $submenubox;
-    }
 }
