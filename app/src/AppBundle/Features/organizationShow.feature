@@ -86,7 +86,7 @@ Feature: When I go to a specific organization
 	     And I follow "Users"
 	    Then I wait for "Managers" to appear
 	     And I should see a table with 1 row
-	     And I should see a table with 4 rows
+	     And I should see a table with 6 rows
 	    When I fill in "Search member" with "nolocal"
 	    Then I should see a table with 2 rows
 	    When I fill in "Search manager" with "Harry Potter"

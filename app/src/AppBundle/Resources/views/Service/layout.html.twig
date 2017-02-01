@@ -3,53 +3,29 @@
 {% block title %}HEXAA Services{% endblock %}
 
 {% block body %}
-    {% stylesheets
-        'css/service.css'
-        filter='cssrewrite'
-    %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-    <div id="srvmenu">
-        <div id="srvmenucontent">
-            <span id="servicename"><a class="srvlink" href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name }}</a></span>
-
-            {% set route = app.request.get('_route') %}
-            <span id="srvmenupoints">
-                <a class="srvlink{% if route == "app_service_properties" %} srvlinkactive{% endif %}" href="{{ path("app_service_properties", {id: service.id}) }}">Properties</a>
-
-                <a class="srvlink{% if route == "app_service_managers" %} srvlinkactive{% endif %}" href="{{ path("app_service_managers", {id: service.id}) }}">Managers</a>
-                
-                <a class="srvlink{% if route == "app_service_attributes" %} srvlinkactive{% endif %}" href="{{ path("app_service_attributes", {id: service.id}) }}">Attributes</a>
-                
-                <a class="srvlink{% if route == "app_service_permissions" %} srvlinkactive{% endif %}" href="{{ path("app_service_permissions", {id: service.id}) }}">Permissions</a>
-                
-                <a class="srvlink{% if route == "app_service_permissionssets" %} srvlinkactive{% endif %}" href="{{ path("app_service_permissionssets", {id: service.id}) }}">Permissions sets</a>
-                
-                <a class="srvlink{% if route == "app_service_connectedorganizations" %} srvlinkactive{% endif %}" href="{{ path("app_service_connectedorganizations", {id: service.id}) }}">Connected organizations</a>
-            </span>
-        </div>
+    {{ include('::navbar.html.twig', {service: service, names:servsubmenubox}) }}
+    <div class="container">
+        {% block container %}{% endblock %}
     </div>
-	<div class="container">
-		{% block container %}{% endblock %}
-	</div>
 {% endblock %}
 
 {% block javascripts %}
-	<script>
-	    var b = $(".servicecl");
-	    for (i = 0; i < b.length; i++) {
-	        b[i].style.backgroundColor = "#61AFC5";
-	        a=b[i].getElementsByTagName("a");
-	         for (j = 0; j < a.length; j++) {
-	             if(a[j].innerHTML=="Tesztelő szolgáltatás"){
-	                 a[j].style.backgroundColor = "#61AFC5";
-	             }
-	         }
-	    }
-	    var b2 = $(".dropbtn");
-	    for (i = 0; i < b2.length; i++) {
-	        b2[i].style.backgroundColor = "#2e2d2d";
-	    }
+    <script>
+         $("#orgaccordion").remove();
+        var b = $(".servicecl");
+        for (i = 0; i < b.length; i++) {
+            b[i].style.backgroundColor = "#61AFC5";
+            a = b[i].getElementsByTagName("a");
+            for (j = 0; j < a.length; j++) {
+                if (a[j].innerHTML == "Tesztelő szolgáltatás") {
+                    a[j].style.backgroundColor = "#61AFC5";
+                }
+            }
+        }
+        var b2 = $(".dropbtn");
+        for (i = 0; i < b2.length; i++) {
+            b2[i].style.backgroundColor = "#2e2d2d";
+        }
 
-	</script>
+    </script>
 {% endblock %}

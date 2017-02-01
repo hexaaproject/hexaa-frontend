@@ -37,7 +37,7 @@ class OrganizationController extends Controller {
      */
     public function addStepOneAction(Request $request)
     {
-    	return $this->render('AppBundle:Organization:addStepOne.html.twig', array());
+        return $this->render('AppBundle:Organization:addStepOne.html.twig', array());
     }
 
     /**
@@ -46,7 +46,7 @@ class OrganizationController extends Controller {
      */
     public function addStepTwoAction(Request $request)
     {
-    	return $this->render('AppBundle:Organization:addStepTwo.html.twig', array());
+        return $this->render('AppBundle:Organization:addStepTwo.html.twig', array());
     }
 
     /**
@@ -55,7 +55,7 @@ class OrganizationController extends Controller {
      */
     public function addStepThreeAction(Request $request)
     {
-    	return $this->render('AppBundle:Organization:addStepThree.html.twig', array());
+        return $this->render('AppBundle:Organization:addStepThree.html.twig', array());
     }
 
     /**
@@ -64,7 +64,7 @@ class OrganizationController extends Controller {
      */
     public function addStepFourAction(Request $request)
     {
-    	return $this->render('AppBundle:Organization:addStepFour.html.twig', array());
+        return $this->render('AppBundle:Organization:addStepFour.html.twig', array());
     }
 
     /**
@@ -310,4 +310,5 @@ class OrganizationController extends Controller {
         }
         return $roles_accordion;
     }
+
 }

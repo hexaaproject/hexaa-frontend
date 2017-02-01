@@ -53,11 +53,12 @@ class ServiceController extends Controller {
      */
     public function showAction($id) {
         return $this->render(
-            'AppBundle:Service:show.html.twig', array(
-            'organizations' => $this->getOrganizations(),
-            'services' => $this->getServices(),
-            'service' => $this->getService($id)
-            )
+                        'AppBundle:Service:show.html.twig', array(
+                    'organizations' => $this->getOrganizations(),
+                    'services' => $this->getServices(),
+                    'service' => $this->getService($id),
+                    'servsubmenubox' => $this->getservsubmenupoints()
+                        )
         );
     }
 
@@ -67,17 +68,31 @@ class ServiceController extends Controller {
      */
     public function propertiesAction($id) {
         return $this->render(
-            'AppBundle:Service:properties.html.twig', array(
-            'organizations' => $this->getOrganizations(),
-            'services' => $this->getServices(),
-            'service' => $this->getService($id),
-            'main' => $this->getService($id),
-            'propertiesbox' => $this->getPropertiesBox()    
-            )
+                        'AppBundle:Service:properties.html.twig', array(
+                    'organizations' => $this->getOrganizations(),
+                    'services' => $this->getServices(),
+                    'service' => $this->getService($id),
+                    'main' => $this->getService($id),
+                    'propertiesbox' => $this->getPropertiesBox(),
+                    'servsubmenubox' => $this->getservsubmenupoints()
+                        )
         );
     }
-    
-    private function getPropertiesBox(){
+
+    private function getservsubmenupoints() {
+        $submenubox = array(
+            "app_service_properties" => "Properties",
+            "app_service_managers" => "Managers",
+            "app_service_attributes" => "Attributes",
+            "app_service_permissions" => "Permissions",
+            "app_service_permissionssets" => "Permissions sets",
+            "app_service_connectedorganizations" => "Connected organizations"
+        );
+
+        return $submenubox;
+    }
+
+    private function getPropertiesBox() {
         $propertiesbox = array(
             "Name" => "name",
             "Description" => "description",
@@ -86,7 +101,7 @@ class ServiceController extends Controller {
             "Created" => "created_at",
             "Last updated" => "updated_at"
         );
-        
+
         return $propertiesbox;
     }
 

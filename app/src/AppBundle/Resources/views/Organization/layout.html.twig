@@ -7,32 +7,25 @@
         'css/organization.css'
         filter='cssrewrite'
     %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
+    <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
-    <div id="srvmenu">
-        <div id="srvmenucontent">
-            <span id="servicename"><a class="srvlink" href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name }}</a></span>
-
-            {% set route = app.request.get('_route') %}
-            <span id="srvmenupoints">
-                <a class="srvlink{% if route == "app_organization_properties" %} srvlinkactive{% endif %}" href="{{ path("app_organization_properties", {id: organization.id}) }}">Properties</a>
-
-                <a class="srvlink{% if route == "app_organization_users" %} srvlinkactive{% endif %}" href="{{ path("app_organization_users", {id: organization.id}) }}">Users</a>
-                
-                <a class="srvlink{% if route == "app_organization_roles" %} srvlinkactive{% endif %}" href="{{ path("app_organization_roles", {id: organization.id}) }}">Roles</a>
-                
-                <a class="srvlink{% if route == "app_organization_connectedservices" %} srvlinkactive{% endif %}" href="{{ path("app_organization_connectedservices", {id: organization.id}) }}">Connected services</a>
-            </span>
-        </div>
-    </div>
-	<div class="container">
-		{% block container %}{% endblock %}
-	</div>
+    {% set names = {
+            app_organization_properties: "Properties",
+            app_organization_users: "Users",
+            app_organization_roles: "Roles",
+            app_organization_connectedservices: "Connected services"
+            }
+     %}
+    {{ include('::navbar.html.twig', { organization: organization, names: names}) }}
+    <div class="container">
+    {% block container %}{% endblock %}
+</div>
 
 {% endblock %}
 
 {% block javascripts %}
-	<script>
+    <script>
+        $("#servaccordion").remove();
         var b = $(".servicecl");
         for (i = 0; i < b.length; i++) {
             b[i].style.backgroundColor = "#2e2d2d";
@@ -115,9 +108,11 @@
             }
         }
         var isClickedCheckboxorg = [false];
-        function toggle(source) {
+        function toggle(
+                source) {
             isClickedCheckboxorg.push(true);
-            checkboxes = $("[name='foo']");;
+            checkboxes = $("[name='foo']");
+            ;
             for (var i = 0, n = checkboxes.length; i < n; i++) {
                 checkboxes[i].checked = source.checked;
                 trchecks = $(".colororgman");
