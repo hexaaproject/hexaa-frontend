@@ -4,9 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7313b04ebbcb107b589e5c9c8df4a555",
-    "content-hash": "4178a40a176121b59d291cc3085ce46f",
+    "hash": "886ebe8dda66aaed32c323c23f347028",
+    "content-hash": "77c8a35879d572a3c5c1476af0b01cd1",
     "packages": [
+        {
+            "name": "bmatzner/fontawesome-bundle",
+            "version": "4.7.0",
+            "target-dir": "Bmatzner/FontAwesomeBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bmatzner/BmatznerFontAwesomeBundle.git",
+                "reference": "647e00b9a59596901920aab5edf8f4179f0caa46"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bmatzner/BmatznerFontAwesomeBundle/zipball/647e00b9a59596901920aab5edf8f4179f0caa46",
+                "reference": "647e00b9a59596901920aab5edf8f4179f0caa46",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": ">=2.1|~3.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Bmatzner\\FontAwesomeBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "CC BY 3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Bernd Matzner",
+                    "email": "bernd@matznermatzner.de",
+                    "homepage": "http://berndmatzner.de"
+                }
+            ],
+            "description": "FontAwesome Bundle for Symfony2",
+            "homepage": "http://fortawesome.github.com/Font-Awesome/",
+            "keywords": [
+                "css",
+                "graphics",
+                "symfony",
+                "typography",
+                "webfonts"
+            ],
+            "time": "2016-11-02 15:34:33"
+        },
         {
             "name": "components/jquery",
             "version": "3.1.1",
