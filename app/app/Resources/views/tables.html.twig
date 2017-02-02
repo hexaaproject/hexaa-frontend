@@ -26,7 +26,7 @@ buttons array:
 <script type="text/javascript">
     $(document).ready(function() {
         $('#{{ table_id }}').DataTable( {
-            {% if checkbox %}
+            {% if buttons is defined %}
                 "order": [[ 1, "desc" ]],
             {% endif %}
             "dom": 'trlip'
