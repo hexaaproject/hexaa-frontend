@@ -7,7 +7,7 @@
         'css/organization.css'
         filter='cssrewrite'
     %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
+        <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
     {% set names = {
             app_organization_properties: "Properties",
@@ -24,119 +24,4 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        $("#servaccordion").remove();
-        var b = $(".servicecl");
-        for (i = 0; i < b.length; i++) {
-            b[i].style.backgroundColor = "#2e2d2d";
-        }
-        var b2 = $(".dropbtn");
-        for (i = 0; i < b2.length; i++) {
-            b2[i].style.backgroundColor = "#61AFC5";
-        }
-        var acc = $(".accordion2");
-        var i;
-
-        for (i = 0; i < acc.length; i++) {
-            acc[i].onclick = function () {
-                this.classList.toggle("active");
-                this.nextElementSibling.classList.toggle("show");
-            }
-        }
-        var accroles = $(".accordionroles");
-        for (i = 0; i < accroles.length; i++) {
-            accroles[i].onclick = function () {
-                this.classList.toggle("active");
-                this.nextElementSibling.classList.toggle("show");
-
-                var elementbuttonbin = $(".buttonbin");
-                var elementbuttonmessage = $(".buttonmessage");
-                var elementbuttonedit = $(".buttonedit");
-                for (j = 0; j < elementbuttonbin.length; j++) {
-                    var name = accroles[j].className;
-                    if ((accroles[j].className) == "accordionroles active") {
-                        elementbuttonbin[j].style.display = "inline-block";
-                    } else {
-                        elementbuttonbin[j].style.display = "none";
-                    }
-                }
-                for (j = 0; j < elementbuttonmessage.length; j++) {
-                    var name = accroles[j].className;
-                    if ((accroles[j].className) == "accordionroles active") {
-                        elementbuttonmessage[j].style.display = "inline-block";
-                    } else {
-                        elementbuttonmessage[j].style.display = "none";
-                    }
-                }
-                for (j = 0; j < elementbuttonedit.length; j++) {
-                    var name = accroles[j].className;
-                    if ((accroles[j].className) == "accordionroles active") {
-                        elementbuttonedit[j].style.display = "inline-block";
-                    } else {
-                        elementbuttonedit[j].style.display = "none";
-                    }
-                }
-            }
-        }
-
-
-        function backgroundcolororgman() {
-            checkboxes = $("[name='foo']");
-            for (var i = 0, n = checkboxes.length; i < n; i++) {
-                trchecks = $(".colororgman");
-                if (checkboxes[i].checked == true) {
-                    trchecks[i].style.backgroundColor = "#FA8072";
-                    trchecks[i].style.color = "#FFFFFF";
-                } else {
-                    trchecks[i].style.backgroundColor = "#FFFFFF";
-                    trchecks[i].style.color = "#000000";
-                }
-            }
-        }
-
-        function backgroundcolororguser() {
-            checkboxes = $("[name='foouser']");
-            for (var i = 0, n = checkboxes.length; i < n; i++) {
-                trchecks = $('.colororgus');
-                if (checkboxes[i].checked == true) {
-                    trchecks[i].style.backgroundColor = "#61AFC5";
-                    trchecks[i].style.color = "#FFFFFF";
-                } else {
-                    trchecks[i].style.backgroundColor = "#FFFFFF";
-                    trchecks[i].style.color = "#000000";
-                }
-            }
-        }
-        var isClickedCheckboxorg = [false];
-        function toggle(
-                source) {
-            isClickedCheckboxorg.push(true);
-            checkboxes = $("[name='foo']");
-            ;
-            for (var i = 0, n = checkboxes.length; i < n; i++) {
-                checkboxes[i].checked = source.checked;
-                trchecks = $(".colororgman");
-                if ((isClickedCheckboxorg.length) % 2 == 0) {
-                    trchecks[i].style.backgroundColor = "#FA8072";
-                    trchecks[i].style.color = "#FFFFFF";
-                } else {
-                    trchecks[i].style.backgroundColor = "#FFFFFF";
-                    trchecks[i].style.color = "#000000";
-                }
-            }
-            checkboxesuser = $("[name='foouser']");
-            for (var i = 0, n = checkboxesuser.length; i < n; i++) {
-                checkboxesuser[i].checked = source.checked;
-                trchecksuser = $('.colororgus');
-                if ((isClickedCheckboxorg.length) % 2 == 0) {
-                    trchecksuser[i].style.backgroundColor = "#61AFC5";
-                    trchecksuser[i].style.color = "#FFFFFF";
-                } else {
-                    trchecksuser[i].style.backgroundColor = "#FFFFFF";
-                    trchecksuser[i].style.color = "#000000";
-                }
-            }
-        }
-
-    </script>
 {% endblock %}

@@ -1,12 +1,10 @@
 {#
 
-{{ include('::tables.html.twig', {variant: 'red', caption: 'Nagy caption', checkbox: true, users: managers, table_id: managers_table, buttons: buttons, search_placeholder: 'Search managers'}) }}
+{{ include('::tables.html.twig', {variant: 'red', caption: 'Nagy caption', users: managers, table_id: managers_table, buttons: buttons, search_placeholder: 'Search managers'}) }}
 
 ahol:
 variant: red|blue
-checkbox: true|false
 table_id: the id of the table tag
-
 buttons array:
 
  ....
@@ -15,10 +13,13 @@ buttons array:
     "text" => "Revoke"
     ),
  "id2" => array(
-    "class" => "btn-red pull-right",
+    "class" => "btn-red",
+    "last" => true,
     "text" => '<i class="glyphicon glyphicon-plus"></i>Invite'
     )
  ...
+
+ ahol last: külön kezelt ikon, ami jobbra zárt, és mobil nézetben a search mellett marad, a többi egy sort lejjebb ugrik
 
 #}
 
@@ -50,12 +51,33 @@ buttons array:
 </script>
 
     <div class="{{ table_id }}_actionButtons" style="margin-top: 12px;">
-        <input class="hexaaCheckBox" type="checkbox" value="">
+        
+        <input class="hexaaCheckBox hidden-xs" type="checkbox" value="">
         <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField" {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
         {% if buttons is defined and buttons %}
             {% for id, button in buttons %}
-                <button class="btnhexaa {{ button.class }}" id="{{ id }}">{{ button.text|raw }}</button>
+                {% if not button.last is defined %}
+                    <button class="btnhexaa {{ button.class }} hidden-xs" id="{{ id }}">{{ button.text|raw }}</button>                
+                {% endif %}
             {% endfor %}
+            {% for id, button in buttons %}
+                {% if button.last is defined %}
+                    <button class="btnhexaa {{ button.class }} pull-right" id="{{ id }}">{{ button.text|raw }}</button>                
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        {% if buttons is defined and buttons %}
+            <div class="visible-xs" style="margin-top: 12px;">
+                {% for id, button in buttons %}
+                    {% if not button.last is defined %}
+                        <button class="btnhexaa {{ button.class }}" id="{{ id }}">{{ button.text|raw }}</button>
+                    {% endif %}      
+                {% endfor %}
+            </div>
+            <div class="visible-xs" style="margin-top: 12px;">
+                <input class="hexaaCheckBox" type="checkbox" value="">
+            </div>
         {% endif %}
     </div>
 
@@ -63,7 +85,7 @@ buttons array:
     <caption>{{ caption }}</caption>
     <thead>
         <tr>
-            {% if checkbox %}
+            {% if buttons is defined %}
                 <th></th>
             {% endif %}
             <th></th>
@@ -73,7 +95,7 @@ buttons array:
     <tbody>
         {% for user in users %}
         <tr>
-            {% if checkbox %}
+            {% if buttons is defined %}
                 <td><input type="checkbox" name="checkbox"></td>
             {% endif %}
             <td><strong>{{user.display_name}}</strong></td>

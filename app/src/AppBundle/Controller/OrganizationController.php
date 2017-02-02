@@ -164,7 +164,8 @@ class OrganizationController extends Controller {
                 "text" => "Remove"
                 ),
             "invite" => array(
-                "class" => "btn-red pull-right",
+                "class" => "btn-red",
+                "last" => true,
                 "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
                 ),
             );
@@ -186,7 +187,8 @@ class OrganizationController extends Controller {
                 "text" => "Remove"
                 ),
             "invite" => array(
-                "class" => "btn-red pull-right",
+                "class" => "btn-red",
+                "last" => true,
                 "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
                 ),
             );

@@ -11,6 +11,7 @@
     cursor: pointer;
     background-image: none;
     border: 2px solid transparent;
+    min-height: 34px;
 }
 
 .btn-red{
