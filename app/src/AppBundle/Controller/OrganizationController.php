@@ -234,16 +234,12 @@ class OrganizationController extends Controller {
      */
     public function connectedservicesAction($id)
     {
-        $services = $this->getServices();
-        $services_accordion = $this->servicesToAccordion($services);
-
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
             array(
                 "organization" => $this->getOrganization($id),
                 "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices(),
-                "services_accordion" => $services_accordion
+                "services" => $this->getServices()
             )
         );
     }
@@ -315,28 +311,6 @@ class OrganizationController extends Controller {
                 );
         }
         return $roles_accordion;
-    }
-
-    private function servicesToAccordion($services)
-    {
-        $services_accordion = array();
-
-        foreach ($services['items'] as $service) {
-            $services_accordion[$service['id']]['title'] = $service['name'];
-            
-
-            $services_accordion[$service['id']]['contents'] = array(
-                array(
-                    'key' => 'valami TODO',
-                    'values' => array('2', '11')
-                    ),
-                array(
-                    'key' => 'valamimás TODO',
-                    'values' => array('223', '121211')
-                    )
-                );
-        }
-        return $services_accordion;
     }
 
 }
