@@ -164,8 +164,8 @@ class ServiceController extends Controller {
         );
     }
 
-    private function getManagers($organization) {
-        return Organization::managersget($this->getUser()->getClient(), $organization['id']);
+    private function getManagers($service) {
+        return Service::managersget($this->getUser()->getClient(), $service['id']);
     }
 
     private function getOrganizations() {
