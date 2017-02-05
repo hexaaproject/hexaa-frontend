@@ -34,31 +34,6 @@ class DefaultController extends Controller
                 $services = [];
             }
         }
-
-        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services'=>$services, 'orgsubmenubox'=> $this->getorgsubmenupoints(), 'servsubmenubox'=> $this->getservsubmenupoints()));
-    }
-    
-    private function getorgsubmenupoints(){
-        $submenubox = array(
-            "app_organization_properties" => "Properties",
-            "app_organization_users" => "Users",
-            "app_organization_roles" => "Roles",
-            "app_organization_connectedservices" => "Conencted services",
-        );
-        
-        return $submenubox;
-    }
-    
-    private function getservsubmenupoints(){
-        $submenubox = array(
-            "app_service_properties" => "Properties",
-            "app_service_managers" => "Managers",
-            "app_service_attributes" => "Attributes",
-            "app_service_permissions" => "Permissions",
-            "app_service_permissionssets" => "Permissions sets",
-            "app_service_connectedorganizations" => "Connected organizations"
-        );
-        
-        return $submenubox;
+        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services'=>$services));
     }
 }
