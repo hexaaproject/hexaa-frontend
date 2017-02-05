@@ -120,7 +120,8 @@ class OrganizationController extends Controller {
                 "roles" => $roles, // TODO ez majd remélhetőleg nem kell!
                 "organizations" => $this->getOrganizations(),
                 "services" => $this->getServices(),
-                "roles_accordion" => $roles_accordion
+                "roles_accordion" => $roles_accordion,
+                'orgsubmenubox' => $this->getorgsubmenupoints()
             )
         );
     }
@@ -141,7 +142,8 @@ class OrganizationController extends Controller {
                 "members" => $members,
                 "organization" => $organization,
                 "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices()
+                "services" => $this->getServices(),
+                'orgsubmenubox' => $this->getorgsubmenupoints()
             )
         );
     }
@@ -163,7 +165,8 @@ class OrganizationController extends Controller {
                 "organizations" => $this->getOrganizations(),
                 "roles" => $roles,
                 "services" => $this->getServices(),
-                "roles_accordion" => $roles_accordion
+                "roles_accordion" => $roles_accordion,
+                'orgsubmenubox' => $this->getorgsubmenupoints()
             )
         );
     }
@@ -179,7 +182,8 @@ class OrganizationController extends Controller {
             array(
                 "organization" => $this->getOrganization($id),
                 "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices()
+                "services" => $this->getServices(),
+                'orgsubmenubox' => $this->getorgsubmenupoints()
             )
         );
     }
