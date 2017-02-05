@@ -2,61 +2,23 @@
 
 {% block container %}
     {% block stylesheets %}
-        {% stylesheets 'css/accordions.css' filter='cssrewrite' %}
+        {% stylesheets
+            'css/accordions.css'
+            'css/panel.css'
+        filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
-    
-    {% set defaultrole = null %}
-    {% for role in roles %}
-        {% if role.id == organization.default_role_id %}
-            {% set defaultrole = role %}
-        {% endif %}
-    {% endfor %}
-
-
-
-    <div id="srvmain">
-            <table id="centertable3">
-                <td class="uniqueproperty" style="background-color: #FFFFFF">
-                    <div id="propertyname">
-                        <b> Properties </b>
-                        <button class="editproperty"></button>
-                    </div>
-                    <div >
-                        {% if organization.name %}
-                            <div class="inline"><b>Name</b></div>
-                            <div class="descriptions" >{{ organization.name }}</div>
-                        {% endif %}
-                    </div>
-                    <div>
-                        {% if organization.description %}
-                            <div class="inline"><b>Description</b></div>
-                            <div class="descriptions" >{{ organization.description }}</div>
-                        {% endif %}
-                    </div>
-                    <div>
-                        {% if organization.url %}
-                            <div class="inline"><b>Home Page</b></div>
-                            <div class="descriptions">{{ organization.url }}</div>
-                        {% endif %}
-                    </div>
-                    <div>
-                        {% if defaultrole|length %}
-                            <div class="inline"><b>Default role</b></div>
-                            <div class="descriptions">{{ defailtrole.name }}</div>
-                        {% endif %}
-                    </div>
-                </td>
-                <tr>
-                    <td class="uniquebuttons" style="background-color: #FFFFFF"></td>
-                </tr>
-            </table>
-    </div>
 
     <div class="row">
         <div class="col-md-11 col-md-offset-2">
-        {{ include('::accordions.html.twig', { heading: "Roles", variant: "dark", items: roles_accordion }) }}
+            {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: organization, items: propertiesbox }) }}
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 12px;">
+        <div class="col-md-11 col-md-offset-2">
+        {{ include('::accordions.html.twig', { heading: "Roles", variant: "dark", items: roles }) }}
         </div>
     </div>
     

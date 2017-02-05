@@ -1,9 +1,7 @@
 #!/bin/bash
 
-/app/app/console doctrine:database:create --if-not-exists
-/app/app/console doctrine:schema:update --force
-app/console app:migrate
-app/console hautelook_alice:doctrine:fixtures:load --no-interaction
+/var/www/project/bin/console doctrine:database:create --if-not-exists
+/var/www/project/bin/console doctrine:schema:update --force
 
 # Futtatáskor --env "VAULT_PASS=***" formában add meg az ansible vault jelszót
 # # if [ -z "$VAULT_PASS" ]; then

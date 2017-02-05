@@ -9,7 +9,14 @@
     %}
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
-    {{ include('::navbar.html.twig', { organization: organization, names:orgsubmenubox}) }}
+    {% set names = {
+            app_organization_properties: "Properties",
+            app_organization_users: "Users",
+            app_organization_roles: "Roles",
+            app_organization_connectedservices: "Connected services"
+            }
+     %}
+    {{ include('::navbar.html.twig', { organization: organization, names: names}) }}
     <div class="container">
     {% block container %}{% endblock %}
 </div>

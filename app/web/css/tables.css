@@ -7,13 +7,14 @@
 .datatable td{
     padding: 5px;
     text-align: left;
+    font-size: 15px;
 }
 
 .datatable caption {
     display: table-caption;
     text-align: left;
     font-weight:bold;
-    font-size:larger;
+    font-size: 25px;
     margin-bottom: 0.5em;
     margin-top: 1em;
 }
@@ -164,13 +165,15 @@
   clear: both;
   *zoom: 1;
   zoom: 1;
+  margin-top: 12px;
 }
+
+
 .dataTables_wrapper .dataTables_length {
   float: left;
 }
 .dataTables_wrapper .dataTables_filter {
-  float: right;
-  text-align: right;
+  float: left;
 }
 .dataTables_wrapper .dataTables_filter input {
   margin-left: 0.5em;
