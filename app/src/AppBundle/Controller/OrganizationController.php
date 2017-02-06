@@ -330,4 +330,3 @@ class OrganizationController extends Controller {
     }
 
 }
-

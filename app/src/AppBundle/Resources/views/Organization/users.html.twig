@@ -3,11 +3,13 @@
 {% block container %}
 
     {% block stylesheets %}
-        {% stylesheets 'css/tables.css' filter='cssrewrite' %}
+        {% stylesheets
+            'css/tables.css'
+            filter='cssrewrite'
+        %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
-
     {% block javascripts %}    
         {% javascripts
             '@datatables_js'
