@@ -19,7 +19,7 @@
     {% if managers is defined and managers|length %}
     <div class="row">
         <div class="col-md-15">
-            {{ include('::tables.html.twig', {variant: 'red', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table', buttons: managers_buttons, search_placeholder: 'Search manager' }) }}
+            {{ include('::tables.html.twig', {variant: 'red', caption: 'Managers', checkbox: true, attributes: false, users: managers, table_id: 'managers_table', buttons: managers_buttons, search_placeholder: 'Search manager' }) }}
         </div>
     </div>
     {% endif %}
@@ -27,7 +27,7 @@
     {% if members is defined and members|length %}
     <div class="row" style="margin-top: 48px;">
         <div class="col-md-15">
-            {{ include('::tables.html.twig', {variant: 'blue', caption: 'Members', checkbox: true, users: members, table_id: 'members_table', buttons: members_buttons, search_placeholder: 'Search member' }) }}            
+            {{ include('::tables.html.twig', {variant: 'blue', caption: 'Members', checkbox: true, attributes: false, users: members, table_id: 'members_table', buttons: members_buttons, search_placeholder: 'Search member' }) }}            
         </div>
     </div>
     {% endif %}

@@ -34,7 +34,15 @@ abstract class BaseResource
     }
     
     public static function serviceattributesget(Client $client, string $id) {
-        $response = $client->get(static::$pathName.'/'.$id.'/'.'attributes');
+        $response = $client->get(static::$pathName.'/'.$id.'/'.'attributespecs');
+        return json_decode($response->getBody(), true);
+    }
+    
+    public static function attributespecsget(Client $client, string $verbose = normal) {
+        $response = $client->get(static::$pathName.'/'.'attributespecs', [
+            'query' => [
+                'verbose' => $verbose          
+        ]]);
         return json_decode($response->getBody(), true);
     }
      
@@ -56,12 +64,6 @@ abstract class BaseResource
         return json_decode($response->getBody(), true);
     }
     
-    public static function attributespecsget(Client $client, string $verbose = normal) {
-        $response = $client->get(static::$pathName.'/'.'attributespecs', [
-            'query' => [
-                'verbose' => $verbose          
-        ]]);
-        return json_decode($response->getBody(), true);
-    }
+   
     
 }
