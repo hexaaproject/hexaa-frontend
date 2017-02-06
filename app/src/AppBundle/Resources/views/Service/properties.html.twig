@@ -5,8 +5,11 @@
 {% block container %}
 
     {% block stylesheets %}
-        {% stylesheets 'css/service.css' filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% stylesheets
+            'css/panel.css'
+            filter='cssrewrite'
+        %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
 

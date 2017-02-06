@@ -3,6 +3,13 @@
 {% block title %}HEXAA Services{% endblock %}
 
 {% block body %}
+    {% stylesheets
+        'css/service.css'
+        filter='cssrewrite'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    
     {{ include('::navbar.html.twig', {service: service, names:servsubmenubox}) }}
     <div class="container">
         {% block container %}{% endblock %}
