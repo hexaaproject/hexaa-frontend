@@ -1,81 +1,3 @@
-{# 
-usage in twig:
-{{ include('::tables.html.twig', {heading: 'foobar', variant: 'dark/light', items: items}) }}
-
-usage in symfony:
-return $this->render(
-            'AppBundle:Whatever.html.twig',
-            array(
-                "items" => array(
-                // accordion 1
-                array(
-                    "title" => "Accord1",
-                    "contents" => array(
-                        // accordion1 content 1
-                        array(
-                            "key" => "property a",
-                            "values" => array("x")
-                        ),
-                        // accordion1 content 2
-                        array(
-                            "key" => "property b",
-                            "values" => array("a", "b", "c")
-                        )
-                    )
-                ),
-                // accordion 2
-                array(
-                    "title" => "Accord2",
-                    "contents" => array(
-                        // accordion2 content 1
-                        array(
-                            "key" => "property dzs",
-                            "values" => array("e", "f")
-                        )
-                    )
-                ),
-            )
-        );
-
-usage in php: 
-
-echo $twig->render('accordions.html.twig', array(
-    "heading" => "Accordion Head",
-    "variant" => "dark", // or "light 
-    "items" => array(
-        // accordion 1
-        array(
-            "title" => "Accord1",
-            "contents" => array(
-                // accordion1 content 1
-                array(
-                    "key" => "property a",
-                    "values" => array("x")
-                ),
-                // accordion1 content 2
-                array(
-                    "key" => "property b",
-                    "values" => array("a", "b", "c")
-                )
-            )
-        ),
-        // accordion 2
-        array(
-            "title" => "Accord2",
-            "contents" => array(
-                // accordion2 content 1
-                array(
-                    "key" => "property dzs",
-                    "values" => array("e", "f")
-                )
-            )
-        ),
-        
-    )
-        )
-);
-
-#}
 <script>
     function toggleAccordion(e) {
         e.classList.toggle("active");
@@ -101,13 +23,14 @@ echo $twig->render('accordions.html.twig', array(
                             
                             <div class="accordion-header"></div>
                             <div onclick="toggleAccordion(this);" class="accordion-title accordion-title-style-{{ subaccordion.variant }}">{{subaccordion.title}}
+                                <span class="accordion-buttons pull-right">
                                 {% if subaccordion.buttons is defined %}
-                                    <span class="accordion-buttons">
                                         {% for id, button in subaccordion.buttons %}
-                                            <button {% if id is defined %} id="{{ id }}"{% endif %} class=" btn {% if button.class is defined %} {{ button.class }} {% endif %}">{{ button.text }}</button>
+                                            <button {% if id is defined %} id="{{ id }}"{% endif %} class=" btnhexaa btnhexaa-xs {% if button.class is defined %} {{ button.class }} {% endif %}" alt="{{ button.alt }}"><i class="fa fa-{{button.icon}}"></i></button>
                                         {% endfor %}
-                                    </span>
                                 {% endif %}
+                                <i class="fa fa-caret-down"></i>
+                                </span>
                             </div>
                             <div class="accordion-panel accordion-panel-style-{{ subaccordion.variant }}">
                                 <table cellspacing="0" class="accordion">

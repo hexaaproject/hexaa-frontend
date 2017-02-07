@@ -331,18 +331,16 @@ class OrganizationController extends Controller {
 
         $subaccordions['perm1']['buttons']['id1']['alt'] = 'button1';
         $subaccordions['perm1']['buttons']['id1']['icon'] = 'pencil';
-        $subaccordions['perm1']['buttons']['id1']['class'] = 'btn-default';
         $subaccordions['perm1']['buttons']['id2']['alt'] = 'button2';
         $subaccordions['perm1']['buttons']['id2']['icon'] = 'trash';
-        $subaccordions['perm1']['buttons']['id2']['class'] = 'btn-danger';
 
         $subaccordions['perm2']['variant'] = 'light';
         $subaccordions['perm2']['heading'] = 'perm2';
         $subaccordions['perm2']['title'] = 'title2';
         $subaccordions['perm2']['contents'] = 'lorem';
 
-        $subaccordions['perm2']['buttons']['id1']['text'] = 'button1';
-        $subaccordions['perm2']['buttons']['id1']['class'] = 'text-success';
+        $subaccordions['perm2']['buttons']['id1']['alt'] = 'button1';
+        $subaccordions['perm2']['buttons']['id1']['icon'] = 'pencil';
 
 
 
