@@ -1,4 +1,5 @@
 <?php
+
 /*
  * ************** CAUTION **************
  *
@@ -14,14 +15,14 @@ if (!isset($_SERVER['HTTP_HOST'])) {
 }
 
 if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
-            '127.0.0.1',
-            '::1',
-        ))) {
+    '127.0.0.1',
+    '::1',
+))) {
     header('HTTP/1.0 403 Forbidden');
     exit('This script is only accessible from localhost.');
 }
 
-require_once dirname(__FILE__) . '/../var/SymfonyRequirements.php';
+require_once dirname(__FILE__).'/../var/SymfonyRequirements.php';
 
 $symfonyRequirements = new SymfonyRequirements();
 
@@ -29,6 +30,7 @@ $majorProblems = $symfonyRequirements->getFailedRequirements();
 $minorProblems = $symfonyRequirements->getFailedRecommendations();
 $hasMajorProblems = (bool) count($majorProblems);
 $hasMinorProblems = (bool) count($minorProblems);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -335,24 +337,24 @@ $hasMinorProblems = (bool) count($minorProblems);
                 </div>
 
                 <div class="search">
-                    <form method="get" action="http://symfony.com/search">
-                        <div class="form-row">
+                  <form method="get" action="http://symfony.com/search">
+                    <div class="form-row">
 
-                            <label for="search-id">
+                      <label for="search-id">
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAABUElEQVQoz2NgAIJ29iBdD0d7X2cPb+tY2f9MDMjgP2O2hKu7vS8CBlisZUNSMJ3fxRMkXO61wm2ue6I3iB1q8Z8ZriDZFCS03fm/wX+1/xp/TBo8QPxeqf+MUAW+QIFKj/+q/wX/c/3n/i/6Qd/bx943z/Q/K1SBI1D9fKv/AhCn/Wf5L5EHdFGKw39OqAIXoPpOMziX4T9/DFBBnuN/HqhAEtCKCNf/XDA/rZRyAmrpsvrPDVUw3wrkqCiLaewg6TohX1d7X0ffs5r/OaAKfinmgt3t4ulr4+Xg4ANip3j+l/zPArNT4LNOD0pAgWCSOUIBy3+h/+pXbBa5tni0eMx23+/mB1YSYnENroT5Pw/QSOX/mkCo+l/jgo0v2KJA643s8PgAmsMBDCbu/5xALHPB2husxN9uCzsDOgAq5kAoaZVnYMCh5Ky1r88Eh/+iABM8jUk7ClYIAAAAAElFTkSuQmCC" alt="Search on Symfony website" />
-                            </label>
+                      </label>
 
-                            <input name="q" id="search-id" type="search" placeholder="Search on Symfony website" />
+                      <input name="q" id="search-id" type="search" placeholder="Search on Symfony website" />
 
-                            <button type="submit" class="sf-button">
-                                <span class="border-l">
-                                    <span class="border-r">
-                                        <span class="btn-bg">OK</span>
-                                    </span>
-                                </span>
-                            </button>
-                        </div>
-                    </form>
+                      <button type="submit" class="sf-button">
+                          <span class="border-l">
+                            <span class="border-r">
+                                <span class="btn-bg">OK</span>
+                            </span>
+                        </span>
+                      </button>
+                    </div>
+                   </form>
                 </div>
             </div>
 
@@ -365,49 +367,49 @@ $hasMinorProblems = (bool) count($minorProblems);
                             ready to run Symfony applications.
                         </p>
 
-<?php if ($hasMajorProblems): ?>
+                        <?php if ($hasMajorProblems): ?>
                             <h2 class="ko">Major problems</h2>
                             <p>Major problems have been detected and <strong>must</strong> be fixed before continuing:</p>
                             <ol>
-    <?php foreach ($majorProblems as $problem): ?>
+                                <?php foreach ($majorProblems as $problem): ?>
                                     <li><?php echo $problem->getTestMessage() ?>
                                         <p class="help"><em><?php echo $problem->getHelpHtml() ?></em></p>
                                     </li>
-    <?php endforeach; ?>
+                                <?php endforeach; ?>
                             </ol>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php if ($hasMinorProblems): ?>
                             <h2>Recommendations</h2>
                             <p>
-    <?php if ($hasMajorProblems): ?>Additionally, to<?php else: ?>To<?php endif; ?> enhance your Symfony experience,
+                                <?php if ($hasMajorProblems): ?>Additionally, to<?php else: ?>To<?php endif; ?> enhance your Symfony experience,
                                 it’s recommended that you fix the following:
                             </p>
                             <ol>
-    <?php foreach ($minorProblems as $problem): ?>
+                                <?php foreach ($minorProblems as $problem): ?>
                                     <li><?php echo $problem->getTestMessage() ?>
                                         <p class="help"><em><?php echo $problem->getHelpHtml() ?></em></p>
                                     </li>
-    <?php endforeach; ?>
+                                <?php endforeach; ?>
                             </ol>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php if ($symfonyRequirements->hasPhpIniConfigIssue()): ?>
                             <p id="phpini">*
-                            <?php if ($symfonyRequirements->getPhpIniConfigPath()): ?>
+                                <?php if ($symfonyRequirements->getPhpIniConfigPath()): ?>
                                     Changes to the <strong>php.ini</strong> file must be done in "<strong><?php echo $symfonyRequirements->getPhpIniConfigPath() ?></strong>".
                                 <?php else: ?>
                                     To change settings, create a "<strong>php.ini</strong>".
                                 <?php endif; ?>
                             </p>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php if (!$hasMajorProblems && !$hasMinorProblems): ?>
                             <p class="ok">All checks passed successfully. Your system is ready to run Symfony applications.</p>
                         <?php endif; ?>
 
                         <ul class="symfony-install-continue">
-<?php if ($hasMajorProblems || $hasMinorProblems): ?>
+                            <?php if ($hasMajorProblems || $hasMinorProblems): ?>
                                 <li><a href="config.php">Re-check configuration</a></li>
                             <?php endif; ?>
                         </ul>

@@ -170,13 +170,12 @@ class ServiceController extends Controller {
         $attributestonames=array();
         foreach ($serviceattributespecs as $serviceattributespec) {
             foreach (Service::attributespecsget($this->getUser()->getClient(), $verbose) as $attributespec) {
-                if(attributespec['id']== $serviceattributespec['attribute_spec_id']){
+                if($attributespec['id']== $serviceattributespec['attribute_spec_id']){
                     array_push($attributestonames, $attributespec);
                 }
             }
         }
         return $attributestonames;*/
-        //return Service::serviceattributesget($this->getUser()->getClient(), $service['id']);
         return Service::managersget($this->getUser()->getClient(), $service['id']);
     }
 

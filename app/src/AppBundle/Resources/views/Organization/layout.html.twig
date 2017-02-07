@@ -16,7 +16,7 @@
             app_organization_connectedservices: "Connected services"
             }
      %}
-    {{ include('::navbar.html.twig', { organization: organization, names: orgsubmenubox}) }}
+    {{ include('::navbar.html.twig', { organization: organization, names: names}) }}
     <div class="container">
     {% block container %}{% endblock %}
 </div>
