@@ -113,11 +113,26 @@ class ServiceController extends Controller {
      * @Template()
      */
     public function attributesAction($id) {
+        $service = $this->getService($id);
+        $attributes = $this->getServiceAttributes($service);
+        $attributes_buttons = array(
+            "change_attributes" => array(
+                "class" => "btn-blue",
+                "text" => "Remove"
+            ),
+            "add" => array(
+                "class" => "btn-red pull-right",
+                "text" => '<i class="glyphicon glyphicon-plus"></i> Add'
+            ),
+        );
         return $this->render(
                         'AppBundle:Service:attributes.html.twig', array(
                     'organizations' => $this->getOrganizations(),
                     'services' => $this->getServices(),
-                    'service' => $this->getService($id)
+                    'service' => $this->getService($id),
+                    'servsubmenubox' => $this->getservsubmenupoints(),
+                    'attributes' => $attributes,
+                    'attributes_buttons' => $attributes_buttons
                         )
         );
     }
@@ -165,18 +180,32 @@ class ServiceController extends Controller {
     }
 
     private function getManagers($service) {
-        /*$verbose = "expanded";
+        /* $verbose = "expanded";
+          $serviceattributespecs = Service::serviceattributesget($this->getUser()->getClient(), $service['id']);
+          $attributestonames=array();
+          foreach ($serviceattributespecs as $serviceattributespec) {
+          foreach (Service::attributespecsget($this->getUser()->getClient(), $verbose) as $attributespec) {
+          if($attributespec['id']== $serviceattributespec['attribute_spec_id']){
+          array_push($attributestonames, $attributespec);
+          }
+          }
+          }
+          return $attributestonames; */
+        return Service::managersget($this->getUser()->getClient(), $service['id']);
+    }
+
+    private function getServiceAttributes($service) {
+        $verbose = "expanded";
         $serviceattributespecs = Service::serviceattributesget($this->getUser()->getClient(), $service['id']);
-        $attributestonames=array();
+        $attributestonames = array();
         foreach ($serviceattributespecs as $serviceattributespec) {
             foreach (Service::attributespecsget($this->getUser()->getClient(), $verbose) as $attributespec) {
-                if($attributespec['id']== $serviceattributespec['attribute_spec_id']){
+                if ($attributespec['id'] == $serviceattributespec['attribute_spec_id']) {
                     array_push($attributestonames, $attributespec);
                 }
             }
         }
-        return $attributestonames;*/
-        return Service::managersget($this->getUser()->getClient(), $service['id']);
+        return $attributestonames;
     }
 
     private function getOrganizations() {
