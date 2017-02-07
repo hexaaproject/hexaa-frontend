@@ -40,7 +40,7 @@ div.accordion-style-light {
     color: #68b3c7;
 }
 
-button.accordion {
+div.accordion-title {
     cursor: pointer;
     padding-left: 15px;
     padding-top: 5px;
@@ -56,42 +56,42 @@ button.accordion {
     transition: 0.4s;
 }
 
-button.accordion-style-dark {
+div.accordion-title-style-dark {
     background-color: white;
     color: #68b3c7;
 }
 
-button.accordion-style-light {
+div.accordion-title-style-light {
     background-color: #68b3c7;
     color: white;
 }
 
-button.accordion::after {
+div.accordion-title::after {
     content: '\25BC';
     font-weight: bold;
     float: right;       
 }
 
-button.accordion-style-dark::after {
+div.accordion-title-style-dark::after {
     color: #68b3c7;
 }
 
-button.accordion-style-light::after {
+div.accordion-title-style-light::after {
     background-color: #68b3c7;
     color: white;
 }
 
-button.accordion.active::after {
+div.accordion-title.active::after {
     content: '\25B2';
     font-weight: bold;
     float: right;
 }
 
-button.accordion-style-dark.active, button.accordion-dark:hover {
+div.accordion-title-style-dark.active, div.accordion-title-dark:hover {
     color: #ec666a;
 }
 
-button.accordion-style-light.active, button.accordion-light:hover {
+div.accordion-title-style-light.active, div.accordion-title-light:hover {
     background-color: #ec666a;
     color: white;
 }

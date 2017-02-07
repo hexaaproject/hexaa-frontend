@@ -321,20 +321,34 @@ class OrganizationController extends Controller {
     {
         $services_accordion = array();
 
+        $subaccordions['perm1']['variant'] = 'light';
+        $subaccordions['perm1']['heading'] = 'perm1';
+        $subaccordions['perm1']['title'] = 'title1';
+        $subaccordions['perm1']['contents']['alma']['key'] = 'barack';
+        $subaccordions['perm1']['contents']['alma']['values'] = array('barack', 'szőlő');
+        $subaccordions['perm1']['contents']['korte']['key'] = 'korte';
+        $subaccordions['perm1']['contents']['korte']['values'] = array('barack', 'szőlő');
+
+        $subaccordions['perm1']['buttons']['id1']['alt'] = 'button1';
+        $subaccordions['perm1']['buttons']['id1']['icon'] = 'pencil';
+        $subaccordions['perm1']['buttons']['id1']['class'] = 'btn-default';
+        $subaccordions['perm1']['buttons']['id2']['alt'] = 'button2';
+        $subaccordions['perm1']['buttons']['id2']['icon'] = 'trash';
+        $subaccordions['perm1']['buttons']['id2']['class'] = 'btn-danger';
+
+        $subaccordions['perm2']['variant'] = 'light';
+        $subaccordions['perm2']['heading'] = 'perm2';
+        $subaccordions['perm2']['title'] = 'title2';
+        $subaccordions['perm2']['contents'] = 'lorem';
+
+        $subaccordions['perm2']['buttons']['id1']['text'] = 'button1';
+        $subaccordions['perm2']['buttons']['id1']['class'] = 'text-success';
+
+
+
         foreach ($services['items'] as $service) {
             $services_accordion[$service['id']]['title'] = $service['name'];
-            
-
-            $services_accordion[$service['id']]['contents'] = array(
-                array(
-                    'key' => 'valami TODO',
-                    'values' => array('2', '11')
-                    ),
-                array(
-                    'key' => 'valamimás TODO',
-                    'values' => array('223', '121211')
-                    )
-                );
+            $services_accordion[$service['id']]['subaccordions'] = $subaccordions;
         }
         return $services_accordion;
     }
