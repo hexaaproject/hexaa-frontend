@@ -20,14 +20,13 @@ limitations under the License.
 
 div.accordion-header {
     font-weight: bold;
-    font-size: larger;        
+    font-size: larger;
+    margin-bottom: 12px      
 }
 
 div.accordion-container {
-    padding-top:2px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 8px 10px;
+    margin: 0px 4px;
 }
 
 div.accordion-style-dark {
@@ -42,13 +41,11 @@ div.accordion-style-light {
 
 div.accordion-title {
     cursor: pointer;
-    padding-left: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px 15px;
     font-weight: bold;
     font-size: medium;
     margin-top: 4px;
-    margin-bottom: 4px;
+    margin-bottom: 1px;
     width: 100%;
     text-align: left;
     border: none;
@@ -66,12 +63,6 @@ div.accordion-title-style-light {
     color: white;
 }
 
-div.accordion-title::after {
-    content: '\25BC';
-    font-weight: bold;
-    float: right;       
-}
-
 div.accordion-title-style-dark::after {
     color: #68b3c7;
 }
@@ -79,12 +70,6 @@ div.accordion-title-style-dark::after {
 div.accordion-title-style-light::after {
     background-color: #68b3c7;
     color: white;
-}
-
-div.accordion-title.active::after {
-    content: '\25B2';
-    font-weight: bold;
-    float: right;
 }
 
 div.accordion-title-style-dark.active, div.accordion-title-dark:hover {
@@ -144,3 +129,6 @@ td.accordion-hr {
     border-top-color: #68b3c7;
 }
 
+.accordion-buttons {
+    vertical-align: middle;
+}
