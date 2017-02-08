@@ -234,12 +234,16 @@ class OrganizationController extends Controller {
      */
     public function connectedservicesAction($id)
     {
+        $services = $this->getServices();
+        $services_accordion = $this->servicesToAccordion($services);
+
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
             array(
                 "organization" => $this->getOrganization($id),
                 "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices()
+                "services" => $this->getServices(),
+                "services_accordion" => $services_accordion
             )
         );
     }
@@ -311,6 +315,43 @@ class OrganizationController extends Controller {
                 );
         }
         return $roles_accordion;
+    }
+
+    private function servicesToAccordion($services)
+    {
+        $services_accordion = array();
+
+        $subaccordions['perm1']['variant'] = 'light';
+        $subaccordions['perm1']['heading'] = 'perm1';
+        $subaccordions['perm1']['title'] = 'title1';
+        $subaccordions['perm1']['contents']['alma']['key'] = 'barack';
+        $subaccordions['perm1']['contents']['alma']['values'] = array('barack', 'szőlő');
+        $subaccordions['perm1']['contents']['korte']['key'] = 'korte';
+        $subaccordions['perm1']['contents']['korte']['values'] = array('barack', 'szőlő');
+
+        $subaccordions['perm1']['buttons']['id1']['alt'] = 'button1';
+        $subaccordions['perm1']['buttons']['id1']['icon'] = 'pencil';
+        $subaccordions['perm1']['buttons']['id2']['alt'] = 'button2';
+        $subaccordions['perm1']['buttons']['id2']['icon'] = 'trash';
+
+        $subaccordions['perm2']['variant'] = 'light';
+        $subaccordions['perm2']['heading'] = 'perm2';
+        $subaccordions['perm2']['title'] = 'title2';
+        $subaccordions['perm2']['titletext'] = 'title-text2';
+        $subaccordions['perm2']['contents'] = 'lorem';
+
+        $subaccordions['perm2']['buttons']['id1']['alt'] = 'button1';
+        $subaccordions['perm2']['buttons']['id1']['icon'] = 'pencil';
+
+
+
+        foreach ($services['items'] as $service) {
+            $services_accordion[$service['id']]['title'] = $service['name'];
+            $services_accordion[$service['id']]['description'] = 'Permission sets';
+            $services_accordion[$service['id']]['titlemiddle'] = 'Service manager Kis Lajos (kislajos@valami.hu)';
+            $services_accordion[$service['id']]['subaccordions'] = $subaccordions;
+        }
+        return $services_accordion;
     }
 
 }

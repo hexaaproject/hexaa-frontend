@@ -20,14 +20,13 @@ limitations under the License.
 
 div.accordion-header {
     font-weight: bold;
-    font-size: larger;        
+    font-size: larger;
+    margin-bottom: 12px      
 }
 
 div.accordion-container {
-    padding-top:2px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 8px 10px;
+    margin: 0px 4px;
 }
 
 div.accordion-style-dark {
@@ -40,58 +39,45 @@ div.accordion-style-light {
     color: #68b3c7;
 }
 
-button.accordion {
+div.accordion-title {
     cursor: pointer;
-    padding-left: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px 15px;
     font-weight: bold;
     font-size: medium;
     margin-top: 4px;
-    margin-bottom: 4px;
+    margin-bottom: 0px;
     width: 100%;
     text-align: left;
     border: none;
     outline: none;
     transition: 0.4s;
+    vertical-align: middle;
 }
 
-button.accordion-style-dark {
+div.accordion-title-style-dark {
     background-color: white;
     color: #68b3c7;
 }
 
-button.accordion-style-light {
+div.accordion-title-style-light {
     background-color: #68b3c7;
     color: white;
 }
 
-button.accordion::after {
-    content: '\25BC';
-    font-weight: bold;
-    float: right;       
-}
-
-button.accordion-style-dark::after {
+div.accordion-title-style-dark::after {
     color: #68b3c7;
 }
 
-button.accordion-style-light::after {
+div.accordion-title-style-light::after {
     background-color: #68b3c7;
     color: white;
 }
 
-button.accordion.active::after {
-    content: '\25B2';
-    font-weight: bold;
-    float: right;
-}
-
-button.accordion-style-dark.active, button.accordion-dark:hover {
+div.accordion-title-style-dark.active, div.accordion-title-dark:hover {
     color: #ec666a;
 }
 
-button.accordion-style-light.active, button.accordion-light:hover {
+div.accordion-title-style-light.active, div.accordion-title-light:hover {
     background-color: #ec666a;
     color: white;
 }
@@ -99,11 +85,15 @@ button.accordion-style-light.active, button.accordion-light:hover {
 div.accordion-panel {
     margin-top:0px;
     margin-bottom:2px;
-    padding-top: 2px;
+    padding-top: 0px;
     padding-bottom: 2px;
     padding-left: 2px;
     padding-right: 2px;
     display: none;
+}
+
+div.accordion-panel.active {
+    border-color: #ec666a;
 }
 
 td.accordion-key {
@@ -118,6 +108,7 @@ div.accordion-panel-style-dark {
 div.accordion-panel-style-light {
     background-color: white;
     color:#68b3c7; 
+    border: 1px solid;
 }
 
 
@@ -144,3 +135,21 @@ td.accordion-hr {
     border-top-color: #68b3c7;
 }
 
+.accordion-buttons {
+}
+
+.accordion-title-text {
+}
+
+.accordion-title-right {
+}
+
+.accordion-title-middle {
+    font-style: italic;
+    font-weight: lighter;
+    margin-left: 12px;
+}
+
+.accordion-description {
+    font-weight: bold;
+}

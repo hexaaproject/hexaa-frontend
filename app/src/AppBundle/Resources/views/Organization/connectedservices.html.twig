@@ -1,147 +1,20 @@
 {% extends "AppBundle:Organization:layout.html.twig" %}
 
 {% block container %}
-    <table id="centertable4">
-            <tr>     
-                <td id="servicesheader" style="background-color: #FFFFFF">                    
-                    <div class="flexcontainerservice">
-                        <input type="text" class="inputfieldservice" style="width: 300px"  placeholder="Service, Permission, Permission set">
-                        <button id="searchservice" type="submit"></button>                               
-                    </div>
-                    <button class="btnhexaa btn-red"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> New connection</button>           
-                </td>
-            </tr>
-            <tr>
-                <td class="uniqueservices" style="background-color: #FFFFFF" valign="middle">
+    {% block stylesheets %}
+        {% stylesheets
+            'css/accordions.css'
+        filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
 
-                    <div id="labels">
-                        <label id="headerLabelService">
-                            Connected services
-                        </label>
+    <div class="col-sm-11 col-sm-offset-2">
+        <input type="" class="hexaaSearchField" name="" placeholder="Service, permission, permission set">
+        <button class="btnhexaa btn-red pull-right"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> New connection</button>
+    </div>
+        <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
+            {{ include('::accordions.html.twig', { heading: "Connected services", variant: "light", items: services_accordion }) }}
+        </div>
 
-                    </div>
-                    <div id="roles3">
-
-                        <div class="accordionservices">
-                            <span class="name">
-                                könyvtár
-
-                            </span>
-                            <div class="format" style="text-align: center">
-                                <span class="servicemanager">Service manager Kis Lajos(kislajos@valami.hu)</span>  
-                            </div>
-
-
-
-                        </div>
-                        <div class="panelservice">
-
-                        </div>
-
-                        <div class="accordionservices">
-                            <span class="name">service2</span>
-                            <div class="format" style="text-align: center">
-                                <span class="servicemanager">Service manager Kis Lajos(kislajos@valami.hu)</span>  
-                            </div>
-                        </div>
-                        <div class="panelservice">
-
-                        </div>
-
-                        <div class="accordionservices">
-                            <span class="name">service3</span>
-                            <div class="format" style="text-align: center">
-                                <span class="servicemanager">Service manager Kis Lajos(kislajos@valami.hu)</span>  
-                            </div>
-                        </div>
-                        <div class="panelservice">
-                            <div id="headerpermission"><b>Permission sets</b></div>
-                            <div class="accordionpermissions">
-                                <span class="name">permissionset1</span>
-                                <button class="buttonbinservice"></button>
-                            </div>
-                            <div class="panelpermissions">
-
-                            </div>
-                            <div class="accordionpermissions">
-                                <span class="name">permissionset2</span>
-                                <button class="buttonbinservice"></button>
-                            </div>
-                            <div class="panelpermissions">
-                                <table id="paneltablepermission">
-                                    <tr>
-                                        <td rowspan="1" class="firsttd">
-                                            Details
-                                        </td>
-
-                                        <td class="long">
-                                            Ez egy szép jogosultságcsomag.
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="4" class="firsttd">
-                                            Permissions
-                                        </td>
-                                        <td>
-                                            permission1
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="long">
-                                            permission2
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="long">
-                                            permission3                                               
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="long">
-                                            permission4                                               
-                                        </td>
-                                    </tr>
-
-
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="accordionservices">
-                            <span class="name">service4</span>
-
-                        </div>                               
-                        <div class="panelservice">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-
-                        <div class="accordionservices">
-                            <span class="name">service5</span>
-
-                        </div>
-                        <div class="panelservice">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-
-                        <div class="accordionservices">
-                            <span class="name">service6</span>
-
-                        </div>
-                        <div class="panelservice">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-
-                        <div class="accordionservices">
-                            <span class="name">service7</span>
-
-                        </div>
-                        <div class="panelservice">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-
-
-                    </div>
-                </td>
-            </tr>
-        </table>
 {% endblock %}

@@ -1,116 +1,94 @@
-{# 
-usage in twig:
-{{ include('::tables.html.twig', {heading: 'foobar', variant: 'dark/light', items: items}) }}
-
-usage in symfony:
-return $this->render(
-            'AppBundle:Whatever.html.twig',
-            array(
-                "items" => array(
-                // accordion 1
-                array(
-                    "title" => "Accord1",
-                    "contents" => array(
-                        // accordion1 content 1
-                        array(
-                            "key" => "property a",
-                            "values" => array("x")
-                        ),
-                        // accordion1 content 2
-                        array(
-                            "key" => "property b",
-                            "values" => array("a", "b", "c")
-                        )
-                    )
-                ),
-                // accordion 2
-                array(
-                    "title" => "Accord2",
-                    "contents" => array(
-                        // accordion2 content 1
-                        array(
-                            "key" => "property dzs",
-                            "values" => array("e", "f")
-                        )
-                    )
-                ),
-            )
-        );
-
-usage in php: 
-
-echo $twig->render('accordions.html.twig', array(
-    "heading" => "Accordion Head",
-    "variant" => "dark", // or "light 
-    "items" => array(
-        // accordion 1
-        array(
-            "title" => "Accord1",
-            "contents" => array(
-                // accordion1 content 1
-                array(
-                    "key" => "property a",
-                    "values" => array("x")
-                ),
-                // accordion1 content 2
-                array(
-                    "key" => "property b",
-                    "values" => array("a", "b", "c")
-                )
-            )
-        ),
-        // accordion 2
-        array(
-            "title" => "Accord2",
-            "contents" => array(
-                // accordion2 content 1
-                array(
-                    "key" => "property dzs",
-                    "values" => array("e", "f")
-                )
-            )
-        ),
-        
-    )
-        )
-);
-
-#}
 <script>
-    function toggleAccordion(
-            e) {
-        e.classList.toggle("active");
+    function toggleAccordion(e) {
+
+        var caretbutton = $(e).find('.caretbutton');
+        if (caretbutton.hasClass('fa-caret-down')) {
+            caretbutton.removeClass('fa-caret-down').addClass('fa-caret-up');
+        } else {
+            caretbutton.removeClass('fa-caret-up').addClass('fa-caret-down');
+        }
+
+        $('.accordion-title').removeClass('active');
+        $(e).addClass('active');
 
         var panel = e.nextElementSibling;
-        if (panel.style.display === "block") {
-            panel.style.display = "none";
-        } else {
-            panel.style.display = "block";
-        }
+        $('.accordion-panel').removeClass('active');
+        $(panel).addClass("active");
+        $(panel).toggle();
     }
+
 </script>
 
 <div class="accordion-container accordion-style-{{ variant }}">
     <div class="accordion-header">{{ heading }}</div>
     <div>
         {% for item in items %}
-            <button onclick="toggleAccordion(this);" class="accordion accordion-style-{{ variant }}">{{item.title}}</button>
+            <div onclick="toggleAccordion(this);" class="accordion-title accordion-title-style-{{ variant }}">
+                {{item.title}}
+                <span class="accordion-title-middle">{% if item.titlemiddle is defined %}{{ item.titlemiddle }}{% endif %}</span>
+                    <span class="accordion-title-right pull-right">
+                    <span class="accordion-buttons">
+                        <i class="caretbutton fa fa-caret-down"></i>
+                    </span>
+                </span>
+            </div>
             <div class="accordion-panel accordion-panel-style-{{ variant }}">
-                <table cellspacing="0" class="accordion">
-                    {% for content in item.contents %}
-                        <tr class="accordion">
-                            <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion accordion-key">{{content.key}}</td>
-                            <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion">
-                                <ul class="accordion">
-                                    {% for listitem in content.values %}
-                                        <li>{{ listitem }}
-                                        {% endfor %}
-                                </ul>
-                            </td>
-                        </tr>
+                {% if item.subaccordions is defined %}
+                    {% if item.description is defined %} <div class="accordion-description">{{ item.description }}</div> {% endif %}
+                    {% for subaccordion in item.subaccordions %}
+                        <div class="accordion-container accordion-style-{{ subaccordion.variant }}">
+                            
+                            <div class="accordion-header"></div>
+                            <div onclick="toggleAccordion(this);" class="accordion-title accordion-title-style-{{ subaccordion.variant }}">{{subaccordion.title}}
+                                <span class="accordion-title-middle">{% if subaccordion.titlemiddle is defined %}{{subaccordion.titlemiddle}}{% endif %}</span>
+                                <span class="accordion-title-right pull-right">
+                                    <span class="accordion-title-text">{% if subaccordion.titletext is defined %}{{subaccordion.titletext}}{% endif %}</span>
+                                    <span class="accordion-buttons">
+                                    {% if subaccordion.buttons is defined %}
+                                            {% for id, button in subaccordion.buttons %}
+                                                <span {% if id is defined %} id="{{ id }}"{% endif %} class=" btnhexaa btnhexaa-xs {% if button.class is defined %} {{ button.class }} {% endif %}" alt="{{ button.alt }}"><i class="fa fa-{{button.icon}}"></i></span>
+                                            {% endfor %}
+                                    {% endif %}
+                                    <i class="caretbutton fa fa-caret-down"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="accordion-panel accordion-panel-style-{{ subaccordion.variant }}">
+                                <table cellspacing="0" class="accordion">
+                                {% for content in subaccordion.contents %}
+                                    <tr class="accordion">
+                                        <td class="{% if not loop.first %}accordion-hr{% endif %} accordion accordion-key">{{content.key}}</td>
+                                        <td class="{% if not loop.first %}accordion-hr{% endif %} accordion">
+                                            <ul class="accordion">
+                                                {% for listitem in content.values %}
+                                                    <li>{{ listitem }}
+                                                    {% endfor %}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </table>
+                            </div>
+                        </div>
                     {% endfor %}
-                </table>
+                {% else %}
+                    <table cellspacing="0" class="accordion">
+                        {% for content in item.contents %}
+                            <tr class="accordion">
+                                <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion accordion-key">{{content.key}}</td>
+                                <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion">
+                                    <ul class="accordion">
+                                        {% for listitem in content.values %}
+                                            <li>{{ listitem }}
+                                            {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
 </div>
+
