@@ -51,6 +51,7 @@ div.accordion-title {
     border: none;
     outline: none;
     transition: 0.4s;
+    vertical-align: middle;
 }
 
 div.accordion-title-style-dark {
@@ -135,5 +136,20 @@ td.accordion-hr {
 }
 
 .accordion-buttons {
-    vertical-align: middle;
+}
+
+.accordion-title-text {
+}
+
+.accordion-title-right {
+}
+
+.accordion-title-middle {
+    font-style: italic;
+    font-weight: lighter;
+    margin-left: 12px;
+}
+
+.accordion-description {
+    font-weight: bold;
 }

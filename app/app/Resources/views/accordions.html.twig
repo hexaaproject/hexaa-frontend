@@ -25,22 +25,32 @@
         {% for item in items %}
             <div onclick="toggleAccordion(this);" class="accordion-title accordion-title-style-{{ variant }}">
                 {{item.title}}
-                <span class="accordion-buttons pull-right"><i class="caretbutton fa fa-caret-down"></i></span>
+                <span class="accordion-title-middle">{% if item.titlemiddle is defined %}{{ item.titlemiddle }}{% endif %}</span>
+                    <span class="accordion-title-right pull-right">
+                    <span class="accordion-buttons">
+                        <i class="caretbutton fa fa-caret-down"></i>
+                    </span>
+                </span>
             </div>
             <div class="accordion-panel accordion-panel-style-{{ variant }}">
                 {% if item.subaccordions is defined %}
+                    {% if item.description is defined %} <div class="accordion-description">{{ item.description }}</div> {% endif %}
                     {% for subaccordion in item.subaccordions %}
                         <div class="accordion-container accordion-style-{{ subaccordion.variant }}">
                             
                             <div class="accordion-header"></div>
                             <div onclick="toggleAccordion(this);" class="accordion-title accordion-title-style-{{ subaccordion.variant }}">{{subaccordion.title}}
-                                <span class="accordion-buttons pull-right">
-                                {% if subaccordion.buttons is defined %}
-                                        {% for id, button in subaccordion.buttons %}
-                                            <span {% if id is defined %} id="{{ id }}"{% endif %} class=" btnhexaa btnhexaa-xs {% if button.class is defined %} {{ button.class }} {% endif %}" alt="{{ button.alt }}"><i class="fa fa-{{button.icon}}"></i></span>
-                                        {% endfor %}
-                                {% endif %}
-                                <i class="caretbutton fa fa-caret-down"></i>
+                                <span class="accordion-title-middle">{% if subaccordion.titlemiddle is defined %}{{subaccordion.titlemiddle}}{% endif %}</span>
+                                <span class="accordion-title-right pull-right">
+                                    <span class="accordion-title-text">{% if subaccordion.titletext is defined %}{{subaccordion.titletext}}{% endif %}</span>
+                                    <span class="accordion-buttons">
+                                    {% if subaccordion.buttons is defined %}
+                                            {% for id, button in subaccordion.buttons %}
+                                                <span {% if id is defined %} id="{{ id }}"{% endif %} class=" btnhexaa btnhexaa-xs {% if button.class is defined %} {{ button.class }} {% endif %}" alt="{{ button.alt }}"><i class="fa fa-{{button.icon}}"></i></span>
+                                            {% endfor %}
+                                    {% endif %}
+                                    <i class="caretbutton fa fa-caret-down"></i>
+                                    </span>
                                 </span>
                             </div>
                             <div class="accordion-panel accordion-panel-style-{{ subaccordion.variant }}">

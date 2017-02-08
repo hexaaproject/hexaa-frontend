@@ -337,6 +337,7 @@ class OrganizationController extends Controller {
         $subaccordions['perm2']['variant'] = 'light';
         $subaccordions['perm2']['heading'] = 'perm2';
         $subaccordions['perm2']['title'] = 'title2';
+        $subaccordions['perm2']['titletext'] = 'title-text2';
         $subaccordions['perm2']['contents'] = 'lorem';
 
         $subaccordions['perm2']['buttons']['id1']['alt'] = 'button1';
@@ -346,6 +347,8 @@ class OrganizationController extends Controller {
 
         foreach ($services['items'] as $service) {
             $services_accordion[$service['id']]['title'] = $service['name'];
+            $services_accordion[$service['id']]['description'] = 'Permission sets';
+            $services_accordion[$service['id']]['titlemiddle'] = 'Service manager Kis Lajos (kislajos@valami.hu)';
             $services_accordion[$service['id']]['subaccordions'] = $subaccordions;
         }
         return $services_accordion;
