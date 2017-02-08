@@ -1,18 +1,22 @@
 <script>
     function toggleAccordion(e) {
-        e.classList.toggle("active");
-        if ($(e).hasClass('active')) {
-            $(e).find('.caretbutton').removeClass('fa-caret-down').addClass('fa-caret-up');
+
+        var caretbutton = $(e).find('.caretbutton');
+        if (caretbutton.hasClass('fa-caret-down')) {
+            caretbutton.removeClass('fa-caret-down').addClass('fa-caret-up');
         } else {
-            $(e).find('.caretbutton').removeClass('fa-caret-up').addClass('fa-caret-down');
+            caretbutton.removeClass('fa-caret-up').addClass('fa-caret-down');
         }
+
+        $('.accordion-title').removeClass('active');
+        $(e).addClass('active');
+
         var panel = e.nextElementSibling;
-        if (panel.style.display === "block") {
-            panel.style.display = "none";
-        } else {
-            panel.style.display = "block";
-        }
+        $('.accordion-panel').removeClass('active');
+        $(panel).addClass("active");
+        $(panel).toggle();
     }
+
 </script>
 
 <div class="accordion-container accordion-style-{{ variant }}">

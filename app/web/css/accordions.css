@@ -91,6 +91,10 @@ div.accordion-panel {
     display: none;
 }
 
+div.accordion-panel.active {
+    border-color: #ec666a;
+}
+
 td.accordion-key {
     vertical-align: top;
 }
