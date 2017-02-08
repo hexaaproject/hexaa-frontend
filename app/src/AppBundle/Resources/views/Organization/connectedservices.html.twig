@@ -13,9 +13,8 @@
         <input type="" class="hexaaSearchField" name="" placeholder="Service, permission, permission set">
         <button class="btnhexaa btn-red pull-right"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> New connection</button>
     </div>
-
-        <div class="col-md-11 col-md-offset-2" style="margin-top: 12px">
-            {{ include('::accordions.html.twig', { heading: "Services", variant: "dark", items: services_accordion }) }}
+        <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
+            {{ include('::accordions.html.twig', { heading: "Connected services", variant: "light", items: services_accordion }) }}
         </div>
 
 {% endblock %}

@@ -45,7 +45,7 @@ div.accordion-title {
     font-weight: bold;
     font-size: medium;
     margin-top: 4px;
-    margin-bottom: 1px;
+    margin-bottom: 0px;
     width: 100%;
     text-align: left;
     border: none;
@@ -84,7 +84,7 @@ div.accordion-title-style-light.active, div.accordion-title-light:hover {
 div.accordion-panel {
     margin-top:0px;
     margin-bottom:2px;
-    padding-top: 2px;
+    padding-top: 0px;
     padding-bottom: 2px;
     padding-left: 2px;
     padding-right: 2px;
@@ -103,6 +103,7 @@ div.accordion-panel-style-dark {
 div.accordion-panel-style-light {
     background-color: white;
     color:#68b3c7; 
+    border: 1px solid;
 }
 
 
