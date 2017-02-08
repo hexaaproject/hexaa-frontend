@@ -55,8 +55,8 @@ buttons array:
 
     <div class="{{ table_id }}_actionButtons" style="margin-top: 12px;">
         
-        <input class="hexaaCheckBox hidden-xs" type="checkbox" value="">
-        <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField" {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
+        <input class="hexaaCheckBox hidden-xs pull-left" type="checkbox" value="">
+        <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left" {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
         {% if buttons is defined and buttons %}
             {% for id, button in buttons %}
                 {% if not button.last is defined %}

@@ -64,6 +64,14 @@ abstract class BaseResource
         return json_decode($response->getBody(), true);
     }
     
+     public static function serviceentitlementsget(Client $client,  string $id, string $verbose = normal) {
+        $response = $client->get(static::$pathName.'/'.$id.'/'.'entitlements', [
+            'query' => [
+                'verbose' => $verbose          
+        ]]);
+        return json_decode($response->getBody(), true);
+    }
+    
    
     
 }

@@ -88,7 +88,7 @@ class ServiceController extends Controller {
         $managers = $this->getManagers($service);
         $managers_buttons = array(
             "change_roles" => array(
-                "class" => "btn-blue",
+                "class" => "btn-blue pull-left",
                 "text" => "Remove"
             ),
             "invite" => array(
@@ -117,7 +117,7 @@ class ServiceController extends Controller {
         $attributes = $this->getServiceAttributes($service);
         $attributes_buttons = array(
             "change_attributes" => array(
-                "class" => "btn-blue",
+                "class" => "btn-blue pull-left",
                 "text" => "Remove"
             ),
             "add" => array(
@@ -142,11 +142,15 @@ class ServiceController extends Controller {
      * @Template()
      */
     public function permissionsAction($id) {
+        $verbose="expanded";
+        $permissions = Service::serviceentitlementsget($this->getUser()->getClient(), $id, $verbose);
         return $this->render(
                         'AppBundle:Service:permissions.html.twig', array(
                     'organizations' => $this->getOrganizations(),
+                    'servsubmenubox' => $this->getservsubmenupoints(),
                     'services' => $this->getServices(),
-                    'service' => $this->getService($id)
+                    'service' => $this->getService($id),
+                    'permissions_accordion' => $this->permissionsToAccordion($permissions)
                         )
         );
     }
@@ -179,18 +183,27 @@ class ServiceController extends Controller {
         );
     }
 
+    private function permissionsToAccordion($permissions) {
+        $permissions_accoordion = array();
+        foreach ($permissions as $permission) {
+            $permissions_accoordion[$permission['id']]['title'] = $permission['name'];
+            $description[] = $permission['description'];
+            $uri[] = $permission['uri'];
+            $permissions_accoordion[$permission['id']]['contents'] = array(
+                array(
+                    'key' => 'Description',
+                    'values' => $description
+                ),
+                array(
+                    'key' => 'URI',
+                    'values' => $uri
+                )
+            );
+        }
+        return $permissions_accoordion;
+    }
+
     private function getManagers($service) {
-        /* $verbose = "expanded";
-          $serviceattributespecs = Service::serviceattributesget($this->getUser()->getClient(), $service['id']);
-          $attributestonames=array();
-          foreach ($serviceattributespecs as $serviceattributespec) {
-          foreach (Service::attributespecsget($this->getUser()->getClient(), $verbose) as $attributespec) {
-          if($attributespec['id']== $serviceattributespec['attribute_spec_id']){
-          array_push($attributestonames, $attributespec);
-          }
-          }
-          }
-          return $attributestonames; */
         return Service::managersget($this->getUser()->getClient(), $service['id']);
     }
 
