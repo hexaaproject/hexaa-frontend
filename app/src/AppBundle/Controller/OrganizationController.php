@@ -234,12 +234,16 @@ class OrganizationController extends Controller {
      */
     public function connectedservicesAction($id)
     {
+        $services = $this->getServices();
+        $services_accordion = $this->servicesToAccordion($services);
+
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
             array(
                 "organization" => $this->getOrganization($id),
                 "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices()
+                "services" => $this->getServices(),
+                "services_accordion" => $services_accordion
             )
         );
     }
