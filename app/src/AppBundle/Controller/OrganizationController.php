@@ -207,6 +207,22 @@ class OrganizationController extends Controller {
     }
 
     /**
+     * @Route("/removeusers/{id}")
+     * @Template()
+     */
+    public function removeusersAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
      * @Route("/roles/{id}")
      * @Template()
      */

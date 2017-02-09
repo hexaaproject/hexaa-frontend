@@ -94,7 +94,7 @@ buttons array:
     </thead>
     <tbody>
         {% for user in users %}
-        <tr>
+        <tr id="{{ user.id }}">
             {% if buttons is defined %}
                 <td><input type="checkbox" name="checkbox"></td>
             {% endif %}

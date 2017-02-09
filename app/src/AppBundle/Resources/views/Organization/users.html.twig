@@ -2,57 +2,96 @@
 
 {% block container %}
 
-    {% block stylesheets %}
-        {% stylesheets
-            'css/tables.css'
-            filter='cssrewrite'
-        %}
-            <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
-    {% endblock %}
-    {% block javascripts %}    
-        {% javascripts
-            '@datatables_js'
-        %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endblock %}
-
     {% if managers is defined and managers|length %}
-    <div class="row">
-        <div class="col-md-15">
-            {{ include(
-                '::tables.html.twig',
-                {
-                    variant: 'red',
-                    caption: 'Managers',
-                    users: managers,
-                    table_id: 'managers_table',
-                    buttons: managers_buttons,
-                    search_placeholder: 'Search manager'
-                }
-                )
-            }}
+        <div class="row">
+            <div class="col-md-15">
+                {{ include(
+                    '::tables.html.twig',
+                    {
+                        variant: 'red',
+                        caption: 'Managers',
+                        users: managers,
+                        table_id: 'managers_table',
+                        buttons: managers_buttons,
+                        search_placeholder: 'Search manager'
+                    }
+                    )
+                }}
+            </div>
         </div>
-    </div>
     {% endif %}
 
     {% if members is defined and members|length %}
-    <div class="row" style="margin-top: 48px;">
-        <div class="col-md-15">
-            {{ include(
-                '::tables.html.twig',
-                    {
-                        variant: 'blue',
-                        caption: 'Members',
-                        users: members,
-                        table_id: 'members_table',
-                        buttons: members_buttons,
-                        search_placeholder: 'Search member'
-                    }
-                )
-            }}            
+        <div class="row" style="margin-top: 48px;">
+            <div class="col-md-15">
+                {{ include(
+                    '::tables.html.twig',
+                        {
+                            variant: 'blue',
+                            caption: 'Members',
+                            users: members,
+                            table_id: 'members_table',
+                            buttons: members_buttons,
+                            search_placeholder: 'Search member'
+                        }
+                    )
+                }}            
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="modal fade" id="membersRemove">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ path('app_organization_removeusers', {id: organization.id }) }}" method="POST">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Remove members</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btnhexaa btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btnhexaa btn-red">Remove</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts
+        '@datatables_js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            $('.members_table_actionButtons').on('click', '#remove', function(event) {
+                event.preventDefault();
+                var ul = $('#membersRemove').find('ul');
+                ul.empty();
+                $('#members_table input:checked').each(function(index, el) {
+                    var objectId = $(el).closest('tr').attr('id');
+                    ul.append('<li>' + objectId + '</li>');
+                    ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                });
+                $('#membersRemove').modal('show');
+            });
+        });
+    </script>
+{% endblock %}
+
+
+{% block stylesheets %}
+    {% stylesheets
+        'css/tables.css'
+        filter='cssrewrite'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
 {% endblock %}
