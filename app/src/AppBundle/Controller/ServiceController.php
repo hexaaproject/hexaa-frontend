@@ -142,7 +142,7 @@ class ServiceController extends Controller {
      * @Template()
      */
     public function permissionsAction($id) {
-        $verbose="expanded";
+        $verbose = "expanded";
         $permissions = Service::serviceentitlementsget($this->getUser()->getClient(), $id, $verbose);
         return $this->render(
                         'AppBundle:Service:permissions.html.twig', array(
@@ -160,11 +160,13 @@ class ServiceController extends Controller {
      * @Template()
      */
     public function permissionssetsAction($id) {
+        
         return $this->render(
                         'AppBundle:Service:permissionssets.html.twig', array(
                     'organizations' => $this->getOrganizations(),
                     'services' => $this->getServices(),
-                    'service' => $this->getService($id)
+                    'service' => $this->getService($id),
+                    'servsubmenubox' => $this->getservsubmenupoints(),
                         )
         );
     }
@@ -183,12 +185,18 @@ class ServiceController extends Controller {
         );
     }
 
+    private function getEntitlementPackofService($service) {
+        
+    }
+
     private function permissionsToAccordion($permissions) {
         $permissions_accoordion = array();
         foreach ($permissions as $permission) {
             $permissions_accoordion[$permission['id']]['title'] = $permission['name'];
-            $description[] = $permission['description'];
-            $uri[] = $permission['uri'];
+            $description = array();
+            $uri = array();
+            array_push($description, $permission['description']);
+            array_push($uri, $permission['uri']);
             $permissions_accoordion[$permission['id']]['contents'] = array(
                 array(
                     'key' => 'Description',
