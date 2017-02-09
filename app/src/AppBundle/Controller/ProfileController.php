@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use AppBundle\Model\Organization;
+use AppBundle\Model\Service;
 /**
  * @Route("profile")
  */
@@ -16,7 +18,15 @@ class ProfileController extends Controller
     public function indexAction()
     {
         $client = $this->getUser()->getClient();
-        try {
+        $user = $this->get('principal')->principalinfo($client);
+        return $this->render(
+            'AppBundle:Profile:index.html.twig',
+                array(
+                    'propertiesbox' => $this->getPropertiesBox(),
+                    'main' => $user
+                )
+        );
+        /*try {
             $organizations = $this->get('organization')->cget($client);
             $services = $this->get('service')->cget($client);
             $user = $this->get('principal')->principalinfo($client);
@@ -46,7 +56,7 @@ class ProfileController extends Controller
 
         return $this->render('AppBundle:Profile:index.html.twig', array(
             'organizations' => $organizations, 'services'=>$services, 'user'=>$user, 'userattributes'=>$userattributes, 'userattr'=>$newuserattribute
-        ));
+        ));*/
     }
     
      /**
@@ -54,6 +64,30 @@ class ProfileController extends Controller
      */
     public function historyAction(){
         
+    }
+    
+    private function getPropertiesBox() {
+        $propertiesbox = array(
+            "Name" => "display_name",
+            "Email" => "email",
+            "Federal ID" => "fedid",
+        );
+
+        return $propertiesbox;
+    }
+    
+     private function getOrganizations()
+    {
+        $client = $this->getUser()->getClient();
+        $organization = Organization::cget($client);
+        return $organization;
+    }
+
+    private function getServices()
+    {
+        $client = $this->getUser()->getClient();
+        $organization = Service::cget($client);
+        return $organization;
     }
 
 }

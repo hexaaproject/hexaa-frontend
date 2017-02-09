@@ -186,13 +186,15 @@ class ServiceController extends Controller {
      * @Template()
      */
     public function permissionssetsAction($id) {
-
+        $verbose = "expanded";
+        $permissionsset = Service::serviceentitlementpacksget($this->getUser()->getClient(), $id, $verbose);
         return $this->render(
                         'AppBundle:Service:permissionssets.html.twig', array(
                     'organizations' => $this->getOrganizations(),
                     'services' => $this->getServices(),
                     'service' => $this->getService($id),
                     'servsubmenubox' => $this->getservsubmenupoints(),
+                    'permissions_accordion_set' => $this->permissionsetToAccordion($permissionsset)
                         )
         );
     }
@@ -209,10 +211,6 @@ class ServiceController extends Controller {
                     'service' => $this->getService($id)
                         )
         );
-    }
-
-    private function getEntitlementPackofService($service) {
-        
     }
 
     private function permissionsToAccordion($permissions) {
@@ -235,6 +233,36 @@ class ServiceController extends Controller {
             );
         }
         return $permissions_accoordion;
+    }
+
+    private function permissionsetToAccordion($permissionsets) {
+        $permissions_accoordion_set = array();
+        foreach ($permissionsets as $permissionset) {
+            $permissions_accoordion_set[$permissionset['id']]['title'] = $permissionset['name'];
+            $description = array();
+            $type = array();
+            $permissions = array();
+            array_push($description, $permissionset['description']);
+            array_push($type, $permissionset['type']);
+            foreach ($permissionset['entitlements'] as $entitlement) {
+                $permissions[] = $entitlement['name'];
+            }
+            $permissions_accoordion_set[$permissionset['id']]['contents'] = array(
+                array(
+                    'key' => 'Description',
+                    'values' => $description
+                ),
+                array(
+                    'key' => 'Type',
+                    'values' => $type
+                ),
+                array(
+                    'key' => 'Permissions',
+                    'values' => $permissions
+                )
+            );
+        }
+        return $permissions_accoordion_set;
     }
 
     private function getManagers($service) {
