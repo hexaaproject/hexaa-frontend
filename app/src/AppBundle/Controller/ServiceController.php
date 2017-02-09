@@ -79,6 +79,32 @@ class ServiceController extends Controller {
         );
     }
 
+    private function getservsubmenupoints() {
+        $submenubox = array(
+            "app_service_properties" => "Properties",
+            "app_service_managers" => "Managers",
+            "app_service_attributes" => "Attributes",
+            "app_service_permissions" => "Permissions",
+            "app_service_permissionssets" => "Permissions sets",
+            "app_service_connectedorganizations" => "Connected organizations"
+        );
+
+        return $submenubox;
+    }
+
+    private function getPropertiesBox() {
+        $propertiesbox = array(
+            "Name" => "name",
+            "Description" => "description",
+            "Home page" => "url",
+            "SAML SP Entity ID" => "entityid",
+            "Created" => "created_at",
+            "Last updated" => "updated_at"
+        );
+
+        return $propertiesbox;
+    }
+
     /**
      * @Route("/managers/{id}")
      * @Template()
@@ -100,10 +126,7 @@ class ServiceController extends Controller {
                         'AppBundle:Service:managers.html.twig', array(
                     'organizations' => $this->getOrganizations(),
                     'services' => $this->getServices(),
-                    'service' => $this->getService($id),
-                    'servsubmenubox' => $this->getservsubmenupoints(),
-                    'managers' => $managers,
-                    'managers_buttons' => $managers_buttons
+                    'service' => $this->getService($id)
                         )
         );
     }
@@ -185,6 +208,7 @@ class ServiceController extends Controller {
         );
     }
 
+
     private function getEntitlementPackofService($service) {
         
     }
@@ -245,32 +269,6 @@ class ServiceController extends Controller {
         $client = $this->getUser()->getClient();
         $service = Service::get($client, $id);
         return $service;
-    }
-
-    private function getservsubmenupoints() {
-        $submenubox = array(
-            "app_service_properties" => "Properties",
-            "app_service_managers" => "Managers",
-            "app_service_attributes" => "Attributes",
-            "app_service_permissions" => "Permissions",
-            "app_service_permissionssets" => "Permissions sets",
-            "app_service_connectedorganizations" => "Connected organizations"
-        );
-
-        return $submenubox;
-    }
-
-    private function getPropertiesBox() {
-        $propertiesbox = array(
-            "Name" => "name",
-            "Description" => "description",
-            "Home page" => "url",
-            "SAML SP Entity ID" => "entityid",
-            "Created" => "created_at",
-            "Last updated" => "updated_at"
-        );
-
-        return $propertiesbox;
     }
 
 }

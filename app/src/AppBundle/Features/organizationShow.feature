@@ -54,11 +54,11 @@ Feature: When I go to a specific organization
 	     And I should see "Test role 2"
 	     And I should not see "Permissions"
 	     And I should not see "Members"
-	    When I press "Test role 1"
+	    When I click on accordion "Test role 1"
 	    Then I should see "Permissions"
 	     And I should see "Members"
 	     And I should see "Student Student"
-	    When I press "Test role 1"
+	    When I click on accordion "Test role 1"
 	    Then I should not see "Permissions"
 	     And I should not see "Members"
 	     And I should not see "Student Student"
@@ -93,8 +93,6 @@ Feature: When I go to a specific organization
 	    Then I should see the following table portion
 	       | No matching records found |
 
-
-
 	Scenario: Navigate to organization roles
 	   Given I am on "/"
 	    When I wait for "testOrg1" to appear
@@ -110,4 +108,11 @@ Feature: When I go to a specific organization
 	    Then I follow "testOrg1"
 	    When I wait for "Connected services" to appear
 	     And I follow "Connected services"
-	    Then I should see "New connection"
+	    When I wait for "Connected services" to appear
+	    Then I should see "Connected services" in the ".accordion-header" element
+	     And I should see "testService1"	     
+	     And I should see "testService2"
+
+	    When I click on accordion "testService1"
+	    Then I should see "Permission sets"
+	     And I should see "title1"
