@@ -26,37 +26,6 @@ class ProfileController extends Controller
                     'main' => $user
                 )
         );
-        /*try {
-            $organizations = $this->get('organization')->cget($client);
-            $services = $this->get('service')->cget($client);
-            $user = $this->get('principal')->principalinfo($client);
-            
-            $verbose = "expanded";
-            $userattributes = $this->get('principal')->attributeget($client, $verbose);
-            $newuserattribute = $this->get('principal')->attributespecsget($client, $verbose);
-
-
-        } catch (ClientException $e) {            
-            $this->token = null;
-            return $this->render('error.html.twig', array('clientexception'=>$e));
-        } catch (ServerException $e) {
-            $this->token = null;
-            return $this->render('error.html.twig', array('serverexception'=>$e));
-        } finally {
-            if (!isset($organizations)){
-                $organizations = [];
-            }
-            if (!isset($services)){
-                $services = [];
-            }
-            if (!isset($user)){
-                $user = [];
-            }
-        }
-
-        return $this->render('AppBundle:Profile:index.html.twig', array(
-            'organizations' => $organizations, 'services'=>$services, 'user'=>$user, 'userattributes'=>$userattributes, 'userattr'=>$newuserattribute
-        ));*/
     }
     
      /**
@@ -76,18 +45,4 @@ class ProfileController extends Controller
         return $propertiesbox;
     }
     
-     private function getOrganizations()
-    {
-        $client = $this->getUser()->getClient();
-        $organization = Organization::cget($client);
-        return $organization;
-    }
-
-    private function getServices()
-    {
-        $client = $this->getUser()->getClient();
-        $organization = Service::cget($client);
-        return $organization;
-    }
-
 }
