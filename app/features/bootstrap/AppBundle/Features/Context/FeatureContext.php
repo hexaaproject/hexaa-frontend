@@ -111,5 +111,17 @@ class FeatureContext extends MinkContext
         throw new \Exception("Spin function timed out after {$wait} seconds");
     }
 
-
+    /**
+     * @Then /^I click on accordion "([^"]*)"$/
+     */
+    public function iClickOnAccordion($text)
+    {
+        $page = $this->getSession()->getPage();
+        $findName = $page->find("css", '[data-name="'.$text.'"]');
+        if (!$findName) {
+            throw new Exception($text . " could not be found");
+        } else {
+            $findName->click();
+        }
+    }
 }

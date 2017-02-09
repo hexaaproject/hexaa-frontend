@@ -54,11 +54,11 @@ Feature: When I go to a specific organization
 	     And I should see "Test role 2"
 	     And I should not see "Permissions"
 	     And I should not see "Members"
-	    When I press "Test role 1"
+	    When I click on accordion "Test role 1"
 	    Then I should see "Permissions"
 	     And I should see "Members"
 	     And I should see "Student Student"
-	    When I press "Test role 1"
+	    When I click on accordion "Test role 1"
 	    Then I should not see "Permissions"
 	     And I should not see "Members"
 	     And I should not see "Student Student"
@@ -101,31 +101,18 @@ Feature: When I go to a specific organization
 	     And I follow "Roles"
 	    Then I should see "New role"
 	     And I should see "Add role to user"
-	@WIP
+
 	Scenario: Navigate to organization connected services
 	   Given I am on "/"
 	    When I wait for "testOrg1" to appear
 	    Then I follow "testOrg1"
 	    When I wait for "Connected services" to appear
 	     And I follow "Connected services"
-	    Then I should see "New connection"
-	     And I should see "Services" in the ".accordion-header" element
+	    When I wait for "Connected services" to appear
+	    Then I should see "Connected services" in the ".accordion-header" element
 	     And I should see "testService1"	     
-	     And I should see "testService2"	     
-	    When I press "testService1"
+	     And I should see "testService2"
+
+	    When I click on accordion "testService1"
 	    Then I should see "Permission sets"
-	     And I should see "permissionSet1"	     
-	     And I should see "permissionSet2"	     
-	     And I should not see "permission1"	     
-	     And I should not see "permission2"	     
-	     And I should not see "permission3"	     
-	    When I press "permissionSet1"
-	    Then I should see "permission1"	     
-	     And I should see "permission2"	     
-	     And I should not see "permission3"	     
-	    When I press "permissionSet2"
-	    Then I should not see "permission1"	     
-	     And I should not see "permission2"	     
-	     And I should see "permission3"	     
-	    When I press "testService1"
-	    Then I should not see "valami TODO"
+	     And I should see "title1"
