@@ -126,7 +126,10 @@ class ServiceController extends Controller {
                         'AppBundle:Service:managers.html.twig', array(
                     'organizations' => $this->getOrganizations(),
                     'services' => $this->getServices(),
-                    'service' => $this->getService($id)
+                    'service' => $this->getService($id),
+                    'servsubmenubox' => $this->getservsubmenupoints(),
+                    'managers' => $managers,
+                    'managers_buttons' => $managers_buttons
                         )
         );
     }
@@ -183,7 +186,7 @@ class ServiceController extends Controller {
      * @Template()
      */
     public function permissionssetsAction($id) {
-        
+
         return $this->render(
                         'AppBundle:Service:permissionssets.html.twig', array(
                     'organizations' => $this->getOrganizations(),
@@ -207,7 +210,6 @@ class ServiceController extends Controller {
                         )
         );
     }
-
 
     private function getEntitlementPackofService($service) {
         

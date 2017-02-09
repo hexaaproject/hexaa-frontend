@@ -32,11 +32,13 @@ div.accordion-container {
 div.accordion-style-dark {
     background-color: #68b3c7;        
     color: white;
+    text-align: left;
 }
 
 div.accordion-style-light {
     background-color: white;        
     color: #68b3c7;
+    text-align: left;
 }
 
 div.accordion-title {
