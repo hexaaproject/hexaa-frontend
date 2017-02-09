@@ -23,7 +23,7 @@
     <div class="accordion-header">{{ heading }}</div>
     <div>
         {% for item in items %}
-            <div onclick="toggleAccordion(this);" class="accordion-title accordion-title-style-{{ variant }}">
+            <div onclick="toggleAccordion(this);" class="accordion-title accordion-title-style-{{ variant }}" data-name="{{item.title}}">
                 {{item.title}}
                 <span class="accordion-title-middle">{% if item.titlemiddle is defined %}{{ item.titlemiddle }}{% endif %}</span>
                     <span class="accordion-title-right pull-right">
@@ -39,7 +39,7 @@
                         <div class="accordion-container accordion-style-{{ subaccordion.variant }}">
                             
                             <div class="accordion-header"></div>
-                            <div onclick="toggleAccordion(this);" class="accordion-title accordion-title-style-{{ subaccordion.variant }}">{{subaccordion.title}}
+                            <div onclick="toggleAccordion(this);" class="accordion-title accordion-title-style-{{ subaccordion.variant }}" data-name="{{item.title}}">{{subaccordion.title}}
                                 <span class="accordion-title-middle">{% if subaccordion.titlemiddle is defined %}{{subaccordion.titlemiddle}}{% endif %}</span>
                                 <span class="accordion-title-right pull-right">
                                     <span class="accordion-title-text">{% if subaccordion.titletext is defined %}{{subaccordion.titletext}}{% endif %}</span>
