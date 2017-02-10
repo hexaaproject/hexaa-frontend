@@ -19,6 +19,65 @@
                 }}
             </div>
         </div>
+        {{ include('::modal.html.twig',
+            {
+                id: 'managersRemove',
+                title: 'Remove managers',
+                bodyhead: 'Are you ready to remove these users from your organization?',
+                bodycontent: 'Optional',
+                button:
+                    {
+                        text: 'Remove',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_organization_removeusers', {id: organization.id })
+            })
+        }}
+
+        {{ include('::modal.html.twig',
+            {
+                id: 'managersMessage',
+                title: 'Send message',
+                bodyhead: 'Send message to selected users',
+                bodycontent: 'Itt lesz a textarea és a user lista TODO',
+                button:
+                    {
+                        text: 'Send',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_organization_message', {id: organization.id })
+            })
+        }}
+
+        {{ include('::modal.html.twig',
+            {
+                id: 'managersRevoke',
+                title: 'Revoke manager status',
+                bodyhead: 'Revoke managers status',
+                bodycontent: 'Itt lesz a user lista TODO',
+                button:
+                    {
+                        text: 'Revoke',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_organization_revoke', {id: organization.id })
+            })
+        }}
+
+        {{ include('::modal.html.twig',
+            {
+                id: 'managersChangeRole',
+                title: 'Change role',
+                bodyhead: 'Change the selected managers role',
+                bodycontent: 'Itt lesz a user lista TODO',
+                button:
+                    {
+                        text: 'Change roles',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_organization_changerole', {id: organization.id })
+            })
+        }}
     {% endif %}
 
     {% if members is defined and members|length %}
@@ -38,28 +97,68 @@
                 }}            
             </div>
         </div>
+
+        {{ include('::modal.html.twig',
+            {
+                id: 'membersRemove',
+                title: 'Remove members',
+                bodyhead: 'Are you ready to remove these users from your organization?',
+                bodycontent: 'Optional',
+                button:
+                    {
+                        text: 'Remove',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_organization_removeusers', {id: organization.id })
+            })
+        }}
+
+        {{ include('::modal.html.twig',
+            {
+                id: 'membersMessage',
+                title: 'Send message',
+                bodyhead: 'Send message to selected users',
+                bodycontent: 'Itt lesz a textarea és a user lista TODO',
+                button:
+                    {
+                        text: 'Send',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_organization_message', {id: organization.id })
+            })
+        }}
+
+        {{ include('::modal.html.twig',
+            {
+                id: 'membersProposal',
+                title: 'Send message',
+                bodyhead: 'Propose members to managers',
+                bodycontent: 'Itt a user lista TODO',
+                button:
+                    {
+                        text: 'Propose',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_organization_propose', {id: organization.id })
+            })
+        }}
+
+        {{ include('::modal.html.twig',
+            {
+                id: 'membersChangeRole',
+                title: 'Change role',
+                bodyhead: 'Change the selected members role',
+                bodycontent: 'Itt lesz a textarea és a user lista TODO',
+                button:
+                    {
+                        text: 'Change roles',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_organization_changerole', {id: organization.id })
+            })
+        }}
     {% endif %}
 
-    <div class="modal fade" id="membersRemove">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="{{ path('app_organization_removeusers', {id: organization.id }) }}" method="POST">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Remove members</h4>
-                    </div>
-                    <div class="modal-body">
-                        <ul>
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btnhexaa btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btnhexaa btn-red">Remove</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
 {% endblock %}
 
@@ -71,17 +170,120 @@
     {% endjavascripts %}
     <script>
         $(document).ready(function() {
-            $('.members_table_actionButtons').on('click', '#remove', function(event) {
-                event.preventDefault();
-                var ul = $('#membersRemove').find('ul');
-                ul.empty();
-                $('#members_table input:checked').each(function(index, el) {
-                    var objectId = $(el).closest('tr').attr('id');
-                    ul.append('<li>' + objectId + '</li>');
-                    ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+            {% if members is defined and members|length %}
+                $('.members_table_actionButtons').on('click', '#remove', function(event) {
+                    event.preventDefault();
+                    var content = $('#membersRemove').find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = $('#membersRemove').find('ul');
+                    $('#members_table input:checked').each(function(index, el) {
+                        var objectId = $(el).closest('tr').attr('id');
+                        ul.append('<li>' + objectId + '</li>');
+                        ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                    });
+                    $('#membersRemove').modal('show');
                 });
-                $('#membersRemove').modal('show');
-            });
+
+                $('.members_table_actionButtons').on('click', '#message', function(event) {
+                    event.preventDefault();
+                    var content = $('#membersMessage').find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = $('#membersMessage').find('ul');
+                    $('#members_table input:checked').each(function(index, el) {
+                        var objectId = $(el).closest('tr').attr('id');
+                        ul.append('<li>' + objectId + '</li>');
+                        ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                    });
+                    $('#membersMessage').modal('show');
+                });
+
+                $('.members_table_actionButtons').on('click', '#proposal', function(event) {
+                    event.preventDefault();
+                    var content = $('#membersProposal').find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = $('#membersProposal').find('ul');
+                    $('#members_table input:checked').each(function(index, el) {
+                        var objectId = $(el).closest('tr').attr('id');
+                        ul.append('<li>' + objectId + '</li>');
+                        ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                    });
+                    $('#membersProposal').modal('show');
+                });
+
+                $('.members_table_actionButtons').on('click', '#changerole', function(event) {
+                    event.preventDefault();
+                    var content = $('#membersChangeRole').find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = $('#membersChangeRole').find('ul');
+                    $('#members_table input:checked').each(function(index, el) {
+                        var objectId = $(el).closest('tr').attr('id');
+                        ul.append('<li>' + objectId + '</li>');
+                        ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                    });
+                    $('#membersChangeRole').modal('show');
+                });
+            {% endif %}
+            {% if managers is defined and managers|length %}
+                $('.managers_table_actionButtons').on('click', '#remove', function(event) {
+                    event.preventDefault();
+                    var content = $('#managersRemove').find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = $('#managersRemove').find('ul');
+                    $('#managers_table input:checked').each(function(index, el) {
+                        var objectId = $(el).closest('tr').attr('id');
+                        ul.append('<li>' + objectId + '</li>');
+                        ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                    });
+                    $('#managersRemove').modal('show');
+                });
+
+                $('.managers_table_actionButtons').on('click', '#message', function(event) {
+                    event.preventDefault();
+                    var content = $('#managersMessage').find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = $('#managersMessage').find('ul');
+                    $('#managers_table input:checked').each(function(index, el) {
+                        var objectId = $(el).closest('tr').attr('id');
+                        ul.append('<li>' + objectId + '</li>');
+                        ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                    });
+                    $('#managersMessage').modal('show');
+                });
+
+                $('.managers_table_actionButtons').on('click', '#revoke', function(event) {
+                    event.preventDefault();
+                    var content = $('#managersRevoke').find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = $('#managersRevoke').find('ul');
+                    $('#managers_table input:checked').each(function(index, el) {
+                        var objectId = $(el).closest('tr').attr('id');
+                        ul.append('<li>' + objectId + '</li>');
+                        ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                    });
+                    $('#managersRevoke').modal('show');
+                });
+
+                $('.managers_table_actionButtons').on('click', '#changerole', function(event) {
+                    event.preventDefault();
+                    var content = $('#managersChangeRole').find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = $('#managersChangeRole').find('ul');
+                    $('#managers_table input:checked').each(function(index, el) {
+                        var objectId = $(el).closest('tr').attr('id');
+                        ul.append('<li>' + objectId + '</li>');
+                        ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                    });
+                    $('#managersChangeRole').modal('show');
+                });
+            {% endif %}
         });
     </script>
 {% endblock %}
@@ -90,6 +292,7 @@
 {% block stylesheets %}
     {% stylesheets
         'css/tables.css'
+        'css/modal.css'
         filter='cssrewrite'
     %}
         <link rel="stylesheet" href="{{ asset_url }}" />

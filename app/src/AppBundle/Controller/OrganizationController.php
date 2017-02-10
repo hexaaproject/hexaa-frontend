@@ -147,7 +147,7 @@ class OrganizationController extends Controller {
         $managers = $this->getManagers($organization);
         $members = $this->getMembers($organization);
         $managers_buttons = array(
-            "change_roles" => array(
+            "changerole" => array(
                 "class" => "btn-blue",
                 "text" => "Change roles"
                 ),
@@ -170,7 +170,7 @@ class OrganizationController extends Controller {
                 ),
             );
         $members_buttons = array(
-            "change_roles" => array(
+            "changerole" => array(
                 "class" => "btn-blue",
                 "text" => "Change roles"
                 ),
@@ -211,6 +211,70 @@ class OrganizationController extends Controller {
      * @Template()
      */
     public function removeusersAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/message/{id}")
+     * @Template()
+     */
+    public function messageAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/propose/{id}")
+     * @Template()
+     */
+    public function proposeAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/revoke/{id}")
+     * @Template()
+     */
+    public function revokeAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/changerole/{id}")
+     * @Template()
+     */
+    public function changeroleAction($id, Request $request)
     {
         try {
             # do something

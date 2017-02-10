@@ -1,0 +1,61 @@
+{#
+
+Usage:
+
+{{ include('::modal.html.twig',
+    {
+        id: 'modalBoxId',
+        title: 'Modal title',
+        bodyhead: 'Optional header text in modal-body',
+        bodycontent: 'Optional content in modal-body',
+        button:
+            {
+                text: 'text of form submitter button',
+                class: 'btn-red'
+            },
+        formaction: path('app_anything_actions_route_path_with_paramters', {id: anything.id })
+    })
+}}
+
+{% block stylesheets %}
+    {% stylesheets
+        'css/modal.css'
+        filter='cssrewrite'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+<script>
+    $(document).ready(function() {
+        $('.any_wrapper_element_actionButtons').on('click', '#buttonId', function(event) {
+            event.preventDefault();
+            var content = $('#modalBoxId').find('.modal-body-content');
+            content.empty();
+            content.append('New text in modal content');
+            $('#modalBoxId').modal('show');
+        });
+    });
+</script>
+
+#}
+<div class="modal fade" id="{{ id }}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ formaction }}" method="POST">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">{{ title }}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-head">{% if bodyhead is defined %}{{ bodyhead }}{% endif %}</div>
+                    <div class="modal-body-content">{% if bodycontent is defined %}{{ bodycontent }}{% endif %}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btnhexaa btn-blue" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="pull-right btnhexaa {{ button.class }}">{{ button.text }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
