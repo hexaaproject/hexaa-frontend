@@ -47,39 +47,59 @@ buttons array:
             $('#{{ table_id }}').DataTable().search( this.value ).draw();
         } );
 
+        {# toggle disabled action buttons #}
+        $('#{{ table_id }}').on('change', 'input[type=checkbox]', function() {
+            var checked = false;
+            $('#{{ table_id }} input[type=checkbox]').each(function(index, el) {
+                
+                if ($(this).prop('checked')) {
+                    checked = true;
+                    $('.{{ table_id }}_actionButtons button.dependent').each(function(index, val) {
+                        $(this).prop('disabled', false);
+                    });
+                }
+            });
+
+            if (! checked) {
+                $('.{{ table_id }}_actionButtons button.dependent').each(function(index, val) {
+                    $(this).prop('disabled', 'disabled');
+                });
+            }
+        });
+
     });
 </script>
 
-    <div class="{{ table_id }}_actionButtons" style="margin-top: 12px;">
-        
-        <input class="hexaaCheckBox hidden-xs" type="checkbox" value="">
-        <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField" {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
-        {% if buttons is defined and buttons %}
+<div class="{{ table_id }}_actionButtons" style="margin-top: 12px;">
+    
+    <input class="hexaaCheckBox hidden-xs" type="checkbox" value="">
+    <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField" {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
+    {% if buttons is defined and buttons %}
+        {% for id, button in buttons %}
+            {% if not button.last is defined %}
+                <button class="btnhexaa {{ button.class }} dependent hidden-xs" disabled="disabled" id="{{ id }}">{{ button.text|raw }}</button>                
+            {% endif %}
+        {% endfor %}
+        {% for id, button in buttons %}
+            {% if button.last is defined %}
+                <button class="btnhexaa {{ button.class }} pull-right" id="{{ id }}">{{ button.text|raw }}</button>                
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if buttons is defined and buttons %}
+        <div class="visible-xs" style="margin-top: 12px;">
             {% for id, button in buttons %}
                 {% if not button.last is defined %}
-                    <button class="btnhexaa {{ button.class }} hidden-xs" id="{{ id }}">{{ button.text|raw }}</button>                
-                {% endif %}
+                    <button class="btnhexaa {{ button.class }} dependent" disabled="disabled" id="{{ id }}">{{ button.text|raw }}</button>
+                {% endif %}      
             {% endfor %}
-            {% for id, button in buttons %}
-                {% if button.last is defined %}
-                    <button class="btnhexaa {{ button.class }} pull-right" id="{{ id }}">{{ button.text|raw }}</button>                
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-
-        {% if buttons is defined and buttons %}
-            <div class="visible-xs" style="margin-top: 12px;">
-                {% for id, button in buttons %}
-                    {% if not button.last is defined %}
-                        <button class="btnhexaa {{ button.class }}" id="{{ id }}">{{ button.text|raw }}</button>
-                    {% endif %}      
-                {% endfor %}
-            </div>
-            <div class="visible-xs" style="margin-top: 12px;">
-                <input class="hexaaCheckBox" type="checkbox" value="">
-            </div>
-        {% endif %}
-    </div>
+        </div>
+        <div class="visible-xs" style="margin-top: 12px;">
+            <input class="hexaaCheckBox" type="checkbox" value="">
+        </div>
+    {% endif %}
+</div>
 
 <table class="datatable datatable-{{ variant }}" id="{{ table_id }}">
     <caption>{{ caption }}</caption>
