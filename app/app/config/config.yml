@@ -86,7 +86,29 @@ assetic:
         jquery_js:
             inputs:
                 - "%kernel.root_dir%/../vendor/components/jquery/jquery.js"
-
+        material_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/mervick/material-design-icons/css/material-icons.css"
+        material_fonts_eot:
+            inputs:
+                - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.eot'
+            output: fonts/MaterialIcons-Regular.eot
+        material_fonts_svg:
+            inputs:
+                - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.svg'
+            output: fonts/MaterialIcons-Regular.svg
+        material_fonts_ttf:
+            inputs:
+                - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.ttf'
+            output: fonts/MaterialIcons-Regular.ttf
+        material_fonts_woff:
+            inputs:
+                - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.woff'
+            output: fonts/MaterialIcons-Regular.woff
+        material_fonts_woff2:
+            inputs:
+                - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.woff2'
+            output: fonts/MaterialIcons-Regular.woff2
 
 
 # Doctrine Configuration

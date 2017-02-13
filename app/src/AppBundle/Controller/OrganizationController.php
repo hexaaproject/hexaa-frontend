@@ -166,7 +166,7 @@ class OrganizationController extends Controller {
             "invite" => array(
                 "class" => "btn-red",
                 "last" => true,
-                "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
+                "text" => '<i class="material-icons">add</i> Invite'
                 ),
             );
         $members_buttons = array(
@@ -189,7 +189,7 @@ class OrganizationController extends Controller {
             "invite" => array(
                 "class" => "btn-red",
                 "last" => true,
-                "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
+                "text" => '<i class="material-icons">add</i> Invite'
                 ),
             );
         return $this->render(
@@ -410,9 +410,9 @@ class OrganizationController extends Controller {
         $subaccordions['perm1']['contents']['korte']['values'] = array('barack', 'szőlő');
 
         $subaccordions['perm1']['buttons']['id1']['alt'] = 'button1';
-        $subaccordions['perm1']['buttons']['id1']['icon'] = 'pencil';
+        $subaccordions['perm1']['buttons']['id1']['icon'] = 'edit';
         $subaccordions['perm1']['buttons']['id2']['alt'] = 'button2';
-        $subaccordions['perm1']['buttons']['id2']['icon'] = 'trash';
+        $subaccordions['perm1']['buttons']['id2']['icon'] = 'delete';
 
         $subaccordions['perm2']['variant'] = 'light';
         $subaccordions['perm2']['heading'] = 'perm2';
@@ -421,7 +421,7 @@ class OrganizationController extends Controller {
         $subaccordions['perm2']['contents'] = 'lorem';
 
         $subaccordions['perm2']['buttons']['id1']['alt'] = 'button1';
-        $subaccordions['perm2']['buttons']['id1']['icon'] = 'pencil';
+        $subaccordions['perm2']['buttons']['id1']['icon'] = 'edit';
 
 
 
