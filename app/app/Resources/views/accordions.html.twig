@@ -46,7 +46,7 @@
                                     <span class="accordion-buttons">
                                     {% if subaccordion.buttons is defined %}
                                             {% for id, button in subaccordion.buttons %}
-                                                <span {% if id is defined %} id="{{ id }}"{% endif %} class=" btnhexaa btnhexaa-xs {% if button.class is defined %} {{ button.class }} {% endif %}" alt="{{ button.alt }}"><i class="material-icons">{{button.icon}}</i></span>
+                                                <i {% if id is defined %} id="{{ id }}"{% endif %} class="material-icons {% if button.class is defined %} {{ button.class }} {% endif %}">{{button.icon}}</i>
                                             {% endfor %}
                                     {% endif %}
                                     <i class="caretbutton material-icons">arrow_drop_down</i>
