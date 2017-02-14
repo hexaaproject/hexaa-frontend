@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Model\Organization;
 use AppBundle\Model\Service;
+use AppBundle\Form\OrganizationUserInvitationType;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -143,6 +144,9 @@ class OrganizationController extends Controller {
      */
     public function usersAction($id)
     {
+        // $inviteForm = new OrganizationUserInvitationType();
+        $inviteForm = $this->createForm(OrganizationUserInvitationType::class);
+
         $organization = $this->getOrganization($id);
         $managers = $this->getManagers($organization);
         $members = $this->getMembers($organization);
@@ -201,7 +205,8 @@ class OrganizationController extends Controller {
                 "organizations" => $this->getOrganizations(),
                 "services" => $this->getServices(),
                 "managers_buttons" => $managers_buttons,
-                "members_buttons" => $members_buttons
+                "members_buttons" => $members_buttons,
+                "inviteForm" => $inviteForm->createView()
             )
         );
     }
