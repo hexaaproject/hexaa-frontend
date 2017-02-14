@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Model\Organization;
+use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Model\Service;
 
 /**
@@ -113,7 +114,7 @@ class ServiceController extends Controller {
         $service = $this->getService($id);
         $managers = $this->getManagers($service);
         $managers_buttons = array(
-            "change_roles" => array(
+            "remove" => array(
                 "class" => "btn-blue pull-left",
                 "text" => "Remove"
             ),
@@ -133,6 +134,22 @@ class ServiceController extends Controller {
                     'managers_buttons' => $managers_buttons
                         )
         );
+    }
+    
+    /**
+     * @Route("/removemanagers/{id}")
+     * @Template()
+     */
+    public function removemanagersAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_service_managers', array('id' => $id)));
     }
 
     /**
