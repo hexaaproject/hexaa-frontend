@@ -35,7 +35,7 @@
         "drmonty/datatables-plugins": "^1.10",
         "components/jquery": "^3.1",
         "twbs/bootstrap": "^3.3",
-        "bmatzner/fontawesome-bundle": "^4.7"
+        "mervick/material-design-icons": "^2.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

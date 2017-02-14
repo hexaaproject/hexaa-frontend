@@ -19,7 +19,7 @@
     color: white;
 }
 
-.btn-red-inverse{
+.btn-red:disabled, .btn-red-inverse{
     background-color: white;
     color: #EA7373;
     border-color: #EA7373;
@@ -30,7 +30,7 @@
     color:white;
 }
 
-.btn-blue-inverse{
+.btn-blue:disabled, .btn-blue-inverse {
     background-color: white;
     color: #61AFC5;
     border-color: #61AFC5;

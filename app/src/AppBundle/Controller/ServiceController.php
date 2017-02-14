@@ -119,7 +119,8 @@ class ServiceController extends Controller {
             ),
             "invite" => array(
                 "class" => "btn-red pull-right",
-                "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
+                "last" => true,
+                "text" => '<i class="material-icons">add</i> Invite'
             ),
         );
         return $this->render(
@@ -148,7 +149,8 @@ class ServiceController extends Controller {
             ),
             "add" => array(
                 "class" => "btn-red pull-right",
-                "text" => '<i class="glyphicon glyphicon-plus"></i> Add'
+                "last" => true,
+                "text" => '<i class="material-icons">add</i> Add'
             ),
         );
         return $this->render(

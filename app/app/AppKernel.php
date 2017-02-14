@@ -14,8 +14,7 @@ class AppKernel extends Kernel {
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new Niif\ShibAuthBundle\NiifShibAuthBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new Bmatzner\FontAwesomeBundle\BmatznerFontAwesomeBundle(),
+            new Symfony\Bundle\AsseticBundle\AsseticBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

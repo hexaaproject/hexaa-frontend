@@ -2,10 +2,10 @@
     function toggleAccordion(e) {
 
         var caretbutton = $(e).find('.caretbutton');
-        if (caretbutton.hasClass('fa-caret-down')) {
-            caretbutton.removeClass('fa-caret-down').addClass('fa-caret-up');
+        if (caretbutton.text() == 'arrow_drop_down') {
+            caretbutton.text('arrow_drop_up');
         } else {
-            caretbutton.removeClass('fa-caret-up').addClass('fa-caret-down');
+            caretbutton.text('arrow_drop_down');
         }
 
         $('.accordion-title').removeClass('active');
@@ -28,7 +28,7 @@
                 <span class="accordion-title-middle">{% if item.titlemiddle is defined %}{{ item.titlemiddle }}{% endif %}</span>
                     <span class="accordion-title-right pull-right">
                     <span class="accordion-buttons">
-                        <i class="caretbutton fa fa-caret-down"></i>
+                        <i class="caretbutton material-icons">arrow_drop_down</i>
                     </span>
                 </span>
             </div>
@@ -46,10 +46,10 @@
                                     <span class="accordion-buttons">
                                     {% if subaccordion.buttons is defined %}
                                             {% for id, button in subaccordion.buttons %}
-                                                <span {% if id is defined %} id="{{ id }}"{% endif %} class=" btnhexaa btnhexaa-xs {% if button.class is defined %} {{ button.class }} {% endif %}" alt="{{ button.alt }}"><i class="fa fa-{{button.icon}}"></i></span>
+                                                <i {% if id is defined %} id="{{ id }}"{% endif %} class="material-icons {% if button.class is defined %} {{ button.class }} {% endif %}">{{button.icon}}</i>
                                             {% endfor %}
                                     {% endif %}
-                                    <i class="caretbutton fa fa-caret-down"></i>
+                                    <i class="caretbutton material-icons">arrow_drop_down</i>
                                     </span>
                                 </span>
                             </div>

@@ -147,7 +147,7 @@ class OrganizationController extends Controller {
         $managers = $this->getManagers($organization);
         $members = $this->getMembers($organization);
         $managers_buttons = array(
-            "change_roles" => array(
+            "changerole" => array(
                 "class" => "btn-blue",
                 "text" => "Change roles"
                 ),
@@ -166,11 +166,11 @@ class OrganizationController extends Controller {
             "invite" => array(
                 "class" => "btn-red",
                 "last" => true,
-                "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
+                "text" => '<i class="material-icons">add</i> Invite'
                 ),
             );
         $members_buttons = array(
-            "change_roles" => array(
+            "changerole" => array(
                 "class" => "btn-blue",
                 "text" => "Change roles"
                 ),
@@ -189,7 +189,7 @@ class OrganizationController extends Controller {
             "invite" => array(
                 "class" => "btn-red",
                 "last" => true,
-                "text" => '<i class="glyphicon glyphicon-plus"></i> Invite'
+                "text" => '<i class="material-icons">add</i> Invite'
                 ),
             );
         return $this->render(
@@ -204,6 +204,86 @@ class OrganizationController extends Controller {
                 "members_buttons" => $members_buttons
             )
         );
+    }
+
+    /**
+     * @Route("/removeusers/{id}")
+     * @Template()
+     */
+    public function removeusersAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/message/{id}")
+     * @Template()
+     */
+    public function messageAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/propose/{id}")
+     * @Template()
+     */
+    public function proposeAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/revoke/{id}")
+     * @Template()
+     */
+    public function revokeAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/changerole/{id}")
+     * @Template()
+     */
+    public function changeroleAction($id, Request $request)
+    {
+        try {
+            # do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
     }
 
     /**
@@ -330,9 +410,9 @@ class OrganizationController extends Controller {
         $subaccordions['perm1']['contents']['korte']['values'] = array('barack', 'szőlő');
 
         $subaccordions['perm1']['buttons']['id1']['alt'] = 'button1';
-        $subaccordions['perm1']['buttons']['id1']['icon'] = 'pencil';
+        $subaccordions['perm1']['buttons']['id1']['icon'] = 'edit';
         $subaccordions['perm1']['buttons']['id2']['alt'] = 'button2';
-        $subaccordions['perm1']['buttons']['id2']['icon'] = 'trash';
+        $subaccordions['perm1']['buttons']['id2']['icon'] = 'delete';
 
         $subaccordions['perm2']['variant'] = 'light';
         $subaccordions['perm2']['heading'] = 'perm2';
@@ -341,7 +421,7 @@ class OrganizationController extends Controller {
         $subaccordions['perm2']['contents'] = 'lorem';
 
         $subaccordions['perm2']['buttons']['id1']['alt'] = 'button1';
-        $subaccordions['perm2']['buttons']['id1']['icon'] = 'pencil';
+        $subaccordions['perm2']['buttons']['id1']['icon'] = 'edit';
 
 
 
@@ -355,4 +435,3 @@ class OrganizationController extends Controller {
     }
 
 }
-

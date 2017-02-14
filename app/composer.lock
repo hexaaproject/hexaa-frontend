@@ -4,56 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "886ebe8dda66aaed32c323c23f347028",
-    "content-hash": "77c8a35879d572a3c5c1476af0b01cd1",
+    "hash": "870648a8a86cd69fb1eb5b4833b9d853",
+    "content-hash": "9533e6f85131257b49b1d664a0a3fe23",
     "packages": [
-        {
-            "name": "bmatzner/fontawesome-bundle",
-            "version": "4.7.0",
-            "target-dir": "Bmatzner/FontAwesomeBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bmatzner/BmatznerFontAwesomeBundle.git",
-                "reference": "647e00b9a59596901920aab5edf8f4179f0caa46"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bmatzner/BmatznerFontAwesomeBundle/zipball/647e00b9a59596901920aab5edf8f4179f0caa46",
-                "reference": "647e00b9a59596901920aab5edf8f4179f0caa46",
-                "shasum": ""
-            },
-            "require": {
-                "symfony/framework-bundle": ">=2.1|~3.0"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Bmatzner\\FontAwesomeBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT",
-                "CC BY 3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Bernd Matzner",
-                    "email": "bernd@matznermatzner.de",
-                    "homepage": "http://berndmatzner.de"
-                }
-            ],
-            "description": "FontAwesome Bundle for Symfony2",
-            "homepage": "http://fortawesome.github.com/Font-Awesome/",
-            "keywords": [
-                "css",
-                "graphics",
-                "symfony",
-                "typography",
-                "webfonts"
-            ],
-            "time": "2016-11-02 15:34:33"
-        },
         {
             "name": "components/jquery",
             "version": "3.1.1",
@@ -1675,6 +1628,45 @@
                 "minification"
             ],
             "time": "2016-11-11 18:43:20"
+        },
+        {
+            "name": "mervick/material-design-icons",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mervick/material-design-icons.git",
+                "reference": "635435c8d3df3a6da3241648caf8a65d1c07cc1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mervick/material-design-icons/zipball/635435c8d3df3a6da3241648caf8a65d1c07cc1a",
+                "reference": "635435c8d3df3a6da3241648caf8a65d1c07cc1a",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "CC-BY-4.0"
+            ],
+            "authors": [
+                {
+                    "name": "Andrey Izman",
+                    "email": "izmanw@gmail.com"
+                }
+            ],
+            "description": "Google Material Design Icons For Using With Bootstrap",
+            "homepage": "http://github.com/mervick/material-design-icons",
+            "keywords": [
+                "bootstrap",
+                "google",
+                "icons",
+                "icons-web-font",
+                "material",
+                "material-design",
+                "web-font"
+            ],
+            "time": "2016-02-22 01:05:40"
         },
         {
             "name": "monolog/monolog",
