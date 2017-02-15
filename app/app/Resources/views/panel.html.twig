@@ -23,12 +23,12 @@ return $this->render(
         <button class="editbutton" style="display: {{buttonappear}}"></button>
     </div>
     {% for key, value in items %}
-       {% if main[value]%}
+        {% if main[value]%}
             <div>
                 <div class="propname">{{key}}</div>
                 <div class="propdescription" >{{main[value]}}</div>
             </div>
-        {% endif %}    
+        {% endif %}
     {% endfor %}
 </div>
 
