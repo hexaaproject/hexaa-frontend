@@ -108,7 +108,7 @@ buttons array:
             {% if buttons is defined %}
                 <th></th>
             {% endif %}
-{% if attributes %}
+{% if attributes is defined %}
                 <th></th>
             {% else %}
                 <th></th>
@@ -122,7 +122,7 @@ buttons array:
             {% if buttons is defined %}
                 <td><input type="checkbox" name="checkbox"></td>
             {% endif %}
-            {% if attributes %}
+            {% if attributes is defined %}
                     <td><strong>{{user.name}}</strong></td> 
                 {% else %}
                     <td><strong>{{user.display_name}}</strong></td>
