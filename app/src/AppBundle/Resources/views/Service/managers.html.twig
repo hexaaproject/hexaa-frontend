@@ -3,5 +3,63 @@
 {% block title %}AppBundle:Service:show{% endblock %}
 
 {% block container %}
-  
+    {% block stylesheets %}
+        {% stylesheets 'css/tables.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+
+
+
+    {% if managers is defined and managers|length %}
+        <div class="row">
+            <div class="col-md-15">
+                {{ include('::tables.html.twig', {variant: 'red', caption: 'Managers', checkbox: true, attributes: false, users: managers, table_id: 'managers_table', buttons: managers_buttons, search_placeholder: 'Search manager' }) }}
+            </div>
+        </div>
+        {{ include('::modal.html.twig',
+            {
+                id: 'managersRemove',
+                title: 'Remove managers',
+                bodyhead: 'Are you ready to remove these users from your service?',
+                bodycontent: 'Optional',
+                button:
+                    {
+                        text: 'Remove',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_service_removemanagers', {id: service.id })
+            })
+        }}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}    
+    {% javascripts
+            '@datatables_js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function () {
+        {% if managers is defined and managers|length %}
+                $('.managers_table_actionButtons').on('click', '#remove', function (
+                        event) {
+                    event.preventDefault();
+                    var content = $('#managersRemove').find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = $('#managersRemove').find('ul');
+                    $('#managers_table input:checked').each(function (
+                            index,
+                            el) {
+                        var objectId = $(el).closest('tr').attr('id');
+                        ul.append('<li>' + objectId + '</li>');
+                        ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                    });
+                    $('#managersRemove').modal('show');
+                });
+        {% endif %}
+            });
+    </script>
 {% endblock %}

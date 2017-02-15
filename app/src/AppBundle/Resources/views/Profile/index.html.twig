@@ -1,63 +1,24 @@
 {% extends "::base.html.twig" %}
-
-{% block title %}AppBundle:Profile:index{% endblock %}
-
 {% block body %}
+    {% block container %}
 
-    <div id="profilemain">
-        <table id="profileproperties">
-            <tr>
-                <td id="properties" style="background-color: #FFFFFF" width="110%" height="110%">
-                    <div id="propertyname">
+        {% block stylesheets %}
+            {% stylesheets
+            'css/panel.css'
+            filter='cssrewrite'
+            %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
 
-                        <b> Properties </b>
-                        <button class="editproperty"></button>
-                    </div>
-                    <div >
-                        <div class="inlineprofile"><b>Name</b></div>
-                        <div class="descriptionsprofile">{{user.display_name}}</div>
-                    </div>
-                    <br/>
-                    <div>
-                        <div class="inlineprofile"><b>Email</b></div>
-                        <div class="descriptionsprofile">{{user.email}}</div>
-                    </div>
-                    <br/>
-                    <div>
-                        <div class="inlineprofile"><b>Federal ID</b></div>
-                        <div class="descriptionsprofile">{{user.fedid}}</div>
-                    </div>
-                    <br/>
-                </td>
-                <td>
-                    <div class="accountbutton"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="/img/account_history.svg"/><br/><br/>Account history</a></div>
-                </td>
-            </tr>
-        </table>
-        <table id="profileattributes">
-            <tr>
-                <td class="uniqueprofile" style="background-color: #FFFFFF" valign="middle">
 
-                    <div id="labels">
-                        <label id="headerlabelprofile">
-                            Attributes
-                        </label>
-                    </div>
-                    
-                    <div id="attributes">
-                    {% for us in userattr %}
-                        <div class="accordionattributes">
-                            <span class="name">
-                                {{us.name}}
-                            </span>
-                        </div>
-                        <div class="panelattributes">
+        <div class="row">
+            <br>
+            <div class="col-md-6 col-md-offset-3">
+                {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox }) }}
+            </div>
+            <div class="accountbutton"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="/img/account_history.svg"/><br/><br/>Account history</a></div>
+        </div>
 
-                        </div>
-                    {% endfor %}
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
+    {% endblock %}
 {% endblock %}

@@ -32,7 +32,20 @@ abstract class BaseResource
         $response = $client->get(static::$pathName.'/'.$id.'/'.'managers');
         return json_decode($response->getBody(), true);
     }
-     
+  
+    public static function serviceattributesget(Client $client, string $id) {
+        $response = $client->get(static::$pathName.'/'.$id.'/'.'attributespecs');
+        return json_decode($response->getBody(), true);
+    }
+    
+    public static function attributespecsget(Client $client, string $verbose = normal) {
+        $response = $client->get('attributespecs', [
+            'query' => [
+                'verbose' => $verbose          
+        ]]);
+        return json_decode($response->getBody(), true);
+    }
+   
     public static function membersget(Client $client, string $id) {
         $response = $client->get(static::$pathName.'/'.$id.'/'.'members');
         return json_decode($response->getBody(), true);
@@ -51,12 +64,19 @@ abstract class BaseResource
         return json_decode($response->getBody(), true);
     }
     
-    public static function attributespecsget(Client $client, string $verbose = normal) {
-        $response = $client->get(static::$pathName.'/'.'attributespecs', [
+    public static function serviceentitlementsget(Client $client,  string $id, string $verbose = normal) {
+        $response = $client->get(static::$pathName.'/'.$id.'/'.'entitlements', [
             'query' => [
                 'verbose' => $verbose          
         ]]);
         return json_decode($response->getBody(), true);
     }
     
+    public static function serviceentitlementpacksget(Client $client,  string $id, string $verbose = normal) {
+        $response = $client->get(static::$pathName.'/'.$id.'/'.'entitlementpacks', [
+            'query' => [
+                'verbose' => $verbose          
+        ]]);
+        return json_decode($response->getBody(), true);
+    } 
 }
