@@ -1,4 +1,5 @@
 @htdm
+@reset
 Feature: Behat hexaa data manager tesztek
 	
 	@smartStep
