@@ -2,6 +2,10 @@
         font-family: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
+    #maindiv{
+        text-align: center;
+    }
+    
     .container {
         max-width: 960px;
         margin-left: auto;
@@ -43,9 +47,12 @@
     }
 
     #maindivcontents {
-        display: inline-block;
         padding-top: 5vh;
         text-align: center;
+    }
+    
+    #footertext{
+        font-style: italic;
     }
 
     #maindivcontentsafterlogin {
@@ -57,10 +64,15 @@
         display: inline-block;
         padding: 2%;
     }
-    .desktopbuttonimageafterlogin {
+    .desktopbuttonimageafterloginsmall {
         width: 6vw;
         cursor: pointer;
 
+    }
+    
+    .desktopbuttonimageafterloginlarge {
+        width: 14vw;
+        cursor: pointer;
     }
 
     #maindivafterlogin  {
