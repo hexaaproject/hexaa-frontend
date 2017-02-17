@@ -6,8 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Model\Organization;
-use AppBundle\Model\Service;
 use AppBundle\Form\OrganizationUserInvitationType;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -336,40 +334,39 @@ class OrganizationController extends Controller {
 
     private function getOrganization($id)
     {
-        $client = $this->getUser()->getClient();
-        $organization = Organization::get($client, $id);
-        return $organization;
+        return $this->get('organization')->get($id);
     }
 
     private function getOrganizations()
     {
-        $client = $this->getUser()->getClient();
-        $organization = Organization::cget($client);
-        return $organization;
+        return $this->get('organization')->cget();
     }
 
     private function getServices()
     {
-        $client = $this->getUser()->getClient();
-        $organization = Service::cget($client);
-        return $organization;
+        return $this->get('service')->cget();
     }
 
     private function getRoles($organization)
     {
+        // $verbose = "expanded";
         $verbose = "expanded";
-        $roles = Organization::rget($this->getUser()->getClient(), $organization['id'], $verbose);
-        return $roles;
+        return $this->get('organization')->rget($organization['id'], $verbose);
     }
 
     private function getManagers($organization)
     {
-        return Organization::managersget($this->getUser()->getClient(), $organization['id']);
+        return $this->get('organization')->managersget($organization['id']);
     }
 
     private function getMembers($organization)
     {
-        return Organization::membersget($this->getUser()->getClient(), $organization['id']);
+        return $this->get('organization')->membersget($organization['id']);
+    }
+
+    private function getEntitlementPack($service)
+    {
+        return $this->get('service')->entitlementpacksget($service['id']);
     }
 
     private function rolesToAccordion($roles)
@@ -434,7 +431,18 @@ class OrganizationController extends Controller {
             $services_accordion[$service['id']]['title'] = $service['name'];
             $services_accordion[$service['id']]['description'] = 'Permission sets';
             $services_accordion[$service['id']]['titlemiddle'] = 'Service manager Kis Lajos (kislajos@valami.hu)';
-            $services_accordion[$service['id']]['subaccordions'] = $subaccordions;
+
+            foreach ($this->getEntitlementPack($service) as $entitlementPack) {
+                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['title'] = $entitlementPack['name'];
+                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['variant'] = 'light';
+                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['heading'] = 'TODO';
+                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'] = 'TODO';
+                
+                foreach ($entitlementPack['entitlement_ids'] as $entitlement_id) {
+                    $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'] = 'TODO';
+                }
+            }
+
         }
         return $services_accordion;
     }

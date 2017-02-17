@@ -5,9 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Model\Organization;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Model\Service;
 
 /**
  * @Route("/service")
@@ -27,11 +25,11 @@ class ServiceController extends Controller {
                 $menu = "main";
             }
             if ($serviceid) {
-                $service = \Hexaa\Newui\Model\Service::get($client, $serviceid);
+                $service = $this->get('service')->get($serviceid);
             }
-            $organizations = \Hexaa\Newui\Model\Organization::cget($client);
+            $organizations = $this->get('organization')->cget();
 
-            $services = \Hexaa\Newui\Model\Service::cget($client);
+            $services = $this->get('service')->cget();
         } catch (ClientException $e) {
             return $this->render('error.html.twig', array('clientexception' => $e));
         } catch (ServerException $e) {
@@ -188,7 +186,7 @@ class ServiceController extends Controller {
      */
     public function permissionsAction($id) {
         $verbose = "expanded";
-        $permissions = Service::serviceentitlementsget($this->getUser()->getClient(), $id, $verbose);
+        $permissions = $this->get('service')->entitlementsget($id, $verbose);
         return $this->render(
                         'AppBundle:Service:permissions.html.twig', array(
                     'organizations' => $this->getOrganizations(),
@@ -206,7 +204,7 @@ class ServiceController extends Controller {
      */
     public function permissionssetsAction($id) {
         $verbose = "expanded";
-        $permissionsset = Service::serviceentitlementpacksget($this->getUser()->getClient(), $id, $verbose);
+        $permissionsset = $this->get('service')->entitlementpacksget($id, $verbose);
         return $this->render(
                         'AppBundle:Service:permissionssets.html.twig', array(
                     'organizations' => $this->getOrganizations(),
@@ -285,15 +283,15 @@ class ServiceController extends Controller {
     }
 
     private function getManagers($service) {
-        return Service::managersget($this->getUser()->getClient(), $service['id']);
+        return $this->get('service')->managersget($service['id']);
     }
 
     private function getServiceAttributes($service) {
         $verbose = "expanded";
-        $serviceattributespecs = Service::serviceattributesget($this->getUser()->getClient(), $service['id']);
+        $serviceattributespecs = $this->get('service')->serviceattributesget($service['id']);
         $attributestonames = array();
         foreach ($serviceattributespecs as $serviceattributespec) {
-            foreach (Service::attributespecsget($this->getUser()->getClient(), $verbose) as $attributespec) {
+            foreach ($this->get('service')->attributespecsget($verbose) as $attributespec) {
                 if ($attributespec['id'] == $serviceattributespec['attribute_spec_id']) {
                     array_push($attributestonames, $attributespec);
                 }
@@ -303,20 +301,17 @@ class ServiceController extends Controller {
     }
 
     private function getOrganizations() {
-        $client = $this->getUser()->getClient();
-        $organization = Organization::cget($client);
+        $organization = $this->get('organization')->cget();
         return $organization;
     }
 
     private function getServices() {
-        $client = $this->getUser()->getClient();
-        $services = Service::cget($client);
+        $services = $this->get('service')->cget();
         return $services;
     }
 
     private function getService($id) {
-        $client = $this->getUser()->getClient();
-        $service = Service::get($client, $id);
+        $service = $this->get('service')->get($id);
         return $service;
     }
 

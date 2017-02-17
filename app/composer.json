@@ -35,7 +35,8 @@
         "drmonty/datatables-plugins": "^1.10",
         "components/jquery": "^3.1",
         "twbs/bootstrap": "^3.3",
-        "mervick/material-design-icons": "^2.2"
+        "mervick/material-design-icons": "^2.2",
+        "eightpoints/guzzle-bundle": "^5.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
