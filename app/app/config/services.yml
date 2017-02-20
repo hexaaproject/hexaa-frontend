@@ -4,15 +4,19 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     organization:
       class: AppBundle\Model\Organization
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
     service:
       class: AppBundle\Model\Service
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
     principal:
       class: AppBundle\Model\Principal
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+    role:
+      class: AppBundle\Model\Role
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+
     shibboleth.user.provider:
       class: AppBundle\Security\User\ShibbolethUser
-      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@session"]
+      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@session", "@guzzle.client.hexaa_api"]

@@ -16,8 +16,7 @@ class ProfileController extends Controller
      */
     public function indexAction()
     {
-        $client = $this->getUser()->getClient();
-        $user = $this->get('principal')->principalinfo($client);
+        $user = $this->get('principal')->principalinfo();
         return $this->render(
             'AppBundle:Profile:index.html.twig',
                 array(

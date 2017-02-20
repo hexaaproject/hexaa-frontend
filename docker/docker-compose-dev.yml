@@ -16,6 +16,7 @@ services:
     environment:
         - SYMFONY__CACHE_DIR=/tmp/cache
         - SYMFONY__LOGS_DIR=/tmp/logs
+        - LOGFILES=/tmp/logs/dev/dev.log
   hexaa-backend:
     image: hexaaproject/hexaa-backend:for-dev
     ports:

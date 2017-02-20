@@ -6,77 +6,124 @@ use GuzzleHttp\Client;
 abstract class BaseResource
 {
     protected static $pathName;
-    public static function cget(Client $client, int $offset = 0, int $pageSize = 25) {
-        $response = $client->get(static::$pathName,[
-            'query' => [
-                'offset' => $offset,
-                'limit' => $pageSize
-        ]]);
+    protected static $client;
+    protected static $token;
+
+
+    public static function cget(int $offset = 0, int $pageSize = 25) {
+        $response = static::$client->get(
+            static::$pathName,
+            array(
+                'headers' => self::getHeaders(),
+                'query' => array(
+                    'offset' => $offset,
+                    'limit' => $pageSize
+                    )
+                )
+            );    
         return json_decode($response->getBody(), true);
     }
     
-    public static function get(Client $client, string $id) {
-        $response = $client->get(static::$pathName.'/'.$id);
+    public static function get(string $id) {
+        $response = static::$client->get(
+            static::$pathName.'/'.$id,
+            array('headers' => self::getHeaders())
+        );
         return json_decode($response->getBody(), true);
     }
     
-    public static function rget(Client $client, string $id, string $verbose = normal) {
-        $response = $client->get(static::$pathName.'/'.$id.'/'.'roles', [
+    public static function rget(string $id, string $verbose = "normal") {
+        $response = static::$client->get(static::$pathName.'/'.$id.'/'.'roles', [
+            'headers' => self::getHeaders(),
             'query' => [
                 'verbose' => $verbose          
         ]]);
         return json_decode($response->getBody(), true);
     }
     
-    public static function managersget(Client $client, string $id) {
-        $response = $client->get(static::$pathName.'/'.$id.'/'.'managers');
+    public static function managersget(string $id) {
+        $response = static::$client->get(
+            static::$pathName.'/'.$id.'/'.'managers',
+            array(
+                'headers' => self::getHeaders(),
+                )
+            );
         return json_decode($response->getBody(), true);
     }
   
-    public static function serviceattributesget(Client $client, string $id) {
-        $response = $client->get(static::$pathName.'/'.$id.'/'.'attributespecs');
+    public static function serviceattributesget(string $id) {
+        $response = static::$client->get(
+            static::$pathName.'/'.$id.'/'.'attributespecs',
+            array(
+                'headers' => self::getHeaders(),
+                )
+            );
         return json_decode($response->getBody(), true);
     }
     
-    public static function attributespecsget(Client $client, string $verbose = normal) {
-        $response = $client->get('attributespecs', [
+    public static function attributespecsget(string $verbose = "normal") {
+        $response = static::$client->get('attributespecs', [
+            'headers' => self::getHeaders(),
             'query' => [
                 'verbose' => $verbose          
         ]]);
         return json_decode($response->getBody(), true);
     }
    
-    public static function membersget(Client $client, string $id) {
-        $response = $client->get(static::$pathName.'/'.$id.'/'.'members');
+    public static function membersget(string $id) {
+        $response = static::$client->get(
+            static::$pathName.'/'.$id.'/'.'members',
+            array(
+                'headers' => self::getHeaders(),
+                )
+            );
         return json_decode($response->getBody(), true);
     }
     
-    public static function principalinfo(Client $client) {
-       $response = $client->get(static::$pathName.'/'.'self');
+    public static function principalinfo() {
+       $response = static::$client->get(
+            static::$pathName.'/'.'self',
+            array(
+                'headers' => self::getHeaders(),
+                )
+            );
        return json_decode($response->getBody(), true);
     }
     
-    public static function attributeget(Client $client, string $verbose = normal) {
-        $response = $client->get(static::$pathName.'/'.'attributevalueprincipal', [
+    public static function attributeget(string $verbose = "normal") {
+        $response = static::$client->get(static::$pathName.'/'.'attributevalueprincipal', [
+            'headers' => self::getHeaders(),
             'query' => [
                 'verbose' => $verbose          
         ]]);
         return json_decode($response->getBody(), true);
     }
     
-    public static function serviceentitlementsget(Client $client,  string $id, string $verbose = normal) {
-        $response = $client->get(static::$pathName.'/'.$id.'/'.'entitlements', [
+    public static function entitlementsget(string $id, string $verbose = "normal") {
+        $response = static::$client->get(static::$pathName.'/'.$id.'/'.'entitlements', [
+            'headers' => self::getHeaders(),
             'query' => [
                 'verbose' => $verbose          
         ]]);
         return json_decode($response->getBody(), true);
     }
     
-    public static function serviceentitlementpacksget(Client $client,  string $id, string $verbose = normal) {
-        $response = $client->get(static::$pathName.'/'.$id.'/'.'entitlementpacks', [
+    public static function entitlementpacksget(string $id, string $verbose = "normal") {
+        $response = static::$client->get(static::$pathName.'/'.$id.'/'.'entitlementpacks', [
+            'headers' => self::getHeaders(),
             'query' => [
                 'verbose' => $verbose          
         ]]);
         return json_decode($response->getBody(), true);
-    } 
+    }
+
+
+    private static function getHeaders()
+    {
+        $config = static::$client->getConfig();
+        $headers = $config["headers"];
+        $headers['X-HEXAA-AUTH'] = static::$token;
+        
+        return $headers;
+    }
 }

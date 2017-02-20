@@ -22,8 +22,9 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
     private $hexaaScopedKey;
 
     private $session;
+    private $guzzleclient;
 
-    public function __construct($shibAttributeMap, $hexaaScopedKey, $base_uri, $session)
+    public function __construct($shibAttributeMap, $hexaaScopedKey, $base_uri, $session, $guzzleclient)
     {
         foreach (array('eppn', 'displayName', 'email') as $key) {
             if (array_key_exists($shibAttributeMap[$key], $_SERVER)) {        
@@ -33,6 +34,7 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
         $this->base_uri=$base_uri;
         $this->hexaaScopedKey=$hexaaScopedKey;
         $this->session = $session;
+        $this->guzzleclient = $guzzleclient;
     }
 
     public function __toString()
@@ -66,8 +68,16 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
 
     public function getClient()
     {
-        $this->client=new Client(array('base_uri' => $this->base_uri, 'headers' => array('X-HEXAA-AUTH' => $this->getToken())));
-        return $this->client;
+        $client=new Client(
+            array(
+                'base_uri' => $this->base_uri,
+                'headers' => array(
+                    'X-HEXAA-AUTH' => $this->getToken()
+                    )
+                )
+            );
+        $client = $this->guzzleclient;
+        return $client;
     }
 
 
@@ -132,8 +142,10 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
         ) = unserialize($serialized);
     }
 
-
-    private function getToken():string
+    /**
+     * get token for hexaa-api
+     */
+    public function getToken():string
     {
         if ($this->session->has('token')) {
             $now = new \DateTime();
@@ -151,7 +163,8 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
 
     private function requestNewToken()
     {
-        $client = new Client(array('base_uri' => $this->base_uri));
+        $client   = $this->guzzleclient;
+        
         // Create api key
         $time = new \DateTime();
         date_timezone_set($time, new \DateTimeZone('UTC'));

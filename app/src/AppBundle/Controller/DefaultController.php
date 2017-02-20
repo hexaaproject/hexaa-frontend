@@ -18,8 +18,8 @@ class DefaultController extends Controller
 
         $client = $this->getUser()->getClient();
         try {
-            $organizations = $this->get('organization')->cget($client);
-            $services = $this->get('service')->cget($client);
+            $organizations = $this->get('organization')->cget();
+            $services = $this->get('service')->cget();
             
 
         } catch (ClientException $e) {            
