@@ -1,0 +1,21 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Add service{% endblock %}
+
+{% block body %}
+    <h2>Create service</h2>
+    Válaszd ki a használni kívánt attribútumokat.
+    <form action="{{ path('app_service_addstepthree')}}" method="POST" role="form">
+        <a href="{{ path('app_service_addstepone') }}" type="button" class="btn btn-default">Back</a>
+        <button type="submit" class="btn btn-primary">Next</button>
+        <div class="progress" data-step="2">progressbar 2</div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label><input type="checkbox" value="">attribute 1</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" value="">attribute 2</label>
+            </div>
+        </div>
+    </form>
+{% endblock %}

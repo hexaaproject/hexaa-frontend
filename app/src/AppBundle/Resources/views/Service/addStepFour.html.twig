@@ -1,0 +1,24 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Add service{% endblock %}
+
+{% block body %}
+    <h2>Create service</h2>
+    Ahhoz hogy a szolgáltatásod jogköreit publikálhasd a szervezeteknek, jogosultságcsomagba kell tenned őket.
+    <form action="{{ path('app_service_addstepfive')}}" method="POST" role="form">
+        <a href="{{ path('app_service_addstepthree') }}" type="button" class="btn btn-default">Back</a>
+        <button type="submit" class="btn btn-primary">Next</button>
+        <div class="progress" data-step="4">progressbar 4</div>
+        <button class="accordion">permission set1</button>
+        <div class="panel">
+            <p>Lorem ipsum...</p>
+        </div>
+        
+        <button class="accordion">permission set2</button>
+        <div class="panel">
+            <p>Lorem ipsum...</p>
+        </div>
+        
+        <button class="btn btn-default">+ New</button>
+    </form>
+{% endblock %}

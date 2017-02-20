@@ -1,0 +1,27 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Add service{% endblock %}
+
+{% block body %}
+    <h2>Create service</h2>
+    Készítsd el a szolgáltatásod jogköreit.
+    <form action="{{ path('app_service_addstepfour')}}" method="POST" role="form">
+        <a href="{{ path('app_service_addstepthree') }}" type="button" class="btn btn-default">Back</a>
+        <button type="submit" class="btn btn-primary">Next</button>
+        <div class="progress" data-step="3">progressbar 3</div>
+
+        <button class="accordion">permission 1</button>
+        <div class="panel">
+            <p>Lorem ipsum...</p>
+        </div>
+        
+        <button class="accordion">permission 2</button>
+        <div class="panel">
+            <p>Lorem ipsum...</p>
+        </div>
+        
+        <button class="btn btn-default">+ New</button>
+    </div>
+
+</form>
+{% endblock %}
