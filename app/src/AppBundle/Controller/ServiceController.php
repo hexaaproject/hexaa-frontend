@@ -46,6 +46,51 @@ class ServiceController extends Controller {
                         )
         );
     }
+    
+     /**
+     * @Route("/addStepOne")
+     * @Template()
+     */
+    public function addStepOneAction(Request $request)
+    {
+        return $this->render('AppBundle:Service:addStepOne.html.twig', array());
+    }
+
+    /**
+     * @Route("/addStepTwo")
+     * @Template()
+     */
+    public function addStepTwoAction(Request $request)
+    {
+        return $this->render('AppBundle:Service:addStepTwo.html.twig', array());
+    }
+
+    /**
+     * @Route("/addStepThree")
+     * @Template()
+     */
+    public function addStepThreeAction(Request $request)
+    {
+        return $this->render('AppBundle:Service:addStepThree.html.twig', array());
+    }
+
+    /**
+     * @Route("/addStepFour")
+     * @Template()
+     */
+    public function addStepFourAction(Request $request)
+    {
+        return $this->render('AppBundle:Service:addStepFour.html.twig', array());
+    }
+
+    /**
+     * @Route("/addStepFive")
+     * @Template()
+     */
+    public function addStepFiveAction(Request $request)
+    {
+        return $this->render('AppBundle:Service:addStepFive.html.twig', array());
+    }
 
     /**
      * @Route("/show/{id}")
