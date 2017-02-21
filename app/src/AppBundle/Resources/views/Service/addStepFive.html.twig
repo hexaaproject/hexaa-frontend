@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Add service{% endblock %}
+
+{% block body %}
+    <h2>Create service</h2>
+    <form action="{{ path('app_service_index')}}" method="POST" role="form">
+        <button type="submit" class="btn btn-primary">Finish</button>
+        <div class="progress" data-step="5">progressbar 5</div>
+        <label id="finishtext">Now your service is done</label>
+    </form>
+{% endblock %}
