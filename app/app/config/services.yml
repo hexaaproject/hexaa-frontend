@@ -16,6 +16,10 @@ services:
     role:
       class: AppBundle\Model\Role
       arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+    entitlement:
+      class: AppBundle\Model\Entitlement
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+
 
     shibboleth.user.provider:
       class: AppBundle\Security\User\ShibbolethUser

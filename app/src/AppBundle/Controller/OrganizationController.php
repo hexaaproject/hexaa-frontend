@@ -19,8 +19,8 @@ class OrganizationController extends Controller {
      * @Template()
      */
     public function indexAction() {
-        $organizations = $this->getOrganizations();
-        $services = $this->getServices();
+        $organizations = $this->get('organization')->cget();
+        $services = $this->get('service')->cget();
         return $this->render(
             'AppBundle:Organization:index.html.twig',
                 array(
@@ -95,8 +95,8 @@ class OrganizationController extends Controller {
             'AppBundle:Organization:show.html.twig',
             array(
                 'organization' => $organization,
-                'organizations' => $this->getOrganizations(),
-                'services' => $this->getServices(),
+                'organizations' => $this->get('organization')->cget(),
+                'services' => $this->get('service')->cget(),
             )
         );
     }
@@ -127,8 +127,8 @@ class OrganizationController extends Controller {
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
-                "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices(),
+                "organizations" => $this->get('organization')->cget(),
+                "services" => $this->get('service')->cget(),
                 "organization" => $organization,
                 "roles" => $roles,
                 "propertiesbox" => $propertiesbox
@@ -200,8 +200,8 @@ class OrganizationController extends Controller {
                 "managers" => $managers,
                 "members" => $members,
                 "organization" => $organization,
-                "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices(),
+                "organizations" => $this->get('organization')->cget(),
+                "services" => $this->get('service')->cget(),
                 "managers_buttons" => $managers_buttons,
                 "members_buttons" => $members_buttons,
                 "inviteForm" => $inviteForm->createView()
@@ -303,9 +303,9 @@ class OrganizationController extends Controller {
             'AppBundle:Organization:roles.html.twig',
             array(
                 "organization" => $organization,
-                "organizations" => $this->getOrganizations(),
+                "organizations" => $this->get('organization')->cget(),
                 "roles" => $roles,
-                "services" => $this->getServices(),
+                "services" => $this->get('service')->cget(),
                 "roles_accordion" => $roles_accordion
             )
         );
@@ -317,15 +317,15 @@ class OrganizationController extends Controller {
      */
     public function connectedservicesAction($id)
     {
-        $services = $this->getServices();
+        $services = $this->get('service')->cget();
         $services_accordion = $this->servicesToAccordion($services);
 
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
             array(
                 "organization" => $this->getOrganization($id),
-                "organizations" => $this->getOrganizations(),
-                "services" => $this->getServices(),
+                "organizations" => $this->get('organization')->cget(),
+                "services" => $this->get('service')->cget(),
                 "services_accordion" => $services_accordion
             )
         );
@@ -337,21 +337,9 @@ class OrganizationController extends Controller {
         return $this->get('organization')->get($id);
     }
 
-    private function getOrganizations()
-    {
-        return $this->get('organization')->cget();
-    }
-
-    private function getServices()
-    {
-        return $this->get('service')->cget();
-    }
-
     private function getRoles($organization)
     {
-        // $verbose = "expanded";
-        $verbose = "expanded";
-        return $this->get('organization')->rget($organization['id'], $verbose);
+        return $this->get('organization')->rget($organization['id'], 'expanded');
     }
 
     private function getManagers($organization)
@@ -403,44 +391,30 @@ class OrganizationController extends Controller {
     {
         $services_accordion = array();
 
-        $subaccordions['perm1']['variant'] = 'light';
-        $subaccordions['perm1']['heading'] = 'perm1';
-        $subaccordions['perm1']['title'] = 'title1';
-        $subaccordions['perm1']['contents']['alma']['key'] = 'barack';
-        $subaccordions['perm1']['contents']['alma']['values'] = array('barack', 'szőlő');
-        $subaccordions['perm1']['contents']['korte']['key'] = 'korte';
-        $subaccordions['perm1']['contents']['korte']['values'] = array('barack', 'szőlő');
-
-        $subaccordions['perm1']['buttons']['id1']['alt'] = 'button1';
-        $subaccordions['perm1']['buttons']['id1']['icon'] = 'edit';
-        $subaccordions['perm1']['buttons']['id2']['alt'] = 'button2';
-        $subaccordions['perm1']['buttons']['id2']['icon'] = 'delete';
-
-        $subaccordions['perm2']['variant'] = 'light';
-        $subaccordions['perm2']['heading'] = 'perm2';
-        $subaccordions['perm2']['title'] = 'title2';
-        $subaccordions['perm2']['titletext'] = 'title-text2';
-        $subaccordions['perm2']['contents'] = 'lorem';
-
-        $subaccordions['perm2']['buttons']['id1']['alt'] = 'button1';
-        $subaccordions['perm2']['buttons']['id1']['icon'] = 'edit';
-
-
-
         foreach ($services['items'] as $service) {
             $services_accordion[$service['id']]['title'] = $service['name'];
             $services_accordion[$service['id']]['description'] = 'Permission sets';
-            $services_accordion[$service['id']]['titlemiddle'] = 'Service manager Kis Lajos (kislajos@valami.hu)';
+            $managers = $this->get('service')->managersget($service['id']);
+            $managersstring = "";
+            foreach ($managers as $manager) {
+                $managersstring .= $manager['display_name'] . " (" . $manager['email'] . ") ";
+            }
+            $services_accordion[$service['id']]['titlemiddle'] = 'Service manager ' . $managersstring;
 
             foreach ($this->getEntitlementPack($service) as $entitlementPack) {
                 $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['title'] = $entitlementPack['name'];
                 $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['variant'] = 'light';
-                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['heading'] = 'TODO';
-                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'] = 'TODO';
+                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Details", "values" => array($entitlementPack['description']));
+                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
                 
+                $entitlementnames = array();
                 foreach ($entitlementPack['entitlement_ids'] as $entitlement_id) {
-                    $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'] = 'TODO';
+                    $entitlement = $this->get('entitlement')->get($entitlement_id);
+                    $entitlementnames[] = $entitlement['name'];
                 }
+
+                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Permissions", "values" => $entitlementnames);
+
             }
 
         }

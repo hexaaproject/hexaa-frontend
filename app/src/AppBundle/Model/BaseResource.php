@@ -40,16 +40,6 @@ abstract class BaseResource
         ]]);
         return json_decode($response->getBody(), true);
     }
-    
-    public static function managersget(string $id) {
-        $response = static::$client->get(
-            static::$pathName.'/'.$id.'/'.'managers',
-            array(
-                'headers' => self::getHeaders(),
-                )
-            );
-        return json_decode($response->getBody(), true);
-    }
   
     public static function serviceattributesget(string $id) {
         $response = static::$client->get(
@@ -118,7 +108,7 @@ abstract class BaseResource
     }
 
 
-    private static function getHeaders()
+    public function getHeaders()
     {
         $config = static::$client->getConfig();
         $headers = $config["headers"];

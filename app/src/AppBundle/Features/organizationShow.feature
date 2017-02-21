@@ -102,6 +102,7 @@ Feature: When I go to a specific organization
 	    Then I should see "New role"
 	     And I should see "Add role to user"
 
+	@WIP
 	Scenario: Navigate to organization connected services
 	   Given I am on "/"
 	    When I wait for "testOrg1" to appear
@@ -115,4 +116,12 @@ Feature: When I go to a specific organization
 
 	    When I click on accordion "testService1"
 	    Then I should see "Permission sets"
-	     And I should see "title1"
+	     And I should see "Entitlement Package 1"
+
+	    When I click on accordion "Entitlement Package 1"
+	    Then I should see "Details"
+	     And I should see "this is a short desc."
+	     And I should see "Permissions"
+	     And I should see "Permission 1"
+	     And I should see "Permission 3"
+	     And I should not see "Permission 4"
