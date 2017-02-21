@@ -6,7 +6,10 @@
     <h2>Create service</h2>
     <form action="{{ path('app_service_addsteptwo') }}" method="POST" role="form">
         <button type="submit" class="btn btn-primary">Next</button>
-        <div class="progress" data-step="1">progressbar 1</div>
+        <div class="progress" style="width:800px">
+            <div class="progress-bar" role="progressbar" style="width:20%">
+            </div>
+        </div>
         <legend>Add meg a szervezeted alapadatait.</legend>
 
         <div class="form-group">
