@@ -1,34 +1,46 @@
 {% extends "::base.html.twig" %}
 
 {% block title %}Add service{% endblock %}
-
+{% block stylesheets %}
+    {% stylesheets
+            'css/createservice.css'
+            filter='cssrewrite'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
 {% block body %}
-    <h2>Create service</h2>
-    <form action="{{ path('app_service_addsteptwo') }}" method="POST" role="form">
-        <button type="submit" class="btn btn-primary">Next</button>
-        <div class="progress" style="width:800px">
-            <div class="progress-bar" role="progressbar" style="width:20%">
-            </div>
-        </div>
-        <legend>Add meg a szervezeted alapadatait.</legend>
 
-        <div class="form-group">
-            <input type="text" class="form-control" id="" name="name" placeholder="Service name">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" id="" name="description" placeholder="Description">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" id="" name="url" placeholder="URL">
-        </div>
-        <div class="form-group">
-            <label for="sel1">Entity id:</label>
-            <select class="form-control" id="sel1">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-            </select>
+    <form action="{{ path('app_service_addsteptwo') }}" method="POST" role="form">
+        <div class="formcontainer" style="text-align:center; width:800px">
+            <div class="header" style="height:50px">
+                <div class="title pull-left" style="padding-top:10px">Create service </div>
+                <button type="submit" class="btnhexaa btn-blue btnhexaa-md pull-right">Next</button>
+            </div>
+            <div class="progress" style="width:800px">
+                <div class="progress-bar" role="progressbar" style="width:20%">
+                </div>
+            </div>
+            <div class="todo">Add meg a szervezeted alapadatait.</div>
+            <br>
+            <div class="form-group">
+                <input type="text" class="form-control" id="" name="name" placeholder="Service name">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="" name="description" placeholder="Description">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="" name="url" placeholder="URL">
+            </div>
+            <div class="form-group">
+                <select class="form-control" id="sel1">
+                    <option selected disabled hidden>Entity Id</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
+            </div>
         </div>
     </form>
 {% endblock %}
