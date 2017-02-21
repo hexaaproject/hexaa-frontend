@@ -35,8 +35,8 @@
             <div class="accordion-panel accordion-panel-style-{{ variant }}">
                 {% if item.subaccordions is defined %}
                     {% if item.description is defined %} <div class="accordion-description">{{ item.description }}</div> {% endif %}
-                    {% for subaccordion in item.subaccordions %}
-                        <div class="accordion-container accordion-style-{{ subaccordion.variant }}">
+                    {% for id, subaccordion in item.subaccordions %}
+                        <div class="accordion-container accordion-style-{{ subaccordion.variant }}"  data-id="{{ id }}">
                             
                             <div class="accordion-header"></div>
                             <div onclick="toggleAccordion(this);" class="accordion-title accordion-title-style-{{ subaccordion.variant }}" data-name="{{item.title}}">{{subaccordion.title}}

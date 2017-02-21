@@ -15,4 +15,14 @@ class Service extends BaseResource
     	static::$client = $client;
     	static::$token = $user->getToken();
     }
+
+    public static function managersget(string $id) {
+        $response = static::$client->get(
+            'services/'.$id.'/'.'managers',
+            array(
+                'headers' => self::getHeaders(),
+                )
+            );
+        return json_decode($response->getBody(), true);
+    }
 }
