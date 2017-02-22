@@ -116,6 +116,15 @@ abstract class BaseResource
         ]]);
         return json_decode($response->getBody(), true);
     }
+    
+    public static function entitlementpacksgetgeneral(string $verbose = "normal") {
+        $response = static::$client->get('entitlementpacks'.'/'.'public', [
+            'headers' => self::getHeaders(),
+            'query' => [
+                'verbose' => $verbose          
+        ]]);
+        return json_decode($response->getBody(), true);
+    }
 
 
     private static function getHeaders()

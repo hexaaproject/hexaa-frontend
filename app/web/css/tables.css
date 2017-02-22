@@ -4,10 +4,17 @@
     width: 100%;
 }
 
-.datatable td{
+.base{
     padding: 5px;
     text-align: left;
     font-size: 15px;
+}
+
+.form{
+    padding: 5px;
+    text-align: left;
+    font-size: 15px;
+    color: #61AFC5;
 }
 
 .datatable caption {

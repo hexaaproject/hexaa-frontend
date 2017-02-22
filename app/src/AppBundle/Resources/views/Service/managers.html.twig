@@ -14,7 +14,7 @@
     {% if managers is defined and managers|length %}
         <div class="row">
             <div class="col-md-15">
-                {{ include('::tables.html.twig', {variant: 'red', caption: 'Managers', checkbox: true, attributes: false, users: managers, table_id: 'managers_table', buttons: managers_buttons, search_placeholder: 'Search manager' }) }}
+                {{ include('::tables.html.twig', {variant: 'red', tdcolor:'base', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table', buttons: managers_buttons, search_placeholder: 'Search manager' }) }}
             </div>
         </div>
         {{ include('::modal.html.twig',

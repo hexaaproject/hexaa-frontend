@@ -24,9 +24,14 @@ div.accordion-header {
     margin-bottom: 12px      
 }
 
-div.accordion-container {
+div.accordion-container-notform {
     padding: 8px 10px;
     margin: 0px 4px;
+}
+
+div.accordion-container-form{
+    padding-bottom: 10px;
+    margin: 0px;
 }
 
 div.accordion-style-dark {
@@ -56,35 +61,41 @@ div.accordion-title {
     vertical-align: middle;
 }
 
-div.accordion-title-style-dark {
+div.accordion-title-style-dark-notform {
     background-color: white;
     color: #68b3c7;
 }
 
-div.accordion-title-style-light {
+div.accordion-title-style-light-form {
+    background-color: white;
+    color: #68b3c7;
+    border: 1px solid #68b3c7;
+}
+
+div.accordion-title-style-light-notform {
     background-color: #68b3c7;
     color: white;
 }
 
-div.accordion-title-style-dark::after {
+div.accordion-title-style-dark-notform::after {
     color: #68b3c7;
 }
 
-div.accordion-title-style-light::after {
+div.accordion-title-style-light-notform::after {
     background-color: #68b3c7;
     color: white;
 }
 
-div.accordion-title-style-dark.active, div.accordion-title-dark:hover {
+div.accordion-title-style-dark-notform.active, div.accordion-title-dark-notform:hover {
     color: #ec666a;
 }
 
-div.accordion-title-style-light.active, div.accordion-title-light:hover {
+div.accordion-title-style-light-notform.active, div.accordion-title-light-notform:hover {
     background-color: #ec666a;
     color: white;
 }
 
-div.accordion-panel {
+div.accordion-panel-notform, div.accordion-panel-form {
     margin-top:0px;
     margin-bottom:2px;
     padding-top: 0px;
@@ -94,8 +105,12 @@ div.accordion-panel {
     display: none;
 }
 
-div.accordion-panel.active {
+div.accordion-panel-notform.active {
     border-color: #ec666a;
+}
+
+div.accordion-panel-form.active {
+    border-color: #68b3c7;
 }
 
 td.accordion-key {

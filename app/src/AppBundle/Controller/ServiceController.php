@@ -46,13 +46,12 @@ class ServiceController extends Controller {
                         )
         );
     }
-    
-     /**
+
+    /**
      * @Route("/addStepOne")
      * @Template()
      */
-    public function addStepOneAction(Request $request)
-    {
+    public function addStepOneAction(Request $request) {
         return $this->render('AppBundle:Service:addStepOne.html.twig', array());
     }
 
@@ -60,26 +59,31 @@ class ServiceController extends Controller {
      * @Route("/addStepTwo")
      * @Template()
      */
-    public function addStepTwoAction(Request $request)
-    {
-        return $this->render('AppBundle:Service:addStepTwo.html.twig', array());
+    public function addStepTwoAction(Request $request) {
+        $verbose = "expanded";
+        $attributespecs = $this->get('service')->attributespecsget($verbose);
+        return $this->render('AppBundle:Service:addStepTwo.html.twig', array(
+                    'attributes' => $attributespecs,
+        ));
     }
 
     /**
      * @Route("/addStepThree")
      * @Template()
      */
-    public function addStepThreeAction(Request $request)
-    {
-        return $this->render('AppBundle:Service:addStepThree.html.twig', array());
+    public function addStepThreeAction(Request $request) {
+        $verbose = "expanded";
+        $permissionsset = $this->get('service')->entitlementpacksgetgeneral($verbose);
+        return $this->render('AppBundle:Service:addStepThree.html.twig', array(
+                    'permissions_accordion_set' => $this->permissionsetToAccordion($permissionsset)
+        ));
     }
 
     /**
      * @Route("/addStepFour")
      * @Template()
      */
-    public function addStepFourAction(Request $request)
-    {
+    public function addStepFourAction(Request $request) {
         return $this->render('AppBundle:Service:addStepFour.html.twig', array());
     }
 
@@ -87,8 +91,7 @@ class ServiceController extends Controller {
      * @Route("/addStepFive")
      * @Template()
      */
-    public function addStepFiveAction(Request $request)
-    {
+    public function addStepFiveAction(Request $request) {
         return $this->render('AppBundle:Service:addStepFive.html.twig', array());
     }
 
@@ -178,13 +181,12 @@ class ServiceController extends Controller {
                         )
         );
     }
-    
+
     /**
      * @Route("/removemanagers/{id}")
      * @Template()
      */
-    public function removemanagersAction($id, Request $request)
-    {
+    public function removemanagersAction($id, Request $request) {
         try {
             # do something
             $this->get('session')->getFlashBag()->add('success', 'Siker');
