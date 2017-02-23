@@ -119,7 +119,7 @@ class FeatureContext extends MinkContext
         $page = $this->getSession()->getPage();
         $findName = $page->find("css", '[data-name="'.$text.'"]');
         if (!$findName) {
-            throw new Exception($text . " could not be found");
+            throw new \Exception($text . " could not be found");
         } else {
             $findName->click();
         }

@@ -115,8 +115,8 @@ Feature: When I go to a specific organization
 	     And I should see "testService2"
 
 	    When I click on accordion "testService1"
-	    Then I should see "Permission sets"
-	     And I should see "Entitlement Package 1"
+		Then I should see "Permission sets"
+		 And I should see "Entitlement Package 1"
 
 	    When I click on accordion "Entitlement Package 1"
 	    Then I should see "Details"
