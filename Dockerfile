@@ -6,7 +6,7 @@ FROM szabogyula/saml-webapp-runner:ubuntu16.04
 # build application
 ADD app /var/www/project
 RUN cd /var/www/project \
-    && apt update \
+    && apt-get update \
     && apt-get install -y php-mbstring unzip \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer install --no-interaction \
