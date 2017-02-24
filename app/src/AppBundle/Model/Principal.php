@@ -5,14 +5,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class Principal extends BaseResource
 {
-    protected static $pathName = 'principal';
-    protected static $client;
-    protected static $token;
+    protected $pathName = 'principal';
 
-    function __construct(Client $client, TokenStorage $tokenstorage)
-    {
-    	$user = $tokenstorage->getToken()->getUser();
-    	static::$client = $client;
-    	static::$token = $user->getToken();
+    public function getSelf(string $verbose = "normal") {
+        return $this->getSingular($this->pathName.'/self', $verbose);
+    }
+
+    public function getAttributeValues(string $verbose = "normal", int $offset = 0, int $pageSize = 25) {
+        return $this->getCollection($this->pathName.'/attributevalueprincipal', $verbose, $offset, $pageSize);
     }
 }

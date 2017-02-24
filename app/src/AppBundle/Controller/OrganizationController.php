@@ -325,7 +325,7 @@ class OrganizationController extends Controller {
             array(
                 "organization" => $this->getOrganization($id),
                 "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
+                "services" => $services,
                 "services_accordion" => $services_accordion
             )
         );
@@ -339,22 +339,22 @@ class OrganizationController extends Controller {
 
     private function getRoles($organization)
     {
-        return $this->get('organization')->rget($organization['id'], 'expanded');
+        return $this->get('organization')->getRoles($organization['id'], 'expanded')['items'];
     }
 
     private function getManagers($organization)
     {
-        return $this->get('organization')->managersget($organization['id']);
+        return $this->get('organization')->getManagers($organization['id'])['items'];
     }
 
     private function getMembers($organization)
     {
-        return $this->get('organization')->membersget($organization['id']);
+        return $this->get('organization')->getMembers($organization['id'])['items'];
     }
 
     private function getEntitlementPack($service)
     {
-        return $this->get('service')->entitlementpacksget($service['id']);
+        return $this->get('service')->getEntitlementPacks($service['id'])['items'];
     }
 
     private function rolesToAccordion($roles)
@@ -394,7 +394,7 @@ class OrganizationController extends Controller {
         foreach ($services['items'] as $service) {
             $services_accordion[$service['id']]['title'] = $service['name'];
             $services_accordion[$service['id']]['description'] = 'Permission sets';
-            $managers = $this->get('service')->managersget($service['id']);
+            $managers = $this->get('service')->getManagers($service['id'])['items'];
             $managersstring = "";
             foreach ($managers as $manager) {
                 $managersstring .= $manager['display_name'] . " (" . $manager['email'] . ") ";

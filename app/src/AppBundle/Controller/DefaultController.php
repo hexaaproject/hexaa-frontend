@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,22 +37,22 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services'=>$services, 'orgsubmenubox'=> $this->getorgsubmenupoints(), 'servsubmenubox'=> $this->getservsubmenupoints()));
+        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services' =>$services, 'orgsubmenubox' => $this->getOrgSubmenuPoints(), 'servsubmenubox' => $this->getServSubmenuPoints()));
     }
     
-    private function getorgsubmenupoints(){
-        $submenubox = array(
+    private function getOrgSubmenuPoints(){
+        $submenuBox = array(
             "app_organization_properties" => "Properties",
             "app_organization_users" => "Users",
             "app_organization_roles" => "Roles",
             "app_organization_connectedservices" => "Conencted services",
         );
         
-        return $submenubox;
+        return $submenuBox;
     }
     
-    private function getservsubmenupoints(){
-        $submenubox = array(
+    private function getServSubmenuPoints(){
+        $submenuBox = array(
             "app_service_properties" => "Properties",
             "app_service_managers" => "Managers",
             "app_service_attributes" => "Attributes",
@@ -59,6 +61,6 @@ class DefaultController extends Controller
             "app_service_connectedorganizations" => "Connected organizations"
         );
         
-        return $submenubox;
+        return $submenuBox;
     }
 }
