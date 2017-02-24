@@ -2,13 +2,11 @@
 
 namespace AppBundle\Features\Context;
 
-use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Tester\Exception\PendingException;
-use Behat\MinkExtension\Context\RawMinkContext;
-//use Behat\MinkExtension\Context\MinkContext;
 use Knp\FriendlyContexts\Context\MinkContext;
+use Behat\Mink\Exception\ResponseTextException;
 
 /**
  * Defines application features from the specific context.
