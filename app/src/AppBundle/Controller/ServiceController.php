@@ -113,7 +113,15 @@ class ServiceController extends Controller {
      * @Route("/properties/{id}")
      * @Template()
      */
-    public function propertiesAction($id) {
+    public function propertiesAction($id, Request $request) {
+        if ($request->getMethod() == 'POST') {
+            $data = $request->request->all();
+            dump($data);
+            $modified=array('entityid' => $data['SAML_SP_Entity_ID'], 'name' => $data['Name'], 'description' => $data['Description'], 'url' => $data['Home_page']);
+            $result = $this->get('service')->patch($id, $modified);
+            
+        }
+
         return $this->render(
                         'AppBundle:Service:properties.html.twig', array(
                     'organizations' => $this->getOrganizations(),
@@ -145,8 +153,6 @@ class ServiceController extends Controller {
             "Description" => "description",
             "Home page" => "url",
             "SAML SP Entity ID" => "entityid",
-            "Created" => "created_at",
-            "Last updated" => "updated_at"
         );
 
         return $propertiesbox;

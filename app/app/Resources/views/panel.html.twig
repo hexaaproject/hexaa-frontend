@@ -17,16 +17,30 @@ return $this->render(
             )
         );
 #}
+<script>
+    function edit(){
+        $(".propdescription").prop('readonly', false);
+        $(".sendbutton")[0].style.display="inline";
+    }
+</script>
 <div class="propertiespanel">
     <div class="header">
         {{heading}}
-        <button class="editbutton" style="display: {{buttonappear}}"></button>
+        <button type="submit" class="sendbutton pull-right"  style="display:none"><i class="material-icons">done</i></button>
+        <button type="button" class="editbutton" style="display: {{buttonappear}}" onclick="edit()"><i class="material-icons">create</i></button>
+   
     </div>
     {% for key, value in items %}
         {% if main[value]%}
             <div>
                 <div class="propname">{{key}}</div>
-                <div class="propdescription" >{{main[value]}}</div>
+                <textarea class="propdescription" readonly cols="30" rows="1" name="{{key}}"> {{main[value]}} </textarea>
+            </div>
+        {% else %}
+             <div>
+                <div class="propname">{{key}}</div>
+                <textarea class="propdescription" readonly cols="30" rows="1" name="{{key}}"> </textarea>               
+                {#<div class="propdescription" >{{main[value]}}</div>#}
             </div>
         {% endif %}
     {% endfor %}

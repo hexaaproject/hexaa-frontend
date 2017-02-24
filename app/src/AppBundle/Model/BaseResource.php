@@ -125,6 +125,22 @@ abstract class BaseResource
         ]]);
         return json_decode($response->getBody(), true);
     }
+    
+     public static function put(string $id, array $data) {
+        $response = static::$client->put(static::$pathName.'/'.$id, [
+            'headers' => self::getHeaders(),
+            'json' => $data
+                ]);
+        return json_decode($response->getBody(), true);
+    }
+    
+     public static function patch(string $id, array $data) {
+        $response = static::$client->patch(static::$pathName.'/'.$id, [
+            'headers' => self::getHeaders(),
+            'json' => $data
+                ]);
+        return json_decode($response->getBody(), true);
+    }
 
 
     private static function getHeaders()

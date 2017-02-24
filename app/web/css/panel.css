@@ -7,17 +7,21 @@
 
 .propname {
     display: inline;
-    float: left; 
+    width: 200px;
     font-weight: bold;
     padding-left: 1.75em;
     padding-bottom: 0.5em;
+    float:left;
+    text-align: left;
 }
 
 .propdescription {
     text-align: left;
     padding-bottom: 0.5em;
-    padding-left: 11em;
-    padding-right: 1em;
+   
+   /* padding-left: 11em;*/
+   /* padding-right: 1em;
+    border:none;*/
 }
 
 .header {
@@ -30,11 +34,19 @@
 }
 
 .editbutton{
-    background: url(../img/red_pencil.svg) no-repeat;
     cursor:pointer;
-    width:24px;
-    height:25px;
     border:none;
-    margin-right: 0.5em;
     float:right;
+    background-color: white;
+    color: #ec666a;
+}
+
+.sendbutton{
+    border: none;
+    background-color: white;
+    color: #61AFC5;
+}
+
+.i.material-icons{
+    
 }
