@@ -36,9 +36,9 @@ Feature: When I go to organizations
 		 And I select "2017" from "organization_user_invitation_end_year"
 		 And I select "Apr" from "organization_user_invitation_end_month"
 		 And I select "1" from "organization_user_invitation_end_day"
-         And I press "Tovább"
-		 And I wait for "Befejezés" to appear
-		Then I should see "Meghívód elkészült"
-	     And the "Link" field should contain "accept"
-		When I press "Befejezés"
-		Then I should not see "Meghívód elkészült"
+  #        And I press "Tovább"
+		#  And I wait for "Befejezés" to appear
+		# Then I should see "Meghívód elkészült"
+	 #     And the "Link" field should contain "accept"
+		# When I press "Befejezés"
+		# Then I should not see "Meghívód elkészült"
