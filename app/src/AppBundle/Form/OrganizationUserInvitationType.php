@@ -21,8 +21,7 @@ class OrganizationUserInvitationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Üzenet",
-                        "class" => "form-control"
+                        "placeholder" => "Üzenet"
                         )
                     )
                 )
@@ -32,8 +31,7 @@ class OrganizationUserInvitationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Átirányítási url",
-                        "class" => "form-control"
+                        "placeholder" => "Átirányítási url"
                         )
                     )
                 )
@@ -43,8 +41,7 @@ class OrganizationUserInvitationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Limit",
-                        "class" => "form-control"
+                        "placeholder" => "Limit"
                         )
                     )
                 )
@@ -54,10 +51,7 @@ class OrganizationUserInvitationType extends AbstractType
                 array(
                     "label" => false,
                     'multiple' => true,
-                    'choices' => $options['data']['roles'],
-                    'attr' => array (
-                        "class" => "form-control"
-                        )
+                    'choices' => $options['data']['roles']
                     )
                 )
             ->add(
@@ -67,10 +61,7 @@ class OrganizationUserInvitationType extends AbstractType
                     "label" => false,
                     'choices' => array(
                         'Magyar' => "hu",
-                        'English' => "en",
-                        ),
-                    'attr' => array (
-                        "class" => "form-control"
+                        'English' => "en"
                         )
                     )
                 )
@@ -78,20 +69,14 @@ class OrganizationUserInvitationType extends AbstractType
                 'begin',
                 DateType::class,
                 array(
-                    'label' => 'Érvényesség kezdete',
-                    'attr' => array (
-                        "class" => "form-control"
-                        )
+                    'label' => 'Érvényesség kezdete'
                     )
                 )
             ->add(
                 'end',
                 DateType::class,
                 array(
-                    'label' => 'Érvényesség vége',
-                    'attr' => array (
-                        "class" => "form-control"
-                        )
+                    'label' => 'Érvényesség vége'
                     )
                 )
         ;
