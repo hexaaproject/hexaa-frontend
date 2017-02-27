@@ -116,10 +116,8 @@ class ServiceController extends Controller {
     public function propertiesAction($id, Request $request) {
         if ($request->getMethod() == 'POST') {
             $data = $request->request->all();
-            dump($data);
-            $modified=array('entityid' => $data['SAML_SP_Entity_ID'], 'name' => $data['Name'], 'description' => $data['Description'], 'url' => $data['Home_page']);
-            $result = $this->get('service')->patch($id, $modified);
-            
+            $modified = array('entityid' => $data['SAML_SP_Entity_ID'], 'name' => $data['Name'], 'description' => $data['Description'], 'url' => $data['Home_page'], 'priv_url' => $data['URL'], 'priv_description' =>$data['Privacy_description'], 'org_name' => $data['Organization_name'], 'org_short_name' => $data['Organization_short_name'], 'org_description' => $data['Organization_description'], 'org_url' => $data['Organization_home_page']);
+            $this->get('service')->patch($id, $modified);
         }
 
         return $this->render(
@@ -129,6 +127,8 @@ class ServiceController extends Controller {
                     'service' => $this->getService($id),
                     'main' => $this->getService($id),
                     'propertiesbox' => $this->getPropertiesBox(),
+                    'privacybox' => $this->getPrivacyBox(),
+                    'ownerbox' => $this->getOwnerBox(),
                     'servsubmenubox' => $this->getservsubmenupoints()
                         )
         );
@@ -155,6 +155,24 @@ class ServiceController extends Controller {
             "SAML SP Entity ID" => "entityid",
         );
 
+        return $propertiesbox;
+    }
+
+    private function getPrivacyBox() {
+        $propertiesbox = array(
+            "URL" => "priv_url",
+            "Privacy description" => "priv_description",
+        );
+        return $propertiesbox;
+    }
+
+    private function getOwnerBox() {
+        $propertiesbox = array(
+            "Organization name" => "org_name",
+            "Organization short name" => "org_short_name",
+            "Organization description" => "org_description",
+            "Organization home page" => "org_url"
+        );
         return $propertiesbox;
     }
 
