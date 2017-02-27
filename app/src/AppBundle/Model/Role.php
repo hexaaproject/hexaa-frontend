@@ -5,14 +5,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class Role extends BaseResource
 {
-    protected static $pathName = 'roles';
-    protected static $client;
-    protected static $token;
+    protected $pathName = 'roles';
 
-    function __construct(Client $client, TokenStorage $tokenstorage)
-    {
-    	$user = $tokenstorage->getToken()->getUser();
-    	static::$client = $client;
-    	static::$token = $user->getToken();
+    public function getEntitlements(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25) {
+        return $this->getCollection($this->pathName.'/'.$id.'/entitlements', $verbose, $offset, $pageSize);
     }
 }

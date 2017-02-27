@@ -20,6 +20,7 @@ Feature: When I go to a specific organization
 	   Given I am on "/"
 		Then I wait for "testOrg1" to appear
 	    Then I follow "testOrg1"
+		And I wait for "testOrg1" to appear
 	    Then I should see "testOrg1"
 	     And I should see "Properties"
 	     And I should see "Users"
@@ -35,22 +36,22 @@ Feature: When I go to a specific organization
 
 	Scenario: Navigate to organization properties
 	   Given I am on "/"
-		 And I wait for "testOrg1" to appear	    
+		 And I wait for "testOrg1" to appear
 	    Then I follow "testOrg1"
-		 And I wait for "Properties" to appear	    
+		 And I wait for "Properties" to appear
 	     And I follow "Properties"
 	    Then I should see "Ez a szervezet teszteléshez készült. Jól tesztelve is lesz vele az alkalmazás."
 	     And I should see "Roles"
-	     And I should see "Test role 1"	     
+	     And I should see "Test role 1"
 	     And I should see "Test role 2"
 
 	Scenario: Organization properties, role accordion
 	   Given I am on "/"
 		 And I wait for "Welcome to" to appear
 	    Then I follow "testOrg1"
-		 And I wait for "testOrg1" to appear	    
+		 And I wait for "testOrg1" to appear
 	     And I follow "Properties"
-	     And I should see "Test role 1"	     
+	     And I should see "Test role 1"
 	     And I should see "Test role 2"
 	     And I should not see "Permissions"
 	     And I should not see "Members"
@@ -67,7 +68,7 @@ Feature: When I go to a specific organization
 	   Given I am on "/"
 	    When I wait for "testOrg1" to appear
 	    Then I follow "testOrg1"
-	     And I wait for "Users" to appear 
+	     And I wait for "Users" to appear
 	     And I follow "Users"
 	    Then I should see "Change roles"
 	     And I should see "Proposal"
@@ -102,6 +103,7 @@ Feature: When I go to a specific organization
 	    Then I should see "New role"
 	     And I should see "Add role to user"
 
+	@WIP
 	Scenario: Navigate to organization connected services
 	   Given I am on "/"
 	    When I wait for "testOrg1" to appear
@@ -110,9 +112,17 @@ Feature: When I go to a specific organization
 	     And I follow "Connected services"
 	    When I wait for "Connected services" to appear
 	    Then I should see "Connected services" in the ".accordion-header" element
-	     And I should see "testService1"	     
+	     And I should see "testService1"
 	     And I should see "testService2"
 
 	    When I click on accordion "testService1"
-	    Then I should see "Permission sets"
-	     And I should see "title1"
+		Then I should see "Permission sets"
+		 And I should see "Entitlement Package 1"
+
+	    When I click on accordion "Entitlement Package 1"
+	    Then I should see "Details"
+	     And I should see "this is a short desc."
+	     And I should see "Permissions"
+	     And I should see "Permission 1"
+	     And I should see "Permission 3"
+	     And I should not see "Permission 4"
