@@ -51,12 +51,7 @@ class OrganizationUserInvitationType extends AbstractType
                 array(
                     "label" => false,
                     'multiple' => true,
-                    'choices' => array(
-                        'Role 1 TODO' => "1",
-                        'Role 2 TODO' => "2",
-                        'Role 3 TODO' => "3",
-                        'Role 4 TODO' => "4",
-                        )
+                    'choices' => $options['data']['roles']
                     )
                 )
             ->add(
@@ -66,7 +61,7 @@ class OrganizationUserInvitationType extends AbstractType
                     "label" => false,
                     'choices' => array(
                         'Magyar' => "hu",
-                        'English' => "en",
+                        'English' => "en"
                         )
                     )
                 )
@@ -74,14 +69,14 @@ class OrganizationUserInvitationType extends AbstractType
                 'begin',
                 DateType::class,
                 array(
-                    'label' => 'Érvényesség kezdete',
+                    'label' => 'Érvényesség kezdete'
                     )
                 )
             ->add(
                 'end',
                 DateType::class,
                 array(
-                    'label' => 'Érvényesség vége',
+                    'label' => 'Érvényesség vége'
                     )
                 )
         ;

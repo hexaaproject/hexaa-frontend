@@ -140,12 +140,11 @@ class OrganizationController extends Controller {
      * @Route("/users/{id}")
      * @Template()
      */
-    public function usersAction($id)
+    public function usersAction(Request $request, $id)
     {
-        // $inviteForm = new OrganizationUserInvitationType();
-        $inviteForm = $this->createForm(OrganizationUserInvitationType::class);
 
         $organization = $this->getOrganization($id);
+
         $managers = $this->getManagers($organization);
         $members = $this->getMembers($organization);
         $managers_buttons = array(
@@ -194,6 +193,37 @@ class OrganizationController extends Controller {
                 "text" => '<i class="material-icons">add</i> Invite'
                 ),
             );
+
+        // Invite form készítés
+        $roles = array();
+        foreach ($this->getRoles($organization) as $role) {
+            $roles[$role['name']] = $role['id'];
+        }
+
+        $form = $this->createForm(OrganizationUserInvitationType::class, array('roles' => $roles));
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $invite_link = "TODO invite object létrehozás és link kinyerése";
+
+            return $this->render(
+                'AppBundle:Organization:users.html.twig',
+                array(
+                    "managers" => $managers,
+                    "members" => $members,
+                    "organization" => $organization,
+                    "organizations" => $this->get('organization')->cget(),
+                    "services" => $this->get('service')->cget(),
+                    "managers_buttons" => $managers_buttons,
+                    "members_buttons" => $members_buttons,
+                    "invite_link" => $invite_link,
+                    "inviteForm" => $form->createView()
+                )
+            );            
+        }
+
         return $this->render(
             'AppBundle:Organization:users.html.twig',
             array(
@@ -204,7 +234,7 @@ class OrganizationController extends Controller {
                 "services" => $this->get('service')->cget(),
                 "managers_buttons" => $managers_buttons,
                 "members_buttons" => $members_buttons,
-                "inviteForm" => $inviteForm->createView()
+                "inviteForm" => $form->createView()
             )
         );
     }

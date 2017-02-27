@@ -92,7 +92,7 @@
                     search_placeholder:
                     'Search member'
                 })
-            }}            
+            }}
         </div>
 
         {{ include('::modal.html.twig',
@@ -157,6 +157,9 @@
     {% endif %}
 
     {{ include('AppBundle:Organization:userInvitation.html.twig', {}) }}
+    {% if invite_link is defined %}
+        {{ include('AppBundle:Organization:userInvitationDone.html.twig', {}) }}
+    {% endif %}
 
 {% endblock %}
 
