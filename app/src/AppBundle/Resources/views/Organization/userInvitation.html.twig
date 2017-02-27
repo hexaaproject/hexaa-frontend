@@ -44,6 +44,10 @@
 
 <script>
     $(document).ready(function() {
+        {% if not inviteForm.vars.valid %}
+            $('.modal#invite_1 .modal-body-content').html($('#invite_1_bodycontent').html());
+            $('#invite_1').modal({ backdrop: 'static'});
+        {% endif %}
 
         $(document).on('click', 'button#invite', function(event) {
             event.preventDefault();
