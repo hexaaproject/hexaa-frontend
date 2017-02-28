@@ -29,7 +29,7 @@
         max-width: 70vw;
         max-height: 10vh;
         margin-top: 2%;
-        margin-bottom: 2%;    
+        margin-bottom: 2%;
     }
 
     #welcometext2 {
@@ -185,4 +185,21 @@
         width: 48px;
         height: 34px;
         vertical-align: middle;
+    }
+
+    .form-control {
+        font-size: inherit;
+        color:  #61AFC5;
+        background-color: #DFEDEE;
+        border: 1px solid #61AFC5;
+        border-radius: 0px;
+    }
+    .form-control::-moz-placeholder {
+      color: #61AFC5;
+    }
+    .form-control:-ms-input-placeholder {
+      color: #61AFC5;
+    }
+    .form-control::-webkit-input-placeholder {
+      color: #61AFC5;
     }

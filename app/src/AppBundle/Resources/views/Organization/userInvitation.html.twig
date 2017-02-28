@@ -39,40 +39,15 @@
 <div id="invite_2_bodycontent" style="display: none;">
     {{ form_row(inviteForm.begin) }}
     {{ form_row(inviteForm.end) }}
+    {{ form_end(inviteForm) }}
 </div>
 
-{{ include('::modal.html.twig',
-    {
-      id: 'invite_3',
-        title: 'Meghívód elkészült',
-        button:
-            {
-                text: 'Befejezés',
-                class: 'btn-red'
-            },
-        rightbutton:
-            {
-                text: 'Vissza',
-            }
-    })
-}}
-<div id="invite_3_bodycontent" style="display: none;">
-    <div>
-        <label>Link</label>
-        <div>
-            <input type="url" value="{{ path('homepage') }}"><button class="copy btnhexaa btn-blue">Copy</button>
-        </div>
-    </div>
-    <div>
-        <label>Küld el e-mail-ben</label>
-        <div>
-            <textarea name="emai" cols="30" rows="10" placeholder="E-mail címek"></textarea>
-        </div>
-    </div>
-</div>
-{{ form_end(inviteForm) }}
 <script>
     $(document).ready(function() {
+        {% if not inviteForm.vars.valid %}
+            $('.modal#invite_1 .modal-body-content').html($('#invite_1_bodycontent').html());
+            $('#invite_1').modal({ backdrop: 'static'});
+        {% endif %}
 
         $(document).on('click', 'button#invite', function(event) {
             event.preventDefault();
@@ -89,9 +64,7 @@
 
         $(document).on('click', '.modal#invite_2 button[type=submit]', function(event) {
             event.preventDefault();
-            $('#invite_2').modal('hide');
-            $('.modal#invite_3 .modal-body-content').html($('#invite_3_bodycontent').html());
-            $('#invite_3').modal({ backdrop: 'static'});            
+            $('form[name=organization_user_invitation]').submit();
         });
 
 
@@ -99,11 +72,6 @@
             event.preventDefault();
             $('#invite_2').modal('hide');
             $('#invite_1').modal('show');
-        });
-        $(document).on('click', '.modal#invite_3 button#rightbutton', function(event) {
-            event.preventDefault();
-            $('#invite_3').modal('hide');
-            $('#invite_2').modal('show');
         });
     });
 </script>

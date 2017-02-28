@@ -64,7 +64,7 @@ class ServiceController extends Controller {
      */
     public function addStepTwoAction(Request $request) {
         $verbose = "expanded";
-        $attributespecs = $this->get('service')->attributespecsget($verbose);
+        $attributespecs = $this->get('service')->getAllAttributeSpecs($verbose);
         return $this->render('AppBundle:Service:addStepTwo.html.twig', array(
                     'attributes' => $attributespecs,
         ));

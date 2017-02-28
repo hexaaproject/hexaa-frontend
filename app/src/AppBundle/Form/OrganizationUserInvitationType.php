@@ -2,13 +2,14 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints;
 
 class OrganizationUserInvitationType extends AbstractType
 {
@@ -22,7 +23,8 @@ class OrganizationUserInvitationType extends AbstractType
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Üzenet"
-                        )
+                        ),
+                    "constraints" => new Constraints\NotBlank()
                     )
                 )
             ->add(
@@ -32,7 +34,8 @@ class OrganizationUserInvitationType extends AbstractType
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Átirányítási url"
-                        )
+                        ),
+                    "constraints" => new Constraints\Url()
                     )
                 )
             ->add(
@@ -51,12 +54,7 @@ class OrganizationUserInvitationType extends AbstractType
                 array(
                     "label" => false,
                     'multiple' => true,
-                    'choices' => array(
-                        'Role 1 TODO' => "1",
-                        'Role 2 TODO' => "2",
-                        'Role 3 TODO' => "3",
-                        'Role 4 TODO' => "4",
-                        )
+                    'choices' => $options['data']['roles']
                     )
                 )
             ->add(
@@ -66,7 +64,7 @@ class OrganizationUserInvitationType extends AbstractType
                     "label" => false,
                     'choices' => array(
                         'Magyar' => "hu",
-                        'English' => "en",
+                        'English' => "en"
                         )
                     )
                 )
@@ -74,14 +72,14 @@ class OrganizationUserInvitationType extends AbstractType
                 'begin',
                 DateType::class,
                 array(
-                    'label' => 'Érvényesség kezdete',
+                    'label' => 'Érvényesség kezdete'
                     )
                 )
             ->add(
                 'end',
                 DateType::class,
                 array(
-                    'label' => 'Érvényesség vége',
+                    'label' => 'Érvényesség vége'
                     )
                 )
         ;
