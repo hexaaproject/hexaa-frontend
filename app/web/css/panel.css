@@ -37,9 +37,26 @@
     color: #ec666a;
 }
 
-#sendbutton{
+.sendbutton{
     border: none;
     background-color: white;
     color: #61AFC5;
 }
 
+.form-control {
+    width:500px; 
+    display:inline;
+    margin-right:180px;
+}
+
+.container{
+    text-align: left;
+}
+
+.formlabel{
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    padding-left:20px;
+}

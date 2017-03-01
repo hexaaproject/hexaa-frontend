@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Form\ServicePropertiesType;
 
 /**
  * @Route("/service")
@@ -78,7 +79,7 @@ class ServiceController extends Controller {
         $verbose = "expanded";
         $permissionsset = $this->get('service')->entitlementpackspublic($verbose);
         return $this->render('AppBundle:Service:addStepThree.html.twig', array(
-                    //'permissions_accordion_set' => $this->permissionsetToAccordion($permissionsset)
+                        //'permissions_accordion_set' => $this->permissionsetToAccordion($permissionsset)
         ));
     }
 
@@ -117,10 +118,50 @@ class ServiceController extends Controller {
      * @Template()
      */
     public function propertiesAction($id, Request $request) {
-        if ($request->getMethod() == 'POST') {
+        /* if ($request->getMethod() == 'POST') {
+          $data = $request->request->all();
+          $modified = array('entityid' => $data['SAML_SP_Entity_ID'], 'name' => $data['Name'], 'description' => $data['Description'], 'url' => $data['Home_page'], 'priv_url' => $data['URL'], 'priv_description' =>$data['Privacy_description'], 'org_name' => $data['Organization_name'], 'org_short_name' => $data['Organization_short_name'], 'org_description' => $data['Organization_description'], 'org_url' => $data['Organization_home_page']);
+          $this->get('service')->patch($id, $modified);
+          } */
+
+        $propertiesDatas = array();
+        $service = $this->getService($id);
+        $propertiesDatas['serviceName'] = $service['name'];
+        $propertiesDatas['serviceDescription'] = $service['description'];
+        $propertiesDatas['serviceURL'] = $service['url'];
+        $propertiesDatas['serviceSAML'] = $service['entityid'];
+
+        $form = $this->createForm(ServicePropertiesType::class, array('properties' => $propertiesDatas));
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
             $data = $request->request->all();
-            $modified = array('entityid' => $data['SAML_SP_Entity_ID'], 'name' => $data['Name'], 'description' => $data['Description'], 'url' => $data['Home_page'], 'priv_url' => $data['URL'], 'priv_description' =>$data['Privacy_description'], 'org_name' => $data['Organization_name'], 'org_short_name' => $data['Organization_short_name'], 'org_description' => $data['Organization_description'], 'org_url' => $data['Organization_home_page']);
+            $modified = array('name' => $data['service_properties']['serviceName'], 'entityid' => $data['service_properties']['serviceSAML'], 'description' => $data['service_properties']['serviceDescription'], 'url' => $data['service_properties']['serviceURL']);
             $this->get('service')->patch($id, $modified);
+            //header("Refresh:0");
+
+            $service = $this->getService($id);
+            $propertiesDatas['serviceName'] = $service['name'];
+            $propertiesDatas['serviceDescription'] = $service['description'];
+            $propertiesDatas['serviceURL'] = $service['url'];
+            $propertiesDatas['serviceSAML'] = $service['entityid'];
+            $form = $this->createForm(ServicePropertiesType::class, array('properties' => $propertiesDatas));
+
+            return $this->render(
+                            'AppBundle:Service:properties.html.twig', array(
+                        'organizations' => $this->getOrganizations(),
+                        'services' => $this->getServices(),
+                        'service' => $this->getService($id),
+                        'main' => $this->getService($id),
+                        'propertiesbox' => $this->getPropertiesBox(),
+                        'privacybox' => $this->getPrivacyBox(),
+                        'ownerbox' => $this->getOwnerBox(),
+                        'servsubmenubox' => $this->getservsubmenupoints(),
+                        'propertiesform' => $form->createView()
+                            )
+            );
         }
 
         return $this->render(
@@ -132,7 +173,8 @@ class ServiceController extends Controller {
                     'propertiesbox' => $this->getPropertiesBox(),
                     'privacybox' => $this->getPrivacyBox(),
                     'ownerbox' => $this->getOwnerBox(),
-                    'servsubmenubox' => $this->getservsubmenupoints()
+                    'servsubmenubox' => $this->getservsubmenupoints(),
+                    'propertiesform' => $form->createView()
                         )
         );
     }

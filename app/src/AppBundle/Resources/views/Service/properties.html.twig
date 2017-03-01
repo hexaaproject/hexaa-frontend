@@ -10,24 +10,58 @@
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
+    <script>
+        function edit() {
+            $(".sendbutton")[0].style.display = "inline";
+            $("#service_properties_serviceName").removeAttr('disabled');
+            $("#service_properties_serviceDescription").removeAttr('disabled');
+            $("#service_properties_serviceURL").removeAttr('disabled');
+            $("#service_properties_serviceSAML").removeAttr('disabled');
+        }
+    </script>
 
-    <form action="{{ path('app_service_properties', {id: service.id}) }}" method="POST" role="form">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-2">
-                {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property" }) }}
-            </div>
+    {{ form_start(propertiesform) }}
+
+    <div class="propertiespanel">
+        <div class="header">
+            Properties
+            <button type="submit" class="sendbutton pull-right" style="display:none"><i class="material-icons">done</i></button>
+            <button type="button" class="editbutton" style="display: inline" onclick="edit()"><i class="material-icons">create</i></button>
+
         </div>
-        <br>
-        <div class="row">
-            <div class="col-md-10 col-md-offset-2">
-                {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner" }) }}
-            </div>
+        <div>
+            {{ form_row(propertiesform.serviceName) }}
         </div>
-        <br>
-        <div class="row">
-            <div class="col-md-10 col-md-offset-2">
-                {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy" }) }}
-            </div>
+        <div>
+            {{ form_row(propertiesform.serviceDescription) }}
         </div>
-    </form>
+        <div>
+            {{ form_row(propertiesform.serviceURL) }}
+        </div>
+        <div>
+            {{ form_row(propertiesform.serviceSAML) }}
+        </div>
+    </div>
+    {{ form_end(propertiesform) }}
+    {# <form action="{{ path('app_service_properties', {id: service.id}) }}" method="POST" role="form">
+         <div class="row">
+             <div class="col-md-10 col-md-offset-2">
+                 {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property" }) }}
+             </div>
+         </div>
+         <br>
+         <div class="row">
+             <div class="col-md-10 col-md-offset-2">
+                 {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner" }) }}
+             </div>
+         </div>
+         <br>
+         <div class="row">
+             <div class="col-md-10 col-md-offset-2">
+                 {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy" }) }}
+             </div>
+         </div>
+     </form> #}
+
+
 {% endblock %}

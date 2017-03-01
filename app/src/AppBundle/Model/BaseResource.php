@@ -120,8 +120,8 @@ abstract class BaseResource
             'headers' => $this->getHeaders(),
           ]
         );
-
-        if ($response->getStatusCode() !== 201 || $response->getStatusCode() !== 204) {
+        dump($response->getStatusCode());
+        if ($response->getStatusCode() != 201 && $response->getStatusCode() != 204) {
             throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
         }
 
