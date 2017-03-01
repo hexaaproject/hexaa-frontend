@@ -71,6 +71,16 @@ abstract class BaseResource
         return $this->patchCall($this->pathName.'/'.$id, $data);
     }
 
+    /**
+     * POST resource
+     *
+     * @param array  $data data to POST
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function post(array $data): ResponseInterface
+    {
+        return $this->postCall($this->pathName, $data);
+    }
 
     public function getHeaders(): array
     {
@@ -138,6 +148,22 @@ abstract class BaseResource
           ]
         );
 
+        if ($response->getStatusCode() !== 201 || $response->getStatusCode() !== 204) {
+            throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
+        }
+
+        return $response;
+    }
+
+    protected function postCall(string $path, array $data): ResponseInterface
+    {
+        $response = $this->client->post(
+          $path,
+          [
+            'json'    => $data,
+            'headers' => $this->getHeaders(),
+          ]
+        );
         if ($response->getStatusCode() !== 201 || $response->getStatusCode() !== 204) {
             throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
         }
