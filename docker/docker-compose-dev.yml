@@ -27,6 +27,7 @@ services:
         - db
         - memcached
         - grid
+        - smtp
     container_name: hexaa-backend
   hexaa-test-data-manager:
     image: hexaaproject/hexaa-test-data-manager:for-dev
@@ -57,3 +58,10 @@ services:
     container_name: grid
     ports:
         - 5900:25900
+
+  smtp:
+    image: mailhog/mailhog
+    container_name: smtp
+    ports:
+        - "25:1025"
+        - "8025:8025"
