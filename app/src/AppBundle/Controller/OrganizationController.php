@@ -2,11 +2,12 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Form\OrganizationUserInvitationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\OrganizationUserInvitationType;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -200,13 +201,28 @@ class OrganizationController extends Controller {
             $roles[$role['name']] = $role['id'];
         }
 
-        $form = $this->createForm(OrganizationUserInvitationType::class, array('roles' => $roles));
+        $form = $this->createForm(OrganizationUserInvitationType::class);
+        $form->add(
+                'role',
+                ChoiceType::class,
+                array(
+                    "label" => false,
+                    'choices' => $roles,
+                    'required' => false,
+                    'placeholder' => 'To what role?'
+                    )
+                );
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             
             $invite_link = "TODO invite object létrehozás és link kinyerése";
+            $data = $form->getData();
+            $data['organization'] = $id;
+            $invite = $this->get('invitation')->sendInvitation(
+                    $data
+                );
 
             return $this->render(
                 'AppBundle:Organization:users.html.twig',

@@ -55,7 +55,7 @@ Usage:
                 </div>
                 <div class="modal-body">
                     <div class="modal-body-head">{% if bodyhead is defined %}{{ bodyhead }}{% endif %}</div>
-                    <div class="modal-body-content">{% if bodycontent is defined %}{{ bodycontent }}{% endif %}</div>
+                    <div class="modal-body-content">{% if bodycontent is defined %}{{ bodycontent|raw }}{% endif %}</div>
                 </div>
                 <div class="modal-footer">
                     {% if rightbutton is defined %}
