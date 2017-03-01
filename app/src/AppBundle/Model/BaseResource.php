@@ -131,7 +131,7 @@ abstract class BaseResource
           ]
         );
 
-        if ($response->getStatusCode() !== 201 || $response->getStatusCode() !== 204) {
+        if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 204) {
             throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
         }
 
@@ -148,7 +148,7 @@ abstract class BaseResource
           ]
         );
 
-        if ($response->getStatusCode() !== 201 || $response->getStatusCode() !== 204) {
+        if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 204) {
             throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
         }
 
@@ -164,7 +164,7 @@ abstract class BaseResource
             'headers' => $this->getHeaders(),
           ]
         );
-        if ($response->getStatusCode() !== 201 || $response->getStatusCode() !== 204) {
+        if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 204) {
             throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
         }
 
