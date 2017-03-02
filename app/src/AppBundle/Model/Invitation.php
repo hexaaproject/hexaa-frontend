@@ -15,7 +15,6 @@ class Invitation extends BaseResource
      */
     public function sendInvitation($data)
     {
-        dump($data);
         return $this->post($data);
     }
 
