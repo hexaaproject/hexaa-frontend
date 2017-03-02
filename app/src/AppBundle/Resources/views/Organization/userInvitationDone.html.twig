@@ -2,10 +2,10 @@
 {{ include('::modal.html.twig',
     {
       id: 'invite_3',
-        title: 'Meghívód elkészült',
+        title: 'Your invitation is ready',
         button:
             {
-                text: 'Befejezés',
+                text: 'Done',
                 class: 'btn-red'
             }
     })
@@ -13,20 +13,14 @@
 
 <div id="invite_3_bodycontent" style="display: none;">
     <div>
-        <label>Link</label>
+        <label for="token">Link</label>
         <div>
             <div class="col-sm-11">
-                <input type="url" class="form-control">            
+                <input name="token" type="url" class="form-control">
             </div>
             <div class="col-sm-4">
                     <button class="copy btnhexaa btn-blue btn-block">Copy</button>            
             </div>
-        </div>
-    </div>
-    <div>
-        <label>Küld el e-mail-ben</label>
-        <div>
-            <textarea name="email" class="form-control" cols="30" rows="10" placeholder="E-mail címek"></textarea>
         </div>
     </div>
 </div>
@@ -35,5 +29,9 @@
             $('.modal#invite_3 .modal-body-content').html($('#invite_3_bodycontent').html());
             $('#invite_3').modal({ backdrop: 'static'});
             $('#invite_3 input.form-control').val('{{ invite_link }}');
+            $('#invite_3').on('click', "button[type=submit]", function(event) {
+                event.preventDefault();
+                $('#invite_3').modal('hide');
+            });
     });
 </script>

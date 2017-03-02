@@ -12,10 +12,11 @@ Usage:
             {
                 text: 'text of form submitter button',
                 class: 'btn-red'
+                id: 'idofthebutton
             },
-        rightbutton: // optional
+        leftbutton: // optional
             {
-                text: 'text of form back or cancel right button',
+                text: 'text of form back or cancel left button',
                 class: 'btn-blue' //optional
             }
         formaction: path('app_anything_actions_route_path_with_paramters', {id: anything.id }) //optional
@@ -55,15 +56,15 @@ Usage:
                 </div>
                 <div class="modal-body">
                     <div class="modal-body-head">{% if bodyhead is defined %}{{ bodyhead }}{% endif %}</div>
-                    <div class="modal-body-content">{% if bodycontent is defined %}{{ bodycontent }}{% endif %}</div>
+                    <div class="modal-body-content">{% if bodycontent is defined %}{{ bodycontent|raw }}{% endif %}</div>
                 </div>
                 <div class="modal-footer">
-                    {% if rightbutton is defined %}
-                        <button type="button" id="rightbutton" class="btnhexaa {% if rightbutton.class is defined %}{{ rightbutton.class }}{% else %}btn-blue{% endif %}" {% if rightbutton.dismiss is defined %} data-dismiss="modal" {% endif %}>{{ rightbutton.text }}</button>
+                    {% if leftbutton is defined %}
+                        <button type="button" id="leftbutton" class="btnhexaa {% if leftbutton.class is defined %}{{ leftbutton.class }}{% else %}btn-blue{% endif %}" {% if leftbutton.dismiss is defined %} data-dismiss="modal" {% endif %}>{{ leftbutton.text }}</button>
                     {% else %}
                         <button type="button" class="btnhexaa btn-blue" data-dismiss="modal">Cancel</button>
                     {% endif %}
-                    <button type="submit" class="pull-right btnhexaa {{ button.class }}">{{ button.text }}</button>
+                    <button type="submit" {% if button.id is defined %} id="{{ button.id }}" {% endif %} class="pull-right btnhexaa {{ button.class }}">{{ button.text }}</button>
                 </div>
             {% if formaction is defined %}</form>{% endif %}
         </div>

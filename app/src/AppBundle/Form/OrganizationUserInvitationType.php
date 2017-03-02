@@ -22,18 +22,18 @@ class OrganizationUserInvitationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Üzenet"
+                        "placeholder" => "Message"
                         ),
                     "constraints" => new Constraints\NotBlank()
                     )
                 )
             ->add(
-                'redirectUrl',
+                'landing_url',
                 TextType::class,
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Átirányítási url"
+                        "placeholder" => "Landing url"
                         ),
                     "constraints" => new Constraints\Url()
                     )
@@ -48,40 +48,44 @@ class OrganizationUserInvitationType extends AbstractType
                         )
                     )
                 )
+
             ->add(
-                'roles',
-                ChoiceType::class,
-                array(
-                    "label" => false,
-                    'multiple' => true,
-                    'choices' => $options['data']['roles']
-                    )
-                )
-            ->add(
-                'language',
+                'locale',
                 ChoiceType::class,
                 array(
                     "label" => false,
                     'choices' => array(
-                        'Magyar' => "hu",
-                        'English' => "en"
+                        'English' => "en",
+                        'Magyar' => "hu"
                         )
                     )
                 )
             ->add(
-                'begin',
+                'start_date',
                 DateType::class,
                 array(
-                    'label' => 'Érvényesség kezdete'
+                    'label' => 'Start of accept period',
+                    'input' => 'string'
                     )
                 )
             ->add(
-                'end',
+                'end_date',
                 DateType::class,
                 array(
-                    'label' => 'Érvényesség vége'
+                    'label' => 'End of accept period',
+                    'input' => 'string'
                     )
                 )
+            ->add(
+                'emails',
+                TextareaType::class,
+                array(
+                    "label" => "Send in emails",
+                    "attr" => array(
+                        "placeholder" => "E-mail addresses"
+                    )
+                )
+            )
         ;
     }
 

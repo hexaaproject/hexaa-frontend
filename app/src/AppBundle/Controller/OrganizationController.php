@@ -2,11 +2,12 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Form\OrganizationUserInvitationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\OrganizationUserInvitationType;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -200,13 +201,40 @@ class OrganizationController extends Controller {
             $roles[$role['name']] = $role['id'];
         }
 
-        $form = $this->createForm(OrganizationUserInvitationType::class, array('roles' => $roles));
+        $form = $this->createForm(OrganizationUserInvitationType::class);
+        $form->add(
+                'role',
+                ChoiceType::class,
+                array(
+                    "label" => false,
+                    'choices' => $roles,
+                    'required' => false,
+                    'placeholder' => 'To what role?'
+                    )
+                );
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $invite_link = "TODO invite object létrehozás és link kinyerése";
+            $data = $form->getData();
+
+            $data_to_backend = $data;
+            $data_to_backend['organization'] = $id;
+            $data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
+            $invitationResource = $this->get('invitation');
+            $invite = $invitationResource->sendInvitation($data_to_backend);
+
+            $headers = $invite->getHeaders();
+
+            try {
+                $invitationId = basename(parse_url($headers['Location'][0], PHP_URL_PATH));
+                $invitation = $invitationResource->get($invitationId);
+            } catch (\Exception $e) {
+                throw $this->createNotFoundException('Invitation not found at backend');
+            }
+
+            $invite_link = $this->getParameter('hexaa_base_uri') . "invitations/".$invitation['token']."/accept/token";
 
             return $this->render(
                 'AppBundle:Organization:users.html.twig',

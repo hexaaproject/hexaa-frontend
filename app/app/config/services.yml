@@ -28,7 +28,9 @@ services:
     attribute_value_principal:
       class: AppBundle\Model\AttributeValuePrincipal
       arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
-
+    invitation:
+      class: AppBundle\Model\Invitation
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
 
     shibboleth.user.provider:
       class: AppBundle\Security\User\ShibbolethUser

@@ -4,61 +4,55 @@
 {{ include('::modal.html.twig',
     {
         id: 'invite_1',
-        title: 'Meghívó készítés',
+        title: 'Create invitation',
         button:
             {
-                text: 'Tovább',
+                text: 'Next',
                 class: 'btn-blue'
-            }
+            },
+        bodycontent: form_row(inviteForm.message)
+                    ~ form_row(inviteForm.landing_url)
+                    ~ form_row(inviteForm.limit)
+                    ~ form_row(inviteForm.role)
+                    ~ form_row(inviteForm.locale)
     })
 }}
-
-<div id="invite_1_bodycontent" style="display: none;">
-    {{ form_row(inviteForm.message) }}
-    {{ form_row(inviteForm.redirectUrl) }}
-    {{ form_row(inviteForm.limit) }}
-    {{ form_row(inviteForm.roles) }}
-    {{ form_row(inviteForm.language) }}
-</div>
 
 {{ include('::modal.html.twig',
     {
       id: 'invite_2',
-        title: 'Meghívó készítés',
+        title: 'Create invitation',
         button:
             {
-                text: 'Tovább',
-                class: 'btn-blue'
+                text: 'Next',
+                class: 'btn-blue',
+                id: 'submitform'
             },
-        rightbutton:
+        leftbutton:
             {
-                text: 'Vissza',
-            }
+                text: 'Back',
+            },
+        bodycontent: form_row(inviteForm.start_date)
+                    ~ form_row(inviteForm.end_date)
+                    ~ form_row(inviteForm.emails)
+                    ~ form_end(inviteForm)
     })
 }}
-<div id="invite_2_bodycontent" style="display: none;">
-    {{ form_row(inviteForm.begin) }}
-    {{ form_row(inviteForm.end) }}
-    {{ form_end(inviteForm) }}
-</div>
 
 <script>
     $(document).ready(function() {
         {% if not inviteForm.vars.valid %}
-            $('.modal#invite_1 .modal-body-content').html($('#invite_1_bodycontent').html());
             $('#invite_1').modal({ backdrop: 'static'});
         {% endif %}
 
         $(document).on('click', 'button#invite', function(event) {
             event.preventDefault();
-            $('.modal#invite_1 .modal-body-content').html($('#invite_1_bodycontent').html());
             $('#invite_1').modal({ backdrop: 'static'});            
         });
 
         $(document).on('click', '.modal#invite_1 button[type=submit]', function(event) {
             event.preventDefault();
             $('#invite_1').modal('hide');
-            $('.modal#invite_2 .modal-body-content').html($('#invite_2_bodycontent').html());
             $('#invite_2').modal({ backdrop: 'static'});            
         });
 
@@ -66,7 +60,6 @@
             event.preventDefault();
             $('form[name=organization_user_invitation]').submit();
         });
-
 
         $(document).on('click', '.modal#invite_2 button#rightbutton', function(event) {
             event.preventDefault();
