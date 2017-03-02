@@ -17,28 +17,28 @@ Feature: When I go to organizations
 		 And I follow "Users"
 		Then I wait for "Invite" to appear
 
-	@wip
 	Scenario: Invite a user to "Test role 1"
 	    When I press "Invite"
-		 And I wait for "Meghívó készítés" to appear
+		 And I wait for "Create invitation" to appear
 	    When I fill in the following:
-            | Üzenet           | Gyere hozzám tagnak |
-            | Limit            | 1                   |
-            | Átirányítási url | www.hup.hu          |
-        When I select "Test role 1" from "organization_user_invitation_roles"
-        When I select "Magyar" from "organization_user_invitation_language"
-         And I press "Tovább"
-		 And I wait for "Érvényesség kezdete" to appear
+            | Message     | Gyere hozzám tagnak |
+            | Limit       | 1                   |
+            | Landing url | http://www.hup.hu   |
+        When I select "Test role 1" from "organization_user_invitation_role"
+        When I select "Magyar" from "organization_user_invitation_locale"
+         And I press "Next"
+		 And I wait for "Start of accept period" to appear
 		
-		When I select "2017" from "organization_user_invitation_begin_year"
-		 And I select "Mar" from "organization_user_invitation_begin_month"
-		 And I select "1" from "organization_user_invitation_begin_day"
-		 And I select "2017" from "organization_user_invitation_end_year"
-		 And I select "Apr" from "organization_user_invitation_end_month"
-		 And I select "1" from "organization_user_invitation_end_day"
-  #        And I press "Tovább"
-		#  And I wait for "Befejezés" to appear
-		# Then I should see "Meghívód elkészült"
-	 #     And the "Link" field should contain "accept"
-		# When I press "Befejezés"
-		# Then I should not see "Meghívód elkészült"
+		When I select "2017" from "organization_user_invitation_start_date_year"
+		 And I select "Mar" from "organization_user_invitation_start_date_month"
+		 And I select "1" from "organization_user_invitation_start_date_day"
+		 And I select "2017" from "organization_user_invitation_end_date_year"
+		 And I select "Apr" from "organization_user_invitation_end_date_month"
+		 And I select "1" from "organization_user_invitation_end_date_day"
+         # TODO, 500-zal száll el a backend And I fill in "emails" with "alma@gmail.com, korte@gmail.com"
+         And I press "submitform"
+		 And I wait for "Your invitation is ready" to appear
+
+		When I press "Done"
+         And I wait for 1 seconds
+		Then I should not see "Your invitation is ready"

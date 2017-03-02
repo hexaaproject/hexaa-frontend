@@ -217,12 +217,24 @@ class OrganizationController extends Controller {
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $invite_link = "TODO invite object létrehozás és link kinyerése";
             $data = $form->getData();
-            $data['organization'] = $id;
-            $invite = $this->get('invitation')->sendInvitation(
-                    $data
-                );
+
+            $data_to_backend = $data;
+            $data_to_backend['organization'] = $id;
+            $data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
+            $invitationResource = $this->get('invitation');
+            $invite = $invitationResource->sendInvitation($data_to_backend);
+
+            $headers = $invite->getHeaders();
+
+            try {
+                $invitationId = basename(parse_url($headers['Location'][0], PHP_URL_PATH));
+                $invitation = $invitationResource->get($invitationId);
+            } catch (\Exception $e) {
+                throw $this->createNotFoundException('Invitation not found at backend');
+            }
+
+            $invite_link = $this->getParameter('hexaa_base_uri') . "invitations/".$invitation['token']."/accept/token";
 
             return $this->render(
                 'AppBundle:Organization:users.html.twig',
