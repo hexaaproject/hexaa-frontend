@@ -18,6 +18,19 @@
             $("#service_properties_serviceURL").removeAttr('disabled');
             $("#service_properties_serviceSAML").removeAttr('disabled');
         }
+        function editowner() {
+            $(".sendownerbutton")[0].style.display = "inline";
+            $("#service_owner_serviceOwnerName").removeAttr('disabled');
+            $("#service_owner_serviceOwnerDescription").removeAttr('disabled');
+            $("#service_owner_serviceOwnerShortName").removeAttr('disabled');
+            $("#service_owner_serviceOwnerURL").removeAttr('disabled');
+        }
+        
+         function editprivacy() {
+            $(".sendprivacybutton")[0].style.display = "inline";
+            $("#service_privacy_servicePrivacyURL").removeAttr('disabled');
+            $("#service_privacy_servicePrivacyDescription").removeAttr('disabled');
+        }
     </script>
 
     {{ form_start(propertiesform) }}
@@ -25,6 +38,7 @@
     <div class="propertiespanel">
         <div class="header">
             Properties
+            {#{{ form_row(propertiesform.submitButton) }}#}
             <button type="submit" class="sendbutton pull-right" style="display:none"><i class="material-icons">done</i></button>
             <button type="button" class="editbutton" style="display: inline" onclick="edit()"><i class="material-icons">create</i></button>
 
@@ -43,6 +57,48 @@
         </div>
     </div>
     {{ form_end(propertiesform) }}
+
+    <br>
+    {{ form_start(ownerform) }}
+    <div class="propertiespanel">
+        <div class="header">
+            Owner details
+            <button type="submit" class="sendownerbutton pull-right" style="display:none"><i class="material-icons">done</i></button>
+            <button type="button" class="editbutton" style="display: inline" onclick="editowner()"><i class="material-icons">create</i></button>
+        </div>
+        <div>
+            {{ form_row(ownerform.serviceOwnerName) }}
+        </div>
+        <div>
+            {{ form_row(ownerform.serviceOwnerShortName) }}
+        </div>
+        <div>
+            {{ form_row(ownerform.serviceOwnerDescription) }}
+        </div>
+        <div>
+            {{ form_row(ownerform.serviceOwnerURL) }}
+        </div>
+    </div>
+    {{ form_end(ownerform) }}
+
+    <br>
+
+    {{ form_start(privacyform) }}
+    <div class="propertiespanel">
+        <div class="header">
+            Privacy Information
+            <button type="submit" class="sendprivacybutton pull-right" style="display:none"><i class="material-icons">done</i></button>
+            <button type="button" class="editbutton" style="display: inline" onclick="editprivacy()"><i class="material-icons">create</i></button>
+        </div>
+        <div>
+            {{ form_row(privacyform.servicePrivacyURL) }}
+        </div>
+        <div>
+            {{ form_row(privacyform.servicePrivacyDescription) }}
+        </div>
+    </div>
+    {{ form_end(privacyform) }}
+
     {# <form action="{{ path('app_service_properties', {id: service.id}) }}" method="POST" role="form">
          <div class="row">
              <div class="col-md-10 col-md-offset-2">

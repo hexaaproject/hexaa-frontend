@@ -7,63 +7,55 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class ServicePropertiesType extends AbstractType
+class ServiceOwnerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
         $builder
             ->add(
-                'serviceName',
+                'serviceOwnerName',
                 TextType::class,
                 array(
                     "label" => "Name",
                     "label_attr" => array('class' => 'formlabel'),
-                    'data' => $datas['data']['properties']['serviceName'],
+                    'data' => $datas['data']['properties']['serviceOwnerName'],
                     'attr'  => array('class' => 'pull-right'),
-                    'required' => true
+                    'required' => false
                     )
                 )
             ->add(
-                'serviceDescription',
+                'serviceOwnerShortName',
+                TextType::class,
+                array(
+                    "label" => "Short name",
+                    "label_attr" => array('class' => 'formlabel'),
+                    'data' => $datas['data']['properties']['serviceOwnerShortName'],
+                    'attr'  => array('class' => 'pull-right'),
+                    'required' => false
+                    )
+                )
+            ->add(
+                'serviceOwnerDescription',
                 TextareaType::class,
                 array(
                     "label" => "Description",
                     "label_attr" => array('class' => 'formlabel'),
-                    'data' => $datas['data']['properties']['serviceDescription'],
+                    'data' => $datas['data']['properties']['serviceOwnerDescription'],
                     'attr'  => array('class' => 'pull-right', 'cols'=>'30', 'rows'=>'1'),
                     'required' => false
                     )
                 )
             ->add(
-                'serviceURL',
+                'serviceOwnerURL',
                 TextType::class,
                 array(
                     "label" => "Home page",
                     "label_attr" => array('class' => 'formlabel'),
-                    'data' => $datas['data']['properties']['serviceURL'],
+                    'data' => $datas['data']['properties']['serviceOwnerURL'],
                     'attr'  => array('class' => 'pull-right'),
                     'required' => false
                     )
                 )
-            ->add(
-                'serviceSAML',
-                TextType::class,
-                array(
-                    "label" => "SAML SP Entity ID",
-                    "label_attr" => array('class' => 'formlabel'),
-                    'data' => $datas['data']['properties']['serviceSAML'],
-                    'attr'  => array('class' => 'pull-right'),
-                    'required' => true
-                    )
-                )
-            /*->add(
-               'submitButton',
-               ButtonType::class,
-                array(
-                    "label" => "Click",
-                    'attr'  => array('class' => 'sendbutton pull-right')
-                    )                   
-               )*/
         ;
     }
 

@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ServicePropertiesType;
+use AppBundle\Form\ServiceOwnerType;
+use AppBundle\Form\ServicePrivacyType;
 
 /**
  * @Route("/service")
@@ -130,38 +132,49 @@ class ServiceController extends Controller {
         $propertiesDatas['serviceDescription'] = $service['description'];
         $propertiesDatas['serviceURL'] = $service['url'];
         $propertiesDatas['serviceSAML'] = $service['entityid'];
+        $propertiesDatas['serviceOwnerName'] = $service['org_name'];
+        $propertiesDatas['serviceOwnerDescription'] = $service['org_description'];
+        $propertiesDatas['serviceOwnerURL'] = $service['org_url'];
+        $propertiesDatas['serviceOwnerShortName'] = $service['org_short_name'];
+        $propertiesDatas['servicePrivacyURL'] = $service['priv_url'];
+        $propertiesDatas['servicePrivacyDescription'] = $service['priv_description'];
 
-        $form = $this->createForm(ServicePropertiesType::class, array('properties' => $propertiesDatas));
+        $formproperties = $this->createForm(ServicePropertiesType::class, array('properties' => $propertiesDatas));
 
-        $form->handleRequest($request);
+        $formproperties->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formproperties->isSubmitted() && $formproperties->isValid()) {
 
             $data = $request->request->all();
             $modified = array('name' => $data['service_properties']['serviceName'], 'entityid' => $data['service_properties']['serviceSAML'], 'description' => $data['service_properties']['serviceDescription'], 'url' => $data['service_properties']['serviceURL']);
             $this->get('service')->patch($id, $modified);
-            //header("Refresh:0");
+            return $this->redirect($request->getUri());
+        }
 
-            $service = $this->getService($id);
-            $propertiesDatas['serviceName'] = $service['name'];
-            $propertiesDatas['serviceDescription'] = $service['description'];
-            $propertiesDatas['serviceURL'] = $service['url'];
-            $propertiesDatas['serviceSAML'] = $service['entityid'];
-            $form = $this->createForm(ServicePropertiesType::class, array('properties' => $propertiesDatas));
+        $formowner = $this->createForm(ServiceOwnerType::class, array('properties' => $propertiesDatas));
 
-            return $this->render(
-                            'AppBundle:Service:properties.html.twig', array(
-                        'organizations' => $this->getOrganizations(),
-                        'services' => $this->getServices(),
-                        'service' => $this->getService($id),
-                        'main' => $this->getService($id),
-                        'propertiesbox' => $this->getPropertiesBox(),
-                        'privacybox' => $this->getPrivacyBox(),
-                        'ownerbox' => $this->getOwnerBox(),
-                        'servsubmenubox' => $this->getservsubmenupoints(),
-                        'propertiesform' => $form->createView()
-                            )
-            );
+        $formowner->handleRequest($request);
+
+        if ($formowner->isSubmitted() && $formowner->isValid()) {
+
+            $data = $request->request->all();
+            dump($data);
+            $modified = array('org_name' => $data['service_owner']['serviceOwnerName'], 'org_short_name' => $data['service_owner']['serviceOwnerShortName'], 'org_description' => $data['service_owner']['serviceOwnerDescription'], 'org_url' => $data['service_owner']['serviceOwnerURL']);
+            $this->get('service')->patch($id, $modified);
+            return $this->redirect($request->getUri());
+        }
+
+        $formprivacy = $this->createForm(ServicePrivacyType::class, array('properties' => $propertiesDatas));
+
+        $formprivacy->handleRequest($request);
+
+        if ($formprivacy->isSubmitted() && $formprivacy->isValid()) {
+
+            $data = $request->request->all();
+            dump($data);
+            $modified = array('priv_url' => $data['service_privacy']['servicePrivacyURL'], 'priv_description' => $data['service_privacy']['servicePrivacyDescription']);
+            $this->get('service')->patch($id, $modified);
+            return $this->redirect($request->getUri());
         }
 
         return $this->render(
@@ -174,7 +187,9 @@ class ServiceController extends Controller {
                     'privacybox' => $this->getPrivacyBox(),
                     'ownerbox' => $this->getOwnerBox(),
                     'servsubmenubox' => $this->getservsubmenupoints(),
-                    'propertiesform' => $form->createView()
+                    'propertiesform' => $formproperties->createView(),
+                    'ownerform' => $formowner->createView(),
+                    'privacyform' => $formprivacy->createView()
                         )
         );
     }

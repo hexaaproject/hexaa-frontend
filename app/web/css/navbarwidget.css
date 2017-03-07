@@ -1,8 +1,8 @@
 
 .mainname{
-    font-size: large;
+    font-size: 32px;
+    font-family: Roboto Condensed;
     font-weight: bold;
-    font-family: Verdana;
 }
 
 .mainnamelink{
@@ -23,13 +23,15 @@
 }
 
 #navbarmenupoints{
-    margin-left: 10vh;
+    margin-left: 15vh;
+    font-family: Open Sans;
 }
 
 .navbarlink{
     color: #ffffff;
     text-decoration: none;
     margin-left: 1.3vh;
+    margin-right: 10px;
 }
 
 .navbarlinkactive{
@@ -39,15 +41,13 @@
 
 .desktoplinkdivstyle{
     font-size: large;
-    font-weight: bold;
-    font-family: serif;
 }
 
 
 .desktopcontainer{
     color: #ffffff;
-    padding-top: 1vh;
-    padding-bottom: 1vh;
+    padding-top: 1.3vh;
+    padding-bottom: 1.3vh;
     padding-left: 1%;
     padding-right: 1%;
     background-color: #61AFC5;

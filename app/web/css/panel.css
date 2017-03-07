@@ -37,7 +37,7 @@
     color: #ec666a;
 }
 
-.sendbutton{
+.sendbutton, .sendownerbutton, .sendprivacybutton{
     border: none;
     background-color: white;
     color: #61AFC5;
