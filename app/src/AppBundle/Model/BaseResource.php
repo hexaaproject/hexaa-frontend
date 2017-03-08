@@ -113,7 +113,7 @@ abstract class BaseResource
 
     protected function patchCall(string $path, array $data): ResponseInterface
     {
-        $response = $this->client->put(
+        $response = $this->client->patch(
           $path,
           [
             'json'    => $data,

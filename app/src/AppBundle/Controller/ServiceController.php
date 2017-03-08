@@ -221,17 +221,17 @@ class ServiceController extends Controller {
     private function getPrivacyBox() {
         $propertiesbox = array(
             "URL" => "priv_url",
-            "Privacy description" => "priv_description",
+            "Description" => "priv_description",
         );
         return $propertiesbox;
     }
 
     private function getOwnerBox() {
         $propertiesbox = array(
-            "Organization name" => "org_name",
-            "Organization short name" => "org_short_name",
-            "Organization description" => "org_description",
-            "Organization home page" => "org_url"
+            "Name" => "org_name",
+            "Short name" => "org_short_name",
+            "Description" => "org_description",
+            "Home page" => "org_url"
         );
         return $propertiesbox;
     }

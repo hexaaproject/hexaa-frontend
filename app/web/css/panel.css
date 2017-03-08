@@ -1,8 +1,16 @@
-.propertiespanel{
-    border: 2px solid #61AFC5;
-    width:100%;
+#propertiespanelnoedit{
+    width: 930px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    border: 2px solid #61AFC5;
+    margin-left: 15px;
+}
+
+#propertiespanel{
+    width: 930px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-left: 15px;
 }
 
 .propname {
@@ -15,9 +23,23 @@
     text-align: left;
 }
 
+.areaname {
+    display: inline;
+    width: 243px;
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+    float:left;
+    text-align: left;
+}
+
 #propdescription {
     text-align: left;
     padding-bottom: 0.5em;
+}
+
+#areadescription {
+    text-align: left;
 }
 
 .header {
@@ -25,7 +47,7 @@
     color: #61AFC5;
     font-size: x-large;
     font-weight: bold;
-    padding-left: 1em;
+    padding-left: 20px;
     padding-bottom: 0.5em;
 }
 
@@ -59,4 +81,25 @@
     margin-bottom: 5px;
     font-weight: bold;
     padding-left:20px;
+}
+
+#row{
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+form[name="service_properties"] { 
+    border:2px solid #61AFC5;
+}
+
+form[name="service_owner"] { 
+    border:2px solid #61AFC5;
+    width: 100%;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+form[name="service_privacy"] { 
+      border:2px solid #61AFC5;
+     
 }
