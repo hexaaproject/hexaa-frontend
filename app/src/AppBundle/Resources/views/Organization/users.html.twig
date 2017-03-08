@@ -244,14 +244,7 @@
             {% endif %}
 
             {% if managers is defined and managers|length %}
-                var managersTableActionButtons = $('.managers_table_actionButtons');
-                var managersRemove = $('#managersRemove');
-                var managersMessage = $('#managersMessage');
-                var managersRevoke = $('#managersRevoke');
-                var managersChangeRole = $('#managersChangeRole');
-
-
-                managersTableActionButtons.on('click', '#remove', function(event) {
+                $('.managers_table_actionButtons').on('click', '#remove', function(event) {
                     event.preventDefault();
                     var content = managersRemove.find('.modal-body-content');
                     content.empty();
