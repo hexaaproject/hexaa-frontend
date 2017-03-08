@@ -18,7 +18,6 @@
      %}
     {{ include('::navbar.html.twig', { organization: organization, names: names}) }}
     <div class="container">
-    {% block container %}{% endblock %}
-</div>
-
+        {% block container %}{% endblock %}
+    </div>
 {% endblock %}

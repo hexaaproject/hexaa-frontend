@@ -2,6 +2,7 @@
 namespace AppBundle\Model;
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class Organization extends BaseResource
@@ -35,6 +36,27 @@ class Organization extends BaseResource
     {
         return $this->getCollection($this->pathName.'/'.$id.'/members', $verbose, $offset, $pageSize);
     }
+
+    /**
+     * DELETE members of Organization
+     *
+     * @param string $id       ID of organization
+     * @param string $pid      Principal ID
+     * @return ResponseInterface
+     */
+    public function deleteMember(string $id, string $pid)
+    {
+        $path = $this->pathName.'/'.$id.'/members/'.$pid;
+
+        $response = $this->client->delete(
+            $path,
+            [
+                'headers' => $this->getHeaders(),
+            ]
+        );
+        return $response;
+    }
+
 
     /**
      * GET roles of Organization

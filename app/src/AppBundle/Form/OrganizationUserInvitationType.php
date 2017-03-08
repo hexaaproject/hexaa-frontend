@@ -76,16 +76,6 @@ class OrganizationUserInvitationType extends AbstractType
                     'input' => 'string'
                     )
                 )
-            ->add(
-                'emails',
-                TextareaType::class,
-                array(
-                    "label" => "Send in emails",
-                    "attr" => array(
-                        "placeholder" => "E-mail addresses"
-                    )
-                )
-            )
         ;
     }
 

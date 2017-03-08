@@ -18,4 +18,14 @@ class Invitation extends BaseResource
         return $this->post($data);
     }
 
+    /**
+     * Accept the invitation of the token
+     * @param string $token
+     * @return array
+     */
+    public function accept(string $token)
+    {
+        $id = $token . "/accept/token";
+        return $this->get($id);
+    }
 }

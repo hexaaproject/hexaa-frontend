@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/organization")
@@ -221,7 +222,6 @@ class OrganizationController extends Controller {
 
             $data_to_backend = $data;
             $data_to_backend['organization'] = $id;
-            $data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
             $invitationResource = $this->get('invitation');
             $invite = $invitationResource->sendInvitation($data_to_backend);
 
@@ -234,7 +234,9 @@ class OrganizationController extends Controller {
                 throw $this->createNotFoundException('Invitation not found at backend');
             }
 
-            $invite_link = $this->getParameter('hexaa_base_uri') . "invitations/".$invitation['token']."/accept/token";
+            $invite_link = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token']), UrlGeneratorInterface::ABSOLUTE_URL);
+            // emails
+            //$data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
 
             return $this->render(
                 'AppBundle:Organization:users.html.twig',
@@ -268,19 +270,57 @@ class OrganizationController extends Controller {
     }
 
     /**
+     * @Route("/resolveInvitationToken/{token}")
+     * @Template()
+     */
+    public function resolveInvitationTokenAction($token)
+    {
+        $invitationResource = $this->get('invitation');
+        $invitation = $invitationResource->accept($token);
+        if (!$invitation) {
+            throw $this->createNotFoundException("Invitation not found or expired.");
+        }
+        dump($invitation);
+        exit;
+
+        return $this->render(
+            'AppBundle:Organization:resolveInvitationToken.html.twig',
+            array(
+                "managers" => $managers,
+                "members" => $members,
+                "organization" => $organization,
+                "organizations" => $this->get('organization')->cget(),
+                "services" => $this->get('service')->cget(),
+                "managers_buttons" => $managers_buttons,
+                "members_buttons" => $members_buttons,
+                "inviteForm" => $form->createView()
+            )
+        );
+    }
+
+    /**
      * @Route("/removeusers/{id}")
      * @Template()
      */
     public function removeusersAction($id, Request $request)
     {
-        try {
-            # do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($e);
-        }
-        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+        $pids = $request->get('userId');
+            $organizationResource = $this->get('organization');
+            $errors = array();
+            foreach ($pids as $pid) {
+                try {
+                    $organizationResource->deleteMember($id, $pid);
+                } catch (\Exception $e) {
+                    $errors[] = $e;
+                }
+            }
+            if (count($errors)) {
+                $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+                $this->get('logger')->error($errors);
+            } else {
+                $this->get('session')->getFlashBag()->add('success', 'Siker');
+            }
+            return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
     }
 
     /**
@@ -388,7 +428,6 @@ class OrganizationController extends Controller {
             )
         );
     }
-
 
     private function getOrganization($id)
     {
