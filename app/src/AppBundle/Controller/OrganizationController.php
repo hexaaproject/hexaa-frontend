@@ -2,14 +2,17 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/organization")
@@ -196,28 +199,13 @@ class OrganizationController extends Controller {
                 ),
             );
 
-        // Invite form készítés
-        $roles = array();
-        foreach ($this->getRoles($organization) as $role) {
-            $roles[$role['name']] = $role['id'];
-        }
 
-        $form = $this->createForm(OrganizationUserInvitationType::class);
-        $form->add(
-                'role',
-                ChoiceType::class,
-                array(
-                    "label" => false,
-                    'choices' => $roles,
-                    'required' => false,
-                    'placeholder' => 'To what role?'
-                    )
-                );
+        $form = $this->createCreateInvitationForm($organization);
+        $sendInEmailForm = $this->createForm(OrganizationUserInvitationSendEmailType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
             $data = $form->getData();
 
             $data_to_backend = $data;
@@ -238,6 +226,7 @@ class OrganizationController extends Controller {
             // emails
             //$data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
 
+
             return $this->render(
                 'AppBundle:Organization:users.html.twig',
                 array(
@@ -249,9 +238,10 @@ class OrganizationController extends Controller {
                     "managers_buttons" => $managers_buttons,
                     "members_buttons" => $members_buttons,
                     "invite_link" => $invite_link,
-                    "inviteForm" => $form->createView()
+                    "inviteForm" => $form->createView(),
+                    "sendInEmailForm" => $sendInEmailForm->createView()
                 )
-            );            
+            );
         }
 
         return $this->render(
@@ -264,9 +254,111 @@ class OrganizationController extends Controller {
                 "services" => $this->get('service')->cget(),
                 "managers_buttons" => $managers_buttons,
                 "members_buttons" => $members_buttons,
-                "inviteForm" => $form->createView()
+                "inviteForm" => $form->createView(),
+                "sendInEmailForm" => $sendInEmailForm->createView()
             )
         );
+    }
+    /**
+     * @Route("/createInvitation/{id}")
+     * @Method("POST")
+     * @Template()
+     */
+    public function createInvitationAction(Request $request, $id)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(array('message' => 'You can access this only using Ajax!'), 400);
+        }
+        $organization = $this->getOrganization($id);
+
+        // Invite form készítés
+        $roles = array();
+        foreach ($this->getRoles($organization) as $role) {
+            $roles[$role['name']] = $role['id'];
+        }
+
+        $form = $this->createForm(OrganizationUserInvitationType::class);
+        $form->add(
+            'role',
+            ChoiceType::class,
+            array(
+                "label" => false,
+                'choices' => $roles,
+                'required' => false,
+                'placeholder' => 'To what role?'
+            )
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $data_to_backend = $data;
+            $data_to_backend['organization'] = $id;
+            $invitationResource = $this->get('invitation');
+            $invite = $invitationResource->sendInvitation($data_to_backend);
+
+            $headers = $invite->getHeaders();
+
+            try {
+                $invitationId = basename(parse_url($headers['Location'][0], PHP_URL_PATH));
+                $invitation = $invitationResource->get($invitationId);
+            } catch (\Exception $e) {
+                throw $this->createNotFoundException('Invitation not found at backend');
+            }
+
+            $invite_link = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token']), UrlGeneratorInterface::ABSOLUTE_URL);
+            // emails
+            //$data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
+
+            return new JsonResponse(array('link' => $invite_link), 200);
+        }
+
+        return new JsonResponse(
+            array(
+                'message' => 'Error',
+                'form' => $this->renderView('AcsdfdfdfTODOmeBundle:Demo:form.html.twig',
+                    array(
+                        'form' => $form->createView(),
+                    )
+                )),
+            400);
+    }
+
+
+    private function createCreateInvitationForm($organization)
+    {
+        // Invite form készítés
+        $roles = array();
+        foreach ($this->getRoles($organization) as $role) {
+            $roles[$role['name']] = $role['id'];
+        }
+
+        $form = $this->createForm(
+            OrganizationUserInvitationType::class,
+            array(
+                "start_date" => date("Y-m-d"),
+                "end_date" => date("Y-m-d", strtotime("+1 week")),
+                "landing_url" => $this->generateUrl('app_organization_show', array("id" => $organization['id']), UrlGeneratorInterface::ABSOLUTE_URL)
+            ),
+            array(
+                "action" => $this->generateUrl("app_organization_createinvitation", array("id" => $organization['id'])),
+                "method" => "POST"
+            )
+        );
+
+        $form->add(
+            'role',
+            ChoiceType::class,
+            array(
+                "label" => false,
+                'choices' => $roles,
+                'required' => false,
+                'placeholder' => 'To what role?'
+            )
+        );
+        return $form;
     }
 
     /**
@@ -277,25 +369,9 @@ class OrganizationController extends Controller {
     {
         $invitationResource = $this->get('invitation');
         $invitation = $invitationResource->accept($token);
-        if (!$invitation) {
-            throw $this->createNotFoundException("Invitation not found or expired.");
-        }
-        dump($invitation);
-        exit;
+        $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
 
-        return $this->render(
-            'AppBundle:Organization:resolveInvitationToken.html.twig',
-            array(
-                "managers" => $managers,
-                "members" => $members,
-                "organization" => $organization,
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
-                "managers_buttons" => $managers_buttons,
-                "members_buttons" => $members_buttons,
-                "inviteForm" => $form->createView()
-            )
-        );
+        return $this->redirect('app_organization_show', array("id" => $organizationId));
     }
 
     /**
@@ -462,7 +538,7 @@ class OrganizationController extends Controller {
             $roles_accordion[$role['id']]['title'] = $role['name'];
             $members = array();
             $permissions = array();
-            
+
             foreach ($role['principals'] as $principal) {
                 $members[] = $principal['principal']['display_name'];
             }
@@ -503,7 +579,7 @@ class OrganizationController extends Controller {
                 $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['variant'] = 'light';
                 $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Details", "values" => array($entitlementPack['description']));
                 $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
-                
+
                 $entitlementnames = array();
                 foreach ($entitlementPack['entitlement_ids'] as $entitlement_id) {
                     $entitlement = $this->get('entitlement')->get($entitlement_id);
