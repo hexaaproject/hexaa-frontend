@@ -67,7 +67,7 @@ class ServiceController extends Controller {
      */
     public function addStepTwoAction(Request $request) {
         $verbose = "expanded";
-        $attributespecs = $this->get('service')->getAllAttributeSpecs($verbose);
+        $attributespecs = $this->get('attribute_spec')->cget($verbose);
         return $this->render('AppBundle:Service:addStepTwo.html.twig', array(
                     'attributes' => $attributespecs,
         ));
@@ -79,7 +79,7 @@ class ServiceController extends Controller {
      */
     public function addStepThreeAction(Request $request) {
         $verbose = "expanded";
-        $permissionsset = $this->get('service')->entitlementpackspublic($verbose);
+        $permissionsset = $this->get('entitlement_pack')->getPublic($verbose)['items'];
         return $this->render('AppBundle:Service:addStepThree.html.twig', array(
                         //'permissions_accordion_set' => $this->permissionsetToAccordion($permissionsset)
         ));

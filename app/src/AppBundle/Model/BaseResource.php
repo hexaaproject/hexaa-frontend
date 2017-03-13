@@ -129,10 +129,6 @@ abstract class BaseResource
           ]
         );
 
-        if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 204) {
-            throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
-        }
-
         return $response;
     }
 
@@ -146,10 +142,6 @@ abstract class BaseResource
           ]
         );
 
-        if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 204) {
-            throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
-        }
-
         return $response;
     }
 
@@ -162,34 +154,7 @@ abstract class BaseResource
                 'headers' => $this->getHeaders(),
             ]
         );
-        if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 204) {
-            throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
-        }
         return $response;
-    }
-    // FIXME átrakni az entitlementpacksba
-    public function entitlementpackspublic() {
-        $response = $this->client->get(
-                'entitlementpacks' . '/' . 'public', [
-            'headers' => $this->getHeaders(),
-            'query' => [
-            ],
-                ]
-        );
-
-        return json_decode($response->getBody(), true);
-    }
-    // FIXME átrakni a attributespecbe
-    public function getAllAttributeSpecs(string $verbose = "normal") {
-        $response = $this->client->get(
-                'attributespecs', [
-                    'headers' => $this->getHeaders(),
-                    'query' => [
-                        'verbose' => $verbose
-                        ],
-                ]
-        );
-        return json_decode($response->getBody(), true);
     }
 
     public function getEntityIds() {

@@ -22,4 +22,9 @@ class Role extends BaseResource
     {
         return $this->getCollection($this->pathName.'/'.$id.'/entitlements', $verbose, $offset, $pageSize);
     }
+
+    public function putEntitlements(string $id, string $entitlementId)
+    {
+        return $this->putCall($this->pathName.'/'.$id.'/entitlements/'.$entitlementId, []);
+    }
 }

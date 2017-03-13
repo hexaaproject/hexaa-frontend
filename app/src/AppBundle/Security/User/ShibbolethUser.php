@@ -170,7 +170,6 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
         date_timezone_set($time, new \DateTimeZone('UTC'));
         $stamp = $time->format('Y-m-d H:i');
         $apiKey = hash('sha256', $this->hexaaScopedKey . $stamp);
-        try {
             $response = $client->post('tokens', [
                 'json' => [
                     'fedid' => $this->getEppn(),
@@ -181,28 +180,5 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
             ]);
             $this->session->set('token', json_decode($response->getBody(), true)['token']);
             $this->session->set('tokenAcquiredAt', $time);
-        } catch (ClientException $e) {
-            $this->session->unset('token');
-            $this->session->unset('tokenAcquiredAt'); 
-            // TODO: pretty error handling
-            echo('<br>___.--===(ClientException)===--.___<br>');
-            echo('Message: ' . $e->getMessage() . '<br>');
-            echo('Call: ' . $e->getRequest()->getUri() . '<br>');
-            echo('Request method: ' . $e->getRequest()->getMethod() . ', body: <br>');
-            echo($e->getRequest()->getBody() . '<br>');
-            echo('Response code: ' . $e->getResponse()->getStatusCode() . ', body: <br>');
-            echo($e->getResponse()->getBody() . '<br>');
-        } catch (ServerException $e) {
-            $this->session->unset('token');
-            $this->session->unset('tokenAcquiredAt'); 
-            // TODO: pretty error handling
-            echo('<br>___.--===(ServerException)===--.___<br>');
-            echo('Message: ' . $e->getMessage() . '<br>');
-            echo('Call: ' . $e->getRequest()->getUri() . '<br>');
-            echo('Request method: ' . $e->getRequest()->getMethod() . ', body: <br>');
-            echo($e->getRequest()->getBody() . '<br>');
-            echo('Response code: ' . $e->getResponse()->getStatusCode() . ', body: <br>');
-            echo($e->getResponse()->getBody() . '<br>');
-        }
     }
 }

@@ -19,6 +19,9 @@ services:
     entitlement:
       class: AppBundle\Model\Entitlement
       arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+    entitlement_pack:
+      class: AppBundle\Model\EntitlementPack
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
     attribute_spec:
       class: AppBundle\Model\AttributeSpec
       arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
