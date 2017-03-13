@@ -17,46 +17,12 @@ class OrganizationUserInvitationType extends AbstractType
     {
         $builder
             ->add(
-                'message',
-                TextareaType::class,
-                array(
-                    "label" => false,
-                    "attr" => array(
-                        "placeholder" => "Message"
-                        ),
-                    "constraints" => new Constraints\NotBlank()
-                    )
-                )
-            ->add(
-                'landing_url',
-                TextType::class,
-                array(
-                    "label" => false,
-                    "attr" => array(
-                        "placeholder" => "Landing url"
-                        ),
-                    "constraints" => new Constraints\Url()
-                    )
-                )
-            ->add(
                 'limit',
                 IntegerType::class,
                 array(
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Limit"
-                        )
-                    )
-                )
-
-            ->add(
-                'locale',
-                ChoiceType::class,
-                array(
-                    "label" => false,
-                    'choices' => array(
-                        'English' => "en",
-                        'Magyar' => "hu"
                         )
                     )
                 )

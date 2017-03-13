@@ -173,6 +173,7 @@
 {% block javascripts %}
     {% javascripts
         '@datatables_js'
+        'js/clipboard.js'
     %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -244,7 +245,13 @@
             {% endif %}
 
             {% if managers is defined and managers|length %}
-                $('.managers_table_actionButtons').on('click', '#remove', function(event) {
+                var managersTableActionButtons = $('.managers_table_actionButtons');
+                var managersRemove = $('#managersRemove');
+                var managersMessage = $('#managersMessage');
+                var managersRevoke = $('#managersRevoke');
+                var managersChangeRole = $('#managersChangeRole');
+
+                managersTableActionButtons.on('click', '#remove', function(event) {
                     event.preventDefault();
                     var content = managersRemove.find('.modal-body-content');
                     content.empty();

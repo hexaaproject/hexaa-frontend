@@ -1,69 +1,108 @@
-
-{{ form_start(inviteForm) }}
-
 {{ include('::modal.html.twig',
     {
         id: 'invite_1',
         title: 'Create invitation',
         button:
             {
-                text: 'Next',
+                text: 'Create',
                 class: 'btn-blue'
             },
-        bodycontent: form_row(inviteForm.message)
-                    ~ form_row(inviteForm.landing_url)
-                    ~ form_row(inviteForm.limit)
+        bodycontent: form_start(inviteForm)
                     ~ form_row(inviteForm.role)
-                    ~ form_row(inviteForm.locale)
-    })
-}}
-
-{{ include('::modal.html.twig',
-    {
-      id: 'invite_2',
-        title: 'Create invitation',
-        button:
-            {
-                text: 'Next',
-                class: 'btn-blue',
-                id: 'submitform'
-            },
-        leftbutton:
-            {
-                text: 'Back',
-            },
-        bodycontent: form_row(inviteForm.start_date)
+                    ~ form_row(inviteForm.limit)
+                    ~ form_row(inviteForm.start_date)
                     ~ form_row(inviteForm.end_date)
                     ~ form_end(inviteForm)
     })
 }}
 
+{{ include('::modal.html.twig',
+    {
+            id: 'invite_2',
+            title: 'Your invitation is done',
+            button:
+            {
+                text: 'Done NOT WORKING YET TODO',
+                class: 'btn-red',
+                id: 'sendinvitation'
+            },
+            leftbutton:
+            {
+                text: 'Close',
+                dismiss: true
+            },
+            bodycontent: form_start(sendInEmailForm)
+                ~ form_row(sendInEmailForm.link)
+                ~ '<div class="col-md-5"><button class="btnhexaa btn-blue btn-block copy" title="Copied!" type="button" data-clipboard-target="#organization_user_invitation_send_email_link" data-trigger="click">Copy</button></div>'
+                ~ form_row(sendInEmailForm.emails)
+                ~ form_row(sendInEmailForm.message)
+                ~ form_row(sendInEmailForm.landing_url)
+                ~ form_end(inviteForm)
+    })
+}}
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+
+        var copy = new Clipboard('.copy');
+        $('.copy').tooltip();
+
+        function submitFormByAjax(form, callback) {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize()
+            })
+            .done(function (data) {
+                console.log(data);
+                callback(data);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                console.log('fail');
+                if (typeof jqXHR.responseJSON !== 'undefined') {
+                    if (jqXHR.responseJSON.hasOwnProperty('form')) {
+                        $('#form_body').html(jqXHR.responseJSON.form);
+                    }
+
+                    $('.form_error').html(jqXHR.responseJSON.message);
+
+                } else {
+                    console.log(errorThrown);
+                }
+
+            });
+        }
+
+        function invitationDone(data) {
+            $('#invite_1').modal('hide');
+            $('#invite_2').modal({backdrop: 'static'});
+            $('#organization_user_invitation_send_email_link').val(data.link);
+        }
+
         {% if not inviteForm.vars.valid %}
-            $('#invite_1').modal({ backdrop: 'static'});
+            $('#invite_1').modal({backdrop: 'static'});
         {% endif %}
 
-        $(document).on('click', 'button#invite', function(event) {
+        $(document).on('click', 'button#invite', function (event) {
             event.preventDefault();
-            $('#invite_1').modal({ backdrop: 'static'});            
+            $('#invite_1').modal({backdrop: 'static'});
         });
 
-        $(document).on('click', '.modal#invite_1 button[type=submit]', function(event) {
+        $(document).on('click', '.modal#invite_1 button[type=submit]', function (event) {
             event.preventDefault();
-            $('#invite_1').modal('hide');
-            $('#invite_2').modal({ backdrop: 'static'});            
+            $(this).closest('.modal-footer').append('<i class="mdi mdi-sync"></i>');
+            submitFormByAjax($('form[name=organization_user_invitation]'), invitationDone);
         });
 
-        $(document).on('click', '.modal#invite_2 button[type=submit]', function(event) {
+        $(document).on('click', '.modal#invite_2 button[type=submit]', function (event) {
             event.preventDefault();
-            $('form[name=organization_user_invitation]').submit();
         });
 
-        $(document).on('click', '.modal#invite_2 button#rightbutton', function(event) {
+        $(document).on('click', '.modal#invite_2 button#rightbutton', function (event) {
             event.preventDefault();
             $('#invite_2').modal('hide');
             $('#invite_1').modal('show');
         });
+
     });
+
 </script>
