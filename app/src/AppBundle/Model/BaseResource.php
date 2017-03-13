@@ -24,9 +24,9 @@ abstract class BaseResource
     /**
      * GET collection of resource
      *
-     * @param string $verbose  One of minimal, normal or expanded
-     * @param int    $offset   paging: item to start from
-     * @param int    $pageSize paging: number of items to return
+     * @param string $verbose One of minimal, normal or expanded
+     * @param int $offset paging: item to start from
+     * @param int $pageSize paging: number of items to return
      * @return array
      */
     public function cget(string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
@@ -37,44 +37,44 @@ abstract class BaseResource
     /**
      * GET a single resource in array format
      *
-     * @param string $id      ID of resource to GET
+     * @param string $id ID of resource to GET
      * @param string $verbose One of minimal, normal or expanded
      * @return array
      */
     public function get(string $id, string $verbose = "normal"): array
     {
-        return $this->getSingular($this->pathName.'/'.$id, $verbose);
+        return $this->getSingular($this->pathName . '/' . $id, $verbose);
     }
 
     /**
      * PUT resource
      * Note: any fields of the resource left out of the call will be set to null.
      *
-     * @param string $id   ID of resource to PUT
-     * @param array  $data data to PUT
+     * @param string $id ID of resource to PUT
+     * @param array $data data to PUT
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function put(string $id, array $data): ResponseInterface
     {
-        return $this->putCall($this->pathName.'/'.$id, $data);
+        return $this->putCall($this->pathName . '/' . $id, $data);
     }
 
     /**
      * PATCH resource
      *
-     * @param string $id   ID of resource to PATCH
-     * @param array  $data data to PATCH
+     * @param string $id ID of resource to PATCH
+     * @param array $data data to PATCH
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function patch(string $id, array $data): ResponseInterface
     {
-        return $this->patchCall($this->pathName.'/'.$id, $data);
+        return $this->patchCall($this->pathName . '/' . $id, $data);
     }
 
     /**
      * POST resource
      *
-     * @param array  $data data to POST
+     * @param array $data data to POST
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function post(array $data): ResponseInterface
@@ -94,15 +94,15 @@ abstract class BaseResource
     protected function getCollection(string $path, string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
     {
         $response = $this->client->get(
-          $path,
-          array(
-            'headers' => $this->getHeaders(),
-            'query'   => array(
-              'verbose' => $verbose,
-              'offset'  => $offset,
-              'limit'   => $pageSize,
-            ),
-          )
+            $path,
+            array(
+                'headers' => $this->getHeaders(),
+                'query' => array(
+                    'verbose' => $verbose,
+                    'offset' => $offset,
+                    'limit' => $pageSize,
+                ),
+            )
         );
 
         return json_decode($response->getBody(), true);
@@ -111,22 +111,23 @@ abstract class BaseResource
     protected function getSingular(string $path, string $verbose = 'normal'): array
     {
         $response = $this->client->get(
-          $path,
-          array(
-            'query'   => array('verbose' => $verbose),
-            'headers' => $this->getHeaders(),
-          )
+            $path,
+            array(
+                'query' => array('verbose' => $verbose),
+                'headers' => $this->getHeaders(),
+            )
         );
 
         return json_decode($response->getBody(), true);
     }
 
-    protected function patchCall(string $path, array $data): ResponseInterface {
+    protected function patchCall(string $path, array $data): ResponseInterface
+    {
         $response = $this->client->patch(
-                $path, [
-            'json' => $data,
-            'headers' => $this->getHeaders(),
-          ]
+            $path, [
+                'json' => $data,
+                'headers' => $this->getHeaders(),
+            ]
         );
 
         return $response;
@@ -135,11 +136,11 @@ abstract class BaseResource
     protected function putCall(string $path, array $data): ResponseInterface
     {
         $response = $this->client->put(
-          $path,
-          [
-            'json'    => $data,
-            'headers' => $this->getHeaders(),
-          ]
+            $path,
+            [
+                'json' => $data,
+                'headers' => $this->getHeaders(),
+            ]
         );
 
         return $response;
@@ -157,11 +158,12 @@ abstract class BaseResource
         return $response;
     }
 
-    public function getEntityIds() {
+    public function getEntityIds()
+    {
         $response = $this->client->get(
-                'entityids', [
-            'headers' => $this->getHeaders()
-                ]
+            'entityids', [
+                'headers' => $this->getHeaders()
+            ]
         );
 
         return json_decode($response->getBody(), true);

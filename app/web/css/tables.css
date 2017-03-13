@@ -1,16 +1,16 @@
 .datatable {
-	border: 2px;
+    border: 2px;
     border-collapse: collapse;
     width: 100%;
 }
 
-.base{
+.base {
     padding: 5px;
     text-align: left;
     font-size: 15px;
 }
 
-.form{
+.form {
     padding: 5px;
     text-align: left;
     font-size: 15px;
@@ -20,17 +20,17 @@
 .datatable caption {
     display: table-caption;
     text-align: left;
-    font-weight:bold;
+    font-weight: bold;
     font-size: 25px;
     margin-bottom: 0.5em;
     margin-top: 1em;
 }
 
 .datatable checkbox {
-    width:40px;
+    width: 40px;
 }
 
-.datatable input{
+.datatable input {
     -webkit-appearance: none;
     border-radius: 2px;
     display: inline-block;
@@ -40,7 +40,7 @@
 }
 
 .datatable input:checked {
-	color: #99a1a7;
+    color: #99a1a7;
 }
 
 .datatable input:checked:after {
@@ -60,154 +60,151 @@
     left: 3px;
 }
 
-.datatable td{
+.datatable td {
     padding: 5px;
     text-align: left;
 }
 
-.datatable td:nth-child(odd){
+.datatable td:nth-child(odd) {
     padding-left: 15px;
 }
 
-
-
 .datatable-red {
-	border: 2px solid #FA8072;
+    border: 2px solid #FA8072;
 }
 
 .datatable-red caption {
-    color:#FA8072;
+    color: #FA8072;
 }
 
-.datatable-red td{
+.datatable-red td {
     border-bottom: 2px solid #FA8072;
 }
 
 /* checkbox */
-.datatable-red input{
+.datatable-red input {
     background-color: #fafafa;
-    border: 2px solid #FA8072;	
+    border: 2px solid #FA8072;
 }
 
-.datatable-red input:checked{
+.datatable-red input:checked {
     background-color: #fafafa;
-    border: 2px solid #FA8072;	
+    border: 2px solid #FA8072;
 }
 
 .datatable-red input:checked:after {
     color: #FA8072;
 }
 
-.datatable-red td{
+.datatable-red td {
     border-bottom: 2px solid #FA8072;
 }
 
-
 /* kék #61AFC5 */
 .datatable-blue {
-	border: 2px solid #61AFC5;
+    border: 2px solid #61AFC5;
 }
 
 .datatable-blue caption {
-    color:#61AFC5;
+    color: #61AFC5;
 }
 
-.datatable-blue td{
+.datatable-blue td {
     border-bottom: 2px solid #61AFC5;
 }
 
-.datatable-blue input{
+.datatable-blue input {
     background-color: #fafafa;
-    border: 2px solid #61AFC5;	
+    border: 2px solid #61AFC5;
 }
 
-.datatable-blue input:checked{
+.datatable-blue input:checked {
     background-color: #fafafa;
-    border: 2px solid #61AFC5;	
+    border: 2px solid #61AFC5;
 }
 
 .datatable-blue input:checked:after {
     color: #61AFC5;
 }
 
-.datatable-blue td{
+.datatable-blue td {
     border-bottom: 2px solid #61AFC5;
 }
 
 /* lila #8496d4 */
 .datatable-purple {
-  border: 2px solid #8496d4;
+    border: 2px solid #8496d4;
 }
 
 .datatable-purple caption {
-    color:#8496d4;
+    color: #8496d4;
 }
 
-.datatable-purple td{
+.datatable-purple td {
     border-bottom: 2px solid #8496d4;
 }
 
-.datatable-purple input{
+.datatable-purple input {
     background-color: #fafafa;
-    border: 2px solid #8496d4;  
+    border: 2px solid #8496d4;
 }
 
-.datatable-purple input:checked{
+.datatable-purple input:checked {
     background-color: #fafafa;
-    border: 2px solid #8496d4;  
+    border: 2px solid #8496d4;
 }
 
 .datatable-purple input:checked:after {
     color: #8496d4;
 }
 
-.datatable-purple td{
+.datatable-purple td {
     border-bottom: 2px solid #8496d4;
 }
 
-
 /* datatables */
 .dataTables_wrapper {
-  position: relative;
-  clear: both;
-  *zoom: 1;
-  zoom: 1;
-  margin-top: 12px;
+    position: relative;
+    clear: both;
+    *zoom: 1;
+    zoom: 1;
+    margin-top: 12px;
 }
-
 
 .dataTables_wrapper .dataTables_length {
-  float: left;
+    float: left;
 }
+
 .dataTables_wrapper .dataTables_filter {
-  float: left;
+    float: left;
 }
+
 .dataTables_wrapper .dataTables_filter input {
-  margin-left: 0.5em;
+    margin-left: 0.5em;
 }
 
 .dataTables_wrapper .dataTables_info {
-  clear: both;
-  float: left;
-  padding-top: 0.755em;
+    clear: both;
+    float: left;
+    padding-top: 0.755em;
 }
 
 .dataTables_wrapper .dataTables_paginate {
-  float: right;
-  text-align: right;
-  padding-top: 0.25em;
+    float: right;
+    text-align: right;
+    padding-top: 0.25em;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-  box-sizing: border-box;
-  display: inline-block;
-  min-width: 1.5em;
-  padding: 0.5em 1em;
-  margin-left: 2px;
-  text-align: center;
-  text-decoration: none !important;
-  cursor: pointer;
-  *cursor: hand;
-  border: 1px solid transparent;
-  border-radius: 2px;
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0.5em 1em;
+    margin-left: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    *cursor: hand;
+    border: 1px solid transparent;
+    border-radius: 2px;
 }

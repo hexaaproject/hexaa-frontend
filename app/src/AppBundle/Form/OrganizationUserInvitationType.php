@@ -23,31 +23,29 @@ class OrganizationUserInvitationType extends AbstractType
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Limit"
-                        )
                     )
                 )
+            )
             ->add(
                 'start_date',
                 DateType::class,
                 array(
                     'label' => 'Start of accept period',
                     'input' => 'string'
-                    )
                 )
+            )
             ->add(
                 'end_date',
                 DateType::class,
                 array(
                     'label' => 'End of accept period',
                     'input' => 'string'
-                    )
                 )
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-        ));
+        $resolver->setDefaults(array());
     }
 }

@@ -4,23 +4,23 @@
         <div id="exceptionclient">
             <label>ClientException</label>
             <br>
-            <label class="detailslabel">Message: </label>        
+            <label class="detailslabel">Message: </label>
             {{ clientexception.getMessage() }}
             <br>
             <label class="detailslabel">Call: </label>
-            {{ clientexception.getRequest().getUri()}}
+            {{ clientexception.getRequest().getUri() }}
             <br>
             <label class="detailslabel">Request method: </label>
-            {{ clientexception.getRequest().getMethod()}}
+            {{ clientexception.getRequest().getMethod() }}
             <br>
             <label class="detailslabel">Request body: </label>
-            {{ clientexception.getRequest().getBody()}}
+            {{ clientexception.getRequest().getBody() }}
             <br>
             <label class="detailslabel">Response code: </label>
-            {{ clientexception.getResponse().getStatusCode()}}
+            {{ clientexception.getResponse().getStatusCode() }}
             <br>
             <label class="detailslabel">Response body: </label>
-            {{ clientexception.getResponse().getBody()}}
+            {{ clientexception.getResponse().getBody() }}
             <br>
         </div>
     {% endif %}
@@ -28,23 +28,23 @@
         <div id="exceptionserver">
             <label>ServerException</label>
             <br>
-            <label class="detailslabel">Message: </label>        
+            <label class="detailslabel">Message: </label>
             {{ serverexception.getMessage() }}
             <br>
             <label class="detailslabel">Call: </label>
-            {{ serverexception.getRequest().getUri()}}
+            {{ serverexception.getRequest().getUri() }}
             <br>
             <label class="detailslabel">Request method: </label>
-            {{ serverexception.getRequest().getMethod()}}
+            {{ serverexception.getRequest().getMethod() }}
             <br>
             <label class="detailslabel">Request body: </label>
-            {{ serverexception.getRequest().getBody()}}
+            {{ serverexception.getRequest().getBody() }}
             <br>
             <label class="detailslabel">Response code: </label>
-            {{ serverexception.getResponse().getStatusCode()}}
+            {{ serverexception.getResponse().getStatusCode() }}
             <br>
             <label class="detailslabel">Response body: </label>
-            {{ serverexception.getResponse().getBody()}}
+            {{ serverexception.getResponse().getBody() }}
             <br>
         </div>
     {% endif %}

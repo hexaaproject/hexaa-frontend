@@ -1,63 +1,67 @@
-#maindivcontroller{
+#maindivcontroller {
     display: box;
     text-align: center;
 }
 
-table#centertable3{   
-    width:60%;
-    display:inline-table;   
-    padding-top:30px;
+table#centertable3 {
+    width: 60%;
+    display: inline-table;
+    padding-top: 30px;
     text-align: left
 }
 
-.uniqueproperty{
-    border:0.2em solid #61AFC5;
-    padding-top:10px;
+.uniqueproperty {
+    border: 0.2em solid #61AFC5;
+    padding-top: 10px;
 }
 
-#propertyname{
+#propertyname {
     text-align: left;
     padding-left: 1em;
     padding-bottom: 1em;
     padding-top: 3px;
-    color:#61AFC5;
+    color: #61AFC5;
     font-size: x-large;
     font-family: Georgia;
 }
 
-.inline{
+.inline {
     display: inline;
     float: left;
     padding-left: 1.5em;
 }
 
-.descriptions{
+.descriptions {
     text-align: left;
-    padding-left:11em;
+    padding-left: 11em;
     padding-bottom: 5px;
-    padding-right:1em;
+    padding-right: 1em;
 }
-.uniquebuttons{
-    border:1em solid #FFFFFF;
+
+.uniquebuttons {
+    border: 1em solid #FFFFFF;
     background-color: #FFFFFF;
 }
-.unique{
-    border:1em solid #61AFC5;
+
+.unique {
+    border: 1em solid #61AFC5;
 }
-#labels{
+
+#labels {
     padding-bottom: 3em;
 }
-#headerLabel{
-    color:#FFFFFF;
+
+#headerLabel {
+    color: #FFFFFF;
     font-weight: bold;
     font-size: 1.5em;
-    float:left;
+    float: left;
     font-family: Georgia;
     padding-left: 1em;
 }
 
-#headerLabeltext{
-    color:#FFFFFF;
+#headerLabeltext {
+    color: #FFFFFF;
     font-size: 11px;
     font-style: italic;
     font-weight: bold;
@@ -67,13 +71,13 @@ table#centertable3{
     padding-top: 1%;
 }
 
-#roles2{
+#roles2 {
     display: block;
     background-color: #61AFC5;
     width: 70%;
 }
 
-div.accordion2, div.accordionroles{
+div.accordion2, div.accordionroles {
     background-color: #FFFFFF;
     color: #61AFC5;
     font-weight: bold;
@@ -84,7 +88,7 @@ div.accordion2, div.accordionroles{
     outline: none;
     transition: 0.4s;
     margin-bottom: 0.5em;
-    margin-top:0.5em;
+    margin-top: 0.5em;
     margin-left: 4%;
     margin-right: 4%;
 }
@@ -99,7 +103,7 @@ div.accordionservices {
     border: none;
     outline: none;
     transition: 0.4s;
-    margin-top:0.5em;
+    margin-top: 0.5em;
     margin-left: 4%;
     margin-right: 4%;
 }
@@ -110,7 +114,7 @@ div.accordionpermissions {
     font-weight: bold;
     cursor: pointer;
     padding: 10px;
-    width:97.4%;
+    width: 97.4%;
     border: 1px solid #61AFC5;
     outline: none;
     transition: 0.4s;
@@ -125,31 +129,32 @@ div.accordionservices:before {
     float: right;
 
 }
-div.accordionservices.active{ 
-    color:#FFFFFF;
+
+div.accordionservices.active {
+    color: #FFFFFF;
 }
 
-div.accordionpermissions.active{ 
-    color:#FA8072;
+div.accordionpermissions.active {
+    color: #FA8072;
     border: 1px solid #FA8072;
 }
 
-div.accordion2:before , div.accordionroles:before, div.accordionpermissions:before{
+div.accordion2:before, div.accordionroles:before, div.accordionpermissions:before {
     content: '\25BC';
     font-size: 13px;
     color: #61AFC5;
     float: right;
 }
 
-div.accordion2.active, div.accordionroles.active{ 
-    color:#FA8072;
+div.accordion2.active, div.accordionroles.active {
+    color: #FA8072;
 }
 
 div.accordion2.active:before, div.accordionroles:before {
     content: "\25B2";
     font-size: 13px;
     color: #FA8072;
-    float:right;
+    float: right;
 }
 
 div.panel {
@@ -168,23 +173,23 @@ div.panel.show {
     margin-right: 4%;
 }
 
-div.panel p{
-    width:100%;
+div.panel p {
+    width: 100%;
     display: inline-block;
     text-align: left;
 }
 
-.name{  
+.name {
     margin-left: 0%;
 }
 
-.firsttd{
+.firsttd {
     width: 150px;
     color: #61AFC5;
 }
 
-.long{
-    width:80%;
+.long {
+    width: 80%;
 }
 
 #maindiv {
@@ -196,12 +201,12 @@ div.panel p{
     display: inline-flex;
 }
 
-.togglecheck{
+.togglecheck {
     -webkit-appearance: none;
     background-color: #fafafa;
-    border-left: 10px solid #61AFC5;	
+    border-left: 10px solid #61AFC5;
     border-right: 10px solid #61AFC5;
-    border-top:5px solid #61AFC5;
+    border-top: 5px solid #61AFC5;
     border-bottom: 5px solid #61AFC5;
     border-radius: 2px;
     display: inline-flex;
@@ -213,13 +218,13 @@ div.panel p{
     margin-top: 0px;
     margin-bottom: 0px;
 
-}  
+}
 
-.togglecheck:checked {	
+.togglecheck:checked {
     border: 2px solid #61AFC5;
-    border-left: 10px solid #61AFC5;	
+    border-left: 10px solid #61AFC5;
     border-right: 10px solid #61AFC5;
-    border-top:5px solid #61AFC5;
+    border-top: 5px solid #61AFC5;
     border-bottom: 5px solid #61AFC5;
     color: #99a1a7;
 }
@@ -236,11 +241,11 @@ div.panel p{
 
 .inputfield {
     flex: 1;
-    border:2px solid #61AFC5;
+    border: 2px solid #61AFC5;
 
 }
 
-#search{
+#search {
     background: url(../img/search.PNG) no-repeat;
     width: 30px;
     height: 30px;
@@ -249,49 +254,45 @@ div.panel p{
     background-size: cover;
 }
 
-.firstrowbuttons{
+.firstrowbuttons {
     background-color: #61AFC5;
-    color:white;
+    color: white;
     margin-left: 2px;
     margin-right: 2px;
-    border:1px solid #61AFC5;
+    border: 1px solid #61AFC5;
 }
 
-
 /*bootstrap terminológia*/
-.btn{
+.btn {
     margin-right: 2px;
     height: 30px;
 }
 
-.btn-primary{
+.btn-primary {
     background-color: #FA8072;
-    color:white;
-    border:1px solid #FA8072;
+    color: white;
+    border: 1px solid #FA8072;
     margin-left: 8em;
 }
 
-.btn-success{
+.btn-success {
     background-color: #61AFC5;
-    color:white;
-    border:1px solid #61AFC5;
+    color: white;
+    border: 1px solid #61AFC5;
 }
-
-
 
 hr {
     display: block;
     height: 1px;
     border: 0;
     border-top: 1px solid #61AFC5;
-    padding: 0; 
+    padding: 0;
 }
 
-
-#addrole{
-    border:1px solid #FFFFFF;
+#addrole {
+    border: 1px solid #FFFFFF;
     background: url(../img/addrole.PNG) no-repeat;
-    width:240px;
+    width: 240px;
     height: 55px;
     display: inline-flex;
     background-size: cover;
@@ -299,53 +300,53 @@ hr {
 
 .buttonedit, .buttonbin, .buttonmessage {
     float: right;
-    height:15px;
-    width:17px;
+    height: 15px;
+    width: 17px;
     border: #FFFFFF;
-    margin-right:2%;
+    margin-right: 2%;
     display: none;
 }
 
-.buttonbin{
-    background: url(../img/red_rubbishbin.svg) no-repeat;  
+.buttonbin {
+    background: url(../img/red_rubbishbin.svg) no-repeat;
 }
 
-.buttonmessage{
+.buttonmessage {
     background: url(../img/red_message.svg) no-repeat;
 }
 
-.buttonedit{
+.buttonedit {
     background: url(../img/red_pencil.svg) no-repeat;
 }
 
-.buttonbinservice{
+.buttonbinservice {
     background: url(../img/bin.PNG) no-repeat;
-    cursor:pointer;
-    width:24px;;
-    height:25px;
-    border:1px solid #FFFFFF;
+    cursor: pointer;
+    width: 24px;;
+    height: 25px;
+    border: 1px solid #FFFFFF;
 }
 
-table#centertable4{   
-    width:60%;
-    display:inline-table;
+table#centertable4 {
+    width: 60%;
+    display: inline-table;
     text-align: left;
-    padding-top:30px;
+    padding-top: 30px;
 }
 
-#roles3{
+#roles3 {
     background-color: #FFFFFF;
     width: 70%;
 }
 
-.format{
+.format {
     width: 80%;
     display: none;
 }
 
-.servicemanager{
+.servicemanager {
     font-size: small;
-    color:#FFFFFF;
+    color: #FFFFFF;
     font-style: italic;
 
 }
@@ -356,12 +357,12 @@ table#centertable4{
     padding-left: 3%;
 }
 
-.inputfieldservice, .inputfieldmanager, .inputfieldpermission, .inputfieldpermissionset{
+.inputfieldservice, .inputfieldmanager, .inputfieldpermission, .inputfieldpermissionset {
     flex: 1;
-    border:2px solid #61AFC5;
+    border: 2px solid #61AFC5;
 }
 
-#search, #searchservice{
+#search, #searchservice {
     background: url(../img/search.PNG) no-repeat;
     width: 30px;
     height: 30px;
@@ -370,44 +371,45 @@ table#centertable4{
     background-size: cover;
 }
 
-.servicemanager{
+.servicemanager {
     font-size: small;
-    color:#FFFFFF;
+    color: #FFFFFF;
     font-style: italic;
 
 }
 
-#newconnection{
+#newconnection {
     background: url(../img/newconnection.PNG) no-repeat;
-    width:200px;
+    width: 200px;
     height: 40px;
-    float:right;
+    float: right;
     margin-right: 4%;
-    border:1px solid #FA8072;
+    border: 1px solid #FA8072;
 }
 
-#headerpermission{
-    color:#61AFC5;
+#headerpermission {
+    color: #61AFC5;
     font-size: large;
 }
 
-#headerLabelService{
-    color:#61AFC5;
+#headerLabelService {
+    color: #61AFC5;
     font-weight: bold;
     font-size: 1.5em;
-    float:left;
+    float: left;
     font-family: Georgia;
     padding-left: 1em;
 }
 
-div.panelservice{
+div.panelservice {
     background-color: white;
     display: none;
-    width:129.5%;
+    width: 129.5%;
     transition: 0.4s;
     padding: 10px;
 }
-div.panelservice.show{
+
+div.panelservice.show {
     display: inline-block;
     text-align: left;
     margin-left: 4%;
@@ -415,8 +417,9 @@ div.panelservice.show{
     border: 1px solid #00CEF1;
 
 }
-div.panelservice p{
-    width:100%;
+
+div.panelservice p {
+    width: 100%;
     display: inline-block;
     text-align: left;
 }

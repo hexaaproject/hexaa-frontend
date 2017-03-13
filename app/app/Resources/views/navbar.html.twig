@@ -19,7 +19,8 @@
         <div class="panelaccordionhamburger">
             {% for organization in organizations.items %}
                 <div class="link">
-                    <a href="{{ path('app_organization_show', {id: organization.id}) }}" class="hamburgercontentpanelname">{{ organization.name|e }}</a>
+                    <a href="{{ path('app_organization_show', {id: organization.id}) }}"
+                       class="hamburgercontentpanelname">{{ organization.name|e }}</a>
                 </div>
             {% endfor %}
         </div>
@@ -32,7 +33,8 @@
         <div class="panelaccordionhamburger">
             {% for service in services.items %}
                 <div class="link">
-                    <a href="{{ path('app_service_show', {id: service.id}) }}" class="hamburgercontentpanelname">{{ service.name|e }}</a>
+                    <a href="{{ path('app_service_show', {id: service.id}) }}"
+                       class="hamburgercontentpanelname">{{ service.name|e }}</a>
                 </div>
             {% endfor %}
         </div>
@@ -48,7 +50,7 @@
             <div class="hamburgercontainer">
                 {% for key,value in names %}
                     <div class="hamburgerlinkdivstyle">
-                        <a class="hamburgercontentname" href="{{ path(key, {id: organization.id}) }}">{{value}}</a>
+                        <a class="hamburgercontentname" href="{{ path(key, {id: organization.id}) }}">{{ value }}</a>
                     </div>
                 {% endfor %}
             </div>
@@ -57,13 +59,13 @@
             <div class="hamburgercontainer">
                 {% for key,value in names %}
                     <div class="hamburgerlinkdivstyle">
-                        <a class="hamburgercontentname" href="{{ path(key, {id: service.id}) }}">{{value}}</a>
+                        <a class="hamburgercontentname" href="{{ path(key, {id: service.id}) }}">{{ value }}</a>
                     </div>
                 {% endfor %}
             </div>
         {% endif %}
 
-    </div> 
+    </div>
 </div>
 
 
@@ -71,18 +73,22 @@
     <div class="desktopcontainer">
         <div class="desktoplinkdivstyle">
             <span class="mainname">
-                <a class="mainnamelink" href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name }}</a>
+                <a class="mainnamelink"
+                   href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name }}</a>
             </span>
             {% for key,value in names %}
                 {% set route = app.request.get('_route') %}
                 {% if loop.first %}
                     <span id="navbarmenupoints">
-                        <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}" href="{{ path(key, {id: organization.id}) }}">{{value}}</a>
-                    {% elseif loop.last %}
-                        <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}" href="{{ path(key, {id: organization.id}) }}">{{value}}</a>
+                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
+                       href="{{ path(key, {id: organization.id}) }}">{{ value }}</a>
+                {% elseif loop.last %}
+                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
+                       href="{{ path(key, {id: organization.id}) }}">{{ value }}</a>
                     </span>
                 {% else %}
-                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}" href="{{ path(key, {id: organization.id}) }}">{{value}}</a>
+                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
+                       href="{{ path(key, {id: organization.id}) }}">{{ value }}</a>
                 {% endif %}
             {% endfor %}
         </div>
@@ -93,18 +99,21 @@
     <div class="desktopcontainer">
         <div class="desktoplinkdivstyle">
             <span class="mainname">
-                <a class="mainnamelink" href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name}}</a>
+                <a class="mainnamelink" href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name }}</a>
             </span>
             {% for key,value in names %}
                 {% set route = app.request.get('_route') %}
                 {% if loop.first %}
                     <span id="navbarmenupoints">
-                        <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}" href="{{ path(key, {id: service.id}) }}">{{value}}</a>
-                    {% elseif loop.last %}
-                        <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}" href="{{ path(key, {id: service.id}) }}">{{value}}</a>
+                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
+                       href="{{ path(key, {id: service.id}) }}">{{ value }}</a>
+                {% elseif loop.last %}
+                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
+                       href="{{ path(key, {id: service.id}) }}">{{ value }}</a>
                     </span>
                 {% else %}
-                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}" href="{{ path(key, {id: service.id}) }}">{{value}}</a>
+                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
+                       href="{{ path(key, {id: service.id}) }}">{{ value }}</a>
                 {% endif %}
             {% endfor %}
         </div>

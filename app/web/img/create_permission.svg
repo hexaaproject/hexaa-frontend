@@ -1,1 +1,12 @@
-<svg id="service1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><style>.cls-1{fill:#333;}.cls-2{fill:#ea7e73;}</style></defs><title>create_permission</title><g id="icons"><polygon class="cls-1" points="160 66.07 66.07 160 0 93.97 11.1 82.87 66.07 137.85 148.94 55.02 160 66.07"/><rect class="cls-2" x="14.8" width="4.59" height="34.18"/><rect class="cls-2" x="414.8" y="11009.76" width="4.59" height="34.18" transform="translate(11043.94 -400) rotate(90)"/></g></svg>
+<svg id="service1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+    <defs>
+        <style>.cls-1{fill:#333;}.cls-2{fill:#ea7e73;}</style>
+    </defs>
+    <title>create_permission</title>
+    <g id="icons">
+        <polygon class="cls-1" points="160 66.07 66.07 160 0 93.97 11.1 82.87 66.07 137.85 148.94 55.02 160 66.07"/>
+        <rect class="cls-2" x="14.8" width="4.59" height="34.18"/>
+        <rect class="cls-2" x="414.8" y="11009.76" width="4.59" height="34.18"
+              transform="translate(11043.94 -400) rotate(90)"/>
+    </g>
+</svg>

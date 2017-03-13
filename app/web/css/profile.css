@@ -1,44 +1,44 @@
 
-#profilemain{
+#profilemain {
     text-align: center;
 }
 
-table#profileproperties, #profileattributes{
+table#profileproperties, #profileattributes {
     width: 60%;
     display: inline-table;
     text-align: left;
     padding-top: 30px;
 }
 
-#properties{
+#properties {
     border: 0.2em solid #808080;
     padding-top: 10px;
 }
 
-.accountbutton{
+.accountbutton {
     display: inline-block;
     margin-left: 100px;
     width: 150px;
     text-align: center;
 }
 
-.accountimage{
-   width: 100px;
+.accountimage {
+    width: 100px;
 }
 
-.descriptionsprofile{
+.descriptionsprofile {
     text-align: left;
     padding-left: 11em;
     padding-right: 1em;
 }
 
-.inlineprofile{
+.inlineprofile {
     display: inline;
     float: left;
-    padding-left: 1.5em;  
+    padding-left: 1.5em;
 }
 
-#headerlabelprofile{
+#headerlabelprofile {
     color: #61AFC5;
     font-weight: bold;
     font-size: 1.5em;
@@ -46,15 +46,15 @@ table#profileproperties, #profileattributes{
     font-family: Georgia;
 }
 
-.uniqueprofile{
-    
-}
-
-#attributes{
+.uniqueprofile {
 
 }
 
-.accordionattributes{
+#attributes {
+
+}
+
+.accordionattributes {
     background-color: #808080;
     color: #FFFFFF;
     font-weight: bold;
@@ -66,25 +66,25 @@ table#profileproperties, #profileattributes{
     margin-top: 0.5em;
 }
 
-.accordionattributes:before{
+.accordionattributes:before {
     content: '\25BC';
     font-size: 13px;
     color: #FFFFFF;
     float: right;
 }
 
-.accordionattributes.active{ 
-    color:#EA7E73;
+.accordionattributes.active {
+    color: #EA7E73;
 }
 
-.accordionattributes.active:before{
+.accordionattributes.active:before {
     content: "\25B2";
     font-size: 13px;
     color: #FFFFFF;
-    float:right;
+    float: right;
 }
 
-.panelattributes{
+.panelattributes {
     background-color: white;
     display: none;
     min-width: 130%;
@@ -99,8 +99,8 @@ table#profileproperties, #profileattributes{
     margin-right: 4%;
 }
 
-.panelattributes p{
-    width:100%;
+.panelattributes p {
+    width: 100%;
     display: inline-block;
     text-align: left;
 }

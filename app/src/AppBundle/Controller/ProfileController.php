@@ -19,21 +19,23 @@ class ProfileController extends Controller
         $user = $this->get('principal')->getSelf();
         return $this->render(
             'AppBundle:Profile:index.html.twig',
-                array(
-                    'propertiesbox' => $this->getPropertiesBox(),
-                    'main' => $user
-                )
+            array(
+                'propertiesbox' => $this->getPropertiesBox(),
+                'main' => $user
+            )
         );
     }
-    
-     /**
+
+    /**
      * @Route("/history")
      */
-    public function historyAction(){
-        
+    public function historyAction()
+    {
+
     }
-    
-    private function getPropertiesBox() {
+
+    private function getPropertiesBox()
+    {
         $propertiesbox = array(
             "Name" => "display_name",
             "Email" => "email",
@@ -42,5 +44,5 @@ class ProfileController extends Controller
 
         return $propertiesbox;
     }
-    
+
 }

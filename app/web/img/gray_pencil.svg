@@ -1,1 +1,11 @@
-<svg id="profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.89 17.89"><defs><style>.cls-1{fill:#636464;}</style></defs><title>gray_pencil</title><g id="content"><path class="cls-1" d="M9148.3,10217.55v3.73H9152l11-11-3.73-3.73Zm17.6-10.15a1,1,0,0,0,0-1.4l-2.33-2.33a1,1,0,0,0-1.4,0l-1.82,1.82,3.73,3.73Z" transform="translate(-9148.3 -10203.38)"/></g></svg>
+<svg id="profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.89 17.89">
+    <defs>
+        <style>.cls-1{fill:#636464;}</style>
+    </defs>
+    <title>gray_pencil</title>
+    <g id="content">
+        <path class="cls-1"
+              d="M9148.3,10217.55v3.73H9152l11-11-3.73-3.73Zm17.6-10.15a1,1,0,0,0,0-1.4l-2.33-2.33a1,1,0,0,0-1.4,0l-1.82,1.82,3.73,3.73Z"
+              transform="translate(-9148.3 -10203.38)"/>
+    </g>
+</svg>

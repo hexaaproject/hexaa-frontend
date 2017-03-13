@@ -1,4 +1,4 @@
-#propertiespanelnoedit{
+#propertiespanelnoedit {
     width: 930px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
@@ -6,7 +6,7 @@
     margin-left: 15px;
 }
 
-#propertiespanel{
+#propertiespanel {
     width: 930px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
@@ -19,7 +19,7 @@
     font-weight: bold;
     padding-left: 1.75em;
     padding-bottom: 0.5em;
-    float:left;
+    float: left;
     text-align: left;
 }
 
@@ -29,7 +29,7 @@
     font-weight: bold;
     padding-left: 1.75em;
     padding-bottom: 0.5em;
-    float:left;
+    float: left;
     text-align: left;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .header {
-    text-align: left;  
+    text-align: left;
     color: #61AFC5;
     font-size: x-large;
     font-weight: bold;
@@ -51,59 +51,59 @@
     padding-bottom: 0.5em;
 }
 
-.editbutton{
-    cursor:pointer;
-    border:none;
-    float:right;
+.editbutton {
+    cursor: pointer;
+    border: none;
+    float: right;
     background-color: white;
     color: #ec666a;
 }
 
-.sendbutton, .sendownerbutton, .sendprivacybutton{
+.sendbutton, .sendownerbutton, .sendprivacybutton {
     border: none;
     background-color: white;
     color: #61AFC5;
 }
 
 .form-control {
-    width:500px; 
-    display:inline;
-    margin-right:180px;
+    width: 500px;
+    display: inline;
+    margin-right: 180px;
 }
 
-.container{
+.container {
     text-align: left;
 }
 
-.formlabel{
+.formlabel {
     display: inline-block;
     max-width: 100%;
     margin-bottom: 5px;
     font-weight: bold;
-    padding-left:20px;
+    padding-left: 20px;
 }
 
-#row{
+#row {
     margin-right: -15px;
     margin-left: -15px;
 }
 
-form[name="service_properties"] { 
-    border:2px solid #61AFC5;
-    height:280px;
+form[name="service_properties"] {
+    border: 2px solid #61AFC5;
+    height: 280px;
 }
 
-form[name="service_owner"] { 
-    border:2px solid #61AFC5;
+form[name="service_owner"] {
+    border: 2px solid #61AFC5;
     width: 100%;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
 }
 
-form[name="service_privacy"] { 
-      border:2px solid #61AFC5; 
+form[name="service_privacy"] {
+    border: 2px solid #61AFC5;
 }
 
-select[multiple]{
+select[multiple] {
     height: 90px;
 }

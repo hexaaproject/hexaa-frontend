@@ -1,34 +1,34 @@
-.progress{
+.progress {
     border: 2px solid #61AFC5;
     background-color: white;
     box-shadow: none;
 }
 
-.progress-bar{
+.progress-bar {
     background-color: #61AFC5;
     box-shadow: none;
-    padding-left:20px;
+    padding-left: 20px;
 }
 
-.formcontainer{
+.formcontainer {
     margin-right: auto;
     margin-left: auto;
     padding-top: 2em;
 }
 
-.title{
+.title {
     font-size: 20px;
     font-weight: bold;
-    color: #61AFC5; 
+    color: #61AFC5;
 }
 
-.todo{
+.todo {
     font-style: italic;
     color: #61AFC5;
     font-weight: bold;
 }
 
-.form-control{
+.form-control {
     display: block;
     width: 400px;
     height: 34px;
@@ -44,21 +44,24 @@
     border-radius: 0px;
 }
 
-.form-group{
-    width: 400px;   
+.form-group {
+    width: 400px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .form-control::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #61AFC5;
+    color: #61AFC5;
 }
+
 .form-control::-moz-placeholder { /* Firefox 19+ */
-  color: #61AFC5;
+    color: #61AFC5;
 }
+
 .form-control:-ms-input-placeholder { /* IE 10+ */
-  color: #61AFC5;
+    color: #61AFC5;
 }
+
 .form-control:-moz-placeholder { /* Firefox 18- */
-  color: #61AFC5;
+    color: #61AFC5;
 }

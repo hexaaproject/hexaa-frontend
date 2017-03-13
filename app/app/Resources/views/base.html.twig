@@ -1,154 +1,152 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}HEXAA{% endblock %}</title>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}HEXAA{% endblock %}</title>
 
-        {% stylesheets
-            '@bootstrap_css'
-            '@material_css'
-            'css/hexaagrid.css'
-            'css/mainpage.css'
-            'css/menu.css'
-            'css/profile.css'
-            'css/mobile.css'
-            'css/buttons.css'
-            'css/navbarwidget.css'
-            filter='cssrewrite'
-        %}
-            <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
+    {% stylesheets
+    '@bootstrap_css'
+    '@material_css'
+    'css/hexaagrid.css'
+    'css/mainpage.css'
+    'css/menu.css'
+    'css/profile.css'
+    'css/mobile.css'
+    'css/buttons.css'
+    'css/navbarwidget.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
 
-        {% block stylesheets %}
-        {% endblock %}
+    {% block stylesheets %}
+    {% endblock %}
 
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        {% javascripts
-            '@jquery_js'
-            '@bootstrap_js'
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
+    {% javascripts
+    '@jquery_js'
+    '@bootstrap_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
-    </head>
-    <body>
-        <div id="topdiv">
-            <div id="topdivcontent">
-                <div id="cornerlogobox">
-                    <a href="{{ path('homepage')}}">
-                        <img id="cornerlogo" src="/img/hexaa-logo-blue.png" alt="hexaa logo"/>
-                    </a>
-                </div>
+</head>
+<body>
+<div id="topdiv">
+    <div id="topdivcontent">
+        <div id="cornerlogobox">
+            <a href="{{ path('homepage') }}">
+                <img id="cornerlogo" src="/img/hexaa-logo-blue.png" alt="hexaa logo"/>
+            </a>
+        </div>
 
-                <div id="menudiv">
-                    {% if app.user != null %}
-                        <div id="leftpanel">
-                            {% if organizations is defined %}
-                                <div class="dropdowns">
-                                    <button onclick="orgClick()" class="dropbtn">
-                                        Organizations
-                                    </button>
-                                    {% if organizations.items != null %}
-                                        <div id="orgSelect" class="dropdown-content1">
-                                            {% for organization in organizations.items %}
-                                                <a href="{{ path("app_organization_show", { id: organization.id }) }}" id="nameoneorg">{{ organization.name|e }}</a>
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                            {% if services is defined %}
-                                <div class="dropdowns">
-                                    <button onclick="servClick()" class="servicecl">
-                                        Services
-                                    </button>
-                                    {% if services.items != null %}
-                                        <div id="servSelect" class="dropdown-content2">
-                                            {% for service in services.items %}
-                                                <a href="{{ path("app_service_show", { id: service.id }) }}"> {{ service.name|e }}</a>
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
+        <div id="menudiv">
+            {% if app.user != null %}
+                <div id="leftpanel">
+                    {% if organizations is defined %}
+                        <div class="dropdowns">
+                            <button onclick="orgClick()" class="dropbtn">
+                                Organizations
+                            </button>
+                            {% if organizations.items != null %}
+                                <div id="orgSelect" class="dropdown-content1">
+                                    {% for organization in organizations.items %}
+                                        <a href="{{ path("app_organization_show", { id: organization.id }) }}"
+                                           id="nameoneorg">{{ organization.name|e }}</a>
+                                    {% endfor %}
                                 </div>
                             {% endif %}
                         </div>
                     {% endif %}
-                    <div id="container">
-                        {% if app.user != null %}
-                            <div id="loginstatus"><span id="usernamebox">{{ app.user.username }}</span></div>
+                    {% if services is defined %}
+                        <div class="dropdowns">
+                            <button onclick="servClick()" class="servicecl">
+                                Services
+                            </button>
+                            {% if services.items != null %}
+                                <div id="servSelect" class="dropdown-content2">
+                                    {% for service in services.items %}
+                                        <a href="{{ path("app_service_show", { id: service.id }) }}"> {{ service.name|e }}</a>
+                                    {% endfor %}
+                                </div>
                             {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+            <div id="container">
+                {% if app.user != null %}
+                    <div id="loginstatus"><span id="usernamebox">{{ app.user.username }}</span></div>
+                {% endif %}
 
-                        <div id="logout">
+                <div id="logout">
                             <span id="logobox">
                                 <a href="">
                                     <img id="logpng" src="/img/logout.png">
                                 </a>
                             </span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-        {% if app.request.get('_route')=="homepage" %}
-            {{ include('::navbar.html.twig', {names:null}) }}
-        {% endif %}
-        {% block body %}
+    </div>
+</div>
+{% if app.request.get('_route')=="homepage" %}
+    {{ include('::navbar.html.twig', {names:null}) }}
+{% endif %}
+{% block body %}
 
-        {% endblock %}
+{% endblock %}
 
-        <script>
-            function orgClick() {
-                $("#orgSelect")[0].classList.toggle("show");
-            }
-            function servClick() {
-                $("#servSelect")[0].classList.toggle("show");
-            }
+<script>
+    function orgClick() {
+        $("#orgSelect")[0].classList.toggle("show");
+    }
+    function servClick() {
+        $("#servSelect")[0].classList.toggle("show");
+    }
 
-            window.onclick = function (
-                    event) {
-                if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
-                    var dropdowns1 = $(".dropdown-content1");
-                    var dropdowns2 = $(".dropdown-content2");
-                    var dropdowns3 = $(".hamburgerclass");
-                    var i;
-                    for (i = 0; i < dropdowns1.length; i++) {
-                        var openDropdown = dropdowns1[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
-                    for (i = 0; i < dropdowns2.length; i++) {
-                        var openDropdown = dropdowns2[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
-                    for (i = 0; i < dropdowns3.length; i++) {
-                        var openDropdown = dropdowns3[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
-                }
-                if (event.target.matches('.servicecl')) {
-                    var dropdownorg = $("#orgSelect")[0];
-                    if (dropdownorg.classList.contains('show')) {
-                        dropdownorg.classList.remove('show');
-                    }
-                }
-                if (event.target.matches('.dropbtn')) {
-                    var dropdownorg = $("#servSelect")[0];
-                    if (dropdownorg.classList.contains('show')) {
-                        dropdownorg.classList.remove('show');
-                    }
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
+            var dropdowns1 = $(".dropdown-content1");
+            var dropdowns2 = $(".dropdown-content2");
+            var dropdowns3 = $(".hamburgerclass");
+            var i;
+            for (i = 0; i < dropdowns1.length; i++) {
+                var openDropdown = dropdowns1[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
                 }
             }
+            for (i = 0; i < dropdowns2.length; i++) {
+                var openDropdown = dropdowns2[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+            for (i = 0; i < dropdowns3.length; i++) {
+                var openDropdown = dropdowns3[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+        if (event.target.matches('.servicecl')) {
+            var dropdownorg = $("#orgSelect")[0];
+            if (dropdownorg.classList.contains('show')) {
+                dropdownorg.classList.remove('show');
+            }
+        }
+        if (event.target.matches('.dropbtn')) {
+            var dropdownorg = $("#servSelect")[0];
+            if (dropdownorg.classList.contains('show')) {
+                dropdownorg.classList.remove('show');
+            }
+        }
+    }
 
-        </script>
-        {% block javascripts %}
-        {% endblock %}
+</script>
+{% block javascripts %}
+{% endblock %}
 
-    </body>
+</body>
 </html>

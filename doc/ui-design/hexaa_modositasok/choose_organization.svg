@@ -1,1 +1,191 @@
-<svg id="nav" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080"><defs><style>.cls-1,.cls-5,.cls-9{fill:#333;}.cls-2,.cls-26{font-size:18px;}.cls-18,.cls-2,.cls-20,.cls-23,.cls-24,.cls-3{fill:#fff;}.cls-12,.cls-16,.cls-18,.cls-2,.cls-20,.cls-26,.cls-5,.cls-9{font-family:Verdana;}.cls-16,.cls-4,.cls-7{fill:#61afc5;}.cls-5{font-size:15px;}.cls-10,.cls-13,.cls-6{fill:none;stroke-miterlimit:10;}.cls-6{stroke:#61afc5;}.cls-11,.cls-7{font-size:20px;font-family:Roboto Condensed;font-weight:700;}.cls-8{letter-spacing:-1px;}.cls-12,.cls-16,.cls-9{font-size:16px;}.cls-10{stroke:#ea7e73;}.cls-11,.cls-15{fill:#ea7e73;}.cls-12{fill:#b0afb0;}.cls-12,.cls-16,.cls-20{font-style:italic;}.cls-13{stroke:#fff;stroke-width:3px;}.cls-14{fill:#666766;}.cls-17{fill:url(#linear-gradient);}.cls-18{font-size:45px;}.cls-19{letter-spacing:-2px;}.cls-20{font-size:25px;}.cls-21{fill:#2a5268;opacity:0.8;}.cls-22{fill:#ccc;}.cls-23{opacity:0.4;}.cls-24{opacity:0.78;}.cls-25{fill:#c6c6c5;}.cls-26{fill:#dedddd;}</style><linearGradient id="linear-gradient" x1="9.86" y1="370.9" x2="1909.14" y2="89.58" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#a7cfc2"/><stop offset="0.45" stop-color="#71a4b7"/><stop offset="1" stop-color="#347aa8"/></linearGradient></defs><title>choose_organization</title><rect class="cls-1" x="447.63" y="32.78" width="17.41" height="17.41"/><rect class="cls-1" width="1920" height="80"/><text class="cls-2" transform="translate(1716.5 45.04)">Username</text><path class="cls-3" d="M2257.14,1177.09l-0.07-.13-0.2-.35-0.28-.48-4.66-8.08-0.55-1-0.28-.48-1.53-2.64a4.67,4.67,0,0,0-2.82-2.16l-0.12,0h0l-0.15,0a4.58,4.58,0,0,0-.91-0.09h-15a4.63,4.63,0,0,0-4,2.31l-7.5,13a4.64,4.64,0,0,0,0,4.62l7.91,13.71a3.18,3.18,0,0,0,5.93-1.59,3.16,3.16,0,0,0-.43-1.59l-5.58-9.67h22.33l-2.86,5-0.55,1-0.23.39-1.94,3.36a3.1,3.1,0,0,0-.33.82,3.17,3.17,0,0,0,.09,1.86h0v0a3.14,3.14,0,0,0,1.15,1.5l0.25,0.17h0a3.17,3.17,0,0,0,3.63-.37h0a3.24,3.24,0,0,0,.66-0.8l0.27-.48,7.12-12.33,0.28-.48,0.25-.42,0-.05A4.6,4.6,0,0,0,2257.14,1177.09Zm-30.24-1,4-6.89a2.38,2.38,0,0,1,2.06-1.19h10.26a2.38,2.38,0,0,1,2.06,1.19l0.36,0.63,0.22,0.39,0.55,1,2.84,4.92h-22.33Z" transform="translate(-2072.3 -1139.27)"/><path class="cls-4" d="M2273.71,1177l-7.5-13a4.64,4.64,0,0,0-4-2.31h-15a4.83,4.83,0,0,0-.71.05l-0.17,0h0l-0.1,0a4.64,4.64,0,0,0-3,2.2l-1.49,2.57-0.28.48-0.55,1-4.66,8.08-0.28.48-0.25.43,0,0.05a4.63,4.63,0,0,0,0,4.44l0.07,0.12,0.2,0.35,0.28,0.48,7.17,12.42h0l0.05,0.09,0.22,0.38a3.15,3.15,0,0,0,.84,1l0.26,0.19h0a3.16,3.16,0,0,0,3.75-.37h0a3.16,3.16,0,0,0,.93-1.51,3.18,3.18,0,0,0,0-1.68,3.13,3.13,0,0,0-.31-0.76l-2-3.4-0.23-.39-0.55-1-2.86-5-0.55-1-0.26-.44,0,0-0.29-.51a2.39,2.39,0,0,1,0-2.37l0.32-.56,0,0,0.28-.48,0.55-1,2.84-4.92,0.55-1,0.23-.39,0.34-.59a2.38,2.38,0,0,1,2.06-1.19h10.26a2.38,2.38,0,0,1,2.06,1.19l4,6.89h-9.27l0.28,0.48,0.2,0.35,0.07,0.13a4.6,4.6,0,0,1,0,4.44l0,0.05-0.25.42-0.28.48h9.31l-5.58,9.67a3.18,3.18,0,0,0,5.51,3.18l7.92-13.71A4.64,4.64,0,0,0,2273.71,1177Z" transform="translate(-2072.3 -1139.27)"/><path class="cls-3" d="M2147.74,1161.64a3.42,3.42,0,0,0-3.17,3.62v10.39h-16.94v-10.39a3.2,3.2,0,1,0-6.34,0v28a3.2,3.2,0,1,0,6.34,0v-10.39h16.94v10.39a3.2,3.2,0,1,0,6.34,0v-28A3.42,3.42,0,0,0,2147.74,1161.64Zm1.41,1.57a2,2,0,0,0-1.41-.61,2,2,0,0,0-1.25.47,2,2,0,0,1,1.25-.47A2,2,0,0,1,2149.15,1163.2Zm-24.69-.61a2,2,0,0,1,1.41.61,1.93,1.93,0,0,0-2.82,0A2,2,0,0,1,2124.46,1162.59Z" transform="translate(-2072.3 -1139.27)"/><path class="cls-3" d="M2181.82,1182.89a3.65,3.65,0,0,0,0-7.25h-20.11v-6.77h20.11a3.65,3.65,0,0,0,0-7.25h-23.28a3.42,3.42,0,0,0-3.17,3.62v28a3.42,3.42,0,0,0,3.17,3.62h23.28a3.65,3.65,0,0,0,0-7.25h-20.11v-6.77h20.11Zm2.21-17.63h0a3.17,3.17,0,0,1-.1.79A3.17,3.17,0,0,0,2184,1165.26Z" transform="translate(-2072.3 -1139.27)"/><path class="cls-3" d="M2208.65,1179.27l9.56-11.51a4,4,0,0,0,0-5,2.92,2.92,0,0,0-4.6,0l-9.34,11.24-9.34-11.24a2.92,2.92,0,0,0-4.6,0,4,4,0,0,0,0,5l9.56,11.51-9.56,11.51a4,4,0,0,0,0,5,2.92,2.92,0,0,0,4.6,0l9.34-11.24,9.34,11.24a2.92,2.92,0,0,0,4.6,0,4,4,0,0,0,0-5Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-2" transform="translate(321.17 47.82)">Organizations</text><path class="cls-3" d="M3941.09,1168.34h-2.43v12.14h2.43v-12.14ZM3947,1171l-1.72,1.72a8.4,8.4,0,0,1,3.14,6.57,8.5,8.5,0,1,1-13.87-6.58l-1.71-1.71A10.93,10.93,0,1,0,3947,1171Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-5" transform="translate(916.44 609.58)">Add service</text><rect class="cls-6" x="610" y="785.89" width="300" height="222.14"/><text class="cls-7" transform="translate(686.58 821.68)">ORGANI<tspan x="64.44" y="0">Z</tspan><tspan class="cls-8" x="75.18" y="0">A</tspan><tspan x="85.95" y="0">TIONS</tspan></text><text class="cls-9" transform="translate(643.65 876.24)">Az organization<tspan x="0" y="27">Ez organization</tspan><tspan x="0" y="54">Nag</tspan><tspan x="31.55" y="54">y</tspan><tspan x="40.88" y="54">on hosszú nevű </tspan><tspan x="0" y="72">oganization</tspan></text><rect class="cls-10" x="1010" y="785.89" width="300" height="219.96"/><text class="cls-11" transform="translate(1119.75 824.5)">SE<tspan x="20.62" y="0">R</tspan><tspan x="31.5" y="0">VICES</tspan></text><text class="cls-12" transform="translate(1099.78 900.35)">No service yet.</text><line class="cls-6" x1="444.99" y1="710.89" x2="1475" y2="710.89"/><text class="cls-9" transform="translate(652.16 610.44)">Add organization</text><polygon class="cls-4" points="784.99 507.04 752.49 563.34 687.49 563.34 654.99 507.04 687.49 450.75 752.49 450.75 784.99 507.04"/><polygon class="cls-13" points="756.86 507.04 738.43 538.97 701.57 538.97 683.13 507.04 701.57 475.12 738.43 475.12 756.86 507.04"/><circle class="cls-3" cx="701.54" cy="538.97" r="6.5"/><circle class="cls-3" cx="683.09" cy="507.04" r="6.5"/><circle class="cls-3" cx="701.54" cy="475.16" r="6.5"/><circle class="cls-3" cx="738.37" cy="475.22" r="6.5"/><circle class="cls-3" cx="756.87" cy="507.04" r="6.5"/><circle class="cls-3" cx="738.13" cy="538.97" r="6.5"/><text class="cls-9" transform="translate(1142.97 610.44)">Edit attributes<tspan x="14.17" y="19.2">and profile</tspan></text><polygon class="cls-14" points="1265.01 507.04 1232.51 563.33 1167.51 563.33 1135.01 507.04 1167.51 450.75 1232.51 450.75 1265.01 507.04"/><circle class="cls-3" cx="1200" cy="495.64" r="16.26"/><path class="cls-3" d="M3299,1694.63a65.62,65.62,0,0,1-1.54,8h-50.18a73.6,73.6,0,0,1-1.61-8c-0.93-6.64-3.43-24.28,7.6-33.67,7.14-6.09,16.77-6,19-6s10.8,0.09,17.57,5.39C3302.14,1669.94,3299.69,1689.5,3299,1694.63Z" transform="translate(-2072.3 -1139.27)"/><polygon class="cls-15" points="1024.99 512.23 992.49 568.52 927.49 568.52 894.99 512.23 927.49 455.94 992.49 455.94 1024.99 512.23"/><path class="cls-3" d="M3068.85,1661.57l-8.08-6.32a26.44,26.44,0,0,0,0-7.51l8.08-6.32a1.94,1.94,0,0,0,.46-2.45l-7.66-13.26a1.93,1.93,0,0,0-2.34-.84l-9.54,3.83a27.83,27.83,0,0,0-6.48-3.75l-1.45-10.16a1.87,1.87,0,0,0-1.88-1.61h-15.33a1.87,1.87,0,0,0-1.88,1.61l-1.45,10.16a29.36,29.36,0,0,0-6.48,3.75l-9.54-3.83a1.87,1.87,0,0,0-2.34.84l-7.66,13.26a1.89,1.89,0,0,0,.46,2.45l8.08,6.32a26.41,26.41,0,0,0,0,7.51l-8.08,6.32a1.93,1.93,0,0,0-.46,2.45l7.66,13.26a1.94,1.94,0,0,0,2.34.85l9.54-3.83a27.84,27.84,0,0,0,6.48,3.75l1.45,10.16a1.87,1.87,0,0,0,1.88,1.61H3040a1.87,1.87,0,0,0,1.88-1.61l1.45-10.16a29.36,29.36,0,0,0,6.48-3.75l9.54,3.83a1.87,1.87,0,0,0,2.34-.85l7.66-13.26A1.94,1.94,0,0,0,3068.85,1661.57Zm-36.56,8.28a18.35,18.35,0,1,1,18.35-18.35A18.36,18.36,0,0,1,3032.29,1669.85Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-16" transform="translate(730.45 993.33)">more...</text><rect class="cls-17" y="80.17" width="1920" height="300"/><text class="cls-18" transform="translate(828.17 158.79)"><tspan class="cls-19">W</tspan><tspan x="42.3" y="0">elcome to</tspan></text><text class="cls-20" transform="translate(364.2 332.82)">egy mondatban a hexaa lényege, the valami valami valami formában, vagy egész mondatban.</text><path class="cls-3" d="M3182.05,1370.42a2.45,2.45,0,0,0-.17-0.32l-0.51-.89-0.7-1.21-11.77-20.4-1.39-2.42-0.7-1.21-3.86-6.67a11.77,11.77,0,0,0-7.11-5.44l-0.31-.08h0l-0.37-.08a11.56,11.56,0,0,0-2.3-.23H3115a11.69,11.69,0,0,0-10.1,5.83L3086,1370.1a11.7,11.7,0,0,0,0,11.67l20,34.61a8,8,0,0,0,15-4,8,8,0,0,0-1.08-4l-14.08-24.4h56.37l-7.23,12.5-1.39,2.42-0.57,1-4.9,8.49a7.82,7.82,0,0,0-.82,2.06,8,8,0,0,0,.23,4.69h0l0,0a7.92,7.92,0,0,0,2.91,3.78l0.62,0.43H3151a8,8,0,0,0,9.16-.93l0,0a8.17,8.17,0,0,0,1.67-2l0.69-1.21,18-31.12,0.7-1.21,0.62-1.07,0.07-.14A11.6,11.6,0,0,0,3182.05,1370.42Zm-76.31-2.51,10-17.4a6,6,0,0,1,5.19-3h25.89a6,6,0,0,1,5.19,3l0.92,1.59,0.56,1,1.39,2.42,7.17,12.42h-56.36Z" transform="translate(-2072.3 -1139.27)"/><path class="cls-15" d="M3223.85,1370.18l-18.93-32.79a11.71,11.71,0,0,0-10.1-5.83H3157a12.2,12.2,0,0,0-1.8.14l-0.43.08h0l-0.26.06a11.7,11.7,0,0,0-7.59,5.56l-3.75,6.5-0.7,1.21-1.39,2.42-11.77,20.39-0.7,1.21-0.62,1.08-0.06.13a11.68,11.68,0,0,0-.1,11.22l0.17,0.31,0.52,0.89,0.7,1.21,18.08,31.34h0l0.13,0.22,0.56,1a8,8,0,0,0,2.12,2.4l0.64,0.48h0.09a8,8,0,0,0,9.45-.93l0,0a8,8,0,0,0,2.33-3.8,8,8,0,0,0,0-4.24,7.89,7.89,0,0,0-.79-1.91l-5-8.59-0.57-1-1.39-2.42-7.21-12.5-1.39-2.42-0.64-1.11-0.07-.12-0.74-1.29a6,6,0,0,1,0-6l0.81-1.4,0-.08,0.71-1.22,1.39-2.42,7.17-12.42,1.39-2.42,0.57-1,0.86-1.49a6,6,0,0,1,5.19-3h25.89a6,6,0,0,1,5.19,3l10,17.4h-23.4l0.7,1.21,0.51,0.89a2.45,2.45,0,0,1,.17.32,11.6,11.6,0,0,1-.1,11.21l-0.07.14-0.62,1.07-0.7,1.21h23.5l-14.09,24.4a8,8,0,0,0,13.9,8l20-34.6A11.7,11.7,0,0,0,3223.85,1370.18Z" transform="translate(-2072.3 -1139.27)"/><path class="cls-3" d="M2905.94,1331.47c-4.41,0-8,4.1-8,9.14v26.22h-42.74v-26.22c0-5-3.59-9.14-8-9.14s-8,4.1-8,9.14v70.73c0,5,3.59,9.14,8,9.14s8-4.1,8-9.14v-26.22h42.74v26.22c0,5,3.59,9.14,8,9.14s8-4.1,8-9.14v-70.73C2913.94,1335.57,2910.35,1331.47,2905.94,1331.47Zm3.55,4a5,5,0,0,0-3.55-1.54,4.93,4.93,0,0,0-3.17,1.19,4.93,4.93,0,0,1,3.17-1.19A5,5,0,0,1,2909.49,1335.42Zm-62.3-1.54a5,5,0,0,1,3.55,1.54,4.88,4.88,0,0,0-7.11,0A5,5,0,0,1,2847.19,1333.88Z" transform="translate(-2072.3 -1139.27)"/><path class="cls-3" d="M2992,1385.12c4.41,0,8-4.1,8-9.14s-3.59-9.14-8-9.14h-50.75v-17.08H2992c4.41,0,8-4.1,8-9.14s-3.59-9.14-8-9.14h-58.75c-4.41,0-8,4.1-8,9.14v70.73c0,5,3.59,9.14,8,9.14H2992c4.41,0,8-4.1,8-9.14s-3.59-9.14-8-9.14h-50.75v-17.08H2992Zm5.59-44.51h0a8,8,0,0,1-.25,2A8,8,0,0,0,2997.55,1340.61Z" transform="translate(-2072.3 -1139.27)"/><path class="cls-3" d="M3059.66,1376l24.14-29.06a10.12,10.12,0,0,0,0-12.6,7.36,7.36,0,0,0-11.62,0l-23.56,28.37-23.56-28.37a7.36,7.36,0,0,0-11.62,0,10.12,10.12,0,0,0,0,12.6l24.14,29.06L3013.44,1405a10.12,10.12,0,0,0,0,12.6,7.36,7.36,0,0,0,11.62,0l23.56-28.37,23.56,28.37a7.36,7.36,0,0,0,11.62,0,10.12,10.12,0,0,0,0-12.6Z" transform="translate(-2072.3 -1139.27)"/><rect class="cls-21" width="1920" height="1080"/><rect class="cls-1" x="686" y="179.77" width="548" height="720.46"/><rect class="cls-1" x="686" y="219.73" width="548" height="710.42"/><rect class="cls-22" x="699.88" y="203.53" width="345" height="38"/><path class="cls-1" d="M3116.67,1343.3v37h-344v-37h344m1-1h-346v39h346v-39h0Z" transform="translate(-2072.3 -1139.27)"/><rect class="cls-1" x="1044.37" y="204.03" width="37" height="37"/><path class="cls-3" d="M3139.58,1364.44h-0.93l-0.33-.32a7.64,7.64,0,1,0-.82.82l0.32,0.33v0.93l5.87,5.86,1.75-1.75Zm-7,0a5.28,5.28,0,1,1,5.28-5.28A5.27,5.27,0,0,1,3132.54,1364.44Z" transform="translate(-2072.3 -1139.27)"/><rect class="cls-23" x="1210.38" y="272.86" width="18.01" height="640.88"/><rect class="cls-24" x="1210.27" y="272.86" width="18.01" height="96.26"/><rect class="cls-3" x="700.75" y="869.06" width="488.25" height="13.73"/><rect class="cls-1" x="699.88" y="272.36" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1412.13v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 297.9)">Organization name</text><rect class="cls-1" x="699.88" y="312.32" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1452.09v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 337.87)">Organization name</text><rect class="cls-1" x="699.88" y="352.29" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1492.06v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 377.83)">Rövidebb nevű organization</text><rect class="cls-1" x="699.88" y="392.25" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1532v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 417.79)">Organization name</text><rect class="cls-1" x="699.88" y="432.21" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1572v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 457.76)">Nag<tspan x="35.49" y="0">y</tspan><tspan x="45.98" y="0">on hosszú nevű organization</tspan></text><rect class="cls-1" x="699.88" y="472.18" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1611.95v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 497.72)">Organization name</text><rect class="cls-1" x="699.88" y="512.14" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1651.91v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 537.68)">Organization name</text><rect class="cls-1" x="699.88" y="552.11" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1691.88v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 577.65)">Organization name</text><rect class="cls-1" x="699.88" y="592.07" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1731.84v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 617.61)">R<tspan x="12.08" y="0">egé</tspan><tspan x="44.74" y="0">n</tspan><tspan x="55.95" y="0">y méretű barokk körmondatokból álló organiza</tspan></text><rect class="cls-1" x="699.88" y="632.03" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1771.8v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 657.58)">Organization name</text><rect class="cls-1" x="699.88" y="672" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1811.77v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 697.54)">Organization name</text><rect class="cls-1" x="699.88" y="711.96" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1851.73v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 737.5)">Organization name</text><rect class="cls-1" x="699.88" y="751.93" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1891.7v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 777.47)">Organization name</text><rect class="cls-1" x="699.88" y="791.89" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1931.66v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 817.43)">Organization name</text><rect class="cls-1" x="699.88" y="831.85" width="500.56" height="41"/><path class="cls-25" d="M3272.24,1971.62v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 857.4)">Organization name</text><rect class="cls-1" x="699.88" y="871.82" width="500.56" height="41"/><path class="cls-25" d="M3272.24,2011.59v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z" transform="translate(-2072.3 -1139.27)"/><text class="cls-26" transform="translate(710.38 897.36)">Organization name</text></svg>
+<svg id="nav" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
+    <defs>
+        <style>
+            .cls-1,.cls-5,.cls-9{fill:#333;}.cls-2,.cls-26{font-size:18px;}.cls-18,.cls-2,.cls-20,.cls-23,.cls-24,.cls-3{fill:#fff;}.cls-12,.cls-16,.cls-18,.cls-2,.cls-20,.cls-26,.cls-5,.cls-9{font-family:Verdana;}.cls-16,.cls-4,.cls-7{fill:#61afc5;}.cls-5{font-size:15px;}.cls-10,.cls-13,.cls-6{fill:none;stroke-miterlimit:10;}.cls-6{stroke:#61afc5;}.cls-11,.cls-7{font-size:20px;font-family:Roboto
+            Condensed;font-weight:700;}.cls-8{letter-spacing:-1px;}.cls-12,.cls-16,.cls-9{font-size:16px;}.cls-10{stroke:#ea7e73;}.cls-11,.cls-15{fill:#ea7e73;}.cls-12{fill:#b0afb0;}.cls-12,.cls-16,.cls-20{font-style:italic;}.cls-13{stroke:#fff;stroke-width:3px;}.cls-14{fill:#666766;}.cls-17{fill:url(#linear-gradient);}.cls-18{font-size:45px;}.cls-19{letter-spacing:-2px;}.cls-20{font-size:25px;}.cls-21{fill:#2a5268;opacity:0.8;}.cls-22{fill:#ccc;}.cls-23{opacity:0.4;}.cls-24{opacity:0.78;}.cls-25{fill:#c6c6c5;}.cls-26{fill:#dedddd;}
+        </style>
+        <linearGradient id="linear-gradient" x1="9.86" y1="370.9" x2="1909.14" y2="89.58"
+                        gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#a7cfc2"/>
+            <stop offset="0.45" stop-color="#71a4b7"/>
+            <stop offset="1" stop-color="#347aa8"/>
+        </linearGradient>
+    </defs>
+    <title>choose_organization</title>
+    <rect class="cls-1" x="447.63" y="32.78" width="17.41" height="17.41"/>
+    <rect class="cls-1" width="1920" height="80"/>
+    <text class="cls-2" transform="translate(1716.5 45.04)">Username</text>
+    <path class="cls-3"
+          d="M2257.14,1177.09l-0.07-.13-0.2-.35-0.28-.48-4.66-8.08-0.55-1-0.28-.48-1.53-2.64a4.67,4.67,0,0,0-2.82-2.16l-0.12,0h0l-0.15,0a4.58,4.58,0,0,0-.91-0.09h-15a4.63,4.63,0,0,0-4,2.31l-7.5,13a4.64,4.64,0,0,0,0,4.62l7.91,13.71a3.18,3.18,0,0,0,5.93-1.59,3.16,3.16,0,0,0-.43-1.59l-5.58-9.67h22.33l-2.86,5-0.55,1-0.23.39-1.94,3.36a3.1,3.1,0,0,0-.33.82,3.17,3.17,0,0,0,.09,1.86h0v0a3.14,3.14,0,0,0,1.15,1.5l0.25,0.17h0a3.17,3.17,0,0,0,3.63-.37h0a3.24,3.24,0,0,0,.66-0.8l0.27-.48,7.12-12.33,0.28-.48,0.25-.42,0-.05A4.6,4.6,0,0,0,2257.14,1177.09Zm-30.24-1,4-6.89a2.38,2.38,0,0,1,2.06-1.19h10.26a2.38,2.38,0,0,1,2.06,1.19l0.36,0.63,0.22,0.39,0.55,1,2.84,4.92h-22.33Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <path class="cls-4"
+          d="M2273.71,1177l-7.5-13a4.64,4.64,0,0,0-4-2.31h-15a4.83,4.83,0,0,0-.71.05l-0.17,0h0l-0.1,0a4.64,4.64,0,0,0-3,2.2l-1.49,2.57-0.28.48-0.55,1-4.66,8.08-0.28.48-0.25.43,0,0.05a4.63,4.63,0,0,0,0,4.44l0.07,0.12,0.2,0.35,0.28,0.48,7.17,12.42h0l0.05,0.09,0.22,0.38a3.15,3.15,0,0,0,.84,1l0.26,0.19h0a3.16,3.16,0,0,0,3.75-.37h0a3.16,3.16,0,0,0,.93-1.51,3.18,3.18,0,0,0,0-1.68,3.13,3.13,0,0,0-.31-0.76l-2-3.4-0.23-.39-0.55-1-2.86-5-0.55-1-0.26-.44,0,0-0.29-.51a2.39,2.39,0,0,1,0-2.37l0.32-.56,0,0,0.28-.48,0.55-1,2.84-4.92,0.55-1,0.23-.39,0.34-.59a2.38,2.38,0,0,1,2.06-1.19h10.26a2.38,2.38,0,0,1,2.06,1.19l4,6.89h-9.27l0.28,0.48,0.2,0.35,0.07,0.13a4.6,4.6,0,0,1,0,4.44l0,0.05-0.25.42-0.28.48h9.31l-5.58,9.67a3.18,3.18,0,0,0,5.51,3.18l7.92-13.71A4.64,4.64,0,0,0,2273.71,1177Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <path class="cls-3"
+          d="M2147.74,1161.64a3.42,3.42,0,0,0-3.17,3.62v10.39h-16.94v-10.39a3.2,3.2,0,1,0-6.34,0v28a3.2,3.2,0,1,0,6.34,0v-10.39h16.94v10.39a3.2,3.2,0,1,0,6.34,0v-28A3.42,3.42,0,0,0,2147.74,1161.64Zm1.41,1.57a2,2,0,0,0-1.41-.61,2,2,0,0,0-1.25.47,2,2,0,0,1,1.25-.47A2,2,0,0,1,2149.15,1163.2Zm-24.69-.61a2,2,0,0,1,1.41.61,1.93,1.93,0,0,0-2.82,0A2,2,0,0,1,2124.46,1162.59Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <path class="cls-3"
+          d="M2181.82,1182.89a3.65,3.65,0,0,0,0-7.25h-20.11v-6.77h20.11a3.65,3.65,0,0,0,0-7.25h-23.28a3.42,3.42,0,0,0-3.17,3.62v28a3.42,3.42,0,0,0,3.17,3.62h23.28a3.65,3.65,0,0,0,0-7.25h-20.11v-6.77h20.11Zm2.21-17.63h0a3.17,3.17,0,0,1-.1.79A3.17,3.17,0,0,0,2184,1165.26Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <path class="cls-3"
+          d="M2208.65,1179.27l9.56-11.51a4,4,0,0,0,0-5,2.92,2.92,0,0,0-4.6,0l-9.34,11.24-9.34-11.24a2.92,2.92,0,0,0-4.6,0,4,4,0,0,0,0,5l9.56,11.51-9.56,11.51a4,4,0,0,0,0,5,2.92,2.92,0,0,0,4.6,0l9.34-11.24,9.34,11.24a2.92,2.92,0,0,0,4.6,0,4,4,0,0,0,0-5Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-2" transform="translate(321.17 47.82)">Organizations</text>
+    <path class="cls-3"
+          d="M3941.09,1168.34h-2.43v12.14h2.43v-12.14ZM3947,1171l-1.72,1.72a8.4,8.4,0,0,1,3.14,6.57,8.5,8.5,0,1,1-13.87-6.58l-1.71-1.71A10.93,10.93,0,1,0,3947,1171Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-5" transform="translate(916.44 609.58)">Add service</text>
+    <rect class="cls-6" x="610" y="785.89" width="300" height="222.14"/>
+    <text class="cls-7" transform="translate(686.58 821.68)">ORGANI
+        <tspan x="64.44" y="0">Z</tspan>
+        <tspan class="cls-8" x="75.18" y="0">A</tspan>
+        <tspan x="85.95" y="0">TIONS</tspan>
+    </text>
+    <text class="cls-9" transform="translate(643.65 876.24)">Az organization
+        <tspan x="0" y="27">Ez organization</tspan>
+        <tspan x="0" y="54">Nag</tspan>
+        <tspan x="31.55" y="54">y</tspan>
+        <tspan x="40.88" y="54">on hosszú nevű</tspan>
+        <tspan x="0" y="72">oganization</tspan>
+    </text>
+    <rect class="cls-10" x="1010" y="785.89" width="300" height="219.96"/>
+    <text class="cls-11" transform="translate(1119.75 824.5)">SE
+        <tspan x="20.62" y="0">R</tspan>
+        <tspan x="31.5" y="0">VICES</tspan>
+    </text>
+    <text class="cls-12" transform="translate(1099.78 900.35)">No service yet.</text>
+    <line class="cls-6" x1="444.99" y1="710.89" x2="1475" y2="710.89"/>
+    <text class="cls-9" transform="translate(652.16 610.44)">Add organization</text>
+    <polygon class="cls-4"
+             points="784.99 507.04 752.49 563.34 687.49 563.34 654.99 507.04 687.49 450.75 752.49 450.75 784.99 507.04"/>
+    <polygon class="cls-13"
+             points="756.86 507.04 738.43 538.97 701.57 538.97 683.13 507.04 701.57 475.12 738.43 475.12 756.86 507.04"/>
+    <circle class="cls-3" cx="701.54" cy="538.97" r="6.5"/>
+    <circle class="cls-3" cx="683.09" cy="507.04" r="6.5"/>
+    <circle class="cls-3" cx="701.54" cy="475.16" r="6.5"/>
+    <circle class="cls-3" cx="738.37" cy="475.22" r="6.5"/>
+    <circle class="cls-3" cx="756.87" cy="507.04" r="6.5"/>
+    <circle class="cls-3" cx="738.13" cy="538.97" r="6.5"/>
+    <text class="cls-9" transform="translate(1142.97 610.44)">Edit attributes
+        <tspan x="14.17" y="19.2">and profile</tspan>
+    </text>
+    <polygon class="cls-14"
+             points="1265.01 507.04 1232.51 563.33 1167.51 563.33 1135.01 507.04 1167.51 450.75 1232.51 450.75 1265.01 507.04"/>
+    <circle class="cls-3" cx="1200" cy="495.64" r="16.26"/>
+    <path class="cls-3"
+          d="M3299,1694.63a65.62,65.62,0,0,1-1.54,8h-50.18a73.6,73.6,0,0,1-1.61-8c-0.93-6.64-3.43-24.28,7.6-33.67,7.14-6.09,16.77-6,19-6s10.8,0.09,17.57,5.39C3302.14,1669.94,3299.69,1689.5,3299,1694.63Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <polygon class="cls-15"
+             points="1024.99 512.23 992.49 568.52 927.49 568.52 894.99 512.23 927.49 455.94 992.49 455.94 1024.99 512.23"/>
+    <path class="cls-3"
+          d="M3068.85,1661.57l-8.08-6.32a26.44,26.44,0,0,0,0-7.51l8.08-6.32a1.94,1.94,0,0,0,.46-2.45l-7.66-13.26a1.93,1.93,0,0,0-2.34-.84l-9.54,3.83a27.83,27.83,0,0,0-6.48-3.75l-1.45-10.16a1.87,1.87,0,0,0-1.88-1.61h-15.33a1.87,1.87,0,0,0-1.88,1.61l-1.45,10.16a29.36,29.36,0,0,0-6.48,3.75l-9.54-3.83a1.87,1.87,0,0,0-2.34.84l-7.66,13.26a1.89,1.89,0,0,0,.46,2.45l8.08,6.32a26.41,26.41,0,0,0,0,7.51l-8.08,6.32a1.93,1.93,0,0,0-.46,2.45l7.66,13.26a1.94,1.94,0,0,0,2.34.85l9.54-3.83a27.84,27.84,0,0,0,6.48,3.75l1.45,10.16a1.87,1.87,0,0,0,1.88,1.61H3040a1.87,1.87,0,0,0,1.88-1.61l1.45-10.16a29.36,29.36,0,0,0,6.48-3.75l9.54,3.83a1.87,1.87,0,0,0,2.34-.85l7.66-13.26A1.94,1.94,0,0,0,3068.85,1661.57Zm-36.56,8.28a18.35,18.35,0,1,1,18.35-18.35A18.36,18.36,0,0,1,3032.29,1669.85Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-16" transform="translate(730.45 993.33)">more...</text>
+    <rect class="cls-17" y="80.17" width="1920" height="300"/>
+    <text class="cls-18" transform="translate(828.17 158.79)">
+        <tspan class="cls-19">W</tspan>
+        <tspan x="42.3" y="0">elcome to</tspan>
+    </text>
+    <text class="cls-20" transform="translate(364.2 332.82)">egy mondatban a hexaa lényege, the valami valami valami
+        formában, vagy egész mondatban.
+    </text>
+    <path class="cls-3"
+          d="M3182.05,1370.42a2.45,2.45,0,0,0-.17-0.32l-0.51-.89-0.7-1.21-11.77-20.4-1.39-2.42-0.7-1.21-3.86-6.67a11.77,11.77,0,0,0-7.11-5.44l-0.31-.08h0l-0.37-.08a11.56,11.56,0,0,0-2.3-.23H3115a11.69,11.69,0,0,0-10.1,5.83L3086,1370.1a11.7,11.7,0,0,0,0,11.67l20,34.61a8,8,0,0,0,15-4,8,8,0,0,0-1.08-4l-14.08-24.4h56.37l-7.23,12.5-1.39,2.42-0.57,1-4.9,8.49a7.82,7.82,0,0,0-.82,2.06,8,8,0,0,0,.23,4.69h0l0,0a7.92,7.92,0,0,0,2.91,3.78l0.62,0.43H3151a8,8,0,0,0,9.16-.93l0,0a8.17,8.17,0,0,0,1.67-2l0.69-1.21,18-31.12,0.7-1.21,0.62-1.07,0.07-.14A11.6,11.6,0,0,0,3182.05,1370.42Zm-76.31-2.51,10-17.4a6,6,0,0,1,5.19-3h25.89a6,6,0,0,1,5.19,3l0.92,1.59,0.56,1,1.39,2.42,7.17,12.42h-56.36Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <path class="cls-15"
+          d="M3223.85,1370.18l-18.93-32.79a11.71,11.71,0,0,0-10.1-5.83H3157a12.2,12.2,0,0,0-1.8.14l-0.43.08h0l-0.26.06a11.7,11.7,0,0,0-7.59,5.56l-3.75,6.5-0.7,1.21-1.39,2.42-11.77,20.39-0.7,1.21-0.62,1.08-0.06.13a11.68,11.68,0,0,0-.1,11.22l0.17,0.31,0.52,0.89,0.7,1.21,18.08,31.34h0l0.13,0.22,0.56,1a8,8,0,0,0,2.12,2.4l0.64,0.48h0.09a8,8,0,0,0,9.45-.93l0,0a8,8,0,0,0,2.33-3.8,8,8,0,0,0,0-4.24,7.89,7.89,0,0,0-.79-1.91l-5-8.59-0.57-1-1.39-2.42-7.21-12.5-1.39-2.42-0.64-1.11-0.07-.12-0.74-1.29a6,6,0,0,1,0-6l0.81-1.4,0-.08,0.71-1.22,1.39-2.42,7.17-12.42,1.39-2.42,0.57-1,0.86-1.49a6,6,0,0,1,5.19-3h25.89a6,6,0,0,1,5.19,3l10,17.4h-23.4l0.7,1.21,0.51,0.89a2.45,2.45,0,0,1,.17.32,11.6,11.6,0,0,1-.1,11.21l-0.07.14-0.62,1.07-0.7,1.21h23.5l-14.09,24.4a8,8,0,0,0,13.9,8l20-34.6A11.7,11.7,0,0,0,3223.85,1370.18Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <path class="cls-3"
+          d="M2905.94,1331.47c-4.41,0-8,4.1-8,9.14v26.22h-42.74v-26.22c0-5-3.59-9.14-8-9.14s-8,4.1-8,9.14v70.73c0,5,3.59,9.14,8,9.14s8-4.1,8-9.14v-26.22h42.74v26.22c0,5,3.59,9.14,8,9.14s8-4.1,8-9.14v-70.73C2913.94,1335.57,2910.35,1331.47,2905.94,1331.47Zm3.55,4a5,5,0,0,0-3.55-1.54,4.93,4.93,0,0,0-3.17,1.19,4.93,4.93,0,0,1,3.17-1.19A5,5,0,0,1,2909.49,1335.42Zm-62.3-1.54a5,5,0,0,1,3.55,1.54,4.88,4.88,0,0,0-7.11,0A5,5,0,0,1,2847.19,1333.88Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <path class="cls-3"
+          d="M2992,1385.12c4.41,0,8-4.1,8-9.14s-3.59-9.14-8-9.14h-50.75v-17.08H2992c4.41,0,8-4.1,8-9.14s-3.59-9.14-8-9.14h-58.75c-4.41,0-8,4.1-8,9.14v70.73c0,5,3.59,9.14,8,9.14H2992c4.41,0,8-4.1,8-9.14s-3.59-9.14-8-9.14h-50.75v-17.08H2992Zm5.59-44.51h0a8,8,0,0,1-.25,2A8,8,0,0,0,2997.55,1340.61Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <path class="cls-3"
+          d="M3059.66,1376l24.14-29.06a10.12,10.12,0,0,0,0-12.6,7.36,7.36,0,0,0-11.62,0l-23.56,28.37-23.56-28.37a7.36,7.36,0,0,0-11.62,0,10.12,10.12,0,0,0,0,12.6l24.14,29.06L3013.44,1405a10.12,10.12,0,0,0,0,12.6,7.36,7.36,0,0,0,11.62,0l23.56-28.37,23.56,28.37a7.36,7.36,0,0,0,11.62,0,10.12,10.12,0,0,0,0-12.6Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <rect class="cls-21" width="1920" height="1080"/>
+    <rect class="cls-1" x="686" y="179.77" width="548" height="720.46"/>
+    <rect class="cls-1" x="686" y="219.73" width="548" height="710.42"/>
+    <rect class="cls-22" x="699.88" y="203.53" width="345" height="38"/>
+    <path class="cls-1" d="M3116.67,1343.3v37h-344v-37h344m1-1h-346v39h346v-39h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <rect class="cls-1" x="1044.37" y="204.03" width="37" height="37"/>
+    <path class="cls-3"
+          d="M3139.58,1364.44h-0.93l-0.33-.32a7.64,7.64,0,1,0-.82.82l0.32,0.33v0.93l5.87,5.86,1.75-1.75Zm-7,0a5.28,5.28,0,1,1,5.28-5.28A5.27,5.27,0,0,1,3132.54,1364.44Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <rect class="cls-23" x="1210.38" y="272.86" width="18.01" height="640.88"/>
+    <rect class="cls-24" x="1210.27" y="272.86" width="18.01" height="96.26"/>
+    <rect class="cls-3" x="700.75" y="869.06" width="488.25" height="13.73"/>
+    <rect class="cls-1" x="699.88" y="272.36" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1412.13v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 297.9)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="312.32" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1452.09v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 337.87)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="352.29" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1492.06v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 377.83)">Rövidebb nevű organization</text>
+    <rect class="cls-1" x="699.88" y="392.25" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1532v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 417.79)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="432.21" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1572v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 457.76)">Nag
+        <tspan x="35.49" y="0">y</tspan>
+        <tspan x="45.98" y="0">on hosszú nevű organization</tspan>
+    </text>
+    <rect class="cls-1" x="699.88" y="472.18" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1611.95v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 497.72)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="512.14" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1651.91v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 537.68)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="552.11" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1691.88v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 577.65)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="592.07" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1731.84v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 617.61)">R
+        <tspan x="12.08" y="0">egé</tspan>
+        <tspan x="44.74" y="0">n</tspan>
+        <tspan x="55.95" y="0">y méretű barokk körmondatokból álló organiza</tspan>
+    </text>
+    <rect class="cls-1" x="699.88" y="632.03" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1771.8v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 657.58)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="672" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1811.77v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 697.54)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="711.96" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1851.73v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 737.5)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="751.93" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1891.7v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 777.47)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="791.89" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1931.66v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 817.43)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="831.85" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,1971.62v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 857.4)">Organization name</text>
+    <rect class="cls-1" x="699.88" y="871.82" width="500.56" height="41"/>
+    <path class="cls-25" d="M3272.24,2011.59v40H2772.68v-40h499.56m1-1H2771.68v42h501.56v-42h0Z"
+          transform="translate(-2072.3 -1139.27)"/>
+    <text class="cls-26" transform="translate(710.38 897.36)">Organization name</text>
+</svg>

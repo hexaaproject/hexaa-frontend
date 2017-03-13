@@ -1,50 +1,49 @@
 
-.mainname{
+.mainname {
     font-size: 32px;
     font-family: Roboto Condensed;
     font-weight: bold;
 }
 
-.mainnamelink{
+.mainnamelink {
     color: #ffffff;
     text-decoration: none;
     margin-left: 1.3vh;
 }
 
-.hamburgercontainer{
-    display:none;
+.hamburgercontainer {
+    display: none;
 }
 
-.hamburgercontentname{
+.hamburgercontentname {
     color: white;
     font-size: 20px;
     padding-left: 12px;
     cursor: pointer;
 }
 
-#navbarmenupoints{
+#navbarmenupoints {
     margin-left: 15vh;
     font-family: Open Sans;
 }
 
-.navbarlink{
+.navbarlink {
     color: #ffffff;
     text-decoration: none;
     margin-left: 1.3vh;
     margin-right: 10px;
 }
 
-.navbarlinkactive{
+.navbarlinkactive {
     padding-bottom: 0.3vh;
     border-bottom: 1.2vh solid #ec666a;
 }
 
-.desktoplinkdivstyle{
+.desktoplinkdivstyle {
     font-size: large;
 }
 
-
-.desktopcontainer{
+.desktopcontainer {
     color: #ffffff;
     padding-top: 1.3vh;
     padding-bottom: 1.3vh;
@@ -56,92 +55,92 @@
 }
 
 @media only screen and (max-width: 480px) {
-    #hamburgerSelect{
+    #hamburgerSelect {
         display: none;
     }
 
-    .desktopcontainer{
-        display:none;
+    .desktopcontainer {
+        display: none;
     }
 
-    .hamburgerlinkdivstyle{
+    .hamburgerlinkdivstyle {
         background-color: #61AFC5;
         padding-top: 10px;
         padding-bottom: 10px;
         border-bottom: 2px solid white;
-        display:block;
+        display: block;
     }
 
-    .hamburgercontainer{
-        display:block;
+    .hamburgercontainer {
+        display: block;
     }
 
-    .hamburgerClass.show{
-        display:block;
+    .hamburgerClass.show {
+        display: block;
         background-color: #2e2d2d;
-        position:fixed;
-        width:100%;
-        border-top:2px solid black;
-        z-index:1000;
+        position: fixed;
+        width: 100%;
+        border-top: 2px solid black;
+        z-index: 1000;
     }
 
-    .off{
-        color:white;
+    .off {
+        color: white;
         font-size: 20px;
-        padding-right:10px;
+        padding-right: 10px;
     }
 
-    .user{
-        color:white;
+    .user {
+        color: white;
         font-size: 20px;
-        padding-right:10px;
+        padding-right: 10px;
     }
 
-    .accordionhamburger{
-        border-bottom:2px solid black;
-        width:100%;
-        height:100%;
+    .accordionhamburger {
+        border-bottom: 2px solid black;
+        width: 100%;
+        height: 100%;
         padding-top: 10px;
         padding-bottom: 10px;
-        cursor:pointer;
+        cursor: pointer;
     }
 
-    .accordionhamburger:before{
+    .accordionhamburger:before {
         content: '\25BC';
         font-size: 15px;
         color: white;
-        float:right;
+        float: right;
         padding-right: 10px;
     }
 
-    .accordionhamburger.active:before{
+    .accordionhamburger.active:before {
         content: '\25B2';
         font-size: 15px;
         color: white;
-        float:right;
+        float: right;
         padding-right: 10px;
     }
 
-    .hamburgercontentname{
-        color:white;
-        font-size:20px;
+    .hamburgercontentname {
+        color: white;
+        font-size: 20px;
         padding-left: 12px;
-        cursor:pointer;
+        cursor: pointer;
     }
 
-    .hamburgercontentpanelname{
-        color:white;
-        font-size:15px;
+    .hamburgercontentpanelname {
+        color: white;
+        font-size: 15px;
         padding-left: 12px;
     }
 
-    .link{
+    .link {
         padding-top: 10px;
         padding-bottom: 10px;
-        border-bottom:2px solid black;
+        border-bottom: 2px solid black;
     }
 
-    .panelaccordionhamburger{
+    .panelaccordionhamburger {
         display: none;
     }
 
@@ -151,31 +150,31 @@
         background-color: grey;
     }
 
-    .linksubmenu{
+    .linksubmenu {
         background-color: #61AFC5;
         padding-top: 10px;
         padding-bottom: 10px;
-        border-bottom:2px solid white;
+        border-bottom: 2px solid white;
     }
 
-    #organizationssubmenu{
+    #organizationssubmenu {
         display: none;
     }
 
-    #servicesssubmenu{
+    #servicesssubmenu {
         display: none;
     }
 
-    .orgsubclass.show{
+    .orgsubclass.show {
         display: inline-block;
     }
 
-    .servsubclass.show{
+    .servsubclass.show {
         display: inline-block;
     }
-    
-    #logout{
-        display:none;
+
+    #logout {
+        display: none;
     }
 
 }

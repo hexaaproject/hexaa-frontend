@@ -15,6 +15,6 @@ class EntitlementPack extends BaseResource
 
     public function getPublic(string $verbose = 'normal', int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/public', $verbose, $offset, $pageSize);
+        return $this->getCollection($this->pathName . '/public', $verbose, $offset, $pageSize);
     }
 }

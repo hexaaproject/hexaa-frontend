@@ -26,71 +26,70 @@ buttons array:
 <script type="text/javascript">
     $(document).ready(function () {
         $('#{{ table_id }}').DataTable({
-    {% if buttons is defined %}
-                "order": [[1, "desc"]],
-    {% endif %}
-                "dom": 'trlip'
-            });
+            {% if buttons is defined %}
+            "order": [[1, "desc"]],
+            {% endif %}
+            "dom": 'trlip'
+        });
 
-    {# hide pagination if one page #}
-            if ($('#{{ table_id }}').DataTable().page.info().pages == 1) {
-                $('#{{ table_id }}_info').hide();
-                $('#{{ table_id }}_paginate').hide();
-                $('#{{ table_id }}_length').hide();
-            }
+        {# hide pagination if one page #}
+        if ($('#{{ table_id }}').DataTable().page.info().pages == 1) {
+            $('#{{ table_id }}_info').hide();
+            $('#{{ table_id }}_paginate').hide();
+            $('#{{ table_id }}_length').hide();
+        }
 
-    {# hide filter label (text: Search:) #}
-            $('#{{ table_id }}_filter').children('label').contents().first().remove();
-            $('#{{ table_id }}_filter input').addClass('hexaaSearchField');
+        {# hide filter label (text: Search:) #}
+        $('#{{ table_id }}_filter').children('label').contents().first().remove();
+        $('#{{ table_id }}_filter input').addClass('hexaaSearchField');
 
-            $('#{{ table_id }}_hexaaSearchField').on('keyup', function () {
-                $('#{{ table_id }}').DataTable().search(this.value).draw();
-            });
+        $('#{{ table_id }}_hexaaSearchField').on('keyup', function () {
+            $('#{{ table_id }}').DataTable().search(this.value).draw();
+        });
 
-    {# toggle disabled action buttons #}
-            $('#{{ table_id }}').on('change', 'input[type=checkbox]', function () {
-                var checked = false;
-                $('#{{ table_id }} input[type=checkbox]').each(function (
-                        index,
-                        el) {
+        {# toggle disabled action buttons #}
+        $('#{{ table_id }}').on('change', 'input[type=checkbox]', function () {
+            var checked = false;
+            $('#{{ table_id }} input[type=checkbox]').each(function (index,
+                                                                     el) {
 
-                    if ($(this).prop('checked')) {
-                        checked = true;
-                        $('.{{ table_id }}_actionButtons button.dependent').each(function (
-                                index,
-                                val) {
-                            $(this).prop('disabled', false);
-                        });
-                    }
-                });
-
-                if (!checked) {
-                    $('.{{ table_id }}_actionButtons button.dependent').each(function (
-                            index,
-                            val) {
-                        $(this).prop('disabled', 'disabled');
+                if ($(this).prop('checked')) {
+                    checked = true;
+                    $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
+                                                                                       val) {
+                        $(this).prop('disabled', false);
                     });
                 }
             });
 
+            if (!checked) {
+                $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
+                                                                                   val) {
+                    $(this).prop('disabled', 'disabled');
+                });
+            }
         });
+
+    });
 </script>
 
 <div class="{{ table_id }}_actionButtons" style="margin-top: 12px;">
 
     {% if form is not defined %}
         <input class="hexaaCheckBox hidden-xs pull-left" type="checkbox" value="">
-        <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left" {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
+        <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left"
+               {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
     {% endif %}
     {% if buttons is defined and buttons %}
         {% for id, button in buttons %}
             {% if not button.last is defined %}
-                <button class="btnhexaa {{ button.class }} dependent hidden-xs" disabled="disabled" id="{{ id }}">{{ button.text|raw }}</button>                
+                <button class="btnhexaa {{ button.class }} dependent hidden-xs" disabled="disabled"
+                        id="{{ id }}">{{ button.text|raw }}</button>
             {% endif %}
         {% endfor %}
         {% for id, button in buttons %}
             {% if button.last is defined %}
-                <button class="btnhexaa {{ button.class }} pull-right" id="{{ id }}">{{ button.text|raw }}</button>                
+                <button class="btnhexaa {{ button.class }} pull-right" id="{{ id }}">{{ button.text|raw }}</button>
             {% endif %}
         {% endfor %}
     {% endif %}
@@ -99,8 +98,9 @@ buttons array:
         <div class="visible-xs" style="margin-top: 12px;">
             {% for id, button in buttons %}
                 {% if not button.last is defined %}
-                    <button class="btnhexaa {{ button.class }} dependent" disabled="disabled" id="{{ id }}">{{ button.text|raw }}</button>
-                {% endif %}      
+                    <button class="btnhexaa {{ button.class }} dependent" disabled="disabled"
+                            id="{{ id }}">{{ button.text|raw }}</button>
+                {% endif %}
             {% endfor %}
         </div>
         <div class="visible-xs" style="margin-top: 12px;">
@@ -114,30 +114,30 @@ buttons array:
         <caption>{{ caption }}</caption>
     {% endif %}
     <thead>
-        <tr>
-            {% if buttons is defined %}
-                <th></th>
-                {% endif %}
-                {% if attributes is defined %}
-                <th></th>
-                {% else %}
-                <th></th>
-                <th></th>
-                {% endif %}
-        </tr>
+    <tr>
+        {% if buttons is defined %}
+            <th></th>
+        {% endif %}
+        {% if attributes is defined %}
+            <th></th>
+        {% else %}
+            <th></th>
+            <th></th>
+        {% endif %}
+    </tr>
     </thead>
     <tbody>
-        {% for user in users %}
-            {% if buttons is defined %}
-                <td><input type="checkbox" name="checkbox"></td>
-            {% endif %}
-            {% if attributes is defined %}
-                   <td class="{{tdcolor}}"><strong>{{user.name}}</strong></td> 
-                {% else %}
-                    <td><strong>{{user.display_name}}</strong></td>
-                    <td>{{user.email}}</td>
-                {% endif %}
-            </tr>
-        {% endfor %}
+    {% for user in users %}
+        {% if buttons is defined %}
+            <td><input type="checkbox" name="checkbox"></td>
+        {% endif %}
+        {% if attributes is defined %}
+            <td class="{{ tdcolor }}"><strong>{{ user.name }}</strong></td>
+        {% else %}
+            <td><strong>{{ user.display_name }}</strong></td>
+            <td>{{ user.email }}</td>
+        {% endif %}
+        </tr>
+    {% endfor %}
     </tbody>
 </table>

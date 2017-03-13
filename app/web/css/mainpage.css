@@ -1,205 +1,219 @@
-    body {
-        font-family: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
+body {
+    font-family: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
-    #maindiv{
-        text-align: center;
-    }
-    
-    .container {
-        max-width: 960px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 2em;
-    }
+#maindiv {
+    text-align: center;
+}
 
-    #welcomecontent {
-        position: absolute;
-        top: 50%; 
-        left: 50%;
-        transform: translate(-50%,-50%);
-        width:95%;
-    }
+.container {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+}
 
-    #welcometext1 {
-        font-size:xx-large;
-    }
+#welcomecontent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+}
 
-    #welcomeimage {
-        max-width: 70vw;
-        max-height: 10vh;
-        margin-top: 2%;
-        margin-bottom: 2%;
-    }
+#welcometext1 {
+    font-size: xx-large;
+}
 
-    #welcometext2 {
-        font-size:x-large;
-    }
+#welcomeimage {
+    max-width: 70vw;
+    max-height: 10vh;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
 
-    #welcomediv {
-        color: #ffffff;
-        text-align:center;
-        padding-top:3%;
-        padding-bottom:3%;
-        background: linear-gradient(to right,#a5d5bc,#4377a7);
-        height:30vh;
-        position: relative;
-    }
+#welcometext2 {
+    font-size: x-large;
+}
 
-    #maindivcontents {
-        padding-top: 5vh;
-        text-align: center;
-    }
-    
-    #footertext{
-        font-style: italic;
-    }
+#welcomediv {
+    color: #ffffff;
+    text-align: center;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    background: linear-gradient(to right, #a5d5bc, #4377a7);
+    height: 30vh;
+    position: relative;
+}
 
-    #maindivcontentsafterlogin {
-        display: inline-block;
-        width:90vw;
-        padding-top: 5vh;
-    }
-    .desktopbutton {
-        display: inline-block;
-        padding: 2%;
-    }
-    .desktopbuttonimageafterloginsmall {
-        width: 6vw;
-        cursor: pointer;
+#maindivcontents {
+    padding-top: 5vh;
+    text-align: center;
+}
 
-    }
-    
-    .desktopbuttonimageafterloginlarge {
-        width: 14vw;
-        cursor: pointer;
-    }
+#footertext {
+    font-style: italic;
+}
 
-    #maindivafterlogin  {
-        display: box;
-        text-align: center;
-    }
-    hr {
-        display: block;
-        height: 1px;
-        border: 0;
-        border-top: 1px solid #61AFC5;
-        padding: 0; 
-    }
-    div.hr{
-        text-align:center; 
-        margin: 0 auto;
-        width: 900px;
-        height:30px;
-    }
-    #maintables{
-        margin:0 auto;
-        overflow:auto;
-        width:50%;
-        height:100%;
-    }
-    #orgtablemain{
-        border: 1px solid #61AFC5;
-        padding-left:30px;
-        padding-right: 20px;
-        padding-top: 15px;
-        padding-bottom: 20px;
-        max-width:220px;
-        min-height: 148px;
-        float:left;
+#maindivcontentsafterlogin {
+    display: inline-block;
+    width: 90vw;
+    padding-top: 5vh;
+}
 
-    }
-    #orgtablecontent, #servtablecontent{
-        padding: 2px;
-    }
+.desktopbutton {
+    display: inline-block;
+    padding: 2%;
+}
 
-    #orgtableheader{
-        text-align: center;
-        color: #61AFC5;
-        padding-bottom: 20px;
-    }
-    #servtableheader{
-        text-align: center;
-        color: #FA8072;
-        padding-bottom: 20px;
-    }
-    #servtablemain{
-        border: 1px solid #FA8072;      
-        min-height: 148px;
-        max-width:220px;
-        float:right;
-        padding-left:30px;
-        padding-right: 20px;
-        padding-top: 15px;
-        padding-bottom: 20px;
-        text-align: left;
+.desktopbuttonimageafterloginsmall {
+    width: 6vw;
+    cursor: pointer;
 
-    }
+}
 
-    #servtablecontent{
-        padding: 2px;
-    }
-    #emptyservtable, #emptyorgtable{
-        text-align: center;
-    }
+.desktopbuttonimageafterloginlarge {
+    width: 14vw;
+    cursor: pointer;
+}
 
-    #submenucontroller{
-        display:none;
-    }
+#maindivafterlogin {
+    display: box;
+    text-align: center;
+}
 
-    #mobilemaincontrols {
-        display:none;
-    }
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #61AFC5;
+    padding: 0;
+}
 
-    .desktopbuttonorg{
-        display: inline-block;
-        padding: 4%;
-    }
-    .desktopbuttonimage {
-        width: 12vw;
-        cursor: pointer;
-    }
+div.hr {
+    text-align: center;
+    margin: 0 auto;
+    width: 900px;
+    height: 30px;
+}
 
-    .hexaaSearchField {
-        border: 2px solid #61AFC5;
-        background-image: url(../img/search.PNG);
-        background-size: 34px;
-        background-position: right;
-        background-repeat: no-repeat;
-        padding: 6px 12px;
-        margin: 0px 4px;
-        font-size: 14px;
-        font-weight: normal;
-        vertical-align: middle;
-    }
+#maintables {
+    margin: 0 auto;
+    overflow: auto;
+    width: 50%;
+    height: 100%;
+}
 
-    .hexaaCheckBox {
-        background-color: #fafafa;
-        border-color: #61AFC5;
-        border-style: solid;
-        border-width: 6px 12px 6px 12px;
-        -webkit-appearance: none;
-        display: inline-block;
-        padding: 6px 12px !important;
-        margin: 0px 4px !important;
-        width: 48px;
-        height: 34px;
-        vertical-align: middle;
-    }
+#orgtablemain {
+    border: 1px solid #61AFC5;
+    padding-left: 30px;
+    padding-right: 20px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    max-width: 220px;
+    min-height: 148px;
+    float: left;
 
-    .form-control {
-        font-size: inherit;
-        color:  #61AFC5;
-        background-color: #DFEDEE;
-        border: 1px solid #61AFC5;
-        border-radius: 0px;
-    }
-    .form-control::-moz-placeholder {
-      color: #61AFC5;
-    }
-    .form-control:-ms-input-placeholder {
-      color: #61AFC5;
-    }
-    .form-control::-webkit-input-placeholder {
-      color: #61AFC5;
-    }
+}
+
+#orgtablecontent, #servtablecontent {
+    padding: 2px;
+}
+
+#orgtableheader {
+    text-align: center;
+    color: #61AFC5;
+    padding-bottom: 20px;
+}
+
+#servtableheader {
+    text-align: center;
+    color: #FA8072;
+    padding-bottom: 20px;
+}
+
+#servtablemain {
+    border: 1px solid #FA8072;
+    min-height: 148px;
+    max-width: 220px;
+    float: right;
+    padding-left: 30px;
+    padding-right: 20px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    text-align: left;
+
+}
+
+#servtablecontent {
+    padding: 2px;
+}
+
+#emptyservtable, #emptyorgtable {
+    text-align: center;
+}
+
+#submenucontroller {
+    display: none;
+}
+
+#mobilemaincontrols {
+    display: none;
+}
+
+.desktopbuttonorg {
+    display: inline-block;
+    padding: 4%;
+}
+
+.desktopbuttonimage {
+    width: 12vw;
+    cursor: pointer;
+}
+
+.hexaaSearchField {
+    border: 2px solid #61AFC5;
+    background-image: url(../img/search.PNG);
+    background-size: 34px;
+    background-position: right;
+    background-repeat: no-repeat;
+    padding: 6px 12px;
+    margin: 0px 4px;
+    font-size: 14px;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.hexaaCheckBox {
+    background-color: #fafafa;
+    border-color: #61AFC5;
+    border-style: solid;
+    border-width: 6px 12px 6px 12px;
+    -webkit-appearance: none;
+    display: inline-block;
+    padding: 6px 12px !important;
+    margin: 0px 4px !important;
+    width: 48px;
+    height: 34px;
+    vertical-align: middle;
+}
+
+.form-control {
+    font-size: inherit;
+    color: #61AFC5;
+    background-color: #DFEDEE;
+    border: 1px solid #61AFC5;
+    border-radius: 0px;
+}
+
+.form-control::-moz-placeholder {
+    color: #61AFC5;
+}
+
+.form-control:-ms-input-placeholder {
+    color: #61AFC5;
+}
+
+.form-control::-webkit-input-placeholder {
+    color: #61AFC5;
+}

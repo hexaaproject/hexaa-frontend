@@ -1,13 +1,13 @@
 .modal-content {
-	border-radius: 0px;
+    border-radius: 0px;
 }
 
 .modal-header {
-	border-bottom: 0px;
-	color: #61AFC5;
+    border-bottom: 0px;
+    color: #61AFC5;
 }
 
 .modal-footer {
-	text-align: left;
-	border-top: 0px;
+    text-align: left;
+    border-top: 0px;
 }

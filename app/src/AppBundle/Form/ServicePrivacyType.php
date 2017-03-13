@@ -19,10 +19,10 @@ class ServicePrivacyType extends AbstractType
                     "label" => "URL",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['servicePrivacyURL'],
-                    'attr'  => array('class' => 'pull-right'),
+                    'attr' => array('class' => 'pull-right'),
                     'required' => false
-                    )
                 )
+            )
             ->add(
                 'servicePrivacyDescription',
                 TextareaType::class,
@@ -30,11 +30,10 @@ class ServicePrivacyType extends AbstractType
                     "label" => "Description",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['servicePrivacyDescription'],
-                    'attr'  => array('class' => 'pull-right', 'cols'=>'30', 'rows'=>'1'),
+                    'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
                     'required' => false
-                    )
                 )
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

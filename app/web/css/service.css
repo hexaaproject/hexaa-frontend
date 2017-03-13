@@ -18,21 +18,21 @@ limitations under the License.
     Author     : Mihály Héder <mihaly.heder@sztaki.mta.hu>
 */
 
-.container{
+.container {
     text-align: center;
 }
 
-.uniquebuttons{
+.uniquebuttons {
     padding-top: 10px;
     padding-bottom: 10px;
-    border:none;
+    border: none;
 }
 
-#srvmenu{
-    color:#ffffff;
+#srvmenu {
+    color: #ffffff;
     padding-top: 1vh;
     padding-bottom: 1vh;
-    padding-left:1%;
+    padding-left: 1%;
     padding-right: 1%;
     background-color: #61AFC5;
     min-height: 5vh;
@@ -42,12 +42,12 @@ limitations under the License.
 #srvmenucontent {
     position: absolute;
     width: 98%;
-    top: 50%; 
-    transform: translate(0,-50%);
+    top: 50%;
+    transform: translate(0, -50%);
 }
 
-#srvmenupoints{
-    margin-left: 10vh;   
+#srvmenupoints {
+    margin-left: 10vh;
 }
 
 #servicename {
@@ -56,10 +56,10 @@ limitations under the License.
     font-family: serif;
 }
 
-.srvlink{
-    color:#ffffff;
+.srvlink {
+    color: #ffffff;
     text-decoration: none;
-    margin-left:1.3vh;
+    margin-left: 1.3vh;
 }
 
 .srvlinkactive {
@@ -94,17 +94,18 @@ limitations under the License.
     padding-right: 5vh;
 }
 
-table#centertableservicesprop{   
-    width:60%;
-    display:inline-table; 
+table#centertableservicesprop {
+    width: 60%;
+    display: inline-table;
     text-align: left;
-    padding-top:30px;
+    padding-top: 30px;
 }
 
-.desktopbuttonorg{
+.desktopbuttonorg {
     display: inline-block;
     padding: 4%;
 }
+
 .desktopbuttonimage {
     width: 12vw;
     cursor: pointer;

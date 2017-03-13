@@ -19,10 +19,10 @@ class ServiceOwnerType extends AbstractType
                     "label" => "Name",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerName'],
-                    'attr'  => array('class' => 'pull-right'),
+                    'attr' => array('class' => 'pull-right'),
                     'required' => false
-                    )
                 )
+            )
             ->add(
                 'serviceOwnerShortName',
                 TextType::class,
@@ -30,10 +30,10 @@ class ServiceOwnerType extends AbstractType
                     "label" => "Short name",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerShortName'],
-                    'attr'  => array('class' => 'pull-right'),
+                    'attr' => array('class' => 'pull-right'),
                     'required' => false
-                    )
                 )
+            )
             ->add(
                 'serviceOwnerDescription',
                 TextareaType::class,
@@ -41,10 +41,10 @@ class ServiceOwnerType extends AbstractType
                     "label" => "Description",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerDescription'],
-                    'attr'  => array('class' => 'pull-right', 'cols'=>'30', 'rows'=>'1'),
+                    'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
                     'required' => false
-                    )
                 )
+            )
             ->add(
                 'serviceOwnerURL',
                 TextType::class,
@@ -52,17 +52,14 @@ class ServiceOwnerType extends AbstractType
                     "label" => "Home page",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerURL'],
-                    'attr'  => array('class' => 'pull-right'),
+                    'attr' => array('class' => 'pull-right'),
                     'required' => false
-                    )
                 )
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            
-        ));
+        $resolver->setDefaults(array());
     }
 }

@@ -36,9 +36,9 @@ class OrganizationUserInvitationSendEmailType extends AbstractType
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Message"
-                        )
                     )
                 )
+            )
             ->add(
                 'landing_url',
                 TextType::class,
@@ -46,10 +46,10 @@ class OrganizationUserInvitationSendEmailType extends AbstractType
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Landing url"
-                        ),
+                    ),
                     "constraints" => new Constraints\Url()
-                    )
                 )
+            )
             ->add(
                 'emails',
                 TextareaType::class,
@@ -59,13 +59,11 @@ class OrganizationUserInvitationSendEmailType extends AbstractType
                         "placeholder" => "Comma separated list of email addresses"
                     )
                 )
-            )
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-        ));
+        $resolver->setDefaults(array());
     }
 }

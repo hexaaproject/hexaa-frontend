@@ -15,12 +15,14 @@ use AppBundle\Form\ServicePrivacyType;
 /**
  * @Route("/service")
  */
-class ServiceController extends Controller {
+class ServiceController extends Controller
+{
 
     /**
      * @Route("/index")
      */
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request)
+    {
 
         // copy + paste from service.php
         try {
@@ -45,11 +47,11 @@ class ServiceController extends Controller {
         }
 
         return $this->render('AppBundle:Service:index.html.twig', array(
-                    'service' => $service,
-                    'organizations' => $organizations,
-                    'services' => $services,
-                    'menu' => $menu
-                        )
+                'service' => $service,
+                'organizations' => $organizations,
+                'services' => $services,
+                'menu' => $menu
+            )
         );
     }
 
@@ -57,7 +59,8 @@ class ServiceController extends Controller {
      * @Route("/addStepOne")
      * @Template()
      */
-    public function addStepOneAction(Request $request) {
+    public function addStepOneAction(Request $request)
+    {
         return $this->render('AppBundle:Service:addStepOne.html.twig', array());
     }
 
@@ -65,11 +68,12 @@ class ServiceController extends Controller {
      * @Route("/addStepTwo")
      * @Template()
      */
-    public function addStepTwoAction(Request $request) {
+    public function addStepTwoAction(Request $request)
+    {
         $verbose = "expanded";
         $attributespecs = $this->get('attribute_spec')->cget($verbose);
         return $this->render('AppBundle:Service:addStepTwo.html.twig', array(
-                    'attributes' => $attributespecs,
+            'attributes' => $attributespecs,
         ));
     }
 
@@ -77,11 +81,11 @@ class ServiceController extends Controller {
      * @Route("/addStepThree")
      * @Template()
      */
-    public function addStepThreeAction(Request $request) {
+    public function addStepThreeAction(Request $request)
+    {
         $verbose = "expanded";
         $permissionsset = $this->get('entitlement_pack')->getPublic($verbose)['items'];
-        return $this->render('AppBundle:Service:addStepThree.html.twig', array(
-                        //'permissions_accordion_set' => $this->permissionsetToAccordion($permissionsset)
+        return $this->render('AppBundle:Service:addStepThree.html.twig', array(//'permissions_accordion_set' => $this->permissionsetToAccordion($permissionsset)
         ));
     }
 
@@ -89,7 +93,8 @@ class ServiceController extends Controller {
      * @Route("/addStepFour")
      * @Template()
      */
-    public function addStepFourAction(Request $request) {
+    public function addStepFourAction(Request $request)
+    {
         return $this->render('AppBundle:Service:addStepFour.html.twig', array());
     }
 
@@ -97,39 +102,42 @@ class ServiceController extends Controller {
      * @Route("/addStepFive")
      * @Template()
      */
-    public function addStepFiveAction(Request $request) {
+    public function addStepFiveAction(Request $request)
+    {
         return $this->render('AppBundle:Service:addStepFive.html.twig', array());
     }
 
     /**
      * @Route("/show/{id}")
      */
-    public function showAction($id) {
+    public function showAction($id)
+    {
         return $this->render(
-                        'AppBundle:Service:show.html.twig', array(
-                    'organizations' => $this->getOrganizations(),
-                    'services' => $this->getServices(),
-                    'service' => $this->getService($id),
-                    'servsubmenubox' => $this->getServSubmenuPoints()
-                        )
+            'AppBundle:Service:show.html.twig', array(
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
+                'service' => $this->getService($id),
+                'servsubmenubox' => $this->getServSubmenuPoints()
+            )
         );
     }
-    
+
     /**
      * @Route("/properties/{id}")
      * @Template()
      */
-    public function propertiesAction($id, Request $request) {
-        
+    public function propertiesAction($id, Request $request)
+    {
+
         $entityids = $this->get('service')->getEntityIds();
         $entityidskeys = array_keys($entityids);
         $choicearray = array();
         foreach ($entityidskeys as $entityID) {
-           $choicearray[$entityID] = $entityID; 
+            $choicearray[$entityID] = $entityID;
         }
 
         dump($choicearray);
-    
+
         $propertiesDatas = array();
         $service = $this->getService($id);
         $propertiesDatas['serviceName'] = $service['name'];
@@ -184,23 +192,24 @@ class ServiceController extends Controller {
         }
 
         return $this->render(
-                        'AppBundle:Service:properties.html.twig', array(
-                    'organizations' => $this->getOrganizations(),
-                    'services' => $this->getServices(),
-                    'service' => $this->getService($id),
-                    'main' => $this->getService($id),
-                    'propertiesbox' => $this->getPropertiesBox(),
-                    'privacybox' => $this->getPrivacyBox(),
-                    'ownerbox' => $this->getOwnerBox(),
-                    'servsubmenubox' => $this->getservsubmenupoints(),
-                    'propertiesform' => $formproperties->createView(),
-                    'ownerform' => $formowner->createView(),
-                    'privacyform' => $formprivacy->createView()
-                        )
+            'AppBundle:Service:properties.html.twig', array(
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
+                'service' => $this->getService($id),
+                'main' => $this->getService($id),
+                'propertiesbox' => $this->getPropertiesBox(),
+                'privacybox' => $this->getPrivacyBox(),
+                'ownerbox' => $this->getOwnerBox(),
+                'servsubmenubox' => $this->getservsubmenupoints(),
+                'propertiesform' => $formproperties->createView(),
+                'ownerform' => $formowner->createView(),
+                'privacyform' => $formprivacy->createView()
+            )
         );
     }
 
-    private function getServSubmenuPoints() {
+    private function getServSubmenuPoints()
+    {
         $submenubox = array(
             "app_service_properties" => "Properties",
             "app_service_managers" => "Managers",
@@ -213,7 +222,8 @@ class ServiceController extends Controller {
         return $submenubox;
     }
 
-    private function getPropertiesBox() {
+    private function getPropertiesBox()
+    {
         $propertiesbox = array(
             "Name" => "name",
             "Description" => "description",
@@ -224,7 +234,8 @@ class ServiceController extends Controller {
         return $propertiesbox;
     }
 
-    private function getPrivacyBox() {
+    private function getPrivacyBox()
+    {
         $propertiesbox = array(
             "URL" => "priv_url",
             "Description" => "priv_description",
@@ -232,7 +243,8 @@ class ServiceController extends Controller {
         return $propertiesbox;
     }
 
-    private function getOwnerBox() {
+    private function getOwnerBox()
+    {
         $propertiesbox = array(
             "Name" => "org_name",
             "Short name" => "org_short_name",
@@ -246,7 +258,8 @@ class ServiceController extends Controller {
      * @Route("/managers/{id}")
      * @Template()
      */
-    public function managersAction($id) {
+    public function managersAction($id)
+    {
         $service = $this->getService($id);
         $managers = $this->getManagers($service);
         $managers_buttons = array(
@@ -261,14 +274,14 @@ class ServiceController extends Controller {
             ),
         );
         return $this->render(
-                        'AppBundle:Service:managers.html.twig', array(
-                    'organizations' => $this->getOrganizations(),
-                    'services' => $this->getServices(),
-                    'service' => $this->getService($id),
-                    'servsubmenubox' => $this->getServSubmenuPoints(),
-                    'managers' => $managers,
-                    'managers_buttons' => $managers_buttons
-                        )
+            'AppBundle:Service:managers.html.twig', array(
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
+                'service' => $this->getService($id),
+                'servsubmenubox' => $this->getServSubmenuPoints(),
+                'managers' => $managers,
+                'managers_buttons' => $managers_buttons
+            )
         );
     }
 
@@ -276,7 +289,8 @@ class ServiceController extends Controller {
      * @Route("/removemanagers/{id}")
      * @Template()
      */
-    public function removemanagersAction($id, Request $request) {
+    public function removemanagersAction($id, Request $request)
+    {
         try {
             # do something
             $this->get('session')->getFlashBag()->add('success', 'Siker');
@@ -291,7 +305,8 @@ class ServiceController extends Controller {
      * @Route("/attributes/{id}")
      * @Template()
      */
-    public function attributesAction($id) {
+    public function attributesAction($id)
+    {
         $service = $this->getService($id);
         $attributes = $this->getServiceAttributes($service);
         $attributes_buttons = array(
@@ -306,14 +321,14 @@ class ServiceController extends Controller {
             ),
         );
         return $this->render(
-                        'AppBundle:Service:attributes.html.twig', array(
-                    'organizations' => $this->getOrganizations(),
-                    'services' => $this->getServices(),
-                    'service' => $this->getService($id),
-                    'servsubmenubox' => $this->getServSubmenuPoints(),
-                    'attributes' => $attributes,
-                    'attributes_buttons' => $attributes_buttons
-                        )
+            'AppBundle:Service:attributes.html.twig', array(
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
+                'service' => $this->getService($id),
+                'servsubmenubox' => $this->getServSubmenuPoints(),
+                'attributes' => $attributes,
+                'attributes_buttons' => $attributes_buttons
+            )
         );
     }
 
@@ -321,17 +336,18 @@ class ServiceController extends Controller {
      * @Route("/permissions/{id}")
      * @Template()
      */
-    public function permissionsAction($id) {
+    public function permissionsAction($id)
+    {
         $verbose = "expanded";
         $permissions = $this->get('service')->getEntitlements($id, $verbose)['items'];
         return $this->render(
-                        'AppBundle:Service:permissions.html.twig', array(
-                    'organizations' => $this->getOrganizations(),
-                    'servsubmenubox' => $this->getServSubmenuPoints(),
-                    'services' => $this->getServices(),
-                    'service' => $this->getService($id),
-                    'permissions_accordion' => $this->permissionsToAccordion($permissions)
-                        )
+            'AppBundle:Service:permissions.html.twig', array(
+                'organizations' => $this->getOrganizations(),
+                'servsubmenubox' => $this->getServSubmenuPoints(),
+                'services' => $this->getServices(),
+                'service' => $this->getService($id),
+                'permissions_accordion' => $this->permissionsToAccordion($permissions)
+            )
         );
     }
 
@@ -339,17 +355,18 @@ class ServiceController extends Controller {
      * @Route("/permissionssets/{id}")
      * @Template()
      */
-    public function permissionssetsAction($id) {
+    public function permissionssetsAction($id)
+    {
         $verbose = "expanded";
         $permissionsset = $this->get('service')->getEntitlementPacks($id, $verbose)['items'];
         return $this->render(
-                        'AppBundle:Service:permissionssets.html.twig', array(
-                    'organizations' => $this->getOrganizations(),
-                    'services' => $this->getServices(),
-                    'service' => $this->getService($id),
-                    'servsubmenubox' => $this->getServSubmenuPoints(),
-                    'permissions_accordion_set' => $this->permissionSetToAccordion($permissionsset)
-                        )
+            'AppBundle:Service:permissionssets.html.twig', array(
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
+                'service' => $this->getService($id),
+                'servsubmenubox' => $this->getServSubmenuPoints(),
+                'permissions_accordion_set' => $this->permissionSetToAccordion($permissionsset)
+            )
         );
     }
 
@@ -357,17 +374,19 @@ class ServiceController extends Controller {
      * @Route("/connectedorganizations/{id}")
      * @Template()
      */
-    public function connectedOrganizationsAction($id) {
+    public function connectedOrganizationsAction($id)
+    {
         return $this->render(
-                        'AppBundle:Service:connectedorganizations.html.twig', array(
-                    'organizations' => $this->getOrganizations(),
-                    'services' => $this->getServices(),
-                    'service' => $this->getService($id)
-                        )
+            'AppBundle:Service:connectedorganizations.html.twig', array(
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
+                'service' => $this->getService($id)
+            )
         );
     }
 
-    private function permissionsToAccordion($permissions) {
+    private function permissionsToAccordion($permissions)
+    {
         $permissions_accordion = array();
         foreach ($permissions as $permission) {
             $permissions_accordion[$permission['id']]['title'] = $permission['name'];
@@ -389,7 +408,8 @@ class ServiceController extends Controller {
         return $permissions_accordion;
     }
 
-    private function permissionSetToAccordion($permissionSets) {
+    private function permissionSetToAccordion($permissionSets)
+    {
         $permissions_accordion_set = array();
         foreach ($permissionSets as $permissionSet) {
             $permissions_accordion_set[$permissionSet['id']]['title'] = $permissionSet['name'];
@@ -419,11 +439,13 @@ class ServiceController extends Controller {
         return $permissions_accordion_set;
     }
 
-    private function getManagers($service) {
+    private function getManagers($service)
+    {
         return $this->get('service')->getManagers($service['id'])['items'];
     }
 
-    private function getServiceAttributes($service) {
+    private function getServiceAttributes($service)
+    {
         $verbose = "expanded";
         $serviceattributespecs = $this->get('service')->getAttributeSpecs($service['id'])['items'];
         $attributestonames = array();
@@ -437,17 +459,20 @@ class ServiceController extends Controller {
         return $attributestonames;
     }
 
-    private function getOrganizations() {
+    private function getOrganizations()
+    {
         $organization = $this->get('organization')->cget();
         return $organization;
     }
 
-    private function getServices() {
+    private function getServices()
+    {
         $services = $this->get('service')->cget();
         return $services;
     }
 
-    private function getService($id) {
+    private function getService($id)
+    {
         $service = $this->get('service')->get($id);
         return $service;
     }

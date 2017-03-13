@@ -22,36 +22,38 @@ class DefaultController extends Controller
         try {
             $organizations = $this->get('organization')->cget();
             $services = $this->get('service')->cget();
-            
 
-        } catch (ClientException $e) {            
-            return $this->render('error.html.twig', array('clientexception'=>$e));
+
+        } catch (ClientException $e) {
+            return $this->render('error.html.twig', array('clientexception' => $e));
         } catch (ServerException $e) {
-            return $this->render('error.html.twig', array('serverexception'=>$e));
+            return $this->render('error.html.twig', array('serverexception' => $e));
         } finally {
-            if (!isset($organizations)){
+            if (!isset($organizations)) {
                 $organizations = [];
             }
-            if (!isset($services)){
+            if (!isset($services)) {
                 $services = [];
             }
         }
 
-        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services' =>$services, 'orgsubmenubox' => $this->getOrgSubmenuPoints(), 'servsubmenubox' => $this->getServSubmenuPoints()));
+        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services' => $services, 'orgsubmenubox' => $this->getOrgSubmenuPoints(), 'servsubmenubox' => $this->getServSubmenuPoints()));
     }
-    
-    private function getOrgSubmenuPoints(){
+
+    private function getOrgSubmenuPoints()
+    {
         $submenuBox = array(
             "app_organization_properties" => "Properties",
             "app_organization_users" => "Users",
             "app_organization_roles" => "Roles",
             "app_organization_connectedservices" => "Conencted services",
         );
-        
+
         return $submenuBox;
     }
-    
-    private function getServSubmenuPoints(){
+
+    private function getServSubmenuPoints()
+    {
         $submenuBox = array(
             "app_service_properties" => "Properties",
             "app_service_managers" => "Managers",
@@ -60,7 +62,7 @@ class DefaultController extends Controller
             "app_service_permissionssets" => "Permissions sets",
             "app_service_connectedorganizations" => "Connected organizations"
         );
-        
+
         return $submenuBox;
     }
 }

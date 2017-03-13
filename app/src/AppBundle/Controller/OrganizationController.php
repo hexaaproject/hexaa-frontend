@@ -17,21 +17,23 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * @Route("/organization")
  */
-class OrganizationController extends Controller {
+class OrganizationController extends Controller
+{
 
     /**
      * @Route("/")
      * @Template()
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $organizations = $this->get('organization')->cget();
         $services = $this->get('service')->cget();
         return $this->render(
             'AppBundle:Organization:index.html.twig',
-                array(
-                    'organizations' => $organizations,
-                    'services' => $services
-                )
+            array(
+                'organizations' => $organizations,
+                'services' => $services
+            )
         );
     }
 
@@ -94,7 +96,8 @@ class OrganizationController extends Controller {
     /**
      * @Route("/show/{id}")
      */
-    public function showAction($id) {
+    public function showAction($id)
+    {
         $organization = $this->getOrganization($id);
         return $this->render(
             'AppBundle:Organization:show.html.twig',
@@ -127,7 +130,7 @@ class OrganizationController extends Controller {
             "Description" => "description",
             "Home page" => "url",
             "Default role" => "default_role_name"
-            );
+        );
 
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
@@ -156,48 +159,48 @@ class OrganizationController extends Controller {
             "changerole" => array(
                 "class" => "btn-blue",
                 "text" => "Change roles"
-                ),
+            ),
             "revoke" => array(
                 "class" => "btn-blue",
                 "text" => "Revoke"
-                ),
+            ),
             "message" => array(
                 "class" => "btn-blue",
                 "text" => "Message"
-                ),
+            ),
             "remove" => array(
                 "class" => "btn-blue",
                 "text" => "Remove"
-                ),
+            ),
             "invite" => array(
                 "class" => "btn-red",
                 "last" => true,
                 "text" => '<i class="material-icons">add</i> Invite'
-                ),
-            );
+            ),
+        );
         $members_buttons = array(
             "changerole" => array(
                 "class" => "btn-blue",
                 "text" => "Change roles"
-                ),
+            ),
             "proposal" => array(
                 "class" => "btn-blue",
                 "text" => "Proposal"
-                ),
+            ),
             "message" => array(
                 "class" => "btn-blue",
                 "text" => "Message"
-                ),
+            ),
             "remove" => array(
                 "class" => "btn-blue",
                 "text" => "Remove"
-                ),
+            ),
             "invite" => array(
                 "class" => "btn-red",
                 "last" => true,
                 "text" => '<i class="material-icons">add</i> Invite'
-                ),
-            );
+            ),
+        );
 
 
         $form = $this->createCreateInvitationForm($organization);
@@ -259,6 +262,7 @@ class OrganizationController extends Controller {
             )
         );
     }
+
     /**
      * @Route("/createInvitation/{id}")
      * @Method("POST")
@@ -381,22 +385,22 @@ class OrganizationController extends Controller {
     public function removeusersAction($id, Request $request)
     {
         $pids = $request->get('userId');
-            $organizationResource = $this->get('organization');
-            $errors = array();
-            foreach ($pids as $pid) {
-                try {
-                    $organizationResource->deleteMember($id, $pid);
-                } catch (\Exception $e) {
-                    $errors[] = $e;
-                }
+        $organizationResource = $this->get('organization');
+        $errors = array();
+        foreach ($pids as $pid) {
+            try {
+                $organizationResource->deleteMember($id, $pid);
+            } catch (\Exception $e) {
+                $errors[] = $e;
             }
-            if (count($errors)) {
-                $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-                $this->get('logger')->error($errors);
-            } else {
-                $this->get('session')->getFlashBag()->add('success', 'Siker');
-            }
-            return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($errors);
+        } else {
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        }
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
     }
 
     /**
@@ -550,12 +554,12 @@ class OrganizationController extends Controller {
                 array(
                     'key' => 'Permissions',
                     'values' => $permissions
-                    ),
+                ),
                 array(
                     'key' => 'Members',
                     'values' => $members
-                    )
-                );
+                )
+            );
         }
         return $roles_accordion;
     }

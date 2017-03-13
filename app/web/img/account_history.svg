@@ -1,1 +1,13 @@
-<svg id="profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101.11 86.66"><defs><style>.cls-1{fill:#636464;}</style></defs><title>account_history</title><g id="content"><path class="cls-1" d="M9154.68,9692.15a43.34,43.34,0,0,0-43.33,43.33h-14.44l18.73,18.73,0.34,0.67,19.45-19.4H9121a33.86,33.86,0,1,1,9.92,23.78l-6.84,6.84A43.32,43.32,0,1,0,9154.68,9692.15Z" transform="translate(-9096.91 -9692.15)"/><polygon class="cls-1" points="52.94 24.29 52.94 48.09 73.31 60.19 76.74 54.43 60.08 44.52 60.08 24.29 52.94 24.29"/></g></svg>
+<svg id="profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101.11 86.66">
+    <defs>
+        <style>.cls-1{fill:#636464;}</style>
+    </defs>
+    <title>account_history</title>
+    <g id="content">
+        <path class="cls-1"
+              d="M9154.68,9692.15a43.34,43.34,0,0,0-43.33,43.33h-14.44l18.73,18.73,0.34,0.67,19.45-19.4H9121a33.86,33.86,0,1,1,9.92,23.78l-6.84,6.84A43.32,43.32,0,1,0,9154.68,9692.15Z"
+              transform="translate(-9096.91 -9692.15)"/>
+        <polygon class="cls-1"
+                 points="52.94 24.29 52.94 48.09 73.31 60.19 76.74 54.43 60.08 44.52 60.08 24.29 52.94 24.29"/>
+    </g>
+</svg>
