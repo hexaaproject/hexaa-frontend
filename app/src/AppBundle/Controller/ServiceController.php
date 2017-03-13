@@ -114,18 +114,22 @@ class ServiceController extends Controller {
                         )
         );
     }
-
+    
     /**
      * @Route("/properties/{id}")
      * @Template()
      */
     public function propertiesAction($id, Request $request) {
-        /* if ($request->getMethod() == 'POST') {
-          $data = $request->request->all();
-          $modified = array('entityid' => $data['SAML_SP_Entity_ID'], 'name' => $data['Name'], 'description' => $data['Description'], 'url' => $data['Home_page'], 'priv_url' => $data['URL'], 'priv_description' =>$data['Privacy_description'], 'org_name' => $data['Organization_name'], 'org_short_name' => $data['Organization_short_name'], 'org_description' => $data['Organization_description'], 'org_url' => $data['Organization_home_page']);
-          $this->get('service')->patch($id, $modified);
-          } */
+        
+        $entityids = $this->get('service')->getEntityIds();
+        $entityidskeys = array_keys($entityids);
+        $choicearray = array();
+        foreach ($entityidskeys as $entityID) {
+           $choicearray[$entityID] = $entityID; 
+        }
 
+        dump($choicearray);
+    
         $propertiesDatas = array();
         $service = $this->getService($id);
         $propertiesDatas['serviceName'] = $service['name'];
@@ -138,6 +142,7 @@ class ServiceController extends Controller {
         $propertiesDatas['serviceOwnerShortName'] = $service['org_short_name'];
         $propertiesDatas['servicePrivacyURL'] = $service['priv_url'];
         $propertiesDatas['servicePrivacyDescription'] = $service['priv_description'];
+        $propertiesDatas['serviceEntityIDs'] = $choicearray;
 
         $formproperties = $this->createForm(ServicePropertiesType::class, array('properties' => $propertiesDatas));
 
@@ -147,6 +152,7 @@ class ServiceController extends Controller {
 
             $data = $request->request->all();
             $modified = array('name' => $data['service_properties']['serviceName'], 'entityid' => $data['service_properties']['serviceSAML'], 'description' => $data['service_properties']['serviceDescription'], 'url' => $data['service_properties']['serviceURL']);
+            dump($modified);
             $this->get('service')->patch($id, $modified);
             return $this->redirect($request->getUri());
         }

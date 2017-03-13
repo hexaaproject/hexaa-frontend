@@ -90,6 +90,7 @@
 
 form[name="service_properties"] { 
     border:2px solid #61AFC5;
+    height:280px;
 }
 
 form[name="service_owner"] { 
@@ -100,6 +101,9 @@ form[name="service_owner"] {
 }
 
 form[name="service_privacy"] { 
-      border:2px solid #61AFC5;
-     
+      border:2px solid #61AFC5; 
+}
+
+select[multiple]{
+    height: 90px;
 }

@@ -1,25 +1,24 @@
 <?php
+
 namespace AppBundle\Model;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-abstract class BaseResource
-{
+abstract class BaseResource {
+
     protected $pathName;
+
     /** @var  Client */
     protected $client;
     protected $token;
 
-
-    function __construct(Client $client, TokenStorage $tokenStorage)
-    {
+    function __construct(Client $client, TokenStorage $tokenStorage) {
         $user = $tokenStorage->getToken()->getUser();
         $this->client = $client;
         $this->token = $user->getToken();
     }
-
 
     /**
      * GET collection of resource
@@ -29,8 +28,7 @@ abstract class BaseResource
      * @param int    $pageSize paging: number of items to return
      * @return array
      */
-    public function cget(string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
-    {
+    public function cget(string $verbose = "normal", int $offset = 0, int $pageSize = 25): array {
         return $this->getCollection($this->pathName, $verbose, $offset, $pageSize);
     }
 
@@ -41,9 +39,8 @@ abstract class BaseResource
      * @param string $verbose One of minimal, normal or expanded
      * @return array
      */
-    public function get(string $id, string $verbose = "normal"): array
-    {
-        return $this->getSingular($this->pathName.'/'.$id, $verbose);
+    public function get(string $id, string $verbose = "normal"): array {
+        return $this->getSingular($this->pathName . '/' . $id, $verbose);
     }
 
     /**
@@ -54,9 +51,8 @@ abstract class BaseResource
      * @param array  $data data to PUT
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function put(string $id, array $data): ResponseInterface
-    {
-        return $this->putCall($this->pathName.'/'.$id, $data);
+    public function put(string $id, array $data): ResponseInterface {
+        return $this->putCall($this->pathName . '/' . $id, $data);
     }
 
     /**
@@ -66,14 +62,11 @@ abstract class BaseResource
      * @param array  $data data to PATCH
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function patch(string $id, array $data): ResponseInterface
-    {
-        return $this->patchCall($this->pathName.'/'.$id, $data);
+    public function patch(string $id, array $data): ResponseInterface {
+        return $this->patchCall($this->pathName . '/' . $id, $data);
     }
 
-
-    public function getHeaders(): array
-    {
+    public function getHeaders(): array {
         $config = $this->client->getConfig();
         $headers = $config["headers"];
         $headers['X-HEXAA-AUTH'] = $this->token;
@@ -81,44 +74,38 @@ abstract class BaseResource
         return $headers;
     }
 
-    protected function getCollection(string $path, string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
-    {
+    protected function getCollection(string $path, string $verbose = "normal", int $offset = 0, int $pageSize = 25): array {
         $response = $this->client->get(
-          $path,
-          array(
+                $path, array(
             'headers' => $this->getHeaders(),
-            'query'   => array(
-              'verbose' => $verbose,
-              'offset'  => $offset,
-              'limit'   => $pageSize,
+            'query' => array(
+                'verbose' => $verbose,
+                'offset' => $offset,
+                'limit' => $pageSize,
             ),
-          )
+                )
         );
 
         return json_decode($response->getBody(), true);
     }
 
-    protected function getSingular(string $path, string $verbose = 'normal'): array
-    {
+    protected function getSingular(string $path, string $verbose = 'normal'): array {
         $response = $this->client->get(
-          $path,
-          array(
-            'query'   => array('verbose' => $verbose),
+                $path, array(
+            'query' => array('verbose' => $verbose),
             'headers' => $this->getHeaders(),
-          )
+                )
         );
 
         return json_decode($response->getBody(), true);
     }
 
-    protected function patchCall(string $path, array $data): ResponseInterface
-    {
+    protected function patchCall(string $path, array $data): ResponseInterface {
         $response = $this->client->patch(
-          $path,
-          [
-            'json'    => $data,
+                $path, [
+            'json' => $data,
             'headers' => $this->getHeaders(),
-          ]
+                ]
         );
         dump($response->getStatusCode());
         if ($response->getStatusCode() != 201 && $response->getStatusCode() != 204) {
@@ -128,44 +115,50 @@ abstract class BaseResource
         return $response;
     }
 
-    protected function putCall(string $path, array $data): ResponseInterface
-    {
+    protected function putCall(string $path, array $data): ResponseInterface {
         $response = $this->client->put(
-          $path,
-          [
-            'json'    => $data,
+                $path, [
+            'json' => $data,
             'headers' => $this->getHeaders(),
-          ]
+                ]
         );
 
         if ($response->getStatusCode() !== 201 || $response->getStatusCode() !== 204) {
             throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
         }
-
     }
-     public function entitlementpackspublic()
-    {
+
+    public function entitlementpackspublic() {
         $response = $this->client->get(
-          'entitlementpacks'.'/'.'public',
-          [
+                'entitlementpacks' . '/' . 'public', [
             'headers' => $this->getHeaders(),
-            'query'   => [
+            'query' => [
             ],
-          ]
+                ]
         );
 
         return json_decode($response->getBody(), true);
     }
-    
+
     public function getAllAttributeSpecs(string $verbose = "normal") {
-         $response = $this->client->get(
-          'attributespecs',
-          [
+        $response = $this->client->get(
+                'attributespecs', [
             'headers' => $this->getHeaders(),
-            'query'   => [
+            'query' => [
             ],
-          ]
+                ]
         );
         return json_decode($response->getBody(), true);
     }
+
+    public function getEntityIds() {
+        $response = $this->client->get(
+                'entityids', [
+            'headers' => $this->getHeaders()
+                ]
+        );
+        
+        return json_decode($response->getBody(), true);
+    }
+
 }
