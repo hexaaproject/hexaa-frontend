@@ -156,15 +156,17 @@ abstract class BaseResource
     protected function postCall(string $path, array $data): ResponseInterface
     {
         $response = $this->client->post(
-          $path,
-          [
-            'json'    => $data,
-            'headers' => $this->getHeaders(),
-          ]
+            $path,
+            [
+                'json' => $data,
+                'headers' => $this->getHeaders(),
+            ]
         );
         if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 204) {
             throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
         }
+        return $response;
+    }
     // FIXME átrakni az entitlementpacksba
     public function entitlementpackspublic() {
         $response = $this->client->get(
@@ -181,9 +183,10 @@ abstract class BaseResource
     public function getAllAttributeSpecs(string $verbose = "normal") {
         $response = $this->client->get(
                 'attributespecs', [
-            'headers' => $this->getHeaders(),
-            'query' => [
-            ],
+                    'headers' => $this->getHeaders(),
+                    'query' => [
+                        'verbose' => $verbose
+                        ],
                 ]
         );
         return json_decode($response->getBody(), true);
