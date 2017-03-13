@@ -36,7 +36,8 @@
     "components/jquery": "^3.1",
     "twbs/bootstrap": "^3.3",
     "mervick/material-design-icons": "^2.2",
-    "eightpoints/guzzle-bundle": "^5.3"
+    "eightpoints/guzzle-bundle": "^5.3",
+    "webfontkit/open-sans": "^1.0"
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",
