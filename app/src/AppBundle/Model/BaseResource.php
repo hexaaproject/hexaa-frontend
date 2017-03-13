@@ -121,12 +121,10 @@ abstract class BaseResource
         return json_decode($response->getBody(), true);
     }
 
-    protected function patchCall(string $path, array $data): ResponseInterface
-    {
-        $response = $this->client->put(
-          $path,
-          [
-            'json'    => $data,
+    protected function patchCall(string $path, array $data): ResponseInterface {
+        $response = $this->client->patch(
+                $path, [
+            'json' => $data,
             'headers' => $this->getHeaders(),
           ]
         );
@@ -167,7 +165,38 @@ abstract class BaseResource
         if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 204) {
             throw new \Exception('Bad request'); // TODO: exception type, maybe chaining
         }
+    // FIXME átrakni az entitlementpacksba
+    public function entitlementpackspublic() {
+        $response = $this->client->get(
+                'entitlementpacks' . '/' . 'public', [
+            'headers' => $this->getHeaders(),
+            'query' => [
+            ],
+                ]
+        );
 
-        return $response;
+        return json_decode($response->getBody(), true);
     }
+    // FIXME átrakni a attributespecbe
+    public function getAllAttributeSpecs(string $verbose = "normal") {
+        $response = $this->client->get(
+                'attributespecs', [
+            'headers' => $this->getHeaders(),
+            'query' => [
+            ],
+                ]
+        );
+        return json_decode($response->getBody(), true);
+    }
+
+    public function getEntityIds() {
+        $response = $this->client->get(
+                'entityids', [
+            'headers' => $this->getHeaders()
+                ]
+        );
+
+        return json_decode($response->getBody(), true);
+    }
+
 }

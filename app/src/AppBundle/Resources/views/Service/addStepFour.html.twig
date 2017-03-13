@@ -2,23 +2,34 @@
 
 {% block title %}Add service{% endblock %}
 
+{% block stylesheets %}
+    {% stylesheets 'css/createservice.css'
+                   'css/accordions.css'
+                    filter='cssrewrite' 
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block body %}
-    <h2>Create service</h2>
-    Ahhoz hogy a szolgáltatásod jogköreit publikálhasd a szervezeteknek, jogosultságcsomagba kell tenned őket.
     <form action="{{ path('app_service_addstepfive')}}" method="POST" role="form">
-        <a href="{{ path('app_service_addstepthree') }}" type="button" class="btn btn-default">Back</a>
-        <button type="submit" class="btn btn-primary">Next</button>
-        <div class="progress" data-step="4">progressbar 4</div>
-        <button class="accordion">permission set1</button>
-        <div class="panel">
-            <p>Lorem ipsum...</p>
+
+        <div class="formcontainer" style="text-align:center; width:800px">
+            <div class="header" style="height:50px">
+                <div class="title pull-left" style="padding-top:10px">Create service </div>
+                <button type="submit" class="btnhexaa btn-blue btnhexaa-md pull-right">Next</button>
+                <a href="{{ path('app_service_addstepthree') }}" type="button" class="btnhexaa btn-red btnhexaa-md pull-right">Back</a>
+            </div>
+            <div class="progress" style="width:800px">
+                <div class="progress-bar" role="progressbar" style="width:80%">
+                </div>
+            </div>
+            <div class="todo">Ahhoz, hogy a szolgáltatásod jogköreit publikálhasd a szervezeteknek, jogosultság csomagba kell tenned őket.</div>
+            <br>
+            <div class="form-group" style="width:800px">
+                
+                <button type="button" class="btnhexaa btn-blue btnhexaa-md"><i class="material-icons">add</i> New</button>
+            </div>
         </div>
-        
-        <button class="accordion">permission set2</button>
-        <div class="panel">
-            <p>Lorem ipsum...</p>
-        </div>
-        
-        <button class="btn btn-default">+ New</button>
     </form>
 {% endblock %}

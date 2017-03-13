@@ -58,4 +58,5 @@ class Service extends BaseResource
     public function getEntitlementPacks(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25) {
         return $this->getCollection($this->pathName.'/'.$id.'/entitlementpacks', $verbose, $offset, $pageSize);
     }
+    
 }

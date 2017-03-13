@@ -7,15 +7,131 @@
             'css/panel.css'
             filter='cssrewrite'
         %}
-            <link rel="stylesheet" href="{{ asset_url }}" />
+        <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
+    <script>
+        function property() {
+            $(".propertyblocknoedit")[0].style.display = "none";
+            $(".sendbutton")[0].style.display = "inline";
+            $(".propertyblockedit")[0].style.display = "inline";
+        }
 
+        function owner() {
+            $(".ownerblocknoedit")[0].style.display = "none";
+            $(".sendownerbutton")[0].style.display = "inline";
+            $(".ownerblockedit")[0].style.display = "inline";
+        }
+        
+        function privacy() {
+            $(".privacyblocknoedit")[0].style.display = "none";
+            $(".sendprivacybutton")[0].style.display = "inline";
+            $(".privacyblockedit")[0].style.display = "inline";
+        }
+        function edit() {
+            /*  $(".sendbutton")[0].style.display = "inline";
+             $("#service_properties_serviceName").removeAttr('disabled');
+             $("#service_properties_serviceDescription").removeAttr('disabled');
+             $("#service_properties_serviceURL").removeAttr('disabled');
+             $("#service_properties_serviceSAML").removeAttr('disabled');*/
+        }
 
-    <div class="row">
-        <div class="col-md-10 col-md-offset-2">
-            {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox }) }}
+    </script>
+
+    <div class="propertyblockedit" id="propertiespanel" style="display:none">
+        {{ form_start(propertiesform) }}
+        <div class="header" style="padding-top:0.5em">
+            Properties
+            <button type="submit" class="sendbutton pull-right" style="display:none"><i class="material-icons">done</i></button>
+            <button type="button" class="editbutton" style="display: inline" onclick="edit()"><i class="material-icons">create</i></button>
+
         </div>
+        <div>
+            {{ form_row(propertiesform.serviceName) }}
+        </div>
+        <div>
+            {{ form_row(propertiesform.serviceDescription) }}
+        </div>
+        <div>
+            {{ form_row(propertiesform.serviceURL) }}
+        </div>
+        <div>
+            {{ form_row(propertiesform.serviceSAML) }}
+        </div>
+        {{ form_end(propertiesform) }}
     </div>
+    
+    <div class="ownerblockedit" id="propertiespanel"  style="display:none">
+        {{ form_start(ownerform) }}
+        <div class="header" style="padding-top:0.5em">
+            Owner details
+            <button type="submit" class="sendownerbutton pull-right" style="display:none"><i class="material-icons">done</i></button>
+            <button type="button" class="editbutton" style="display: inline" onclick="editowner()"><i class="material-icons">create</i></button>
+        </div>
+        <div>
+            {{ form_row(ownerform.serviceOwnerName) }}
+        </div>
+        <div>
+            {{ form_row(ownerform.serviceOwnerShortName) }}
+        </div>
+        <div>
+            {{ form_row(ownerform.serviceOwnerDescription) }}
+        </div>
+        <div>
+            {{ form_row(ownerform.serviceOwnerURL) }}
+        </div>
+        {{ form_end(ownerform) }}
+    </div>
+   
+    <div class="privacyblockedit" id="propertiespanel"  style="display:none">
+        {{ form_start(privacyform) }}
+        <div class="header" style="padding-top:0.5em">
+            Privacy Information
+            <button type="submit" class="sendprivacybutton pull-right" style="display:none"><i class="material-icons">done</i></button>
+            <button type="button" class="editbutton" style="display: inline" onclick="editprivacy()"><i class="material-icons">create</i></button>
+        </div>
+        <div>
+            {{ form_row(privacyform.servicePrivacyURL) }}
+        </div>
+        <div>
+            {{ form_row(privacyform.servicePrivacyDescription) }}
+        </div>
+        {{ form_end(privacyform) }}
+    </div>
+   
+
+    <br>
+    <div class="propertyblocknoedit" id="row">
+        {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()" }) }}
+    </div>
+    <br>
+    <div class="ownerblocknoedit" id="row">
+        {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()" }) }}
+    </div>
+    <br>
+    <div class="privacyblocknoedit" id="row">
+        {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy()" }) }}
+    </div>
+
+    {# <form action="{{ path('app_service_properties', {id: service.id}) }}" method="POST" role="form">
+         <div class="row">
+             <div class="col-md-10 col-md-offset-2">
+                 {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property" }) }}
+             </div>
+         </div>
+         <br>
+         <div class="row">
+             <div class="col-md-10 col-md-offset-2">
+                 {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner" }) }}
+             </div>
+         </div>
+         <br>
+         <div class="row">
+             <div class="col-md-10 col-md-offset-2">
+                 {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy" }) }}
+             </div>
+         </div>
+     </form> #}
+
 
 {% endblock %}

@@ -8,6 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Form\ServicePropertiesType;
+use AppBundle\Form\ServiceOwnerType;
+use AppBundle\Form\ServicePrivacyType;
 
 /**
  * @Route("/service")
@@ -49,13 +52,12 @@ class ServiceController extends Controller {
                         )
         );
     }
-    
-     /**
+
+    /**
      * @Route("/addStepOne")
      * @Template()
      */
-    public function addStepOneAction(Request $request)
-    {
+    public function addStepOneAction(Request $request) {
         return $this->render('AppBundle:Service:addStepOne.html.twig', array());
     }
 
@@ -63,26 +65,31 @@ class ServiceController extends Controller {
      * @Route("/addStepTwo")
      * @Template()
      */
-    public function addStepTwoAction(Request $request)
-    {
-        return $this->render('AppBundle:Service:addStepTwo.html.twig', array());
+    public function addStepTwoAction(Request $request) {
+        $verbose = "expanded";
+        $attributespecs = $this->get('service')->getAllAttributeSpecs($verbose);
+        return $this->render('AppBundle:Service:addStepTwo.html.twig', array(
+                    'attributes' => $attributespecs,
+        ));
     }
 
     /**
      * @Route("/addStepThree")
      * @Template()
      */
-    public function addStepThreeAction(Request $request)
-    {
-        return $this->render('AppBundle:Service:addStepThree.html.twig', array());
+    public function addStepThreeAction(Request $request) {
+        $verbose = "expanded";
+        $permissionsset = $this->get('service')->entitlementpackspublic($verbose);
+        return $this->render('AppBundle:Service:addStepThree.html.twig', array(
+                        //'permissions_accordion_set' => $this->permissionsetToAccordion($permissionsset)
+        ));
     }
 
     /**
      * @Route("/addStepFour")
      * @Template()
      */
-    public function addStepFourAction(Request $request)
-    {
+    public function addStepFourAction(Request $request) {
         return $this->render('AppBundle:Service:addStepFour.html.twig', array());
     }
 
@@ -90,8 +97,7 @@ class ServiceController extends Controller {
      * @Route("/addStepFive")
      * @Template()
      */
-    public function addStepFiveAction(Request $request)
-    {
+    public function addStepFiveAction(Request $request) {
         return $this->render('AppBundle:Service:addStepFive.html.twig', array());
     }
 
@@ -108,12 +114,75 @@ class ServiceController extends Controller {
                         )
         );
     }
-
+    
     /**
      * @Route("/properties/{id}")
      * @Template()
      */
-    public function propertiesAction($id) {
+    public function propertiesAction($id, Request $request) {
+        
+        $entityids = $this->get('service')->getEntityIds();
+        $entityidskeys = array_keys($entityids);
+        $choicearray = array();
+        foreach ($entityidskeys as $entityID) {
+           $choicearray[$entityID] = $entityID; 
+        }
+
+        dump($choicearray);
+    
+        $propertiesDatas = array();
+        $service = $this->getService($id);
+        $propertiesDatas['serviceName'] = $service['name'];
+        $propertiesDatas['serviceDescription'] = $service['description'];
+        $propertiesDatas['serviceURL'] = $service['url'];
+        $propertiesDatas['serviceSAML'] = $service['entityid'];
+        $propertiesDatas['serviceOwnerName'] = $service['org_name'];
+        $propertiesDatas['serviceOwnerDescription'] = $service['org_description'];
+        $propertiesDatas['serviceOwnerURL'] = $service['org_url'];
+        $propertiesDatas['serviceOwnerShortName'] = $service['org_short_name'];
+        $propertiesDatas['servicePrivacyURL'] = $service['priv_url'];
+        $propertiesDatas['servicePrivacyDescription'] = $service['priv_description'];
+        $propertiesDatas['serviceEntityIDs'] = $choicearray;
+
+        $formproperties = $this->createForm(ServicePropertiesType::class, array('properties' => $propertiesDatas));
+
+        $formproperties->handleRequest($request);
+
+        if ($formproperties->isSubmitted() && $formproperties->isValid()) {
+
+            $data = $request->request->all();
+            $modified = array('name' => $data['service_properties']['serviceName'], 'entityid' => $data['service_properties']['serviceSAML'], 'description' => $data['service_properties']['serviceDescription'], 'url' => $data['service_properties']['serviceURL']);
+            dump($modified);
+            $this->get('service')->patch($id, $modified);
+            return $this->redirect($request->getUri());
+        }
+
+        $formowner = $this->createForm(ServiceOwnerType::class, array('properties' => $propertiesDatas));
+
+        $formowner->handleRequest($request);
+
+        if ($formowner->isSubmitted() && $formowner->isValid()) {
+
+            $data = $request->request->all();
+            dump($data);
+            $modified = array('org_name' => $data['service_owner']['serviceOwnerName'], 'org_short_name' => $data['service_owner']['serviceOwnerShortName'], 'org_description' => $data['service_owner']['serviceOwnerDescription'], 'org_url' => $data['service_owner']['serviceOwnerURL']);
+            $this->get('service')->patch($id, $modified);
+            return $this->redirect($request->getUri());
+        }
+
+        $formprivacy = $this->createForm(ServicePrivacyType::class, array('properties' => $propertiesDatas));
+
+        $formprivacy->handleRequest($request);
+
+        if ($formprivacy->isSubmitted() && $formprivacy->isValid()) {
+
+            $data = $request->request->all();
+            dump($data);
+            $modified = array('priv_url' => $data['service_privacy']['servicePrivacyURL'], 'priv_description' => $data['service_privacy']['servicePrivacyDescription']);
+            $this->get('service')->patch($id, $modified);
+            return $this->redirect($request->getUri());
+        }
+
         return $this->render(
                         'AppBundle:Service:properties.html.twig', array(
                     'organizations' => $this->getOrganizations(),
@@ -121,7 +190,12 @@ class ServiceController extends Controller {
                     'service' => $this->getService($id),
                     'main' => $this->getService($id),
                     'propertiesbox' => $this->getPropertiesBox(),
-                    'servsubmenubox' => $this->getServSubmenuPoints()
+                    'privacybox' => $this->getPrivacyBox(),
+                    'ownerbox' => $this->getOwnerBox(),
+                    'servsubmenubox' => $this->getservsubmenupoints(),
+                    'propertiesform' => $formproperties->createView(),
+                    'ownerform' => $formowner->createView(),
+                    'privacyform' => $formprivacy->createView()
                         )
         );
     }
@@ -145,10 +219,26 @@ class ServiceController extends Controller {
             "Description" => "description",
             "Home page" => "url",
             "SAML SP Entity ID" => "entityid",
-            "Created" => "created_at",
-            "Last updated" => "updated_at"
         );
 
+        return $propertiesbox;
+    }
+
+    private function getPrivacyBox() {
+        $propertiesbox = array(
+            "URL" => "priv_url",
+            "Description" => "priv_description",
+        );
+        return $propertiesbox;
+    }
+
+    private function getOwnerBox() {
+        $propertiesbox = array(
+            "Name" => "org_name",
+            "Short name" => "org_short_name",
+            "Description" => "org_description",
+            "Home page" => "org_url"
+        );
         return $propertiesbox;
     }
 
@@ -181,13 +271,12 @@ class ServiceController extends Controller {
                         )
         );
     }
-    
+
     /**
      * @Route("/removemanagers/{id}")
      * @Template()
      */
-    public function removeManagersAction($id, Request $request)
-    {
+    public function removemanagersAction($id, Request $request) {
         try {
             # do something
             $this->get('session')->getFlashBag()->add('success', 'Siker');

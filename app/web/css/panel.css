@@ -1,23 +1,45 @@
-.propertiespanel{
-    border: 2px solid #61AFC5;
-    width:100%;
+#propertiespanelnoedit{
+    width: 930px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    border: 2px solid #61AFC5;
+    margin-left: 15px;
+}
+
+#propertiespanel{
+    width: 930px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-left: 15px;
 }
 
 .propname {
     display: inline;
-    float: left; 
+    width: 250px;
     font-weight: bold;
     padding-left: 1.75em;
     padding-bottom: 0.5em;
+    float:left;
+    text-align: left;
 }
 
-.propdescription {
+.areaname {
+    display: inline;
+    width: 243px;
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+    float:left;
+    text-align: left;
+}
+
+#propdescription {
     text-align: left;
     padding-bottom: 0.5em;
-    padding-left: 11em;
-    padding-right: 1em;
+}
+
+#areadescription {
+    text-align: left;
 }
 
 .header {
@@ -25,16 +47,63 @@
     color: #61AFC5;
     font-size: x-large;
     font-weight: bold;
-    padding-left: 1em;
+    padding-left: 20px;
     padding-bottom: 0.5em;
 }
 
 .editbutton{
-    background: url(../img/red_pencil.svg) no-repeat;
     cursor:pointer;
-    width:24px;
-    height:25px;
     border:none;
-    margin-right: 0.5em;
     float:right;
+    background-color: white;
+    color: #ec666a;
+}
+
+.sendbutton, .sendownerbutton, .sendprivacybutton{
+    border: none;
+    background-color: white;
+    color: #61AFC5;
+}
+
+.form-control {
+    width:500px; 
+    display:inline;
+    margin-right:180px;
+}
+
+.container{
+    text-align: left;
+}
+
+.formlabel{
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    padding-left:20px;
+}
+
+#row{
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+form[name="service_properties"] { 
+    border:2px solid #61AFC5;
+    height:280px;
+}
+
+form[name="service_owner"] { 
+    border:2px solid #61AFC5;
+    width: 100%;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+form[name="service_privacy"] { 
+      border:2px solid #61AFC5; 
+}
+
+select[multiple]{
+    height: 90px;
 }

@@ -17,16 +17,61 @@ return $this->render(
             )
         );
 #}
+{#<script>
+    function {{changebutton}}_edit(){
+        $(".{{changeedit}}").prop('readonly', false);
+        $(".{{changebutton}}")[0].style.display="inline";
+    }
+          
+</script>
 <div class="propertiespanel">
     <div class="header">
         {{heading}}
-        <button class="editbutton" style="display: {{buttonappear}}"></button>
+        <button type="submit" class="{{changebutton}} pull-right" id="sendbutton"  style="display:none"><i class="material-icons">done</i></button>
+        <button type="button" class="editbutton" style="display: {{buttonappear}}" onclick="{{changebutton}}_edit()"><i class="material-icons">create</i></button>
+   
     </div>
     {% for key, value in items %}
         {% if main[value]%}
             <div>
                 <div class="propname">{{key}}</div>
-                <div class="propdescription" >{{main[value]}}</div>
+                <textarea class="{{changeedit}}" id="propdescription" readonly cols="30" rows="1" name="{{key}}"> {{main[value]}} </textarea>
+            </div>
+        {% else %}
+             <div>
+                <div class="propname">{{key}}</div>
+                <textarea class="{{changeedit}}" id="propdescription" readonly cols="30" rows="1" name="{{key}}"> </textarea>               
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>#}
+
+<div id="propertiespanelnoedit">
+    <div class="header">
+        {{heading}}
+        <button type="button" class="editbutton" style="display: {{buttonappear}}" onclick="{{changebutton}}"><i class="material-icons">create</i></button>
+    </div>
+    {% for key, value in items %}
+        {% if main[value]%}
+            <div>
+                {% if value == 'description' %}
+                    <div class="areaname">{{key}}</div>
+                    <textarea class="{{changeedit}}" id="areadescription" cols="80" rows="1" style="border:none" readonly="true"> {{main[value]}} </textarea>
+                {% else %}
+                    <div class="propname">{{key}}</div>
+                    <div class="{{changeedit}}" id="propdescription"> {{main[value]}} </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div>
+                {% if key == 'Organization description' %}
+                    <div class="areaname">{{key}}</div>
+                    <textarea class="{{changeedit}}" id="areadescription" cols="80" rows="1" style="border:none" readonly="true"> </textarea>
+                {% else %}
+                    <div class="propname">{{key}}</div>
+                    <br>
+                    <div class="{{changeedit}}" id="propdescription"> </div>
+                {% endif %}              
             </div>
         {% endif %}
     {% endfor %}
