@@ -1,0 +1,176 @@
+---
+assetic:
+    assets:
+        opensans_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/open-sans.css"
+            filters: [cssrewrite]
+        opensans_bold_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-bold.eot"
+            output: "fonts/opensans-bold.eot"
+        opensans_bold_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-bold.svg"
+            output: "fonts/opensans-bold.svg"
+        opensans_bold_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-bold.ttf"
+            output: "fonts/opensans-bold.ttf"
+        opensans_bold_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-bold.woff"
+            output: "fonts/opensans-bold.woff"
+
+        opensans_bolditalic_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-bolditalic.eot"
+            output: "fonts/opensans-bolditalic.eot"
+        opensans_bolditalic_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-bolditalic.svg"
+            output: "fonts/opensans-bolditalic.svg"
+        opensans_bolditalic_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-bolditalic.ttf"
+            output: "fonts/opensans-bolditalic.ttf"
+        opensans_bolditalic_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-bolditalic.woff"
+            output: "fonts/opensans-bolditalic.woff"
+
+        opensans_extrabold_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-extrabold.eot"
+            output: "fonts/opensans-extrabold.eot"
+        opensans_extrabold_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-extrabold.svg"
+            output: "fonts/opensans-extrabold.svg"
+        opensans_extrabold_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-extrabold.ttf"
+            output: "fonts/opensans-extrabold.ttf"
+        opensans_extrabold_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-extrabold.woff"
+            output: "fonts/opensans-extrabold.woff"
+
+        opensans_extrabolditalic_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-extrabolditalic.eot"
+            output: "fonts/opensans-extrabolditalic.eot"
+        opensans_extrabolditalic_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-extrabolditalic.svg"
+            output: "fonts/opensans-extrabolditalic.svg"
+        opensans_extrabolditalic_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-extrabolditalic.ttf"
+            output: "fonts/opensans-extrabolditalic.ttf"
+        opensans_extrabolditalic_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-extrabolditalic.woff"
+            output: "fonts/opensans-extrabolditalic.woff"
+
+        opensans_italic_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-italic.eot"
+            output: "fonts/opensans-italic.eot"
+        opensans_italic_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-italic.svg"
+            output: "fonts/opensans-italic.svg"
+        opensans_italic_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-italic.ttf"
+            output: "fonts/opensans-italic.ttf"
+        opensans_italic_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-italic.woff"
+            output: "fonts/opensans-italic.woff"
+
+        opensans_light_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-light.eot"
+            output: "fonts/opensans-light.eot"
+        opensans_light_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-light.svg"
+            output: "fonts/opensans-light.svg"
+        opensans_light_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-light.ttf"
+            output: "fonts/opensans-light.ttf"
+        opensans_light_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-light.woff"
+            output: "fonts/opensans-light.woff"
+
+        opensans_lightitalic_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-lightitalic.eot"
+            output: "fonts/opensans-lightitalic.eot"
+        opensans_lightitalic_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-lightitalic.svg"
+            output: "fonts/opensans-lightitalic.svg"
+        opensans_lightitalic_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-lightitalic.ttf"
+            output: "fonts/opensans-lightitalic.ttf"
+        opensans_lightitalic_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-lightitalic.woff"
+            output: "fonts/opensans-lightitalic.woff"
+
+        opensans_regular_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-regular.eot"
+            output: "fonts/opensans-regular.eot"
+        opensans_regular_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-regular.svg"
+            output: "fonts/opensans-regular.svg"
+        opensans_regular_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-regular.ttf"
+            output: "fonts/opensans-regular.ttf"
+        opensans_regular_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-regular.woff"
+            output: "fonts/opensans-regular.woff"
+
+        opensans_semibold_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-semibold.eot"
+            output: "fonts/opensans-semibold.eot"
+        opensans_semibold_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-semibold.svg"
+            output: "fonts/opensans-semibold.svg"
+        opensans_semibold_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-semibold.ttf"
+            output: "fonts/opensans-semibold.ttf"
+        opensans_semibold_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-semibold.woff"
+            output: "fonts/opensans-semibold.woff"
+
+        opensans_semibolditalic_eot:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-semibolditalic.eot"
+            output: "fonts/opensans-semibolditalic.eot"
+        opensans_semibolditalic_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-semibolditalic.svg"
+            output: "fonts/opensans-semibolditalic.svg"
+        opensans_semibolditalic_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-semibolditalic.ttf"
+            output: "fonts/opensans-semibolditalic.ttf"
+        opensans_semibolditalic_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/webfontkit/open-sans/fonts/opensans-semibolditalic.woff"
+            output: "fonts/opensans-semibolditalic.woff"
