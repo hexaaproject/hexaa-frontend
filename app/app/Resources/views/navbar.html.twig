@@ -17,12 +17,14 @@
             </span>
         </div>
         <div class="panelaccordionhamburger">
-            {% for organization in organizations.items %}
-                <div class="link">
-                    <a href="{{ path('app_organization_show', {id: organization.id}) }}"
-                       class="hamburgercontentpanelname">{{ organization.name|e }}</a>
-                </div>
+            {% if organizations is defined %}
+                {% for organization in organizations.items %}
+                    <div class="link">
+                        <a href="{{ path('app_organization_show', {id: organization.id}) }}"
+                           class="hamburgercontentpanelname">{{ organization.name|e }}</a>
+                    </div>
             {% endfor %}
+            {% endif %}
         </div>
 
         <div class="accordionhamburger" id="servaccordion">
@@ -31,12 +33,14 @@
             </span>
         </div>
         <div class="panelaccordionhamburger">
-            {% for service in services.items %}
-                <div class="link">
-                    <a href="{{ path('app_service_show', {id: service.id}) }}"
-                       class="hamburgercontentpanelname">{{ service.name|e }}</a>
-                </div>
-            {% endfor %}
+            {% if services is defined %}
+                {% for service in services.items %}
+                    <div class="link">
+                        <a href="{{ path('app_service_show', {id: service.id}) }}"
+                           class="hamburgercontentpanelname">{{ service.name|e }}</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
 
         <div class="link">

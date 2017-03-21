@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    {% if clientexception %}
+    {% if clientexception is defined %}
         <div id="exceptionclient">
             <label>ClientException</label>
             <br>
@@ -24,7 +24,7 @@
             <br>
         </div>
     {% endif %}
-    {% if serverexception %}
+    {% if serverexception is defined %}
         <div id="exceptionserver">
             <label>ServerException</label>
             <br>
