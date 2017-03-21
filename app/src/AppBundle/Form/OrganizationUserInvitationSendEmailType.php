@@ -30,6 +30,15 @@ class OrganizationUserInvitationSendEmailType extends AbstractType
                 )
             )
             ->add(
+                'role_id',
+                TextType::class,
+                array(
+                    "attr" => array(
+                        "hidden" => true
+                    )
+                )
+            )
+            ->add(
                 'message',
                 TextareaType::class,
                 array(
