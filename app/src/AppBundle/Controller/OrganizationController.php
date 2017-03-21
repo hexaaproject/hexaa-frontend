@@ -204,7 +204,14 @@ class OrganizationController extends Controller
 
 
         $form = $this->createCreateInvitationForm($organization);
-        $sendInEmailForm = $this->createForm(OrganizationUserInvitationSendEmailType::class);
+        $sendInEmailForm = $this->createForm(
+            OrganizationUserInvitationSendEmailType::class,
+            array(),
+            array(
+                "action" => $this->generateUrl("app_organization_sendinvitation", array("id" => $id)),
+                "method" => "POST"
+            )
+        );
 
         $form->handleRequest($request);
 
@@ -225,7 +232,7 @@ class OrganizationController extends Controller
                 throw $this->createNotFoundException('Invitation not found at backend');
             }
 
-            $invite_link = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token']), UrlGeneratorInterface::ABSOLUTE_URL);
+            $invite_link = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token'], "organizationid" => $id), UrlGeneratorInterface::ABSOLUTE_URL);
             // emails
             //$data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
 
@@ -299,8 +306,8 @@ class OrganizationController extends Controller
             $data = $form->getData();
 
             $data_to_backend = $data;
-            $data_to_backend['organization'] = $id;
             $invitationResource = $this->get('invitation');
+            $data_to_backend['organization'] = $id;
             $invite = $invitationResource->sendInvitation($data_to_backend);
 
             $headers = $invite->getHeaders();
@@ -312,9 +319,7 @@ class OrganizationController extends Controller
                 throw $this->createNotFoundException('Invitation not found at backend');
             }
 
-            $invite_link = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token']), UrlGeneratorInterface::ABSOLUTE_URL);
-            // emails
-            //$data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
+            $invite_link = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token'], "organizationid" => $id), UrlGeneratorInterface::ABSOLUTE_URL);
 
             return new JsonResponse(array('link' => $invite_link), 200);
         }
@@ -366,16 +371,73 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/resolveInvitationToken/{token}")
+     * @Route("/sendInvitation/{id}")
+     * @Method("POST")
      * @Template()
      */
-    public function resolveInvitationTokenAction($token)
+    public function sendInvitationAction(Request $request, $id)
+    {
+        $organization = $this->getOrganization($id);
+        $form = $this->createForm(OrganizationUserInvitationSendEmailType::class);
+
+        $form->handleRequest($request);
+        $data = $form->getData(); // TODO majd nem kell
+        dump($request, $data);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            if (! $data['emails']) { // there is no email, we are done
+                return $this->redirect($this->generateUrl('app_organization_users', array("id" => $id)));
+            }
+            $role = $this->getRole($data['role_id']);
+            $emails = explode(',', preg_replace('/\s+/', '', $data['emails']));
+            $config = $this->getParameter('invitation_config');
+            $mailer = $this->get('mailer');
+            $link = $data['link'];
+            if ($data['landing_url']) {
+                $link = $data['link'] . '?landing_url=' . $data['landing_url'];
+            }
+            $message = $mailer->createMessage()
+                ->setSubject($config['subject'])
+                ->setFrom($config['from'])
+                ->setCc($emails)
+                ->setReplyTo($config['reply-to'])
+                ->setBody(
+                    $this->render(
+                        'AppBundle:Organization:invitationEmail.txt.twig',
+                        array(
+                            'link' => $link,
+                            'organization' => $organization,
+                            'footer' => $config['footer'],
+                            'role' => $role,
+                            'message' => $data['message']
+                        )
+                    ),
+                    'text/plain'
+                );
+
+            $mailer->send($message);
+
+            $this->get('session')->getFlashBag()->add('success', 'Invitations sent succesful.');
+            return $this->redirect($this->generateUrl('app_organization_show', array("id" => $id)));
+        }
+        dump($form);exit;
+
+    }
+
+
+    /**
+     * @Route("/resolveInvitationToken/{token}/{organizationid}/{landing_url}")
+     * @Template()
+     */
+    public function resolveInvitationTokenAction($token, $organizationid, $landing_url = null)
     {
         $invitationResource = $this->get('invitation');
-        $invitation = $invitationResource->accept($token);
-        $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-
-        return $this->redirect('app_organization_show', array("id" => $organizationId));
+        $invitationResource->accept($token);
+        $this->get('session')->getFlashBag()->add('error', 'NEM TODO Hiba a feldolgozás során');
+        if ($landing_url) {
+            return $this->redirect($this->generateUrl($landing_url));
+        }
+        return $this->redirect($this->generateUrl('app_organization_show', array("id" => $organizationid)));
     }
 
     /**
@@ -532,6 +594,11 @@ class OrganizationController extends Controller
     private function getEntitlementPack($service)
     {
         return $this->get('service')->getEntitlementPacks($service['id'])['items'];
+    }
+
+    private function getRole($id)
+    {
+        return $this->get('role')->get($id);
     }
 
     private function rolesToAccordion($roles)

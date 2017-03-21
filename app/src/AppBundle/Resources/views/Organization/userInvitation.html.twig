@@ -37,7 +37,7 @@
                 ~ form_row(sendInEmailForm.emails)
                 ~ form_row(sendInEmailForm.message)
                 ~ form_row(sendInEmailForm.landing_url)
-                ~ form_end(inviteForm)
+                ~ form_end(sendInEmailForm)
     })
 }}
 <script>
@@ -53,7 +53,6 @@
                 data: $(form).serialize()
             })
             .done(function (data) {
-                console.log(data);
                 callback(data);
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
@@ -90,11 +89,13 @@
         $(document).on('click', '.modal#invite_1 button[type=submit]', function (event) {
             event.preventDefault();
             $(this).closest('.modal-footer').append('<i class="mdi mdi-sync"></i>');
+            $('#organization_user_invitation_send_email_role_id').val($('#organization_user_invitation_role').val());
             submitFormByAjax($('form[name=organization_user_invitation]'), invitationDone);
         });
 
         $(document).on('click', '.modal#invite_2 button[type=submit]', function (event) {
             event.preventDefault();
+            $('form[name=organization_user_invitation_send_email]').submit();
         });
 
         $(document).on('click', '.modal#invite_2 button#rightbutton', function (event) {

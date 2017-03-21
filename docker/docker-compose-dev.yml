@@ -1,7 +1,7 @@
 version: '2'
 services:
   app:
-    image: szabogyula/saml-webapp-runner:ubuntu16.04
+    image: szabogyula/saml-webapp-runner
     volumes:
         - ../app/:/var/www/project
     ports:
@@ -14,8 +14,8 @@ services:
         - project.local:127.0.0.1
     container_name: project.local
     environment:
-        - SYMFONY__CACHE_DIR=/tmp/cache
-        - SYMFONY__LOGS_DIR=/tmp/logs
+        - SYMFONY__CACHE_DIR=/tmp/symfony/cache
+        - SYMFONY__LOGS_DIR=/tmp/symfony/logs
         - LOGFILES=/tmp/logs/dev/dev.log
   hexaa-backend:
     image: hexaaproject/hexaa-backend:for-dev
@@ -63,5 +63,5 @@ services:
     image: mailhog/mailhog
     container_name: smtp
     ports:
-        - "25:1025"
+        - "1025:25"
         - "8025:8025"
