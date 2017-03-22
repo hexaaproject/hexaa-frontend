@@ -1,44 +1,61 @@
-@org
+@org @invitation
 Feature: When I go to organizations
   As an authenticated user
   I want to invite user to my organization
 
   Background:
-    Given I am on "/Shibboleth.sso/Login"
+    Given mailhog inbox is empty
+     And I am on "/Shibboleth.sso/Login"
     Then I wait for "Username" to appear
     When I fill in "username" with "e"
-    And I fill in "password" with "pass"
-    And I press "Login"
+     And I fill in "password" with "pass"
+     And I press "Login"
     Then I should be on "/"
     Then I wait for "Welcome to" to appear
-    And I should see "employee@project.local"
-    And I follow "testOrg1"
+     And I should see "employee@project.local"
+     And I follow "testOrg1"
     Then I wait for "Users" to appear
-    And I follow "Users"
+     And I follow "Users"
     Then I wait for "Invite" to appear
 
   Scenario: Invite a user to "Test role 1"
     When I press "Invite"
-    And I wait for "Create invitation" to appear
-    When I fill in the following:
-      | Message     | Gyere hozzám tagnak |
-      | Limit       | 1                   |
-      | Landing url | http://www.hup.hu   |
+     And I wait for "Create invitation" to appear
     When I select "Test role 1" from "organization_user_invitation_role"
-    When I select "Magyar" from "organization_user_invitation_locale"
-    And I press "Next"
-    And I wait for "Start of accept period" to appear
+     And I press "Create"
+     And I wait for "Your invitation is done" to appear
+     And I press "Done"
+     And I wait for "Your invitation is done" to disappear
 
-    When I select "2017" from "organization_user_invitation_start_date_year"
-    And I select "Mar" from "organization_user_invitation_start_date_month"
-    And I select "1" from "organization_user_invitation_start_date_day"
-    And I select "2017" from "organization_user_invitation_end_date_year"
-    And I select "Apr" from "organization_user_invitation_end_date_month"
-    And I select "1" from "organization_user_invitation_end_date_day"
-          # TODO, 500-zal száll el a backend And I fill in "emails" with "alma@gmail.com, korte@gmail.com"
-    And I press "submitform"
-    And I wait for "Your invitation is ready" to appear
+  Scenario: Invite and send email to "alice@example.com"
+    When I press "Invite"
+     And I wait for "Create invitation" to appear
+    When I select "Test role 1" from "organization_user_invitation_role"
+     And I press "Create"
+     And I wait for "Your invitation is done" to appear
+    When I fill in the following:
+      | Send invitation by email | alice@example.com   |
+      | Message                  | Gyere hozzám tagnak |
+      | Landing url              | http://www.hup.hu   |
+     And I press "Done"
+     And I wait for "Invitations sent succesfully." to appear
+    Then there is a mail to "alice@example.com"
+    Then there is 1 mails
+    Then there is a mail from "no_reply@hexaa.eduid.hu"
+    Then there is a mail that contains "Gyere hozzám tagnak"
 
-    When I press "Done"
-    And I wait for 1 seconds
-    Then I should not see "Your invitation is ready"
+  Scenario: Invalid email addresses
+    When I press "Invite"
+    And I wait for "Create invitation" to appear
+    When I select "Test role 1" from "organization_user_invitation_role"
+    And I press "Create"
+    And I wait for "Your invitation is done" to appear
+    When I fill in the following:
+      | Send invitation by email | alice@example.com, nemjóemailcím   |
+    And I press "Done"
+    And I wait for "does not comply with RFC 2822" to appear
+    Then there is 0 mails
+
+  Scenario: Invalid landing url
+
+  Scenario: Invalid date

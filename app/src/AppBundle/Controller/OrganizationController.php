@@ -381,14 +381,15 @@ class OrganizationController extends Controller
         $form = $this->createForm(OrganizationUserInvitationSendEmailType::class);
 
         $form->handleRequest($request);
-        $data = $form->getData(); // TODO majd nem kell
-        dump($request, $data);
         if ($form->isValid()) {
             $data = $form->getData();
             if (! $data['emails']) { // there is no email, we are done
                 return $this->redirect($this->generateUrl('app_organization_users', array("id" => $id)));
             }
-            $role = $this->getRole($data['role_id']);
+            $role = null;
+            if ($data['role_id']) {
+                $role = $this->getRole($data['role_id']);
+            }
             $emails = explode(',', preg_replace('/\s+/', '', $data['emails']));
             $config = $this->getParameter('invitation_config');
             $mailer = $this->get('mailer');
@@ -396,32 +397,33 @@ class OrganizationController extends Controller
             if ($data['landing_url']) {
                 $link = $data['link'] . '?landing_url=' . $data['landing_url'];
             }
-            $message = $mailer->createMessage()
-                ->setSubject($config['subject'])
-                ->setFrom($config['from'])
-                ->setCc($emails)
-                ->setReplyTo($config['reply-to'])
-                ->setBody(
-                    $this->render(
-                        'AppBundle:Organization:invitationEmail.txt.twig',
-                        array(
-                            'link' => $link,
-                            'organization' => $organization,
-                            'footer' => $config['footer'],
-                            'role' => $role,
-                            'message' => $data['message']
-                        )
-                    ),
-                    'text/plain'
-                );
+            try {
+                $message = $mailer->createMessage()
+                    ->setSubject($config['subject'])
+                    ->setFrom($config['from'])
+                    ->setCc($emails)
+                    ->setReplyTo($config['reply-to'])
+                    ->setBody(
+                        $this->render(
+                            'AppBundle:Organization:invitationEmail.txt.twig',
+                            array(
+                                'link' => $link,
+                                'organization' => $organization,
+                                'footer' => $config['footer'],
+                                'role' => $role,
+                                'message' => $data['message']
+                            )
+                        ),
+                        'text/plain'
+                    );
 
-            $mailer->send($message);
-
-            $this->get('session')->getFlashBag()->add('success', 'Invitations sent succesful.');
-            return $this->redirect($this->generateUrl('app_organization_show', array("id" => $id)));
+                $mailer->send($message);
+                $this->get('session')->getFlashBag()->add('success', 'Invitations sent succesfully.');
+            } catch (\Exception $e) {
+                $this->get('session')->getFlashBag()->add('error', 'Invitation sending failure. <br> Please send the invitation link manually to your partners. <br> The link is: <br><strong>' . $link . '</strong><br> The error was: <br> ' . $e->getMessage());
+            }
+            return $this->redirect($this->generateUrl('app_organization_users', array("id" => $id)));
         }
-        dump($form);exit;
-
     }
 
 
