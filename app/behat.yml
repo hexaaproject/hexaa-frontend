@@ -26,4 +26,5 @@ default:
             contexts:
                 - AppBundle\Features\Context\FeatureContext
                 - AppBundle\Features\Context\MyApiContext
+                - AppBundle\Features\Context\MailHogContext
                 - Knp\FriendlyContexts\Context\TableContext
