@@ -22,10 +22,11 @@ Feature: When I go to organizations
     When I press "Invite"
      And I wait for "Create invitation" to appear
     When I select "Test role 1" from "organization_user_invitation_role"
+     And I fill in "Landing url" with "https://www.hup.hu"
      And I press "Create"
      And I wait for "Your invitation is done" to appear
      And I press "Done"
-     And I wait for "Your invitation is done" to disappear
+     And I should not see "Your invitation is done"
 
   Scenario: Invite and send email to "alice@example.com"
     When I press "Invite"
@@ -36,7 +37,6 @@ Feature: When I go to organizations
     When I fill in the following:
       | Send invitation by email | alice@example.com   |
       | Message                  | Gyere hozzám tagnak |
-      | Landing url              | http://www.hup.hu   |
      And I press "Done"
      And I wait for "Invitations sent succesfully." to appear
     Then there is a mail to "alice@example.com"
