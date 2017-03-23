@@ -1,0 +1,12 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+{% block title %}Accept invitation{% endblock %}
+
+{% block body %}
+    <div class="container">
+    {% if error is defined %}
+        <div class="flash flash-error">
+            {{ error }}
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}

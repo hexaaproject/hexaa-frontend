@@ -41,17 +41,6 @@ class OrganizationUserInvitationSendEmailType extends AbstractType
                 )
             )
             ->add(
-                'landing_url',
-                UrlType::class,
-                array(
-                    "label" => false,
-                    "attr" => array(
-                        "placeholder" => "Landing url"
-                    ),
-                    "constraints" => new Constraints\Url()
-                )
-            )
-            ->add(
                 'emails',
                 TextareaType::class,
                 array(

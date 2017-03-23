@@ -10,6 +10,7 @@
         bodycontent: form_start(inviteForm)
                     ~ form_row(inviteForm.role)
                     ~ form_row(inviteForm.limit)
+                    ~ form_row(inviteForm.landing_url)
                     ~ form_row(inviteForm.start_date)
                     ~ form_row(inviteForm.end_date)
                     ~ form_end(inviteForm)
@@ -36,7 +37,6 @@
                 ~ '<div class="col-md-5"><button class="btnhexaa btn-blue btn-block copy" title="Copied!" type="button" data-clipboard-target="#organization_user_invitation_send_email_link" data-trigger="click">Copy</button></div>'
                 ~ form_row(sendInEmailForm.emails)
                 ~ form_row(sendInEmailForm.message)
-                ~ form_row(sendInEmailForm.landing_url)
                 ~ form_end(sendInEmailForm)
     })
 }}
@@ -105,15 +105,12 @@
         });
 
         $('#organization_user_invitation_send_email_message').hide();
-        $('#organization_user_invitation_send_email_landing_url').hide();
 
         $(document).on('keyup', '#organization_user_invitation_send_email_emails', function (event) {
             if ($('#organization_user_invitation_send_email_emails').val().length) {
                 $('#organization_user_invitation_send_email_message').show();
-                $('#organization_user_invitation_send_email_landing_url').show();
             } else {
                 $('#organization_user_invitation_send_email_message').hide();
-                $('#organization_user_invitation_send_email_landing_url').hide();
             }
         });
     });

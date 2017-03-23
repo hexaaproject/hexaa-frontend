@@ -319,7 +319,11 @@ class OrganizationController extends Controller
                 throw $this->createNotFoundException('Invitation not found at backend');
             }
 
-            $invite_link = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token'], "organizationid" => $id), UrlGeneratorInterface::ABSOLUTE_URL);
+            $landing_url = null;
+            if (! empty($data['landing_url'])) {
+                $landing_url = urlencode($data['landing_url']);
+            }
+            $invite_link = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token'], "organizationid" => $id, "landing_url" => $landing_url), UrlGeneratorInterface::ABSOLUTE_URL);
 
             return new JsonResponse(array('link' => $invite_link), 200);
         }
@@ -348,8 +352,7 @@ class OrganizationController extends Controller
             OrganizationUserInvitationType::class,
             array(
                 "start_date" => date("Y-m-d"),
-                "end_date" => date("Y-m-d", strtotime("+1 week")),
-                "landing_url" => $this->generateUrl('app_organization_show', array("id" => $organization['id']), UrlGeneratorInterface::ABSOLUTE_URL)
+                "end_date" => date("Y-m-d", strtotime("+1 week"))
             ),
             array(
                 "action" => $this->generateUrl("app_organization_createinvitation", array("id" => $organization['id'])),
@@ -394,9 +397,6 @@ class OrganizationController extends Controller
             $config = $this->getParameter('invitation_config');
             $mailer = $this->get('mailer');
             $link = $data['link'];
-            if ($data['landing_url']) {
-                $link = $data['link'] . '?landing_url=' . $data['landing_url'];
-            }
             try {
                 $message = $mailer->createMessage()
                     ->setSubject($config['subject'])
@@ -434,11 +434,24 @@ class OrganizationController extends Controller
     public function resolveInvitationTokenAction($token, $organizationid, $landing_url = null)
     {
         $invitationResource = $this->get('invitation');
-        $invitationResource->accept($token);
-        $this->get('session')->getFlashBag()->add('error', 'NEM TODO Hiba a feldolgozás során');
-        if ($landing_url) {
-            return $this->redirect($this->generateUrl($landing_url));
+        try {
+            $invitationResource->accept($token);
+        } catch (\Exception $e) {
+            $statusCode = $e->getResponse()->getStatusCode();
+            switch ($statusCode) {
+                case '409':
+                    return array("error" => "You are already member of this organization.");
+                    break;
+                default:
+                    return array("error" => $e->getMessage());
+                    break;
+            }
         }
+        if ($landing_url) {
+            $decodedurl = urldecode($landing_url);
+            return $this->redirect($decodedurl);
+        }
+        $this->get('session')->getFlashBag()->add('success', 'The invitation accepted successfully.');
         return $this->redirect($this->generateUrl('app_organization_show', array("id" => $organizationid)));
     }
 
@@ -451,18 +464,18 @@ class OrganizationController extends Controller
         $pids = $request->get('userId');
         $organizationResource = $this->get('organization');
         $errors = array();
+        $errormessages = array();
         foreach ($pids as $pid) {
             try {
                 $organizationResource->deleteMember($id, $pid);
             } catch (\Exception $e) {
                 $errors[] = $e;
+                $errormessages[] = $e->getMessage();
             }
         }
         if (count($errors)) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($errors);
-        } else {
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
+            $this->get('session')->getFlashBag()->add('error', implode(', ', $errormessages));
+            $this->get('logger')->error('User remove failed');
         }
         return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
     }

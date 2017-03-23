@@ -2,11 +2,9 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
@@ -24,6 +22,17 @@ class OrganizationUserInvitationType extends AbstractType
                     "attr" => array(
                         "placeholder" => "Limit"
                     )
+                )
+            )
+            ->add(
+                'landing_url',
+                UrlType::class,
+                array(
+                    "label" => false,
+                    "attr" => array(
+                        "placeholder" => "Landing url"
+                    ),
+                    "constraints" => new Constraints\Url()
                 )
             )
             ->add(
