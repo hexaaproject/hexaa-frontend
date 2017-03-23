@@ -8,19 +8,19 @@ parameters:
 
     shib_auth_username_attribute: eduPersonPrincipalName
     shib_attribute_map:
-      eppn: eduPersonPrincipalName
-      displayName: displayName
-      email: mail
+        eppn: eduPersonPrincipalName
+        displayName: displayName
+        email: mail
     hexaa_base_uri: http://hexaa-backend/api/
     # to be acquired from hexaa_backend_dir/app/config/parameters.yml
     hexaa_scoped_key: InsertSomeSecretHere
     invitation_config:
-            subject: "[HEXAA] invitation"
-            from: "no_reply@hexaa.eduid.hu"
-            reply-to: "no_reply@hexaa.eduid.hu"
-            footer: "sincerely: hexaa.eduid.hu"
-     mailer_transport: smtp
-     mailer_host: smtp
-     mailer_host: 1025
-     mailer_user: ~
-     mailer_password: ~
+        subject: "[HEXAA] invitation"
+        from: "no_reply@hexaa.eduid.hu"
+        reply-to: "no_reply@hexaa.eduid.hu"
+        footer: "sincerely: hexaa.eduid.hu"
+    mailer_transport: smtp
+    mailer_host: smtp
+    mailer_port: 1025
+    mailer_user: ~
+    mailer_password: ~
