@@ -115,10 +115,15 @@ abstract class BaseResource
             array(
                 'query' => array('verbose' => $verbose),
                 'headers' => $this->getHeaders(),
+                'allow_redirects' => false
             )
         );
 
-        return json_decode($response->getBody(), true);
+        $retarray = json_decode($response->getBody(), true);
+        if (! $retarray) {
+            $retarray = array();
+        }
+        return $retarray;
     }
 
     protected function patchCall(string $path, array $data): ResponseInterface
