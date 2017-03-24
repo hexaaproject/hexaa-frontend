@@ -51,9 +51,8 @@ build:
 code_style_check:
   stage: test
   script:
-    - cd app
-    - composer install
-    - vendor/bin/phpcs --standard=Symfony2 src/AppBundle/
+    - docker run --network=hexaa-test -d --name project.local $CONTAINER_TEST_IMAGE
+    - docker exec -t project.local /var/www/project/vendor/bin/phpcs --standard=Symfony2 /var/www/project/src/AppBundle/
   tags:
     - dind
 
