@@ -77,6 +77,10 @@
             $('#organization_user_invitation_send_email_link').val(data.link);
         }
 
+        function validateForm() { //TODO
+            return true;
+        }
+
         {% if not inviteForm.vars.valid %}
             $('#invite_1').modal({backdrop: 'static'});
         {% endif %}
@@ -88,7 +92,10 @@
 
         $(document).on('click', '.modal#invite_1 button[type=submit]', function (event) {
             event.preventDefault();
-            $(this).closest('.modal-footer').append('<i class="mdi mdi-sync"></i>');
+            $(this).closest('.modal-footer').append('<i class="mdi mdi-sync"></i>'); // progress
+            if (! validateForm()) { //TODO
+                return;
+            }
             $('#organization_user_invitation_send_email_role_id').val($('#organization_user_invitation_role').val());
             submitFormByAjax($('form[name=organization_user_invitation]'), invitationDone);
         });
