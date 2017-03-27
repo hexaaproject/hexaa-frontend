@@ -9,8 +9,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
 
+/**
+ * Class OrganizationUserInvitationType
+ */
 class OrganizationUserInvitationType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -20,8 +27,8 @@ class OrganizationUserInvitationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Limit"
-                    )
+                        "placeholder" => "Limit",
+                    ),
                 )
             )
             ->add(
@@ -30,9 +37,9 @@ class OrganizationUserInvitationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Landing url"
+                        "placeholder" => "Landing url",
                     ),
-                    "constraints" => new Constraints\Url()
+                    "constraints" => new Constraints\Url(),
                 )
             )
             ->add(
@@ -40,7 +47,7 @@ class OrganizationUserInvitationType extends AbstractType
                 DateType::class,
                 array(
                     'label' => 'Start of accept period',
-                    'input' => 'string'
+                    'input' => 'string',
                 )
             )
             ->add(
@@ -48,11 +55,14 @@ class OrganizationUserInvitationType extends AbstractType
                 DateType::class,
                 array(
                     'label' => 'End of accept period',
-                    'input' => 'string'
+                    'input' => 'string',
                 )
             );
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array());
