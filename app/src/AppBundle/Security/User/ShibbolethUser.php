@@ -28,11 +28,11 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
 
     /**
      * ShibbolethUser constructor.
-     * @param array $shibAttributeMap
-     * @param string $hexaaScopedKey
-     * @param string $baseUri
+     * @param array   $shibAttributeMap
+     * @param string  $hexaaScopedKey
+     * @param string  $baseUri
      * @param Session $session
-     * @param Client $guzzleclient
+     * @param Client  $guzzleclient
      */
     public function __construct($shibAttributeMap, $hexaaScopedKey, $baseUri, Session $session, Client $guzzleclient)
     {

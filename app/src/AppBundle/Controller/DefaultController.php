@@ -9,11 +9,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+/**
+ * Class DefaultController
+ * @package AppBundle\Controller
+ */
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage")
      * @Template()
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
@@ -22,8 +28,6 @@ class DefaultController extends Controller
         try {
             $organizations = $this->get('organization')->cget();
             $services = $this->get('service')->cget();
-
-
         } catch (ClientException $e) {
             return $this->render('error.html.twig', array('clientexception' => $e));
         } catch (ServerException $e) {
@@ -60,7 +64,7 @@ class DefaultController extends Controller
             "app_service_attributes" => "Attributes",
             "app_service_permissions" => "Permissions",
             "app_service_permissionssets" => "Permissions sets",
-            "app_service_connectedorganizations" => "Connected organizations"
+            "app_service_connectedorganizations" => "Connected organizations",
         );
 
         return $submenuBox;
