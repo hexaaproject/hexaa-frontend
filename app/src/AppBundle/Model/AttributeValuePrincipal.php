@@ -8,7 +8,10 @@
 
 namespace AppBundle\Model;
 
-
+/**
+ * Class AttributeValuePrincipal
+ * @package AppBundle\Model
+ */
 class AttributeValuePrincipal extends AttributeValue
 {
     protected $pathName = 'attributevalueprincipal';

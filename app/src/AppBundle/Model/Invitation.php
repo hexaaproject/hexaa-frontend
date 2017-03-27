@@ -5,13 +5,18 @@ use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class Invitation extends BaseResource
+/**
+ * Class Invitation
+ * @package AppBundle\Model
+ */
+class Invitation extends AbstractBaseResource
 {
     protected $pathName = 'invitations';
 
     /**
      * POST send new invitation
-     *
+     * @param string $data data
+     * @return ResponseInterface
      */
     public function sendInvitation($data)
     {
@@ -25,7 +30,8 @@ class Invitation extends BaseResource
      */
     public function accept(string $token)
     {
-        $id = $token . "/accept/token";
+        $id = $token."/accept/token";
+
         return $this->get($id);
     }
 }
