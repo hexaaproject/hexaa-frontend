@@ -17,10 +17,11 @@ Feature: When I go to organizations
     Then I wait for "Users" to appear
      And I follow "Users"
     Then I wait for "Invite" to appear
+     And I press "Invite"
+     And I wait for "Create invitation" to appear
+
 
   Scenario: Invite a user to "Test role 1"
-    When I press "Invite"
-     And I wait for "Create invitation" to appear
     When I select "Test role 1" from "organization_user_invitation_role"
      And I fill in "Landing url" with "https://www.hup.hu"
      And I press "Create"
@@ -29,8 +30,6 @@ Feature: When I go to organizations
      And I should not see "Your invitation is done"
 
   Scenario: Invite and send email to "alice@example.com"
-    When I press "Invite"
-     And I wait for "Create invitation" to appear
     When I select "Test role 1" from "organization_user_invitation_role"
      And I press "Create"
      And I wait for "Your invitation is done" to appear
@@ -45,8 +44,6 @@ Feature: When I go to organizations
     Then there is a mail that contains "Gyere hozzám tagnak"
 
   Scenario: Invalid email addresses
-    When I press "Invite"
-    And I wait for "Create invitation" to appear
     When I select "Test role 1" from "organization_user_invitation_role"
     And I press "Create"
     And I wait for "Your invitation is done" to appear
@@ -57,5 +54,16 @@ Feature: When I go to organizations
     Then there is 0 mails
 
   Scenario: Invalid landing url
+    When I fill in "Landing url" with "invalid url"
+     And I press "Invite"
+    Then I should see "Invalid url."
 
   Scenario: Invalid date
+    When I select "2017" from "([^"]|\"*)"
+     And I select "02" from "([^"]|\"*)"
+     And I select "01" from "([^"]|\"*)"
+     And I select "2017" from "([^"]|\"*)"
+     And I select "01" from "([^"]|\"*)"
+     And I select "01" from "([^"]|\"*)"
+     And I press "Invite"
+    Then I should see "Invalid date range."
