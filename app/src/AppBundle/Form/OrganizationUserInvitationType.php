@@ -29,6 +29,7 @@ class OrganizationUserInvitationType extends AbstractType
                     "attr" => array(
                         "placeholder" => "Limit",
                     ),
+                    "required" => false,
                 )
             )
             ->add(
@@ -39,6 +40,7 @@ class OrganizationUserInvitationType extends AbstractType
                     "attr" => array(
                         "placeholder" => "Landing url",
                     ),
+                    "required" => false,
                     "constraints" => new Constraints\Url(),
                 )
             )

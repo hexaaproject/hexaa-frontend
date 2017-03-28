@@ -20,10 +20,31 @@ Feature: When I go to organizations
      And I press "Invite"
      And I wait for "Create invitation" to appear
 
+  Scenario: Invite a user to Org
+            with landing url
+            with Limit
+            and to "Test role 1"
+    When I press "Create"
+     And I wait for "Your invitation is done" to appear
+     And I press "Done"
+     And I should not see "Your invitation is done"
 
-  Scenario: Invite a user to "Test role 1"
-    When I select "Test role 1" from "organization_user_invitation_role"
+    When I press "Invite"
      And I fill in "Landing url" with "https://www.hup.hu"
+     And I press "Create"
+     And I wait for "Your invitation is done" to appear
+     And I press "Done"
+     And I should not see "Your invitation is done"
+
+    When I press "Invite"
+     And I fill in "Limit" with "1"
+     And I press "Create"
+     And I wait for "Your invitation is done" to appear
+     And I press "Done"
+     And I should not see "Your invitation is done"
+
+    When I press "Invite"
+     And I select "Test role 1" from "organization_user_invitation_role"
      And I press "Create"
      And I wait for "Your invitation is done" to appear
      And I press "Done"
@@ -39,7 +60,7 @@ Feature: When I go to organizations
      And I press "Done"
      And I wait for "Invitations sent succesfully." to appear
     Then there is a mail to "alice@example.com"
-    Then there is 1 mails
+    Then there is 1 mail
     Then there is a mail from "no_reply@hexaa.eduid.hu"
     Then there is a mail that contains "Gyere hozzám tagnak"
 
@@ -51,19 +72,24 @@ Feature: When I go to organizations
       | Send invitation by email | alice@example.com, nemjóemailcím   |
     And I press "Done"
     And I wait for "does not comply with RFC 2822" to appear
-    Then there is 0 mails
+    Then there are 0 mails
 
   Scenario: Invalid landing url
     When I fill in "Landing url" with "invalid url"
-     And I press "Invite"
-    Then I should see "Invalid url."
+     And I press "Create"
+    Then I should see "Please enter a valid URL."
 
   Scenario: Invalid date
-    When I select "2017" from "([^"]|\"*)"
-     And I select "02" from "([^"]|\"*)"
-     And I select "01" from "([^"]|\"*)"
-     And I select "2017" from "([^"]|\"*)"
-     And I select "01" from "([^"]|\"*)"
-     And I select "01" from "([^"]|\"*)"
-     And I press "Invite"
+    When I select "2017" from "organization_user_invitation_start_date_year"
+     And I select "Feb" from "organization_user_invitation_start_date_month"
+     And I select "1" from "organization_user_invitation_start_date_day"
+     And I select "2017" from "organization_user_invitation_end_date_year"
+     And I select "Jan" from "organization_user_invitation_end_date_month"
+     And I select "1" from "organization_user_invitation_end_date_day"
+     And I press "Create"
     Then I should see "Invalid date range."
+
+  Scenario: Close modal
+    When I press "invite_1_cancel"
+    Then I should not see "Create invitation"
+    When I press "Invite"
