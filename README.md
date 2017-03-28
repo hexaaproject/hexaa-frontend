@@ -79,3 +79,10 @@ UX specifikáció
 ---------------
 
 [ui-design](doc/ui-design)
+
+Validálások a View rétegben (javascript, jquery)
+------------------------------------------------
+
+A base.html.twig-ben már betöltjük a validáló rendszert, leírás itt van:
+
+https://jqueryvalidation.org/

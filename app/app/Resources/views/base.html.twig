@@ -28,7 +28,9 @@
 
     {% javascripts
     '@jquery_js'
-    '@bootstrap_js' %}
+    '@bootstrap_js'
+    'js/jquery.validate.js'
+    %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -146,6 +148,11 @@
         }
     }
 
+    /* jquery.validate defaults */
+    $.validator.setDefaults({
+        errorClass: "help-block has-error",
+        errorElement: "p"
+    });
 </script>
 {% block javascripts %}
 {% endblock %}
