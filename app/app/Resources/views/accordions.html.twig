@@ -14,14 +14,12 @@
         var panel = e.nextElementSibling;
         if ($(".accordion-panel-notform")[0]) {
             $('.accordion-panel-notform').removeClass('active');
-            $(panel).addClass("active");
-            $(panel).toggle();
         }
         if ($(".accordion-panel-form")[0]) {
             $('.accordion-panel-form').removeClass('active');
-            $(panel).addClass("active");
-            $(panel).toggle();
         }
+        $(panel).addClass("active");
+        $(panel).toggle();
 
     }
 
@@ -42,7 +40,7 @@
                     </span>
                 </span>
             </div>
-            <div class="{% if formpanel is defined %}accordion-panel-{{ formpanel }}{% endif %} accordion-panel-style-{{ variant }}">
+            <div class="accordion-panel {% if formpanel is defined %}accordion-panel-{{ formpanel }}{% endif %} accordion-panel-style-{{ variant }}" style="display: none;">
                 {% if item.subaccordions is defined %}
                     {% if item.description is defined %}
                         <div class="accordion-description">{{ item.description }}</div> {% endif %}
@@ -68,7 +66,7 @@
                                     </span>
                                 </span>
                             </div>
-                            <div class="accordion-panel accordion-panel-style-{{ subaccordion.variant }}">
+                            <div class="accordion-panel accordion-panel-style-{{ subaccordion.variant }}" style="display: none;">
                                 <table cellspacing="0" class="accordion">
                                     {% for content in subaccordion.contents %}
                                         <tr class="accordion">
