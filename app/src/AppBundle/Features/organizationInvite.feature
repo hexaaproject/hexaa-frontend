@@ -30,6 +30,7 @@ Feature: When I go to organizations
      And I should not see "Your invitation is done"
 
     When I press "Invite"
+     And I wait for "Create invitation" to appear
      And I fill in "Landing url" with "https://www.hup.hu"
      And I press "Create"
      And I wait for "Your invitation is done" to appear
@@ -37,6 +38,7 @@ Feature: When I go to organizations
      And I should not see "Your invitation is done"
 
     When I press "Invite"
+     And I wait for "Create invitation" to appear
      And I fill in "Limit" with "1"
      And I press "Create"
      And I wait for "Your invitation is done" to appear
@@ -44,6 +46,7 @@ Feature: When I go to organizations
      And I should not see "Your invitation is done"
 
     When I press "Invite"
+     And I wait for "Create invitation" to appear
      And I select "Test role 1" from "organization_user_invitation_role"
      And I press "Create"
      And I wait for "Your invitation is done" to appear
@@ -88,8 +91,7 @@ Feature: When I go to organizations
      And I select "1" from "organization_user_invitation_end_date_day"
      And I press "Create"
     Then I should see "Invalid date range."
-
+@wip
   Scenario: Close modal
     When I press "invite_1_cancel"
     Then I should not see "Create invitation"
-    When I press "Invite"
