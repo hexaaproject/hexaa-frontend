@@ -91,7 +91,3 @@ Feature: When I go to organizations
      And I select "1" from "organization_user_invitation_end_date_day"
      And I press "Create"
     Then I should see "Invalid date range."
-@wip
-  Scenario: Close modal
-    When I press "invite_1_cancel"
-    Then I should not see "Create invitation"
