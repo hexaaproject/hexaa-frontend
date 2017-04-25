@@ -49,7 +49,7 @@ return $this->render(
 <div id="propertiespanelnoedit">
     <div class="header">
         {{ heading }}
-        <button type="button" class="editbutton" style="display: {{ buttonappear }}" onclick="{{ changebutton }}"><i
+        <button type="button" class="editbutton" style="display: {{ buttonappear }}" {% if changebutton is defined %} onclick="{{ changebutton }}" {% endif %}><i
                     class="material-icons">create</i></button>
     </div>
     {% for key, value in items %}
@@ -57,11 +57,11 @@ return $this->render(
             <div>
                 {% if value == 'description' %}
                     <div class="areaname">{{ key }}</div>
-                    <textarea class="{{ changeedit }}" id="areadescription" cols="80" rows="1" style="border:none"
+                    <textarea {% if changeedit is defined %}class="{{ changeedit }}"{% endif %} id="areadescription" cols="80" rows="1" style="border:none"
                               readonly="true"> {{ main[value] }} </textarea>
                 {% else %}
                     <div class="propname">{{ key }}</div>
-                    <div class="{{ changeedit }}" id="propdescription"> {{ main[value] }} </div>
+                    <div {% if changeedit is defined %}class="{{ changeedit }}"{% endif %} id="propdescription"> {{ main[value] }} </div>
                 {% endif %}
             </div>
         {% else %}
@@ -73,7 +73,7 @@ return $this->render(
                 {% else %}
                     <div class="propname">{{ key }}</div>
                     <br>
-                    <div class="{{ changeedit }}" id="propdescription"></div>
+                    <div {% if changeedit is defined %}class="{{ changeedit }}"{% endif %} id="propdescription"></div>
                 {% endif %}
             </div>
         {% endif %}
