@@ -53,15 +53,15 @@ Feature: When I go to a specific service
 		 And I wait for "Properties" to appear
 	     And I follow "Properties"
 	    Then I should see "Properties"
-                When I press "create"
+                When I press "pencil"
                  And I fill in "Name" with "testService6"
                  And I press "done"
                 Then I should see testService6 
 
 	Scenario: Navigate to service managers
 	   Given I am on "/"
-	    When I wait for "testService5" to appear
-	    Then I follow "testService5"
+	    When I wait for "testService6" to appear
+	    Then I follow "testService6"
 	     And I wait for "Managers" to appear
 	     And I follow "Managers"
 	    Then I should see "Remove"
@@ -70,8 +70,8 @@ Feature: When I go to a specific service
 
         Scenario: Navigate to service attributes
 	   Given I am on "/"
-	    When I wait for "testService5" to appear
-	    Then I follow "testService5"
+	    When I wait for "testService6" to appear
+	    Then I follow "testService6"
 	     And I wait for "Attributes" to appear
 	     And I follow "Attributes"
 	    Then I should see "Remove"
@@ -81,8 +81,8 @@ Feature: When I go to a specific service
 
 	Scenario: Service managers tables
 	   Given I am on "/"
-	    When I wait for "testService5" to appear
-	    Then I follow "testService5"
+	    When I wait for "testService6" to appear
+	    Then I follow "testService6"
 	    When I wait for "Managers" to appear
 	     And I follow "Managers"
 	    Then I wait for "Managers" to appear
@@ -96,8 +96,8 @@ Feature: When I go to a specific service
 
 	Scenario: Navigate to service permissions
 	   Given I am on "/"
-	    When I wait for "testService5" to appear
-	    Then I follow "testService5"
+	    When I wait for "testService6" to appear
+	    Then I follow "testService6"
 	    When I wait for "Permissions" to appear
 	     And I follow "Permissions"
 	    When I wait for "Permissions" to appear
