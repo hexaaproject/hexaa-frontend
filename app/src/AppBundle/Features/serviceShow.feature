@@ -38,7 +38,7 @@ Feature: When I go to a specific service
 	Scenario: Navigate to service properties
 	   Given I am on "/"
 		 And I wait for "testService5" to appear
-	    Then I follow "testServic5"
+	    Then I follow "testService5"
 		 And I wait for "Properties" to appear
 	     And I follow "Properties"
 	    Then I should see "Properties"
@@ -53,9 +53,9 @@ Feature: When I go to a specific service
 		 And I wait for "Properties" to appear
 	     And I follow "Properties"
 	    Then I should see "Properties"
-                When I press ".editbutton"
+                When I press "create"
                  And I fill in "Name" with "testService6"
-                 And I press ".sendButton"
+                 And I press "done"
                 Then I should see testService6 
 
 	Scenario: Navigate to service managers
@@ -87,7 +87,7 @@ Feature: When I go to a specific service
 	     And I follow "Managers"
 	    Then I wait for "Managers" to appear
 	     And I should see a table with 1 row
-	    When I fill in "Search member" with ""
+	    When I fill in "Search manager" with ""
 	    Then I should see a table with 1 rows
 	    When I fill in "Search manager" with "Dolgozo"
 	    Then I should see the following table portion
@@ -102,9 +102,9 @@ Feature: When I go to a specific service
 	     And I follow "Permissions"
 	    When I wait for "Permissions" to appear
 	    Then I should see "Permissions" in the ".accordion-header" element
-	     And I should see "Permission1"
-	     And I should see "Permission2"
-             And I should see "Permission3"
+	     And I should see "Permission 1"
+	     And I should see "Permission 2"
+             And I should see "Permission 3"
 
 	    When I click on accordion "Permission 1"
 		Then I should see "Description"
