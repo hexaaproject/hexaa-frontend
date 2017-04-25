@@ -22,7 +22,7 @@
             $(".sendownerbutton")[0].style.display = "inline";
             $(".ownerblockedit")[0].style.display = "inline";
         }
-        
+
         function privacy() {
             $(".privacyblocknoedit")[0].style.display = "none";
             $(".sendprivacybutton")[0].style.display = "inline";
@@ -35,6 +35,7 @@
              $("#service_properties_serviceURL").removeAttr('disabled');
              $("#service_properties_serviceSAML").removeAttr('disabled');*/
         }
+     
 
     </script>
 
@@ -60,7 +61,7 @@
         </div>
         {{ form_end(propertiesform) }}
     </div>
-    
+
     <div class="ownerblockedit" id="propertiespanel"  style="display:none">
         {{ form_start(ownerform) }}
         <div class="header" style="padding-top:0.5em">
@@ -82,7 +83,7 @@
         </div>
         {{ form_end(ownerform) }}
     </div>
-   
+
     <div class="privacyblockedit" id="propertiespanel"  style="display:none">
         {{ form_start(privacyform) }}
         <div class="header" style="padding-top:0.5em">
@@ -98,7 +99,7 @@
         </div>
         {{ form_end(privacyform) }}
     </div>
-   
+
 
     <br>
     <div class="propertyblocknoedit" id="row">
