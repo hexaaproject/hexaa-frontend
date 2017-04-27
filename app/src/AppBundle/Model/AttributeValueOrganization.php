@@ -8,8 +8,11 @@
 
 namespace AppBundle\Model;
 
-
-class AttributeValueOrganization extends AttributeValue
+/**
+ * Class AttributeValueOrganization
+ * @package AppBundle\Model
+ */
+class AttributeValueOrganization extends AbstractAttributeValue
 {
     protected $pathName = 'attributevalueorganization';
 }

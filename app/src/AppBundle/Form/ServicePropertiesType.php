@@ -8,43 +8,59 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 
+/**
+ * Class ServicePropertiesType
+ *
+ * @package AppBundle\Form
+ */
 class ServicePropertiesType extends AbstractType
 {
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $datas
+     */
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
         $builder
             ->add(
-                'serviceName', TextType::class, array(
+                'serviceName',
+                TextType::class,
+                array(
                     "label" => "Name",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceName'],
                     'attr' => array('class' => 'pull-right'),
-                    'required' => true
+                    'required' => true,
                 )
             )
             ->add(
-                'serviceDescription', TextareaType::class, array(
+                'serviceDescription',
+                TextareaType::class,
+                array(
                     "label" => "Description",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceDescription'],
                     'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
-                    'required' => false
+                    'required' => false,
                 )
             )
             ->add(
-                'serviceURL', TextType::class, array(
+                'serviceURL',
+                TextType::class,
+                array(
                     "label" => "Home page",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceURL'],
                     'attr' => array('class' => 'pull-right'),
-                    'required' => false
+                    'required' => false,
                 )
             )
             ->add(
-                'serviceSAML', ChoiceType::class, array(
+                'serviceSAML',
+                ChoiceType::class,
+                array(
                     "label" => "SAML SP Entity ID",
                     "label_attr" => array('class' => 'formlabel'),
                     'choices' => $datas['data']['properties']['serviceEntityIDs'],
@@ -59,9 +75,11 @@ class ServicePropertiesType extends AbstractType
             );
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array());
     }
-
 }

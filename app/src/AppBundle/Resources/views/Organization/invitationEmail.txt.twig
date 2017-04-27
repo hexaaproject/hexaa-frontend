@@ -1,0 +1,21 @@
+Hi,
+
+Click to link, if accept this invitation to organization:
+
+= {{ organization.name }} =
+
+{% if role|length %}
+to role:
+
+- {{ role.name }} -
+{% endif %}
+{% if message|length %}
+Your inviter send a message to you:
+
+{{ message }}
+{% endif %}
+
+Follow the link to accept invitation:
+{{ link }}
+
+{{ footer }}

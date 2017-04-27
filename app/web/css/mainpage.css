@@ -78,7 +78,7 @@ body {
 }
 
 #maindivafterlogin {
-    display: box;
+    display: block;
     text-align: center;
 }
 
@@ -216,4 +216,21 @@ div.hr {
 
 .form-control::-webkit-input-placeholder {
     color: #61AFC5;
+}
+
+/* flash alertek */
+
+.flash {
+    border: 1px solid #61AFC5;
+    border-radius: 0px;
+    margin-bottom: 12px;
+    padding: 12px;
+}
+.flash-error {
+    border-bottom-color: #FA8072;
+    border-bottom-width: thick;
+}
+.flash-success {
+    border-bottom-color: #61AFC5;
+    border-bottom-width: thick;
 }

@@ -8,13 +8,22 @@
 
 namespace AppBundle\Model;
 
-
-class EntitlementPack extends BaseResource
+/**
+ * Class EntitlementPack
+ * @package AppBundle\Model
+ */
+class EntitlementPack extends AbstractBaseResource
 {
     protected $pathName = 'entitlementpacks';
 
+    /**
+     * @param string $verbose
+     * @param int    $offset
+     * @param int    $pageSize
+     * @return array
+     */
     public function getPublic(string $verbose = 'normal', int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName . '/public', $verbose, $offset, $pageSize);
+        return $this->getCollection($this->pathName.'/public', $verbose, $offset, $pageSize);
     }
 }

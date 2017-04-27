@@ -13,15 +13,17 @@ class ProfileController extends Controller
 {
     /**
      * @Route("/index")
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
         $user = $this->get('principal')->getSelf();
+
         return $this->render(
             'AppBundle:Profile:index.html.twig',
             array(
                 'propertiesbox' => $this->getPropertiesBox(),
-                'main' => $user
+                'main' => $user,
             )
         );
     }
@@ -31,9 +33,11 @@ class ProfileController extends Controller
      */
     public function historyAction()
     {
-
     }
 
+    /**
+     * @return array
+     */
     private function getPropertiesBox()
     {
         $propertiesbox = array(
@@ -44,5 +48,4 @@ class ProfileController extends Controller
 
         return $propertiesbox;
     }
-
 }

@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,16 +24,18 @@ class OrganizationController extends Controller
     /**
      * @Route("/")
      * @Template()
+     * @return Response
      */
     public function indexAction()
     {
         $organizations = $this->get('organization')->cget();
         $services = $this->get('service')->cget();
+
         return $this->render(
             'AppBundle:Organization:index.html.twig',
             array(
                 'organizations' => $organizations,
-                'services' => $services
+                'services' => $services,
             )
         );
     }
@@ -40,6 +43,8 @@ class OrganizationController extends Controller
     /**
      * @Route("/addStepOne")
      * @Template()
+     * @return Response
+     * @param   Request $request request
      */
     public function addStepOneAction(Request $request)
     {
@@ -49,6 +54,8 @@ class OrganizationController extends Controller
     /**
      * @Route("/addStepTwo")
      * @Template()
+     * @return Response
+     * @param   Request $request request
      */
     public function addStepTwoAction(Request $request)
     {
@@ -58,6 +65,8 @@ class OrganizationController extends Controller
     /**
      * @Route("/addStepThree")
      * @Template()
+     * @return Response
+     * @param   Request $request request
      */
     public function addStepThreeAction(Request $request)
     {
@@ -67,6 +76,8 @@ class OrganizationController extends Controller
     /**
      * @Route("/addStepFour")
      * @Template()
+     * @return Response
+     * @param   Request $request request
      */
     public function addStepFourAction(Request $request)
     {
@@ -76,6 +87,8 @@ class OrganizationController extends Controller
     /**
      * @Route("/addStepFive")
      * @Template()
+     * @return Response
+     * @param   Request $request request
      */
     public function addStepFiveAction(Request $request)
     {
@@ -86,19 +99,25 @@ class OrganizationController extends Controller
     /**
      * @Route("/addStepSix")
      * @Template()
+     * @return Response
+     * @param   Request $request request
      */
     public function addStepSixAction(Request $request)
     {
         $id = 1; // TODO, ez az org id lesz, miután rendesen sikeresen perzisztálódott az org, és ezt kaptuk vissza
+
         return $this->render('AppBundle:Organization:addStepSix.html.twig', array('id' => $id));
     }
 
     /**
      * @Route("/show/{id}")
+     * @return Response
+     * @param   int $id Organization ID
      */
     public function showAction($id)
     {
         $organization = $this->getOrganization($id);
+
         return $this->render(
             'AppBundle:Organization:show.html.twig',
             array(
@@ -112,6 +131,8 @@ class OrganizationController extends Controller
     /**
      * @Route("/properties/{id}")
      * @Template()
+     * @return Response
+     * @param   int $id Organization ID
      */
     public function propertiesAction($id)
     {
@@ -129,7 +150,7 @@ class OrganizationController extends Controller
             "Name" => "name",
             "Description" => "description",
             "Home page" => "url",
-            "Default role" => "default_role_name"
+            "Default role" => "default_role_name",
         );
 
         return $this->render(
@@ -139,7 +160,7 @@ class OrganizationController extends Controller
                 "services" => $this->get('service')->cget(),
                 "organization" => $organization,
                 "roles" => $roles,
-                "propertiesbox" => $propertiesbox
+                "propertiesbox" => $propertiesbox,
             )
         );
     }
@@ -147,74 +168,84 @@ class OrganizationController extends Controller
     /**
      * @Route("/users/{id}")
      * @Template()
+     * @return Response
+     * @param   int     $id      Organization ID
+     * @param   Request $request request
      */
-    public function usersAction(Request $request, $id)
+    public function usersAction($id, Request $request)
     {
 
         $organization = $this->getOrganization($id);
 
         $managers = $this->getManagers($organization);
         $members = $this->getMembers($organization);
-        $managers_buttons = array(
+        $managersButtons = array(
             "changerole" => array(
                 "class" => "btn-blue",
-                "text" => "Change roles"
+                "text" => "Change roles",
             ),
             "revoke" => array(
                 "class" => "btn-blue",
-                "text" => "Revoke"
+                "text" => "Revoke",
             ),
             "message" => array(
                 "class" => "btn-blue",
-                "text" => "Message"
+                "text" => "Message",
             ),
             "remove" => array(
                 "class" => "btn-blue",
-                "text" => "Remove"
+                "text" => "Remove",
             ),
             "invite" => array(
                 "class" => "btn-red",
                 "last" => true,
-                "text" => '<i class="material-icons">add</i> Invite'
+                "text" => '<i class="material-icons">add</i> Invite',
             ),
         );
-        $members_buttons = array(
+        $membersButtons = array(
             "changerole" => array(
                 "class" => "btn-blue",
-                "text" => "Change roles"
+                "text" => "Change roles",
             ),
             "proposal" => array(
                 "class" => "btn-blue",
-                "text" => "Proposal"
+                "text" => "Proposal",
             ),
             "message" => array(
                 "class" => "btn-blue",
-                "text" => "Message"
+                "text" => "Message",
             ),
             "remove" => array(
                 "class" => "btn-blue",
-                "text" => "Remove"
+                "text" => "Remove",
             ),
             "invite" => array(
                 "class" => "btn-red",
                 "last" => true,
-                "text" => '<i class="material-icons">add</i> Invite'
+                "text" => '<i class="material-icons">add</i> Invite',
             ),
         );
 
 
         $form = $this->createCreateInvitationForm($organization);
-        $sendInEmailForm = $this->createForm(OrganizationUserInvitationSendEmailType::class);
+        $sendInEmailForm = $this->createForm(
+            OrganizationUserInvitationSendEmailType::class,
+            array(),
+            array(
+                "action" => $this->generateUrl("app_organization_sendinvitation", array("id" => $id)),
+                "method" => "POST",
+            )
+        );
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $data_to_backend = $data;
-            $data_to_backend['organization'] = $id;
+            $dataToBackend = $data;
+            $dataToBackend['organization'] = $id;
             $invitationResource = $this->get('invitation');
-            $invite = $invitationResource->sendInvitation($data_to_backend);
+            $invite = $invitationResource->sendInvitation($dataToBackend);
 
             $headers = $invite->getHeaders();
 
@@ -225,7 +256,7 @@ class OrganizationController extends Controller
                 throw $this->createNotFoundException('Invitation not found at backend');
             }
 
-            $invite_link = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token']), UrlGeneratorInterface::ABSOLUTE_URL);
+            $inviteLink = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token'], "organizationid" => $id), UrlGeneratorInterface::ABSOLUTE_URL);
             // emails
             //$data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
 
@@ -238,11 +269,11 @@ class OrganizationController extends Controller
                     "organization" => $organization,
                     "organizations" => $this->get('organization')->cget(),
                     "services" => $this->get('service')->cget(),
-                    "managers_buttons" => $managers_buttons,
-                    "members_buttons" => $members_buttons,
-                    "invite_link" => $invite_link,
+                    "managers_buttons" => $managersButtons,
+                    "members_buttons" => $membersButtons,
+                    "invite_link" => $inviteLink,
                     "inviteForm" => $form->createView(),
-                    "sendInEmailForm" => $sendInEmailForm->createView()
+                    "sendInEmailForm" => $sendInEmailForm->createView(),
                 )
             );
         }
@@ -255,10 +286,10 @@ class OrganizationController extends Controller
                 "organization" => $organization,
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
-                "managers_buttons" => $managers_buttons,
-                "members_buttons" => $members_buttons,
+                "managers_buttons" => $managersButtons,
+                "members_buttons" => $membersButtons,
                 "inviteForm" => $form->createView(),
-                "sendInEmailForm" => $sendInEmailForm->createView()
+                "sendInEmailForm" => $sendInEmailForm->createView(),
             )
         );
     }
@@ -267,8 +298,11 @@ class OrganizationController extends Controller
      * @Route("/createInvitation/{id}")
      * @Method("POST")
      * @Template()
+     * @return Response
+     * @param   int     $id      Organization ID
+     * @param   Request $request request
      */
-    public function createInvitationAction(Request $request, $id)
+    public function createInvitationAction($id, Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
             return new JsonResponse(array('message' => 'You can access this only using Ajax!'), 400);
@@ -289,7 +323,7 @@ class OrganizationController extends Controller
                 "label" => false,
                 'choices' => $roles,
                 'required' => false,
-                'placeholder' => 'To what role?'
+                'placeholder' => 'To what role?',
             )
         );
 
@@ -298,10 +332,10 @@ class OrganizationController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $data_to_backend = $data;
-            $data_to_backend['organization'] = $id;
+            $dataToBackend = $data;
             $invitationResource = $this->get('invitation');
-            $invite = $invitationResource->sendInvitation($data_to_backend);
+            $dataToBackend['organization'] = $id;
+            $invite = $invitationResource->sendInvitation($dataToBackend);
 
             $headers = $invite->getHeaders();
 
@@ -312,25 +346,269 @@ class OrganizationController extends Controller
                 throw $this->createNotFoundException('Invitation not found at backend');
             }
 
-            $invite_link = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token']), UrlGeneratorInterface::ABSOLUTE_URL);
-            // emails
-            //$data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
+            $landingUrl = null;
+            if (! empty($data['landing_url'])) {
+                $landingUrl = urlencode($data['landing_url']);
+            }
+            $inviteLink = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token'], "organizationid" => $id, "landing_url" => $landingUrl), UrlGeneratorInterface::ABSOLUTE_URL);
 
-            return new JsonResponse(array('link' => $invite_link), 200);
+            return new JsonResponse(array('link' => $inviteLink), 200);
         }
+    }
 
-        return new JsonResponse(
-            array(
-                'message' => 'Error',
-                'form' => $this->renderView('AcsdfdfdfTODOmeBundle:Demo:form.html.twig',
-                    array(
-                        'form' => $form->createView(),
-                    )
-                )),
-            400);
+    /**
+     * @Route("/sendInvitation/{id}")
+     * @Method("POST")
+     * @Template()
+     * @return Response
+     * @param   int     $id      Organization ID
+     * @param   Request $request request
+     */
+    public function sendInvitationAction($id, Request $request)
+    {
+        $organization = $this->getOrganization($id);
+        $form = $this->createForm(OrganizationUserInvitationSendEmailType::class);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            if (! $data['emails']) { // there is no email, we are done
+                return $this->redirect($this->generateUrl('app_organization_users', array("id" => $id)));
+            }
+            $role = null;
+            if ($data['role_id']) {
+                $role = $this->getRole($data['role_id']);
+            }
+            $emails = explode(',', preg_replace('/\s+/', '', $data['emails']));
+            $config = $this->getParameter('invitation_config');
+            $mailer = $this->get('mailer');
+            $link = $data['link'];
+            try {
+                $message = $mailer->createMessage()
+                    ->setSubject($config['subject'])
+                    ->setFrom($config['from'])
+                    ->setCc($emails)
+                    ->setReplyTo($config['reply-to'])
+                    ->setBody(
+                        $this->render(
+                            'AppBundle:Organization:invitationEmail.txt.twig',
+                            array(
+                                'link' => $link,
+                                'organization' => $organization,
+                                'footer' => $config['footer'],
+                                'role' => $role,
+                                'message' => $data['message'],
+                            )
+                        ),
+                        'text/plain'
+                    );
+
+                $mailer->send($message);
+                $this->get('session')->getFlashBag()->add('success', 'Invitations sent succesfully.');
+            } catch (\Exception $e) {
+                $this->get('session')->getFlashBag()->add('error', 'Invitation sending failure. <br> Please send the invitation link manually to your partners. <br> The link is: <br><strong>'.$link.'</strong><br> The error was: <br> '.$e->getMessage());
+            }
+
+            return $this->redirect($this->generateUrl('app_organization_users', array("id" => $id)));
+        }
     }
 
 
+    /**
+     * @Route("/resolveInvitationToken/{token}/{organizationid}/{landing_url}")
+     * @Template()
+     * @return Response
+     * @param   string $token          Invitation token
+     * @param   int    $organizationid Organization ID
+     * @param   string $landingUrl     Url to redirect after accept invitation
+     */
+    public function resolveInvitationTokenAction($token, $organizationid, $landingUrl = null)
+    {
+        $invitationResource = $this->get('invitation');
+        try {
+            $invitationResource->accept($token);
+        } catch (\Exception $e) {
+            $statusCode = $e->getResponse()->getStatusCode();
+            switch ($statusCode) {
+                case '409':
+                    return array("error" => "You are already member of this organization.");
+                    break;
+                default:
+                    return array("error" => $e->getMessage());
+                    break;
+            }
+        }
+        if ($landingUrl) {
+            $decodedurl = urldecode($landingUrl);
+
+            return $this->redirect($decodedurl);
+        }
+        $this->get('session')->getFlashBag()->add('success', 'The invitation accepted successfully.');
+
+        return $this->redirect($this->generateUrl('app_organization_show', array("id" => $organizationid)));
+    }
+
+    /**
+     * @Route("/removeusers/{id}")
+     * @Template()
+     * @return Response
+     * @param   int     $id      Organization ID
+     * @param   Request $request request
+     */
+    public function removeusersAction($id, Request $request)
+    {
+        $pids = $request->get('userId');
+        $organizationResource = $this->get('organization');
+        $errors = array();
+        $errormessages = array();
+        foreach ($pids as $pid) {
+            try {
+                $organizationResource->deleteMember($id, $pid);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add('error', implode(', ', $errormessages));
+            $this->get('logger')->error('User remove failed');
+        }
+
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/message/{id}")
+     * @Template()
+     * @return Response
+     * @param   int     $id      Organization ID
+     * @param   Request $request request
+     */
+    public function messageAction($id, Request $request)
+    {
+        try {
+            // do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/propose/{id}")
+     * @Template()
+     * @return Response
+     * @param   int     $id      Organization ID
+     * @param   Request $request request
+     */
+    public function proposeAction($id, Request $request)
+    {
+        try {
+            // do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/revoke/{id}")
+     * @Template()
+     * @return Response
+     * @param   int     $id      Organization ID
+     * @param   Request $request request
+     */
+    public function revokeAction($id, Request $request)
+    {
+        try {
+            // do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/changerole/{id}")
+     * @Template()
+     * @return Response
+     * @param   int     $id      Organization ID
+     * @param   Request $request request
+     */
+    public function changeroleAction($id, Request $request)
+    {
+        try {
+            // do something
+            $this->get('session')->getFlashBag()->add('success', 'Siker');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('logger')->error($e);
+        }
+
+        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+    }
+
+    /**
+     * @Route("/roles/{id}")
+     * @Template()
+     * @return Response
+     * @param   int $id Organization ID
+     */
+    public function rolesAction($id)
+    {
+        $organization = $this->getOrganization($id);
+        $roles = $this->getRoles($organization);
+        $rolesAccordion = $this->rolesToAccordion($roles);
+
+        return $this->render(
+            'AppBundle:Organization:roles.html.twig',
+            array(
+                "organization" => $organization,
+                "organizations" => $this->get('organization')->cget(),
+                "roles" => $roles,
+                "services" => $this->get('service')->cget(),
+                "roles_accordion" => $rolesAccordion,
+            )
+        );
+    }
+
+    /**
+     * @Route("/connectedservices/{id}")
+     * @Template()
+     * @return Response
+     * @param int $id Organization Id
+     *
+     */
+    public function connectedservicesAction($id)
+    {
+        $services = $this->get('service')->cget();
+        $servicesAccordion = $this->servicesToAccordion($services);
+
+        return $this->render(
+            'AppBundle:Organization:connectedservices.html.twig',
+            array(
+                "organization" => $this->getOrganization($id),
+                "organizations" => $this->get('organization')->cget(),
+                "services" => $services,
+                "services_accordion" => $servicesAccordion,
+            )
+        );
+    }
+
+
+    /**
+     * @param $organization
+     * @return \Symfony\Component\Form\Form
+     */
     private function createCreateInvitationForm($organization)
     {
         // Invite form készítés
@@ -344,11 +622,10 @@ class OrganizationController extends Controller
             array(
                 "start_date" => date("Y-m-d"),
                 "end_date" => date("Y-m-d", strtotime("+1 week")),
-                "landing_url" => $this->generateUrl('app_organization_show', array("id" => $organization['id']), UrlGeneratorInterface::ABSOLUTE_URL)
             ),
             array(
                 "action" => $this->generateUrl("app_organization_createinvitation", array("id" => $organization['id'])),
-                "method" => "POST"
+                "method" => "POST",
             )
         );
 
@@ -359,187 +636,77 @@ class OrganizationController extends Controller
                 "label" => false,
                 'choices' => $roles,
                 'required' => false,
-                'placeholder' => 'To what role?'
+                'placeholder' => 'To what role?',
             )
         );
+
         return $form;
     }
 
     /**
-     * @Route("/resolveInvitationToken/{token}")
-     * @Template()
+     * @param $id
+     * @return mixed
      */
-    public function resolveInvitationTokenAction($token)
-    {
-        $invitationResource = $this->get('invitation');
-        $invitation = $invitationResource->accept($token);
-        $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-
-        return $this->redirect('app_organization_show', array("id" => $organizationId));
-    }
-
-    /**
-     * @Route("/removeusers/{id}")
-     * @Template()
-     */
-    public function removeusersAction($id, Request $request)
-    {
-        $pids = $request->get('userId');
-        $organizationResource = $this->get('organization');
-        $errors = array();
-        foreach ($pids as $pid) {
-            try {
-                $organizationResource->deleteMember($id, $pid);
-            } catch (\Exception $e) {
-                $errors[] = $e;
-            }
-        }
-        if (count($errors)) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($errors);
-        } else {
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        }
-        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
-    }
-
-    /**
-     * @Route("/message/{id}")
-     * @Template()
-     */
-    public function messageAction($id, Request $request)
-    {
-        try {
-            # do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($e);
-        }
-        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
-    }
-
-    /**
-     * @Route("/propose/{id}")
-     * @Template()
-     */
-    public function proposeAction($id, Request $request)
-    {
-        try {
-            # do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($e);
-        }
-        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
-    }
-
-    /**
-     * @Route("/revoke/{id}")
-     * @Template()
-     */
-    public function revokeAction($id, Request $request)
-    {
-        try {
-            # do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($e);
-        }
-        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
-    }
-
-    /**
-     * @Route("/changerole/{id}")
-     * @Template()
-     */
-    public function changeroleAction($id, Request $request)
-    {
-        try {
-            # do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($e);
-        }
-        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
-    }
-
-    /**
-     * @Route("/roles/{id}")
-     * @Template()
-     */
-    public function rolesAction($id)
-    {
-        $organization = $this->getOrganization($id);
-        $roles = $this->getRoles($organization);
-        $roles_accordion = $this->rolesToAccordion($roles);
-
-        return $this->render(
-            'AppBundle:Organization:roles.html.twig',
-            array(
-                "organization" => $organization,
-                "organizations" => $this->get('organization')->cget(),
-                "roles" => $roles,
-                "services" => $this->get('service')->cget(),
-                "roles_accordion" => $roles_accordion
-            )
-        );
-    }
-
-    /**
-     * @Route("/connectedservices/{id}")
-     * @Template()
-     */
-    public function connectedservicesAction($id)
-    {
-        $services = $this->get('service')->cget();
-        $services_accordion = $this->servicesToAccordion($services);
-
-        return $this->render(
-            'AppBundle:Organization:connectedservices.html.twig',
-            array(
-                "organization" => $this->getOrganization($id),
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $services,
-                "services_accordion" => $services_accordion
-            )
-        );
-    }
-
     private function getOrganization($id)
     {
         return $this->get('organization')->get($id);
     }
 
+    /**
+     * @param $organization
+     * @return mixed
+     */
     private function getRoles($organization)
     {
         return $this->get('organization')->getRoles($organization['id'], 'expanded')['items'];
     }
 
+    /**
+     * @param $organization
+     * @return mixed
+     */
     private function getManagers($organization)
     {
         return $this->get('organization')->getManagers($organization['id'])['items'];
     }
 
+    /**
+     * @param $organization
+     * @return mixed
+     */
     private function getMembers($organization)
     {
         return $this->get('organization')->getMembers($organization['id'])['items'];
     }
 
+    /**
+     * @param $service
+     * @return mixed
+     */
     private function getEntitlementPack($service)
     {
         return $this->get('service')->getEntitlementPacks($service['id'])['items'];
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
+    private function getRole($id)
+    {
+        return $this->get('role')->get($id);
+    }
+
+    /**
+     * @param $roles
+     * @return array
+     */
     private function rolesToAccordion($roles)
     {
-        $roles_accordion = array();
+        $rolesAccordion = array();
 
         foreach ($roles as $role) {
-            $roles_accordion[$role['id']]['title'] = $role['name'];
+            $rolesAccordion[$role['id']]['title'] = $role['name'];
             $members = array();
             $permissions = array();
 
@@ -550,52 +717,55 @@ class OrganizationController extends Controller
                 $permissions[] = $entitlement['name'];
             }
 
-            $roles_accordion[$role['id']]['contents'] = array(
+            $rolesAccordion[$role['id']]['contents'] = array(
                 array(
                     'key' => 'Permissions',
-                    'values' => $permissions
+                    'values' => $permissions,
                 ),
                 array(
                     'key' => 'Members',
-                    'values' => $members
-                )
+                    'values' => $members,
+                ),
             );
         }
-        return $roles_accordion;
+
+        return $rolesAccordion;
     }
 
+    /**
+     * @param $services
+     * @return array
+     */
     private function servicesToAccordion($services)
     {
-        $services_accordion = array();
+        $servicesAccordion = array();
 
         foreach ($services['items'] as $service) {
-            $services_accordion[$service['id']]['title'] = $service['name'];
-            $services_accordion[$service['id']]['description'] = 'Permission sets';
+            $servicesAccordion[$service['id']]['title'] = $service['name'];
+            $servicesAccordion[$service['id']]['description'] = 'Permission sets';
             $managers = $this->get('service')->getManagers($service['id'])['items'];
             $managersstring = "";
             foreach ($managers as $manager) {
-                $managersstring .= $manager['display_name'] . " (" . $manager['email'] . ") ";
+                $managersstring .= $manager['display_name']." (".$manager['email'].") ";
             }
-            $services_accordion[$service['id']]['titlemiddle'] = 'Service manager ' . $managersstring;
+            $servicesAccordion[$service['id']]['titlemiddle'] = 'Service manager '.$managersstring;
 
             foreach ($this->getEntitlementPack($service) as $entitlementPack) {
-                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['title'] = $entitlementPack['name'];
-                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['variant'] = 'light';
-                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Details", "values" => array($entitlementPack['description']));
-                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
+                $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['title'] = $entitlementPack['name'];
+                $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['variant'] = 'light';
+                $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Details", "values" => array($entitlementPack['description']));
+                $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
 
                 $entitlementnames = array();
-                foreach ($entitlementPack['entitlement_ids'] as $entitlement_id) {
-                    $entitlement = $this->get('entitlement')->get($entitlement_id);
+                foreach ($entitlementPack['entitlement_ids'] as $entitlementId) {
+                    $entitlement = $this->get('entitlement')->get($entitlementId);
                     $entitlementnames[] = $entitlement['name'];
                 }
 
-                $services_accordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Permissions", "values" => $entitlementnames);
-
+                $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Permissions", "values" => $entitlementnames);
             }
-
         }
-        return $services_accordion;
-    }
 
+        return $servicesAccordion;
+    }
 }

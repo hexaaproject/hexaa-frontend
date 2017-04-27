@@ -32,6 +32,12 @@ cd hexaa-newui/app
 php bin/console assetic:dump
 ```
 
+Coding standard
+----------------
+
+Futtassuk le ezt, hogy lássuk, mennyit hibáztunk a symfony2 cs-hez képest
+
+`vendor/bin/phpcs --standard=Symfony2 src/AppBundle/`
 
 Teszt
 -----

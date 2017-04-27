@@ -117,12 +117,13 @@ assetic:
     #     auto_mapping: true
 
 # Swiftmailer Configuration
-# swiftmailer:
-#     transport: "%mailer_transport%"
-#     host:      "%mailer_host%"
-#     username:  "%mailer_user%"
-#     password:  "%mailer_password%"
-#     spool:     { type: memory }
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    port:      "%mailer_port%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
 
 niif_shib_auth:
     # baseURL:          "%shib_auth_base_url%" # optional, have default value:  /Shibboleth.sso/

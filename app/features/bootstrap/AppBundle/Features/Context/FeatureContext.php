@@ -89,7 +89,7 @@ class FeatureContext extends MinkContext
      * @param int $wait
      * @throws \Exception
      */
-    public function spin($lambda, $wait = 300)
+    public function spin($lambda, $wait = 30)
     {
         $time = time();
         $stopTime = $time + $wait;

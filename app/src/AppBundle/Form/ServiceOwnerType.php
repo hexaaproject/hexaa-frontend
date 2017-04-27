@@ -7,8 +7,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * Class ServiceOwnerType
+ * @package AppBundle\Form
+ */
 class ServiceOwnerType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $datas
+     */
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
         $builder
@@ -20,7 +28,7 @@ class ServiceOwnerType extends AbstractType
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerName'],
                     'attr' => array('class' => 'pull-right'),
-                    'required' => false
+                    'required' => false,
                 )
             )
             ->add(
@@ -31,7 +39,7 @@ class ServiceOwnerType extends AbstractType
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerShortName'],
                     'attr' => array('class' => 'pull-right'),
-                    'required' => false
+                    'required' => false,
                 )
             )
             ->add(
@@ -42,7 +50,7 @@ class ServiceOwnerType extends AbstractType
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerDescription'],
                     'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
-                    'required' => false
+                    'required' => false,
                 )
             )
             ->add(
@@ -53,11 +61,14 @@ class ServiceOwnerType extends AbstractType
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerURL'],
                     'attr' => array('class' => 'pull-right'),
-                    'required' => false
+                    'required' => false,
                 )
             );
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array());

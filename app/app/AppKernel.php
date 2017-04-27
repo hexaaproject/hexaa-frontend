@@ -17,7 +17,8 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new Niif\ShibAuthBundle\NiifShibAuthBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new EightPoints\Bundle\GuzzleBundle\GuzzleBundle()
+            new EightPoints\Bundle\GuzzleBundle\GuzzleBundle(),
+            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

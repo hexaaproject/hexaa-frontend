@@ -3,11 +3,17 @@
 {% block container %}
 
     {% for flashMessage in app.session.flashbag.get('error') %}
-        <div class="flash-error">
-            {{ flashMessage }}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
         </div>
     {% endfor %}
-        
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
     {% if managers is defined and managers|length %}
     <div class="row">
         <div class="col-md-15">
