@@ -61,6 +61,7 @@ services:
         - 6080:26080
     environment:
         - NOVNC=true
+        - USE_SELENIUM=2
 
   smtp:
     image: mailhog/mailhog
