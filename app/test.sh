@@ -3,7 +3,7 @@ if [[ "$#" -lt 1 ]]; then
 	echo "argumentum: mount könyvtár, ahol a behat.yml van."
 fi
 
-cat /var/log/shibd.log
+cat /var/log/shibboleth/shibd.log
 ls -la  /etc/shibboleth/metadata/metadata.xml
 
 ROOT_DIR=$1
