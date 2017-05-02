@@ -11,6 +11,10 @@ default:
                 selenium2:
                     selenium2:
                        wd_host: http://grid:24444/wd/hub
+                       capabilities:
+                         browser: firefox
+                         extra_capabilities:
+                           acceptInsecureCerts: true
             # show_cmd: '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome %s'
             show_cmd: 'firefox %s'
         Knp\FriendlyContexts\Extension: 

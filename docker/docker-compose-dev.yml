@@ -58,6 +58,9 @@ services:
     container_name: grid
     ports:
         - 5900:25900
+        - 6080:26080
+    environment:
+        - NOVNC=true
 
   smtp:
     image: mailhog/mailhog
