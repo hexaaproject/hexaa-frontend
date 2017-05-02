@@ -17,7 +17,16 @@ default:
             api:
                 base_url: http://hexaa-test-data-manager/
             smartTag: smartStep
-
+        Bex\Behat\ScreenshotExtension:
+            active_image_drivers: unsee
+            image_drivers:
+              unsee:
+                expire: '1h' # possible values: '10m', '30m', '1h'
+            # screenshot_taking_mode: failed_scenarios
+            # Available modes:
+            #  - failed_steps: Image contains only the screenshot of the failed step. [Default]
+            #  - failed_scenarios: Image contains screenshots of all steps in a failed scenario.
+            #  - all_scenarios: Each scenario has a combined image created, regardless of failing or passing.
     suites:
         my_suite:
             type: symfony_bundle

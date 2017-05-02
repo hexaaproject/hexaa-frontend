@@ -86,7 +86,7 @@ Feature: When I go to a specific organization
     When I wait for "Users" to appear
     And I follow "Users"
     Then I wait for "Managers" to appear
-    And I should see a table with 1 row
+    And I should see a table with 2 row
     And I should see a table with 6 rows
     When I fill in "Search member" with "nolocal"
     Then I should see a table with 2 rows
