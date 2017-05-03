@@ -88,7 +88,7 @@ release:
 deploy:
   stage: deploy
   script:
-    - ssh -A ubuntu@$DEPLOY_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000; docker pull $CONTAINER_RELEASE_IMAGE; docker stop hexaa-newui; docker rm hexaa-newui; docker run -d --name hexaa-newui --network=hexaa-test -e PROJECT_HOSTNAME=$DEPLOY_TARGET -p 80:80 -p 443:443 $CONTAINER_RELEASE_IMAGE;"
+    - ssh -A ubuntu@$DEPLOY_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000; docker pull $CONTAINER_RELEASE_IMAGE; docker stop $DEPLOY_TARGET; docker rm $DEPLOY_TARGET; docker run -d --name $DEPLOY_TARGET --network=docker_default -e PROJECT_HOSTNAME=$DEPLOY_TARGET -e SYMFONY__CACHE_DIR=/tmp/symfony/cache -e SYMFONY__LOGS_DIR=/tmp/symfony/logs -p 80:80 -p 443:443 $CONTAINER_RELEASE_IMAGE;"
   only:
     - master
   tags:
