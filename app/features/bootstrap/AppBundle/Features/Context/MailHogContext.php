@@ -50,9 +50,27 @@ class MailHogContext extends RawPageContext
     }
 
     /**
-     * @Then there is :arg1 mails
+     * @Then there is :arg1 mail
      */
-    public function thereIsMails($arg1)
+    public function thereIsMail($arg1)
+    {
+        return $this->thereAreAnyMails($arg1);
+    }
+
+    /**
+     * @Then there are :arg1 mails
+     */
+    public function thereAreMails($arg1)
+    {
+        return $this->thereAreAnyMails($arg1);
+    }
+
+
+    /**
+     * @param $arg1
+     * @return bool
+     */
+    private function thereAreAnyMails($arg1)
     {
         $path = $path = $this->path . "v2/messages";
         $method = "GET";
