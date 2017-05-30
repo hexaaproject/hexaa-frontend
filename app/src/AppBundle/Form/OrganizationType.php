@@ -75,7 +75,6 @@ class OrganizationType extends AbstractType
                     "required" => false,
                 )
             );
-
     }
 
     /**
