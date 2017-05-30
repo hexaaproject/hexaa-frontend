@@ -1,0 +1,93 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block title %}Add organization{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'css/progressbar.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block container %}
+
+    {{ form_start(form) }}
+
+    <div id="first" class="progresswrapper">
+        {{ include('::progressbar.html.twig',
+            {
+                header: 'Create virtual organization',
+                percent: 20,
+                next_id: 'second'
+            }
+        )}}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+        <div class="text-center" style="font-style: italic; color: #61AFC5">Add meg a szervezeted alapadatait</div>
+    </div>
+    <div id="second" class="hidden progresswrapper">
+        {{ include('::progressbar.html.twig',
+        {
+            header: 'Create virtual organization',
+            prev_id: 'first',
+            percent: 40,
+            next_id: 'third'
+        }
+        )}}
+
+        {{ form_row(form.role) }}
+        <div class="text-center" style="font-style: italic; color: #61AFC5">Add meg az alapértelmezett szerepkör nevét</div>
+    </div>
+    <div id="third" class="hidden progresswrapper">
+        {{ include('::progressbar.html.twig',
+        {
+            header: 'Create virtual organization',
+            prev_id: 'second',
+            percent: 60,
+            next_id: 'fourth'
+        }
+        )}}
+
+        {{ form_row(form.service_token) }}
+        <div class="text-center" style="font-style: italic; color: #61AFC5">Szolgáltatás összekapcsolása</div>
+    </div>
+    <div id="fourth" class="hidden progresswrapper">
+        {{ include('::progressbar.html.twig',
+        {
+            header: 'Create virtual organization',
+            prev_id: 'third',
+            percent: 80,
+            next_id: 'fifth'
+        }
+        )}}
+
+        {{ form_row(form.invitation_emails) }}
+        <div class="text-center" style="font-style: italic; color: #61AFC5">Tagok meghívása az alapértelmezett szerepbe</div>
+    </div>
+    <div id="fifth" class="hidden progresswrapper">
+        {{ include('::progressbar.html.twig',
+        {
+            header: 'Create virtual organization',
+            prev_id: 'fourth',
+            percent: 100,
+        }
+        )}}
+        Siker
+    </div>
+
+        {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function () {
+        $(document).on('click', '.stepper', function (event) {
+            event.preventDefault();
+            $('.progresswrapper').addClass('hidden');
+            $('#' + $(this).data('target')).removeClass('hidden');
+        })
+    });
+</script>
+{% endblock %}

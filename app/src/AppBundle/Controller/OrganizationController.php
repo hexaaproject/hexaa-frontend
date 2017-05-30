@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
+use AppBundle\Form\OrganizationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -41,72 +42,24 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/addStepOne")
+     * @Route("/create")
      * @Template()
      * @return Response
      * @param   Request $request request
      */
-    public function addStepOneAction(Request $request)
+    public function createAction(Request $request)
     {
-        return $this->render('AppBundle:Organization:addStepOne.html.twig', array());
-    }
+        $form = $this->createForm(OrganizationType::class);
 
-    /**
-     * @Route("/addStepTwo")
-     * @Template()
-     * @return Response
-     * @param   Request $request request
-     */
-    public function addStepTwoAction(Request $request)
-    {
-        return $this->render('AppBundle:Organization:addStepTwo.html.twig', array());
-    }
+        $form->handleRequest($request);
 
-    /**
-     * @Route("/addStepThree")
-     * @Template()
-     * @return Response
-     * @param   Request $request request
-     */
-    public function addStepThreeAction(Request $request)
-    {
-        return $this->render('AppBundle:Organization:addStepThree.html.twig', array());
-    }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
 
-    /**
-     * @Route("/addStepFour")
-     * @Template()
-     * @return Response
-     * @param   Request $request request
-     */
-    public function addStepFourAction(Request $request)
-    {
-        return $this->render('AppBundle:Organization:addStepFour.html.twig', array());
-    }
+            $dataToBackend = $data;
+        }
 
-    /**
-     * @Route("/addStepFive")
-     * @Template()
-     * @return Response
-     * @param   Request $request request
-     */
-    public function addStepFiveAction(Request $request)
-    {
-        return $this->render('AppBundle:Organization:addStepFive.html.twig', array());
-    }
-
-
-    /**
-     * @Route("/addStepSix")
-     * @Template()
-     * @return Response
-     * @param   Request $request request
-     */
-    public function addStepSixAction(Request $request)
-    {
-        $id = 1; // TODO, ez az org id lesz, miután rendesen sikeresen perzisztálódott az org, és ezt kaptuk vissza
-
-        return $this->render('AppBundle:Organization:addStepSix.html.twig', array('id' => $id));
+        return $this->render('AppBundle:Organization:create.html.twig', array('form' => $form->createView()));
     }
 
     /**
