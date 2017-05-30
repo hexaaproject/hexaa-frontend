@@ -3,6 +3,19 @@
 {% block title %}AppBundle:Service:show{% endblock %}
 
 {% block container %}
+    
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    
     {% block stylesheets %}
         {% stylesheets 'css/tables.css' filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
@@ -12,16 +25,16 @@
 
 
     {% if managers is defined and managers|length %}
-        <div class="row">
+        <div class="row" style="margin-top: 48px;">
             <div class="col-md-15">
                 {{ include('::tables.html.twig', {variant: 'red', tdcolor:'base', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table', buttons: managers_buttons, search_placeholder: 'Search manager' }) }}
             </div>
-        </div>
+        
         {{ include('::modal.html.twig',
             {
                 id: 'managersRemove',
                 title: 'Remove managers',
-                bodyhead: 'Are you ready to remove these users from your service?',
+                bodyhead: 'Are you ready to remove these managers from your service?',
                 bodycontent: 'Optional',
                 button:
                     {
@@ -31,33 +44,44 @@
                 formaction: path('app_service_removemanagers', {id: service.id })
             })
         }}
+        </div>
     {% endif %}
 {% endblock %}
 
 {% block javascripts %}    
     {% javascripts
             '@datatables_js'
+            'js/clipboard.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         $(document).ready(function () {
+            function populateList(
+                    ul,
+                    el) {
+                var row = $(el).closest('tr');
+                var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
+                var objectId = row.attr('id');
+                ul.append('<li>' + displayString + '</li>');
+                ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
+            }
         {% if managers is defined and managers|length %}
-                $('.managers_table_actionButtons').on('click', '#remove', function (
+                var managersTableActionButtons = $('.managers_table_actionButtons');
+                var managersRemove = $('#managersRemove');
+                managersTableActionButtons.on('click', '#remove', function (
                         event) {
                     event.preventDefault();
-                    var content = $('#managersRemove').find('.modal-body-content');
+                    var content = managersRemove.find('.modal-body-content');
                     content.empty();
                     content.append('<ul></ul>');
-                    var ul = $('#managersRemove').find('ul');
+                    var ul = managersRemove.find('ul');
                     $('#managers_table input:checked').each(function (
                             index,
                             el) {
-                        var objectId = $(el).closest('tr').attr('id');
-                        ul.append('<li>' + objectId + '</li>');
-                        ul.append('<input name="id[]" value="' + objectId + '" class="hidden">');
+                        populateList(ul, el);
                     });
-                    $('#managersRemove').modal('show');
+                    managersRemove.modal('show');
                 });
         {% endif %}
             });

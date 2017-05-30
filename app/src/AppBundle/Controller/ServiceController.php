@@ -266,12 +266,22 @@ class ServiceController extends Controller
      */
     public function removemanagersAction($id, Request $request)
     {
-        try {
-            // do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($e);
+       $pids = $request->get('userId');
+        $serviceResource = $this->get('service');
+        $errors = array();
+        $errormessages = array();
+        foreach ($pids as $pid) {
+            try {
+                $serviceResource->deleteMember($id, $pid);
+                dump($serviceResource);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add('error', implode(', ', $errormessages));
+            $this->get('logger')->error('User remove failed');
         }
 
         return $this->redirect($this->generateUrl('app_service_managers', array('id' => $id)));
@@ -559,4 +569,5 @@ class ServiceController extends Controller
 
         return $propertiesbox;
     }
+    
 }

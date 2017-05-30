@@ -67,4 +67,18 @@ class Service extends AbstractBaseResource
     {
         return $this->getCollection($this->pathName.'/'.$id.'/entitlementpacks', $verbose, $offset, $pageSize);
     }
+    
+     public function deleteMember(string $id, string $pid)
+    {
+        $path = $this->pathName.'/'.$id.'/managers/'.$pid;
+
+        $response = $this->client->delete(
+            $path,
+            [
+                'headers' => $this->getHeaders(),
+            ]
+        );
+
+        return $response;
+    }
 }
