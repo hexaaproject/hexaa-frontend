@@ -7,7 +7,8 @@ usage in twig example:
         header: 'Create virtual organization',
         prev_id: 'first',
         percent: 20,
-        next_id: 'third'
+        next_id: 'third',
+        next_button_id: 'next-2'
      }
     )
 }}
@@ -21,7 +22,7 @@ usage in twig example:
         <button class="stepper btnhexaa btn-blue" data-target="{{ prev_id }}" type="button">Back</button>
         {% endif %}
         {% if next_id is defined %}
-            <button class="stepper btnhexaa btn-blue" data-target="{{ next_id }}" type="button">Next</button>
+            <button {% if next_button_id is defined %} id="{{ next_button_id }}" {% endif %} class="stepper btnhexaa btn-blue" data-target="{{ next_id }}" type="button">Next</button>
         {% else %}
             <input class="btnhexaa btn-red" type="submit" role="button" value="Finish"></input>
         {% endif %}

@@ -1,20 +1,22 @@
 Fejlesztő környezet
 -------------------
 
-Az alábbiak előfeltétele, hogy az app mappában nyomjunk egy `composer install`-t. Ez valószínűleg nincs lokálisan telepítve, így ajánlott a [telepítési útmutatót](https://getcomposer.org/download/) követni.
+Az alábbiak előfeltétele, hogy az app mappában nyomjunk egy `composer install`-t. Ez valószínűleg nincs lokálisan
+telepítve, így ajánlott a [telepítési útmutatót](https://getcomposer.org/download/) követni.
 
-1. Telepítsünk egy kellemes docker környezetet a gépünkre. Ne bízzunk a oprendszer disztribúcióban, a docker valószínűleg el van már avulva. Járjunk el a hivatalos telepítés mentén [docker.io](http://docker.io)
+1. Telepítsünk egy kellemes docker környezetet a gépünkre. Ne bízzunk a oprendszer disztribúcióban, a docke
+ valószínűleg el van már avulva. Járjunk el a hivatalos telepítés mentén [docker.io](http://docker.io)
 
 2. telepítsük a `docker-composer` rendszert is
 
-3. jegyezzük be a `/etc/hosts` fileba a 127.0.0.1 project.local domain nevet.
+3. jegyezzük be a `/etc/hosts` fileba a `127.0.0.1 project.local` domain nevet.
 
 4. indítsuk el a docker fogatot:
 `docker-compose -f docker/docker-compose-dev.yml up`
 
-5. böngészőben látogassunk el ide: localhost:8080 itt találjuk a logokat (tailon)
+5. böngészőben látogassunk el ide: `localhost:8080` itt találjuk a logokat (tailon)
 
-6. böngészőben látogassunk el id: https://project.local és már indulunk is (a cert miatt sirmákolni fog a böngésző, de legyintsünk rá)
+6. böngészőben látogassunk el id: `https://project.local` és már indulunk is (a cert miatt sirmákolni fog a böngésző, de legyintsünk rá)
 
 7. egy átlagos user azonosítója `e` jelszava `pass`
 
@@ -32,6 +34,21 @@ cd hexaa-newui/app
 php bin/console assetic:dump
 ```
 
+Git éa branch
+-------------
+
+Fejlesztési forgatókönyv
+
+Ezt a metodikát próbáljuk követni:
+`https://www.atlassian.com/git/tutorials/comparing-workflows#feature-branch-workflow`
+
+1. keletkezik issue, mint feladat a Gitlab-ban
+2. ha ott tart az issue, hogy érdemes kódolni, akkor a Gitlab-ban `New branch` gombbal már készíthetünk is egy új branch-et
+3. lehetőség szerint a teszt megírásával kezdük, és a fejlesztés folyamán zöldítsük ki. keyword: BDD
+4. ha új assetet gyártottunk, amit mások is fel tudnak használni, csináljunk egy snippetet, hogy hogyan kell használni: `https://git.hbit.sztaki.hu/hexaa/hexaa-newui/snippets`
+5. futtassunk phpcs-t a kódra, mert a CI tesztelni fogja (kövi fejezet)
+6. mehet a merge request a gitlabban a masterba. 
+
 Coding standard
 ----------------
 
@@ -48,9 +65,13 @@ Teszt
 	
 3. kódoljunk app: https://project.local, logok: localhost:8080
 
-4. teszteljünk, hogy sikerült-e a kódunk: `docker exec -ti project.local /var/www/project/test.sh /var/www/project`, a tesztet localhoston futó VNC szerveren keresztül hátradőlve élvezhetjük. A test.sh a behat wrapper-e, a második argumentuma után fogadja a behat argumentumokat. pl. `docker exec -ti project.local /var/www/project/test.sh /var/www/project --help`
+4. teszteljünk, hogy sikerült-e a kódunk:
+  `docker exec -ti project.local /var/www/project/vendor/bin/behat -c /var/www/project/behat.yml /var/www/project`,
+  a tesztet localhoston futó VNC szerveren keresztül hátradőlve élvezhetjük. A test.sh a behat wrapper-e, a második
+  argumentuma után fogadja a behat argumentumokat. pl.
+  `docker exec -ti project.local /var/www/project/vendor/bin/behat -c /var/www/project/behat.yml /var/www/project --help`
 
-5. `vncviewer localhost`, és hátradőlve nézhetjük, ahogy a robot helyettünk kattintgatva tesztel
+5. navigáljunk ide: `http://localhost:6080`, és hátradőlve nézhetjük, ahogy a robot helyettünk kattintgatva tesztel
 
 6. sikeresesen lefutó teszt után `git commit` és `git push`
 

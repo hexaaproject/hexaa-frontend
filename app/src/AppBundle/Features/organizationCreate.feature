@@ -27,22 +27,22 @@ Feature: When I go to create organization
     # Fill the first step
     When I fill in "Szervezet neve" with "Teszt szervezet"
     And I fill in "Szervezet leírása" with "Ez egy teszt szervezet"
-    And I press "Next"
+    And I press "next-1"
     Then I should see "Add meg az alapértelmezett szerepkör nevét"
 
     # Fill the second step
     When I fill in "Alapértelmezett szerepkör" with "members"
-    And I press "Next"
+    And I press "next-2"
     Then I should see "Szolgáltatás összekapcsolása"
 
     #Fill the third step
     And a field should contain placeholder "Szolgáltatás token-je"
-    When I press "Next"
+    When I press "next-3"
     Then I should see "Tagok meghívása az alapértelmezett szerepbe"
 
     #Fill the fourth step
     When I fill in "Meghívottak email címei" with "user@example.com"
-    And I press "Next"
+    And I press "next-4"
     Then I should see "Siker"
 
   Scenario: Step backs in steps
