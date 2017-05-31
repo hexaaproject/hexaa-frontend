@@ -11,3 +11,9 @@
     font-size: larger;
     color: #61AFC5;
 }
+
+.progressbar-order {
+    font-style: italic;
+    color: #61AFC5;
+    margin-bottom: 24px;
+}

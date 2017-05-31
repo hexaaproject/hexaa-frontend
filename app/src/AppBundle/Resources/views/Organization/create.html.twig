@@ -15,72 +15,121 @@
     {{ form_start(form) }}
 
     <div id="first" class="progresswrapper">
-        {{ include('::progressbar.html.twig',
-            {
-                header: 'Create virtual organization',
-                percent: 20,
-                next_id: 'second',
-                next_button_id: 'next-1'
-            }
-        )}}
-        {{ form_row(form.name) }}
-        {{ form_row(form.description) }}
-        <div class="text-center" style="font-style: italic; color: #61AFC5">Add meg a szervezeted alapadatait</div>
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    percent: 20,
+                    next_id: 'second',
+                    next_button_id: 'next-1'
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                <div class="text-center progressbar-order">Add meg a
+                    szervezeted alapadatait
+                </div>
+                {{ form_row(form.name) }}
+                {{ form_row(form.description) }}
+            </div>
+        </div>
     </div>
+
     <div id="second" class="hidden progresswrapper">
-        {{ include('::progressbar.html.twig',
-        {
-            header: 'Create virtual organization',
-            prev_id: 'first',
-            percent: 40,
-            next_id: 'third',
-            next_button_id: 'next-2'
-        }
-        )}}
-
-        {{ form_row(form.role) }}
-        <div class="text-center" style="font-style: italic; color: #61AFC5">Add meg az alapértelmezett szerepkör nevét</div>
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    prev_id: 'first',
+                    percent: 40,
+                    next_id: 'third',
+                    next_button_id: 'next-2'
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                <div class="text-center progressbar-order">Add meg az alapértelmezett
+                    szerepkör
+                    nevét
+                </div>
+                {{ form_row(form.role) }}
+            </div>
+        </div>
     </div>
+
     <div id="third" class="hidden progresswrapper">
-        {{ include('::progressbar.html.twig',
-        {
-            header: 'Create virtual organization',
-            prev_id: 'second',
-            percent: 60,
-            next_id: 'fourth',
-            next_button_id: 'next-3'
-        }
-        )}}
-
-        {{ form_row(form.service_token) }}
-        <div class="text-center" style="font-style: italic; color: #61AFC5">Szolgáltatás összekapcsolása</div>
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    prev_id: 'second',
+                    percent: 60,
+                    next_id: 'fourth',
+                    next_button_id: 'next-3'
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                <div class="text-center progressbar-order">Szolgáltatás összekapcsolása</div>
+                {{ form_row(form.service_token) }}
+            </div>
+        </div>
     </div>
+
     <div id="fourth" class="hidden progresswrapper">
-        {{ include('::progressbar.html.twig',
-        {
-            header: 'Create virtual organization',
-            prev_id: 'third',
-            percent: 80,
-            next_id: 'fifth',
-            next_button_id: 'next-4'
-        }
-        )}}
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    prev_id: 'third',
+                    percent: 80,
+                    next_id: 'fifth',
+                    next_button_id: 'next-4'
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                <div class="text-center progressbar-order">Tagok meghívása az alapértelmezett
+                    szerepbe
+                </div>
+                {{ form_row(form.invitation_emails) }}
 
-        {{ form_row(form.invitation_emails) }}
-        <div class="text-center" style="font-style: italic; color: #61AFC5">Tagok meghívása az alapértelmezett szerepbe</div>
+            </div>
+        </div>
     </div>
+
     <div id="fifth" class="hidden progresswrapper">
-        {{ include('::progressbar.html.twig',
-        {
-            header: 'Create virtual organization',
-            prev_id: 'fourth',
-            percent: 100,
-        }
-        )}}
-        Siker
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    prev_id: 'fourth',
+                    percent: 100,
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                Siker
+            </div>
+        </div>
     </div>
 
-        {{ form_end(form) }}
+    {{ form_end(form) }}
 
 {% endblock %}
 
