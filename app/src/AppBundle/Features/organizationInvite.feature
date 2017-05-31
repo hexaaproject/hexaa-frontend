@@ -28,6 +28,7 @@ Feature: When I go to organizations
      And I wait for "Your invitation is done" to appear
      And I press "Done"
      And I should not see "Your invitation is done"
+     And I wait for "Users" to appear
 
     When I press "Invite"
      And I wait for "Create invitation" to appear
@@ -36,6 +37,7 @@ Feature: When I go to organizations
      And I wait for "Your invitation is done" to appear
      And I press "Done"
      And I should not see "Your invitation is done"
+    And I wait for "Users" to appear
 
     When I press "Invite"
      And I wait for "Create invitation" to appear
@@ -44,6 +46,7 @@ Feature: When I go to organizations
      And I wait for "Your invitation is done" to appear
      And I press "Done"
      And I should not see "Your invitation is done"
+    And I wait for "Users" to appear
 
     When I press "Invite"
      And I wait for "Create invitation" to appear
