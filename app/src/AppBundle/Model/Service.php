@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Model;
 
 use GuzzleHttp\Client;
@@ -23,7 +24,8 @@ class Service extends AbstractBaseResource
      */
     public function getAttributeSpecs(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/'.$id.'/attributespecs', $verbose, $offset, $pageSize);
+        return $this->getCollection($this->pathName.'/'.$id.'/attributespecs',
+                $verbose, $offset, $pageSize);
     }
 
     /**
@@ -37,7 +39,8 @@ class Service extends AbstractBaseResource
      */
     public function getManagers(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/'.$id.'/managers', $verbose, $offset, $pageSize);
+        return $this->getCollection($this->pathName.'/'.$id.'/managers',
+                $verbose, $offset, $pageSize);
     }
 
     /**
@@ -51,7 +54,8 @@ class Service extends AbstractBaseResource
      */
     public function getEntitlements(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/'.$id.'/entitlements', $verbose, $offset, $pageSize);
+        return $this->getCollection($this->pathName.'/'.$id.'/entitlements',
+                $verbose, $offset, $pageSize);
     }
 
     /**
@@ -65,20 +69,36 @@ class Service extends AbstractBaseResource
      */
     public function getEntitlementPacks(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/'.$id.'/entitlementpacks', $verbose, $offset, $pageSize);
+        return $this->getCollection($this->pathName.'/'.$id.'/entitlementpacks',
+                $verbose, $offset, $pageSize);
     }
-    
-     public function deleteMember(string $id, string $pid)
+
+    public function deleteMember(string $id, string $pid)
     {
         $path = $this->pathName.'/'.$id.'/managers/'.$pid;
 
         $response = $this->client->delete(
             $path,
             [
-                'headers' => $this->getHeaders(),
+            'headers' => $this->getHeaders(),
             ]
         );
 
         return $response;
     }
+    
+     public function deleteAttributeSpec(string $id, string $asid)
+    {
+        $path = $this->pathName.'/'.$id.'/attributespecs/'.$asid;
+
+        $response = $this->client->delete(
+            $path,
+            [
+            'headers' => $this->getHeaders(),
+            ]
+        );
+
+        return $response;
+    }
+
 }

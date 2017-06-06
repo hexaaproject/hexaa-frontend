@@ -1,25 +1,72 @@
 {% extends "AppBundle:Service:layout.html.twig" %}
 
 {% block container %}
-  {% block stylesheets %}
+    {% block stylesheets %}
         {% stylesheets 'css/tables.css' filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
 
-    {% block javascripts %}    
-        {% javascripts
-            '@datatables_js'
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endblock %}
-    
+
     {% if attributes is defined and attributes|length %}
         <div class="row">
             <div class="col-md-15">
                 {{ include('::tables.html.twig', {variant: 'red', tdcolor:'base', caption: 'Used attribute specifications', checkbox: true, attributes: true, users: attributes, table_id: 'attributes_table', buttons: attributes_buttons, search_placeholder: 'Search attribute' }) }}
             </div>
         </div>
+        {{ include('::modal.html.twig',
+            {
+                id: 'attributesRemove',
+                title: 'Remove attributes',
+                bodyhead: 'Are you ready to remove these attributes from your service?',
+                bodycontent: 'Optional',
+                button:
+                    {
+                        text: 'Remove',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_service_removeattributes', {id: service.id })
+            })
+        }}
     {% endif %}
+{% endblock %}
+
+{% block javascripts %}    
+    {% javascripts
+            '@datatables_js'
+            'js/clipboard.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function () {
+            function populateList(
+                    ul,
+                    el) {
+                var row = $(el).closest('tr');
+                var displayString = $(row.children()[1]).text();
+                ul.append('<li>' + displayString + '</li>');
+                var objectId = row.attr('id');
+                ul.append('<input name="attributespecId[]" value="' + objectId + '" class="hidden">');
+            }
+        {% if attributes is defined and attributes|length %}
+               var attributesTableActionButtons = $('.attributes_table_actionButtons');
+               var attributesRemove = $('#attributesRemove');
+               attributesTableActionButtons.on('click', '#remove', function (
+                       event) {
+                   event.preventDefault();
+                   var content = attributesRemove.find('.modal-body-content');
+                   content.empty();
+                   content.append('<ul></ul>');
+                   var ul = attributesRemove.find('ul');
+                   $('#attributes_table input:checked').each(function (
+                           index,
+                           el) {
+                       populateList(ul, el);
+                   });
+                   attributesRemove.modal('show');
+               });
+        {% endif %}
+            });
+    </script>
 {% endblock %}
