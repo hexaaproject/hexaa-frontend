@@ -7,6 +7,13 @@
                 text: 'Create',
                 class: 'btn-blue'
             },
+        leftbutton:
+            {
+                text: 'Cancel',
+                class: 'btn-blue',
+                id: "invite_1_cancel",
+                dismiss: true
+            },
         bodycontent: form_start(inviteForm)
                     ~ form_row(inviteForm.role)
                     ~ form_row(inviteForm.limit)
@@ -77,10 +84,6 @@
             $('#organization_user_invitation_send_email_link').val(data.link);
         }
 
-        function validateForm() { //TODO
-            return true;
-        }
-
         {% if not inviteForm.vars.valid %}
             $('#invite_1').modal({backdrop: 'static'});
         {% endif %}
@@ -90,14 +93,31 @@
             $('#invite_1').modal({backdrop: 'static'});
         });
 
+        var form = $('form[name=organization_user_invitation]');
+        form.validate();
+
         $(document).on('click', '.modal#invite_1 button[type=submit]', function (event) {
             event.preventDefault();
-            $(this).closest('.modal-footer').append('<i class="mdi mdi-sync"></i>'); // progress
-            if (! validateForm()) { //TODO
+            var startDate = new Date(
+                $('#organization_user_invitation_start_date_year').val(),
+                $('#organization_user_invitation_start_date_month').val(),
+                $('#organization_user_invitation_start_date_day').val()
+            );
+            var endDate = new Date(
+                $('#organization_user_invitation_end_date_year').val(),
+                $('#organization_user_invitation_end_date_month').val(),
+                $('#organization_user_invitation_end_date_day').val()
+            );
+            if (startDate > endDate) {
+                $('#organization_user_invitation_end_date').after('<p class="help-block has-error">Invalid date range.</p>')
                 return;
             }
+            if (! form.valid()) {
+                return;
+            }
+            $(this).closest('.modal-footer').append('<i class="mdi mdi-sync"></i>'); // progress
             $('#organization_user_invitation_send_email_role_id').val($('#organization_user_invitation_role').val());
-            submitFormByAjax($('form[name=organization_user_invitation]'), invitationDone);
+            submitFormByAjax(form, invitationDone);
         });
 
         $(document).on('click', '.modal#invite_2 button[type=submit]', function (event) {

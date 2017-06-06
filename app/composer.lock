@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6908b294dc12ffdcd99ccdca84d6cb4f",
+    "content-hash": "a23a83248d44197d8cd1650da451f894",
     "packages": [
         {
             "name": "components/jquery",
-            "version": "3.1.1",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/jquery.git",
-                "reference": "09a1658378bc1f818856086396ebeab7d0ec2276"
+                "reference": "e5534d4ab8e80c159553d507e358ed20a806d3bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/jquery/zipball/09a1658378bc1f818856086396ebeab7d0ec2276",
-                "reference": "09a1658378bc1f818856086396ebeab7d0ec2276",
+                "url": "https://api.github.com/repos/components/jquery/zipball/e5534d4ab8e80c159553d507e358ed20a806d3bf",
+                "reference": "e5534d4ab8e80c159553d507e358ed20a806d3bf",
                 "shasum": ""
             },
             "type": "component",
@@ -28,7 +28,10 @@
                     ],
                     "files": [
                         "jquery.min.js",
-                        "jquery.min.map"
+                        "jquery.min.map",
+                        "jquery.slim.js",
+                        "jquery.slim.min.js",
+                        "jquery.slim.min.map"
                     ]
                 }
             },
@@ -38,26 +41,84 @@
             ],
             "authors": [
                 {
-                    "name": "John Resig",
-                    "email": "jeresig@gmail.com"
+                    "name": "JS Foundation and other contributors"
                 }
             ],
             "description": "jQuery JavaScript Library",
             "homepage": "http://jquery.com",
-            "time": "2016-09-23T06:06:29+00:00"
+            "time": "2017-03-21T07:01:49+00:00"
         },
         {
-            "name": "datatables/datatables",
-            "version": "1.10.13",
+            "name": "composer/ca-bundle",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/DataTables/DataTables.git",
-                "reference": "403128c42f7b263a0563e862decbe69734b834e8"
+                "url": "https://github.com/composer/ca-bundle.git",
+                "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataTables/DataTables/zipball/403128c42f7b263a0563e862decbe69734b834e8",
-                "reference": "403128c42f7b263a0563e862decbe69734b834e8",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
+                "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "ext-pcre": "*",
+                "php": "^5.3.2 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5",
+                "psr/log": "^1.0",
+                "symfony/process": "^2.5 || ^3.0"
+            },
+            "suggest": {
+                "symfony/process": "This is necessary to reliably check whether openssl_x509_parse is vulnerable on older php versions, but can be ignored on PHP 5.5.6+"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\CaBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Lets you find a path to the system CA bundle, and includes a fallback to the Mozilla CA bundle.",
+            "keywords": [
+                "cabundle",
+                "cacert",
+                "certificate",
+                "ssl",
+                "tls"
+            ],
+            "time": "2017-03-06T11:59:08+00:00"
+        },
+        {
+            "name": "datatables/datatables",
+            "version": "1.10.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DataTables/DataTables.git",
+                "reference": "7494262db18b1cbc69dcc1d64a5a8d0cd757d58c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DataTables/DataTables/zipball/7494262db18b1cbc69dcc1d64a5a8d0cd757d58c",
+                "reference": "7494262db18b1cbc69dcc1d64a5a8d0cd757d58c",
                 "shasum": ""
             },
             "type": "library",
@@ -67,7 +128,7 @@
             ],
             "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.",
             "homepage": "http://www.datatables.net/",
-            "time": "2016-12-06T19:40:44+00:00"
+            "time": "2017-04-18T08:24:18+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -840,16 +901,16 @@
         },
         {
             "name": "drmonty/datatables-plugins",
-            "version": "1.10.13",
+            "version": "1.10.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mrohnstock/datatables-plugins.git",
-                "reference": "34e300cc5b5fc7525d96c39e19b2574404022e77"
+                "reference": "dc09afa5b976986fc90da1794457f844614d0cc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mrohnstock/datatables-plugins/zipball/34e300cc5b5fc7525d96c39e19b2574404022e77",
-                "reference": "34e300cc5b5fc7525d96c39e19b2574404022e77",
+                "url": "https://api.github.com/repos/mrohnstock/datatables-plugins/zipball/dc09afa5b976986fc90da1794457f844614d0cc8",
+                "reference": "dc09afa5b976986fc90da1794457f844614d0cc8",
                 "shasum": ""
             },
             "require": {
@@ -859,404 +920,414 @@
             "extra": {
                 "component": {
                     "scripts": [
-                        "sorting/date-eu.js",
-                        "sorting/formatted-numbers.js",
-                        "sorting/file-size.js",
-                        "sorting/anti-the.js",
-                        "sorting/enum.js",
-                        "sorting/num-html.js",
-                        "sorting/signed-num.js",
-                        "sorting/date-euro.js",
-                        "sorting/title-numeric.js",
-                        "sorting/monthYear.js",
-                        "sorting/intl.js",
-                        "sorting/ip-address.js",
-                        "sorting/custom-data-source/dom-text.js",
-                        "sorting/custom-data-source/dom-checkbox.js",
-                        "sorting/custom-data-source/dom-select.js",
-                        "sorting/stringMonthYear.js",
-                        "sorting/chinese-string.js",
-                        "sorting/percent.js",
-                        "sorting/numeric-comma.js",
-                        "sorting/alt-string.js",
-                        "sorting/turkish-string.js",
-                        "sorting/date-uk.js",
-                        "sorting/scientific.js",
-                        "sorting/natural.js",
-                        "sorting/datetime-us.js",
-                        "sorting/time.js",
-                        "sorting/date-de.js",
-                        "sorting/datetime-moment.js",
-                        "sorting/currency.js",
-                        "sorting/persian.js",
-                        "sorting/title-string.js",
-                        "sorting/brackets-negative.js",
-                        "sorting/date-dd-MMM-yyyy.js",
+                        "dataRender/datetime.js",
+                        "dataRender/intl.js",
+                        "dataRender/ellipsis.js",
+                        "dataRender/percentageBars.js",
+                        "integration/foundation/dataTables.foundation.js",
+                        "integration/foundation/dataTables.foundation.min.js",
+                        "integration/bootstrap/1/dataTables.bootstrap.js",
+                        "integration/bootstrap/3/dataTables.bootstrap.js",
+                        "integration/bootstrap/3/dataTables.bootstrap.min.js",
+                        "integration/bootstrap/2/dataTables.bootstrap.js",
+                        "integration/bootstrap/2/dataTables.bootstrap.min.js",
+                        "integration/jqueryui/dataTables.jqueryui.min.js",
+                        "integration/jqueryui/dataTables.jqueryui.js",
+                        "pagination/four_button.js",
+                        "pagination/full_numbers_no_ellipses.js",
+                        "pagination/jPaginator/dataTables.jPaginator.js",
+                        "pagination/input.js",
+                        "pagination/extjs.js",
+                        "pagination/scrolling.js",
+                        "pagination/ellipses.js",
+                        "pagination/select.js",
+                        "pagination/simple_numbers_no_ellipses.js",
+                        "api/processing().js",
+                        "api/fnSetFilteringDelay.js",
+                        "api/fnDataUpdate.js",
+                        "api/fnReloadAjax.js",
+                        "api/sum().js",
+                        "api/fnFakeRowspan.js",
+                        "api/row().show().js",
+                        "api/fnFilterOnReturn.js",
+                        "api/fnGetColumnIndex.js",
+                        "api/page.jumpToData().js",
+                        "api/column().title().js",
+                        "api/fnProcessingIndicator.js",
+                        "api/fnSortNeutral.js",
+                        "api/fnGetColumnData.js",
+                        "api/fnFindCellRowIndexes.js",
+                        "api/fnAddDataAndDisplay.js",
+                        "api/columns().order().js",
+                        "api/fnDisplayRow.js",
+                        "api/fnFilterClear.js",
+                        "api/fnGetHiddenNodes.js",
+                        "api/fnLengthChange.js",
+                        "api/order.neutral().js",
+                        "api/fnGetTds.js",
+                        "api/fnColumnIndexToVisible.js",
+                        "api/average().js",
+                        "api/fnVisibleToColumnIndex.js",
+                        "api/fnMultiFilter.js",
+                        "api/fnGetAdjacentTr.js",
+                        "api/fnFilterAll.js",
+                        "api/fnAddTr.js",
+                        "api/fnStandingRedraw.js",
+                        "api/fnDisplayStart.js",
+                        "api/fnFindCellRowNodes.js",
+                        "api/fnPagingInfo.js",
+                        "api/fnGetTd.js",
+                        "type-detection/file-size.js",
+                        "type-detection/numeric-comma.js",
+                        "type-detection/ip-address.js",
+                        "type-detection/num-html.js",
+                        "type-detection/currency.js",
+                        "type-detection/date-uk.js",
+                        "type-detection/formatted-num.js",
+                        "features/slidingChild/js/sliding-child.js",
+                        "features/conditionalPaging/dataTables.conditionalPaging.js",
                         "features/searchHighlight/dataTables.searchHighlight.js",
                         "features/searchHighlight/dataTables.searchHighlight.min.js",
                         "features/mark.js/datatables.mark.es6.js",
-                        "features/mark.js/datatables.mark.min.js",
                         "features/mark.js/datatables.mark.js",
                         "features/mark.js/datatables.mark.es6.min.js",
-                        "features/conditionalPaging/dataTables.conditionalPaging.js",
-                        "features/scrollResize/dataTables.scrollResize.js",
+                        "features/mark.js/datatables.mark.min.js",
                         "features/lengthLinks/dataTables.lengthLinks.min.js",
                         "features/lengthLinks/dataTables.lengthLinks.js",
                         "features/alphabetSearch/dataTables.alphabetSearch.js",
                         "features/alphabetSearch/dataTables.alphabetSearch.min.js",
-                        "features/pageResize/dataTables.pageResize.min.js",
+                        "features/scrollResize/dataTables.scrollResize.js",
                         "features/pageResize/dataTables.pageResize.js",
-                        "dataRender/intl.js",
-                        "dataRender/ellipsis.js",
-                        "dataRender/datetime.js",
-                        "api/fnFindCellRowNodes.js",
-                        "api/average().js",
-                        "api/fnVisibleToColumnIndex.js",
-                        "api/fnGetTd.js",
-                        "api/fnDisplayRow.js",
-                        "api/fnGetColumnIndex.js",
-                        "api/fnAddTr.js",
-                        "api/fnGetColumnData.js",
-                        "api/fnProcessingIndicator.js",
-                        "api/page.jumpToData().js",
-                        "api/fnStandingRedraw.js",
-                        "api/fnReloadAjax.js",
-                        "api/fnFilterOnReturn.js",
-                        "api/fnLengthChange.js",
-                        "api/column().title().js",
-                        "api/row().show().js",
-                        "api/fnAddDataAndDisplay.js",
-                        "api/fnFakeRowspan.js",
-                        "api/fnFindCellRowIndexes.js",
-                        "api/fnFilterClear.js",
-                        "api/sum().js",
-                        "api/fnSortNeutral.js",
-                        "api/fnDataUpdate.js",
-                        "api/fnGetHiddenNodes.js",
-                        "api/fnPagingInfo.js",
-                        "api/fnMultiFilter.js",
-                        "api/fnGetAdjacentTr.js",
-                        "api/order.neutral().js",
-                        "api/fnGetTds.js",
-                        "api/fnFilterAll.js",
-                        "api/processing().js",
-                        "api/fnColumnIndexToVisible.js",
-                        "api/fnDisplayStart.js",
-                        "api/columns().order().js",
-                        "api/fnSetFilteringDelay.js",
-                        "type-detection/file-size.js",
-                        "type-detection/num-html.js",
-                        "type-detection/ip-address.js",
-                        "type-detection/numeric-comma.js",
-                        "type-detection/date-uk.js",
-                        "type-detection/formatted-num.js",
-                        "type-detection/currency.js",
-                        "integration/foundation/dataTables.foundation.min.js",
-                        "integration/foundation/dataTables.foundation.js",
-                        "integration/jqueryui/dataTables.jqueryui.min.js",
-                        "integration/jqueryui/dataTables.jqueryui.js",
-                        "integration/bootstrap/2/dataTables.bootstrap.min.js",
-                        "integration/bootstrap/2/dataTables.bootstrap.js",
-                        "integration/bootstrap/3/dataTables.bootstrap.min.js",
-                        "integration/bootstrap/3/dataTables.bootstrap.js",
-                        "integration/bootstrap/1/dataTables.bootstrap.js",
-                        "filtering/row-based/range_numbers.js",
-                        "filtering/row-based/TableTools.ShowSelectedOnly.js",
-                        "filtering/row-based/range_dates.js",
-                        "filtering/type-based/accent-neutralise.js",
-                        "filtering/type-based/html.js",
-                        "filtering/type-based/phoneNumber.js",
-                        "pagination/input.js",
-                        "pagination/ellipses.js",
-                        "pagination/full_numbers_no_ellipses.js",
-                        "pagination/select.js",
-                        "pagination/simple_numbers_no_ellipses.js",
-                        "pagination/four_button.js",
-                        "pagination/jPaginator/dataTables.jPaginator.js",
-                        "pagination/scrolling.js",
-                        "pagination/extjs.js"
-                    ],
-                    "files": [
-                        "sorting/date-eu.js",
-                        "sorting/formatted-numbers.js",
-                        "sorting/file-size.js",
-                        "sorting/anti-the.js",
-                        "sorting/enum.js",
-                        "sorting/num-html.js",
+                        "features/pageResize/dataTables.pageResize.min.js",
+                        "sorting/turkish-string.js",
                         "sorting/signed-num.js",
+                        "sorting/anti-the.js",
+                        "sorting/file-size.js",
                         "sorting/date-euro.js",
-                        "sorting/title-numeric.js",
-                        "sorting/monthYear.js",
-                        "sorting/.DS_Store",
-                        "sorting/intl.js",
-                        "sorting/ip-address.js",
+                        "sorting/time.js",
+                        "sorting/natural.js",
+                        "sorting/chinese-string.js",
+                        "sorting/persian.js",
+                        "sorting/brackets-negative.js",
+                        "sorting/numeric-comma.js",
+                        "sorting/datetime-us.js",
+                        "sorting/enum.js",
+                        "sorting/title-string.js",
+                        "sorting/formatted-numbers.js",
                         "sorting/custom-data-source/dom-text.js",
                         "sorting/custom-data-source/dom-checkbox.js",
                         "sorting/custom-data-source/dom-select.js",
                         "sorting/stringMonthYear.js",
-                        "sorting/chinese-string.js",
                         "sorting/percent.js",
-                        "sorting/numeric-comma.js",
-                        "sorting/alt-string.js",
-                        "sorting/turkish-string.js",
-                        "sorting/date-uk.js",
-                        "sorting/scientific.js",
-                        "sorting/natural.js",
-                        "sorting/datetime-us.js",
-                        "sorting/time.js",
-                        "sorting/date-de.js",
-                        "sorting/datetime-moment.js",
-                        "sorting/currency.js",
-                        "sorting/persian.js",
-                        "sorting/title-string.js",
-                        "sorting/brackets-negative.js",
+                        "sorting/ip-address.js",
+                        "sorting/intl.js",
+                        "sorting/time-elapsed-dhms.js",
+                        "sorting/title-numeric.js",
                         "sorting/date-dd-MMM-yyyy.js",
-                        "features/searchHighlight/dataTables.searchHighlight.css",
+                        "sorting/num-html.js",
+                        "sorting/absolute.js",
+                        "sorting/datetime-moment.js",
+                        "sorting/scientific.js",
+                        "sorting/currency.js",
+                        "sorting/date-eu.js",
+                        "sorting/date-uk.js",
+                        "sorting/monthYear.js",
+                        "sorting/alt-string.js",
+                        "sorting/date-de.js",
+                        "filtering/type-based/phoneNumber.js",
+                        "filtering/type-based/accent-neutralise.js",
+                        "filtering/type-based/html.js",
+                        "filtering/row-based/range_numbers.js",
+                        "filtering/row-based/range_dates.js",
+                        "filtering/row-based/TableTools.ShowSelectedOnly.js"
+                    ],
+                    "files": [
+                        "dataRender/datetime.js",
+                        "dataRender/intl.js",
+                        "dataRender/percentageBars",
+                        "dataRender/ellipsis.js",
+                        "dataRender/percentageBars.js",
+                        "integration/foundation/dataTables.foundation.js",
+                        "integration/foundation/dataTables.foundation.css",
+                        "integration/foundation/images/sort_asc_disabled.png",
+                        "integration/foundation/images/sort_desc_disabled.png",
+                        "integration/foundation/images/sort_both.png",
+                        "integration/foundation/images/sort_desc.png",
+                        "integration/foundation/images/sort_asc.png",
+                        "integration/foundation/dataTables.foundation.min.js",
+                        "integration/bootstrap/1/dataTables.bootstrap.js",
+                        "integration/bootstrap/1/dataTables.bootstrap.css",
+                        "integration/bootstrap/3/dataTables.bootstrap.js",
+                        "integration/bootstrap/3/dataTables.bootstrap.min.js",
+                        "integration/bootstrap/3/dataTables.bootstrap.css",
+                        "integration/bootstrap/images/sort_asc_disabled.png",
+                        "integration/bootstrap/images/sort_desc_disabled.png",
+                        "integration/bootstrap/images/sort_both.png",
+                        "integration/bootstrap/images/sort_desc.png",
+                        "integration/bootstrap/images/sort_asc.png",
+                        "integration/bootstrap/2/dataTables.bootstrap.js",
+                        "integration/bootstrap/2/dataTables.bootstrap.min.js",
+                        "integration/bootstrap/2/dataTables.bootstrap.css",
+                        "integration/jqueryui/dataTables.jqueryui.min.js",
+                        "integration/jqueryui/dataTables.jqueryui.scss",
+                        "integration/jqueryui/dataTables.jqueryui.css",
+                        "integration/jqueryui/dataTables.jqueryui.js",
+                        "integration/font-awesome/dataTables.fontAwesome.css",
+                        "pagination/four_button.js",
+                        "pagination/full_numbers_no_ellipses.js",
+                        "pagination/jPaginator/dataTables.jPaginator.js",
+                        "pagination/input.js",
+                        "pagination/extjs.js",
+                        "pagination/scrolling.js",
+                        "pagination/ellipses.js",
+                        "pagination/select.js",
+                        "pagination/simple_numbers_no_ellipses.js",
+                        "api/processing().js",
+                        "api/fnSetFilteringDelay.js",
+                        "api/fnDataUpdate.js",
+                        "api/fnReloadAjax.js",
+                        "api/sum().js",
+                        "api/fnFakeRowspan.js",
+                        "api/row().show().js",
+                        "api/fnFilterOnReturn.js",
+                        "api/fnGetColumnIndex.js",
+                        "api/page.jumpToData().js",
+                        "api/column().title().js",
+                        "api/fnProcessingIndicator.js",
+                        "api/fnSortNeutral.js",
+                        "api/fnGetColumnData.js",
+                        "api/fnFindCellRowIndexes.js",
+                        "api/fnAddDataAndDisplay.js",
+                        "api/columns().order().js",
+                        "api/fnDisplayRow.js",
+                        "api/fnFilterClear.js",
+                        "api/fnGetHiddenNodes.js",
+                        "api/fnLengthChange.js",
+                        "api/order.neutral().js",
+                        "api/fnGetTds.js",
+                        "api/fnColumnIndexToVisible.js",
+                        "api/average().js",
+                        "api/fnVisibleToColumnIndex.js",
+                        "api/fnMultiFilter.js",
+                        "api/fnGetAdjacentTr.js",
+                        "api/fnFilterAll.js",
+                        "api/fnAddTr.js",
+                        "api/fnStandingRedraw.js",
+                        "api/fnDisplayStart.js",
+                        "api/fnFindCellRowNodes.js",
+                        "api/fnPagingInfo.js",
+                        "api/fnGetTd.js",
+                        "i18n/Ukrainian.json",
+                        "i18n/Kazakh.json",
+                        "i18n/Armenian.json",
+                        "i18n/English.lang",
+                        "i18n/Ukranian.json",
+                        "i18n/Polish.json",
+                        "i18n/Italian.json",
+                        "i18n/Indonesian-Alternative.json",
+                        "i18n/Norwegian-Bokmal.json",
+                        "i18n/Lithuanian.json",
+                        "i18n/Russian.lang",
+                        "i18n/Dutch.lang",
+                        "i18n/Korean.json",
+                        "i18n/Lithuanian.lang",
+                        "i18n/French.json",
+                        "i18n/Armenian.lang",
+                        "i18n/Basque.lang",
+                        "i18n/Sinhala.json",
+                        "i18n/Thai.lang",
+                        "i18n/Danish.json",
+                        "i18n/Galician.lang",
+                        "i18n/Swedish.json",
+                        "i18n/Persian.json",
+                        "i18n/Welsh.json",
+                        "i18n/Norwegian-Nynorsk.json",
+                        "i18n/Serbian.json",
+                        "i18n/Azerbaijan.lang",
+                        "i18n/Portuguese-Brasil.lang",
+                        "i18n/Afrikaans.lang",
+                        "i18n/Norwegian.lang",
+                        "i18n/Azerbaijan.json",
+                        "i18n/German.lang",
+                        "i18n/Basque.json",
+                        "i18n/Filipino.json",
+                        "i18n/Icelandic.json",
+                        "i18n/Georgian.lang",
+                        "i18n/Finnish.json",
+                        "i18n/Indonesian-Alternative.lang",
+                        "i18n/Belarusian.json",
+                        "i18n/Danish.lang",
+                        "i18n/Chinese-traditional.lang",
+                        "i18n/Nepali.json",
+                        "i18n/Urdu.json",
+                        "i18n/Georgian.json",
+                        "i18n/Dutch.json",
+                        "i18n/Uzbek.lang",
+                        "i18n/Urdu.lang",
+                        "i18n/Japanese.lang",
+                        "i18n/Kyrgyz.json",
+                        "i18n/Swedish.lang",
+                        "i18n/Galician.json",
+                        "i18n/Pashto.lang",
+                        "i18n/Vietnamese.json",
+                        "i18n/Nepali.lang",
+                        "i18n/Finnish.lang",
+                        "i18n/Persian.lang",
+                        "i18n/Icelandic.lang",
+                        "i18n/Spanish.lang",
+                        "i18n/Indonesian.lang",
+                        "i18n/Hungarian.json",
+                        "i18n/Ukrainian.lang",
+                        "i18n/Romanian.json",
+                        "i18n/Catalan.json",
+                        "i18n/Bulgarian.json",
+                        "i18n/Croatian.lang",
+                        "i18n/Czech.json",
+                        "i18n/Thai.json",
+                        "i18n/Estonian.json",
+                        "i18n/Spanish.json",
+                        "i18n/Hindi.lang",
+                        "i18n/Norwegian-Bokmal.lang",
+                        "i18n/Gujarati.lang",
+                        "i18n/telugu.lang",
+                        "i18n/Mongolian.json",
+                        "i18n/Italian.lang",
+                        "i18n/Portuguese-Brasil.json",
+                        "i18n/Pashto.json",
+                        "i18n/English.json",
+                        "i18n/telugu.json",
+                        "i18n/Greek.json",
+                        "i18n/Sinhala.lang",
+                        "i18n/Malay.lang",
+                        "i18n/Croatian.json",
+                        "i18n/Japanese.json",
+                        "i18n/Macedonian.json",
+                        "i18n/Kyrgyz.lang",
+                        "i18n/Bangla.json",
+                        "i18n/Korean.lang",
+                        "i18n/Tamil.lang",
+                        "i18n/Catalan.lang",
+                        "i18n/Turkish.lang",
+                        "i18n/Irish.json",
+                        "i18n/Turkish.json",
+                        "i18n/Swahili.lang",
+                        "i18n/Chinese.lang",
+                        "i18n/Hebrew.json",
+                        "i18n/Albanian.lang",
+                        "i18n/Latvian.json",
+                        "i18n/Chinese-traditional.json",
+                        "i18n/Bulgarian.lang",
+                        "i18n/Filipino.lang",
+                        "i18n/Hungarian.lang",
+                        "i18n/Welsh.lang",
+                        "i18n/Swahili.json",
+                        "i18n/Russian.json",
+                        "i18n/Arabic.json",
+                        "i18n/Uzbek.json",
+                        "i18n/Portuguese.lang",
+                        "i18n/Chinese.json",
+                        "i18n/Latvian.lang",
+                        "i18n/Afrikaans.json",
+                        "i18n/Indonesian.json",
+                        "i18n/Gujarati.json",
+                        "i18n/Norwegian-Nynorsk.lang",
+                        "i18n/Romanian.lang",
+                        "i18n/Ukranian.lang",
+                        "i18n/Malay.json",
+                        "i18n/Czech.lang",
+                        "i18n/Slovenian.json",
+                        "i18n/Slovak.lang",
+                        "i18n/Slovenian.lang",
+                        "i18n/Hebrew.lang",
+                        "i18n/Portuguese.json",
+                        "i18n/Hindi.json",
+                        "i18n/German.json",
+                        "i18n/Norwegian.json",
+                        "i18n/Estonian.lang",
+                        "i18n/Slovak.json",
+                        "i18n/Arabic.lang",
+                        "i18n/French.lang",
+                        "i18n/Tamil.json",
+                        "i18n/Kazakh.lang",
+                        "i18n/Belarusian.lang",
+                        "i18n/Polish.lang",
+                        "i18n/Bangla.lang",
+                        "i18n/Vietnamese.lang",
+                        "i18n/Irish.lang",
+                        "i18n/Greek.lang",
+                        "i18n/Macedonian.lang",
+                        "i18n/Albanian.json",
+                        "i18n/Mongolian.lang",
+                        "i18n/Serbian.lang",
+                        "type-detection/file-size.js",
+                        "type-detection/numeric-comma.js",
+                        "type-detection/ip-address.js",
+                        "type-detection/num-html.js",
+                        "type-detection/currency.js",
+                        "type-detection/date-uk.js",
+                        "type-detection/formatted-num.js",
+                        "features/slidingChild/js/sliding-child.js",
+                        "features/conditionalPaging/dataTables.conditionalPaging.js",
                         "features/searchHighlight/dataTables.searchHighlight.js",
+                        "features/searchHighlight/dataTables.searchHighlight.css",
                         "features/searchHighlight/dataTables.searchHighlight.min.js",
                         "features/mark.js/datatables.mark.es6.js",
-                        "features/mark.js/datatables.mark.min.css",
-                        "features/mark.js/datatables.mark.min.js",
                         "features/mark.js/datatables.mark.js",
-                        "features/mark.js/datatables.mark.css",
                         "features/mark.js/datatables.mark.es6.min.js",
-                        "features/conditionalPaging/dataTables.conditionalPaging.js",
-                        "features/scrollResize/dataTables.scrollResize.js",
-                        "features/lengthLinks/dataTables.lengthLinks.min.js",
+                        "features/mark.js/datatables.mark.min.js",
+                        "features/mark.js/datatables.mark.min.css",
+                        "features/mark.js/datatables.mark.css",
                         "features/lengthLinks/dataTables.lengthLinks.css",
+                        "features/lengthLinks/dataTables.lengthLinks.min.js",
                         "features/lengthLinks/dataTables.lengthLinks.js",
                         "features/alphabetSearch/dataTables.alphabetSearch.js",
                         "features/alphabetSearch/dataTables.alphabetSearch.min.js",
                         "features/alphabetSearch/dataTables.alphabetSearch.css",
-                        "features/pageResize/dataTables.pageResize.min.js",
+                        "features/scrollResize/dataTables.scrollResize.js",
                         "features/pageResize/dataTables.pageResize.js",
-                        "dataRender/percentageBars",
-                        "dataRender/intl.js",
-                        "dataRender/ellipsis.js",
-                        "dataRender/datetime.js",
-                        "api/fnFindCellRowNodes.js",
-                        "api/average().js",
-                        "api/fnVisibleToColumnIndex.js",
-                        "api/fnGetTd.js",
-                        "api/fnDisplayRow.js",
-                        "api/fnGetColumnIndex.js",
-                        "api/fnAddTr.js",
-                        "api/fnGetColumnData.js",
-                        "api/fnProcessingIndicator.js",
-                        "api/page.jumpToData().js",
-                        "api/fnStandingRedraw.js",
-                        "api/fnReloadAjax.js",
-                        "api/fnFilterOnReturn.js",
-                        "api/fnLengthChange.js",
-                        "api/column().title().js",
-                        "api/row().show().js",
-                        "api/fnAddDataAndDisplay.js",
-                        "api/fnFakeRowspan.js",
-                        "api/fnFindCellRowIndexes.js",
-                        "api/fnFilterClear.js",
-                        "api/sum().js",
-                        "api/fnSortNeutral.js",
-                        "api/fnDataUpdate.js",
-                        "api/fnGetHiddenNodes.js",
-                        "api/fnPagingInfo.js",
-                        "api/fnMultiFilter.js",
-                        "api/fnGetAdjacentTr.js",
-                        "api/order.neutral().js",
-                        "api/fnGetTds.js",
-                        "api/fnFilterAll.js",
-                        "api/processing().js",
-                        "api/fnColumnIndexToVisible.js",
-                        "api/fnDisplayStart.js",
-                        "api/columns().order().js",
-                        "api/fnSetFilteringDelay.js",
-                        "type-detection/file-size.js",
-                        "type-detection/num-html.js",
-                        "type-detection/ip-address.js",
-                        "type-detection/numeric-comma.js",
-                        "type-detection/date-uk.js",
-                        "type-detection/formatted-num.js",
-                        "type-detection/currency.js",
-                        "integration/font-awesome/dataTables.fontAwesome.css",
-                        "integration/foundation/dataTables.foundation.min.js",
-                        "integration/foundation/dataTables.foundation.css",
-                        "integration/foundation/images/sort_both.png",
-                        "integration/foundation/images/sort_asc_disabled.png",
-                        "integration/foundation/images/sort_desc_disabled.png",
-                        "integration/foundation/images/sort_desc.png",
-                        "integration/foundation/images/sort_asc.png",
-                        "integration/foundation/dataTables.foundation.js",
-                        "integration/jqueryui/dataTables.jqueryui.css",
-                        "integration/jqueryui/dataTables.jqueryui.min.js",
-                        "integration/jqueryui/dataTables.jqueryui.scss",
-                        "integration/jqueryui/dataTables.jqueryui.js",
-                        "integration/bootstrap/2/dataTables.bootstrap.css",
-                        "integration/bootstrap/2/dataTables.bootstrap.min.js",
-                        "integration/bootstrap/2/dataTables.bootstrap.js",
-                        "integration/bootstrap/images/sort_both.png",
-                        "integration/bootstrap/images/sort_asc_disabled.png",
-                        "integration/bootstrap/images/sort_desc_disabled.png",
-                        "integration/bootstrap/images/sort_desc.png",
-                        "integration/bootstrap/images/sort_asc.png",
-                        "integration/bootstrap/3/dataTables.bootstrap.css",
-                        "integration/bootstrap/3/dataTables.bootstrap.min.js",
-                        "integration/bootstrap/3/dataTables.bootstrap.js",
-                        "integration/bootstrap/1/dataTables.bootstrap.css",
-                        "integration/bootstrap/1/dataTables.bootstrap.js",
-                        "filtering/row-based/range_numbers.js",
-                        "filtering/row-based/TableTools.ShowSelectedOnly.js",
-                        "filtering/row-based/range_dates.js",
+                        "features/pageResize/dataTables.pageResize.min.js",
+                        "sorting/turkish-string.js",
+                        "sorting/signed-num.js",
+                        "sorting/anti-the.js",
+                        "sorting/file-size.js",
+                        "sorting/date-euro.js",
+                        "sorting/time.js",
+                        "sorting/natural.js",
+                        "sorting/chinese-string.js",
+                        "sorting/persian.js",
+                        "sorting/brackets-negative.js",
+                        "sorting/.DS_Store",
+                        "sorting/numeric-comma.js",
+                        "sorting/datetime-us.js",
+                        "sorting/enum.js",
+                        "sorting/title-string.js",
+                        "sorting/formatted-numbers.js",
+                        "sorting/custom-data-source/dom-text.js",
+                        "sorting/custom-data-source/dom-checkbox.js",
+                        "sorting/custom-data-source/dom-select.js",
+                        "sorting/stringMonthYear.js",
+                        "sorting/percent.js",
+                        "sorting/ip-address.js",
+                        "sorting/intl.js",
+                        "sorting/time-elapsed-dhms.js",
+                        "sorting/title-numeric.js",
+                        "sorting/date-dd-MMM-yyyy.js",
+                        "sorting/num-html.js",
+                        "sorting/absolute.js",
+                        "sorting/datetime-moment.js",
+                        "sorting/scientific.js",
+                        "sorting/currency.js",
+                        "sorting/date-eu.js",
+                        "sorting/date-uk.js",
+                        "sorting/monthYear.js",
+                        "sorting/alt-string.js",
+                        "sorting/date-de.js",
+                        "filtering/type-based/phoneNumber.js",
                         "filtering/type-based/accent-neutralise.js",
                         "filtering/type-based/html.js",
-                        "filtering/type-based/phoneNumber.js",
-                        "pagination/input.js",
-                        "pagination/ellipses.js",
-                        "pagination/full_numbers_no_ellipses.js",
-                        "pagination/select.js",
-                        "pagination/simple_numbers_no_ellipses.js",
-                        "pagination/four_button.js",
-                        "pagination/jPaginator/dataTables.jPaginator.js",
-                        "pagination/scrolling.js",
-                        "pagination/extjs.js",
-                        "i18n/Danish.json",
-                        "i18n/Catalan.json",
-                        "i18n/Hungarian.json",
-                        "i18n/Gujarati.json",
-                        "i18n/Uzbek.json",
-                        "i18n/English.json",
-                        "i18n/telugu.lang",
-                        "i18n/French.json",
-                        "i18n/Greek.lang",
-                        "i18n/Welsh.json",
-                        "i18n/Serbian.json",
-                        "i18n/Arabic.json",
-                        "i18n/Polish.lang",
-                        "i18n/Norwegian-Nynorsk.lang",
-                        "i18n/Azerbaijan.lang",
-                        "i18n/Urdu.json",
-                        "i18n/Russian.lang",
-                        "i18n/Mongolian.json",
-                        "i18n/Uzbek.lang",
-                        "i18n/Georgian.json",
-                        "i18n/Slovenian.lang",
-                        "i18n/Macedonian.lang",
-                        "i18n/Romanian.lang",
-                        "i18n/Pashto.lang",
-                        "i18n/Chinese-traditional.json",
-                        "i18n/Turkish.json",
-                        "i18n/Portuguese-Brasil.lang",
-                        "i18n/Czech.json",
-                        "i18n/Slovak.json",
-                        "i18n/Tamil.lang",
-                        "i18n/Norwegian-Bokmal.lang",
-                        "i18n/Welsh.lang",
-                        "i18n/Swedish.json",
-                        "i18n/Thai.json",
-                        "i18n/Indonesian-Alternative.json",
-                        "i18n/Indonesian-Alternative.lang",
-                        "i18n/Hebrew.json",
-                        "i18n/Irish.lang",
-                        "i18n/Ukrainian.json",
-                        "i18n/Polish.json",
-                        "i18n/Romanian.json",
-                        "i18n/Chinese.json",
-                        "i18n/Belarusian.json",
-                        "i18n/Basque.lang",
-                        "i18n/Danish.lang",
-                        "i18n/Chinese.lang",
-                        "i18n/Albanian.lang",
-                        "i18n/Icelandic.json",
-                        "i18n/Spanish.json",
-                        "i18n/Greek.json",
-                        "i18n/Lithuanian.json",
-                        "i18n/Russian.json",
-                        "i18n/Tamil.json",
-                        "i18n/Norwegian-Bokmal.json",
-                        "i18n/Galician.lang",
-                        "i18n/Nepali.json",
-                        "i18n/Persian.lang",
-                        "i18n/Bangla.json",
-                        "i18n/Indonesian.json",
-                        "i18n/Finnish.json",
-                        "i18n/Turkish.lang",
-                        "i18n/Japanese.json",
-                        "i18n/Lithuanian.lang",
-                        "i18n/Finnish.lang",
-                        "i18n/Bangla.lang",
-                        "i18n/telugu.json",
-                        "i18n/Malay.json",
-                        "i18n/Malay.lang",
-                        "i18n/Persian.json",
-                        "i18n/Mongolian.lang",
-                        "i18n/Swedish.lang",
-                        "i18n/Armenian.lang",
-                        "i18n/Estonian.lang",
-                        "i18n/Irish.json",
-                        "i18n/Croatian.lang",
-                        "i18n/Nepali.lang",
-                        "i18n/Vietnamese.lang",
-                        "i18n/Hindi.json",
-                        "i18n/Hebrew.lang",
-                        "i18n/Ukranian.lang",
-                        "i18n/Albanian.json",
-                        "i18n/Korean.json",
-                        "i18n/Georgian.lang",
-                        "i18n/Macedonian.json",
-                        "i18n/Sinhala.json",
-                        "i18n/Norwegian.lang",
-                        "i18n/Vietnamese.json",
-                        "i18n/Portuguese.lang",
-                        "i18n/Sinhala.lang",
-                        "i18n/Urdu.lang",
-                        "i18n/Icelandic.lang",
-                        "i18n/Slovak.lang",
-                        "i18n/Pashto.json",
-                        "i18n/Hungarian.lang",
-                        "i18n/Croatian.json",
-                        "i18n/Indonesian.lang",
-                        "i18n/Italian.lang",
-                        "i18n/Hindi.lang",
-                        "i18n/Basque.json",
-                        "i18n/Thai.lang",
-                        "i18n/Latvian.lang",
-                        "i18n/Korean.lang",
-                        "i18n/Estonian.json",
-                        "i18n/Dutch.lang",
-                        "i18n/Kyrgyz.lang",
-                        "i18n/Portuguese.json",
-                        "i18n/German.json",
-                        "i18n/English.lang",
-                        "i18n/Belarusian.lang",
-                        "i18n/Italian.json",
-                        "i18n/Azerbaijan.json",
-                        "i18n/French.lang",
-                        "i18n/Slovenian.json",
-                        "i18n/Arabic.lang",
-                        "i18n/Dutch.json",
-                        "i18n/Ukrainian.lang",
-                        "i18n/Latvian.json",
-                        "i18n/Catalan.lang",
-                        "i18n/Gujarati.lang",
-                        "i18n/Serbian.lang",
-                        "i18n/Armenian.json",
-                        "i18n/Swahili.lang",
-                        "i18n/Norwegian-Nynorsk.json",
-                        "i18n/Bulgarian.json",
-                        "i18n/Filipino.lang",
-                        "i18n/Bulgarian.lang",
-                        "i18n/Afrikaans.json",
-                        "i18n/Czech.lang",
-                        "i18n/Afrikaans.lang",
-                        "i18n/Galician.json",
-                        "i18n/Portuguese-Brasil.json",
-                        "i18n/Japanese.lang",
-                        "i18n/German.lang",
-                        "i18n/Ukranian.json",
-                        "i18n/Kyrgyz.json",
-                        "i18n/Spanish.lang",
-                        "i18n/Chinese-traditional.lang",
-                        "i18n/Filipino.json",
-                        "i18n/Swahili.json",
-                        "i18n/Norwegian.json"
+                        "filtering/row-based/range_numbers.js",
+                        "filtering/row-based/range_dates.js",
+                        "filtering/row-based/TableTools.ShowSelectedOnly.js"
                     ],
                     "shim": {
                         "deps": [
@@ -1278,7 +1349,7 @@
                 "sort",
                 "table"
             ],
-            "time": "2016-12-07T07:54:53+00:00"
+            "time": "2017-04-18T09:31:24+00:00"
         },
         {
             "name": "eightpoints/guzzle-bundle",
@@ -1514,16 +1585,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "0d6c7ca039329247e4f0f8f8f6506810e8248855"
+                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/0d6c7ca039329247e4f0f8f8f6506810e8248855",
-                "reference": "0d6c7ca039329247e4f0f8f8f6506810e8248855",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
+                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
                 "shasum": ""
             },
             "require": {
@@ -1575,7 +1646,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-02-27T10:51:17+00:00"
+            "time": "2017-03-20T17:10:46+00:00"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -2102,16 +2173,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.18",
+            "version": "v5.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "17846680901003d26d823c2e3ac9228702837916"
+                "reference": "654c4fa3d11448c8005400a244987896243a990a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/17846680901003d26d823c2e3ac9228702837916",
-                "reference": "17846680901003d26d823c2e3ac9228702837916",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/654c4fa3d11448c8005400a244987896243a990a",
+                "reference": "654c4fa3d11448c8005400a244987896243a990a",
                 "shasum": ""
             },
             "require": {
@@ -2150,20 +2221,20 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2017-01-10T14:58:45+00:00"
+            "time": "2017-04-23T22:28:23+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.23",
+            "version": "v3.0.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "d3601fd5709168ace7a1ca6eefa2619a1632b7f7"
+                "reference": "472b339cf0c82f3a033b29f85d9d9cada3cd1a9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/d3601fd5709168ace7a1ca6eefa2619a1632b7f7",
-                "reference": "d3601fd5709168ace7a1ca6eefa2619a1632b7f7",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/472b339cf0c82f3a033b29f85d9d9cada3cd1a9c",
+                "reference": "472b339cf0c82f3a033b29f85d9d9cada3cd1a9c",
                 "shasum": ""
             },
             "require": {
@@ -2220,23 +2291,24 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-03-02T20:17:28+00:00"
+            "time": "2017-03-21T23:34:44+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.0.2",
+            "version": "v4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "56bded66985e22f6eac2cf86735fd21c625bff2f"
+                "reference": "9e69eddf3bc49d1ee5c7908564da3141796d4bbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/56bded66985e22f6eac2cf86735fd21c625bff2f",
-                "reference": "56bded66985e22f6eac2cf86735fd21c625bff2f",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/9e69eddf3bc49d1ee5c7908564da3141796d4bbc",
+                "reference": "9e69eddf3bc49d1ee5c7908564da3141796d4bbc",
                 "shasum": ""
             },
             "require": {
+                "composer/ca-bundle": "^1.0",
                 "symfony/console": "~2.7|~3.0"
             },
             "bin": [
@@ -2264,20 +2336,20 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-03-09T17:33:20+00:00"
+            "time": "2017-03-31T14:50:32+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.6",
+            "version": "v5.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e"
+                "reference": "56db4ed32a6d5c9824c3ecc1d2e538f663f47eb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
-                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/56db4ed32a6d5c9824c3ecc1d2e538f663f47eb4",
+                "reference": "56db4ed32a6d5c9824c3ecc1d2e538f663f47eb4",
                 "shasum": ""
             },
             "require": {
@@ -2318,7 +2390,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2017-02-13T07:52:53+00:00"
+            "time": "2017-04-20T17:32:18+00:00"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -2392,16 +2464,16 @@
         },
         {
             "name": "symfony/monolog-bundle",
-            "version": "v3.0.3",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bundle.git",
-                "reference": "ebce76a39a65495a66c34eb1574cc4b9e35a4e64"
+                "reference": "6f96c7dbb6b2ef70b307a1a6f897153cbca3da47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/ebce76a39a65495a66c34eb1574cc4b9e35a4e64",
-                "reference": "ebce76a39a65495a66c34eb1574cc4b9e35a4e64",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/6f96c7dbb6b2ef70b307a1a6f897153cbca3da47",
+                "reference": "6f96c7dbb6b2ef70b307a1a6f897153cbca3da47",
                 "shasum": ""
             },
             "require": {
@@ -2448,7 +2520,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-01-10T20:01:51+00:00"
+            "time": "2017-03-26T11:55:59+00:00"
         },
         {
             "name": "symfony/polyfill-apcu",
@@ -2789,16 +2861,16 @@
         },
         {
             "name": "symfony/swiftmailer-bundle",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/swiftmailer-bundle.git",
-                "reference": "b59a70d03b948e29d070b6c4416b4a03af4748ec"
+                "reference": "8ab32ce31a7156621fb92e0466586186beb89759"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/b59a70d03b948e29d070b6c4416b4a03af4748ec",
-                "reference": "b59a70d03b948e29d070b6c4416b4a03af4748ec",
+                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/8ab32ce31a7156621fb92e0466586186beb89759",
+                "reference": "8ab32ce31a7156621fb92e0466586186beb89759",
                 "shasum": ""
             },
             "require": {
@@ -2844,20 +2916,20 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2017-03-02T16:47:57+00:00"
+            "time": "2017-03-21T21:47:36+00:00"
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.2.6",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "b0f8a7fa4b8baadf9db299cb6ac87c96a8977dbe"
+                "reference": "85959c2abbe4d2f050f950f39c9c3cf83819f3df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/b0f8a7fa4b8baadf9db299cb6ac87c96a8977dbe",
-                "reference": "b0f8a7fa4b8baadf9db299cb6ac87c96a8977dbe",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/85959c2abbe4d2f050f950f39c9c3cf83819f3df",
+                "reference": "85959c2abbe4d2f050f950f39c9c3cf83819f3df",
                 "shasum": ""
             },
             "require": {
@@ -2988,7 +3060,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-03-10T18:35:48+00:00"
+            "time": "2017-05-01T17:47:03+00:00"
         },
         {
             "name": "twbs/bootstrap",
@@ -3043,16 +3115,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.2.0",
+            "version": "v2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "29bb02dde09ff56291d30f7687eb8696918023af"
+                "reference": "85e8372c451510165c04bf781295f9d922fa524b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/29bb02dde09ff56291d30f7687eb8696918023af",
-                "reference": "29bb02dde09ff56291d30f7687eb8696918023af",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/85e8372c451510165c04bf781295f9d922fa524b",
+                "reference": "85e8372c451510165c04bf781295f9d922fa524b",
                 "shasum": ""
             },
             "require": {
@@ -3062,12 +3134,12 @@
             "require-dev": {
                 "psr/container": "^1.0",
                 "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.2"
+                "symfony/phpunit-bridge": "~3.3@dev"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -3102,7 +3174,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-02-27T00:16:20+00:00"
+            "time": "2017-04-21T00:13:02+00:00"
         },
         {
             "name": "webfontkit/open-sans",
@@ -3566,25 +3638,29 @@
         },
         {
             "name": "behat/transliterator",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Transliterator.git",
-                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003"
+                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/868e05be3a9f25ba6424c2dd4849567f50715003",
-                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003",
+                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
+                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
+            "require-dev": {
+                "chuyskywalker/rolling-curl": "^3.1",
+                "php-yaoi/php-yaoi": "^1.0"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -3602,7 +3678,178 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2015-09-28T16:26:35+00:00"
+            "time": "2017-04-04T11:38:05+00:00"
+        },
+        {
+            "name": "bex/behat-extension-driver-locator",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-extension-driver-locator.git",
+                "reference": "af9fb11f5f3cc220ee2c08071ee9d50f11048b86"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-extension-driver-locator/zipball/af9fb11f5f3cc220ee2c08071ee9d50f11048b86",
+                "reference": "af9fb11f5f3cc220ee2c08071ee9d50f11048b86",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "2.4.0-alpha2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Driver locator tool for behat extensions",
+            "homepage": "https://github.com/tkotosz/behat-extension-driver-locator",
+            "keywords": [
+                "BDD",
+                "Behat",
+                "TDD"
+            ],
+            "time": "2015-12-17T13:26:09+00:00"
+        },
+        {
+            "name": "bex/behat-screenshot",
+            "version": "1.2.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elvetemedve/behat-screenshot.git",
+                "reference": "1e2f704a5dd26b679953d6aff9a1add7ec978f81"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elvetemedve/behat-screenshot/zipball/1e2f704a5dd26b679953d6aff9a1add7ec978f81",
+                "reference": "1e2f704a5dd26b679953d6aff9a1add7ec978f81",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "behat/mink-extension": "^2.0.0",
+                "bex/behat-extension-driver-locator": "^1.0.2",
+                "php": ">=5.4",
+                "symfony/filesystem": "^2.7|^3.0",
+                "symfony/finder": "^2.7|^3.0"
+            },
+            "require-dev": {
+                "behat/mink-selenium2-driver": "^1.3.0",
+                "bex/behat-screenshot-image-driver-dummy": "^1.0",
+                "bex/behat-test-runner": "^1.2.1",
+                "jakoch/phantomjs-installer": "^2.1.1-p07",
+                "phpspec/phpspec": "^2.5"
+            },
+            "suggest": {
+                "bex/behat-screenshot-image-driver-img42": "Allows to upload the screenshot to img42.com",
+                "bex/behat-screenshot-image-driver-unsee": "Allows to upload the screenshot to unsee.cc",
+                "bex/behat-screenshot-image-driver-uploadpie": "Allows to upload the screenshot to uploadpie.com"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Bex\\Behat\\ScreenshotExtension\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Geza Buza",
+                    "email": "bghome@gmail.com",
+                    "homepage": "https://twitter.com/medve540",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Extension for behat to help debug failing scenarios",
+            "homepage": "https://github.com/elvetemedve/behat-screenshot",
+            "keywords": [
+                "BDD",
+                "Behat",
+                "TDD",
+                "behat-screenshot"
+            ],
+            "time": "2016-11-26T16:45:39+00:00"
+        },
+        {
+            "name": "bex/behat-screenshot-image-driver-unsee",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-screenshot-image-driver-unsee.git",
+                "reference": "89e5370bcfdf8af138e05cfe54c8f087cf781767"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-screenshot-image-driver-unsee/zipball/89e5370bcfdf8af138e05cfe54c8f087cf781767",
+                "reference": "89e5370bcfdf8af138e05cfe54c8f087cf781767",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "kriswallsmith/buzz": "^0.15.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "behat/mink-selenium2-driver": "^1.3.0",
+                "bex/behat-extension-driver-locator": "*",
+                "bex/behat-screenshot": "*",
+                "bex/behat-test-runner": "*",
+                "jakoch/phantomjs-installer": "^1.9.8",
+                "phpspec/phpspec": "2.4.0-alpha2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bex\\Behat\\ScreenshotExtension\\Driver\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "unsee.cc image driver for bex/behat-screenshot behat extension",
+            "homepage": "https://github.com/tkotosz/behat-screenshot-image-driver-unsee",
+            "keywords": [
+                "BDD",
+                "Behat",
+                "TDD",
+                "behat-screenshot"
+            ],
+            "time": "2015-11-14T09:05:37+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -3942,16 +4189,16 @@
         },
         {
             "name": "knplabs/friendly-contexts",
-            "version": "0.8",
+            "version": "0.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/FriendlyContexts.git",
-                "reference": "07e7c3044b6112d952d39a11ba6072cf76b3ba46"
+                "reference": "ed6f1d890ea02cf56be503d3a8843be20f4683f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/FriendlyContexts/zipball/07e7c3044b6112d952d39a11ba6072cf76b3ba46",
-                "reference": "07e7c3044b6112d952d39a11ba6072cf76b3ba46",
+                "url": "https://api.github.com/repos/KnpLabs/FriendlyContexts/zipball/ed6f1d890ea02cf56be503d3a8843be20f4683f6",
+                "reference": "ed6f1d890ea02cf56be503d3a8843be20f4683f6",
                 "shasum": ""
             },
             "require": {
@@ -3959,16 +4206,16 @@
                 "behat/mink-extension": "~2.0",
                 "doctrine/data-fixtures": "~1.0",
                 "doctrine/inflector": "~1.0",
-                "fzaninotto/faker": "~1.3",
+                "fzaninotto/faker": "~1.4",
                 "guzzle/guzzle": "~3.7",
                 "nelmio/alice": "~2.0",
                 "php": ">=5.4.0",
                 "symfony/property-access": "~2.3|~3.0"
             },
             "require-dev": {
-                "doctrine/orm": "dev-master",
+                "doctrine/orm": "~2.5",
                 "knplabs/phpspec-welldone-extension": "dev-master",
-                "phpspec/phpspec": "2.0.*@dev"
+                "phpspec/phpspec": "~2.4|~3.0"
             },
             "type": "library",
             "autoload": {
@@ -3982,39 +4229,88 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
-                    "name": "PedroTroller",
+                    "name": "Pedrotroller",
                     "homepage": "https://github.com/PedroTroller"
                 }
             ],
             "description": "Some BEHAT contexts",
-            "time": "2016-08-05T08:12:05+00:00"
+            "time": "2017-04-19T20:40:11+00:00"
         },
         {
-            "name": "nelmio/alice",
-            "version": "2.2.2",
+            "name": "kriswallsmith/buzz",
+            "version": "v0.15",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nelmio/alice.git",
-                "reference": "be940d30a450043c7991f2bc6ad19682db98c8cf"
+                "url": "https://github.com/kriswallsmith/Buzz.git",
+                "reference": "d4041666c3ffb379af02a92dabe81c904b35fab8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/alice/zipball/be940d30a450043c7991f2bc6ad19682db98c8cf",
-                "reference": "be940d30a450043c7991f2bc6ad19682db98c8cf",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/d4041666c3ffb379af02a92dabe81c904b35fab8",
+                "reference": "d4041666c3ffb379af02a92dabe81c904b35fab8",
                 "shasum": ""
             },
             "require": {
-                "fzaninotto/faker": "^1.0",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Buzz": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
+            "keywords": [
+                "curl",
+                "http client"
+            ],
+            "time": "2015-06-25T17:26:56+00:00"
+        },
+        {
+            "name": "nelmio/alice",
+            "version": "v2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nelmio/alice.git",
+                "reference": "0976436419f61863a072b390ea4c2ff75e62e364"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nelmio/alice/zipball/0976436419f61863a072b390ea4c2ff75e62e364",
+                "reference": "0976436419f61863a072b390ea4c2ff75e62e364",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "^1.5",
                 "php": "^5.6||^7.0",
                 "symfony/yaml": "^2.0||^3.0"
             },
             "require-dev": {
                 "doctrine/common": "^2.3",
-                "phpunit/phpunit": "^5.0||^4.0",
+                "phpspec/prophecy": "^1.5.0",
+                "phpunit/phpunit": "^5.6||^6.0",
                 "symfony/phpunit-bridge": "^3.0",
                 "symfony/property-access": "^2.2||^3.0"
             },
@@ -4054,7 +4350,7 @@
                 "orm",
                 "test"
             ],
-            "time": "2016-07-15T19:50:38+00:00"
+            "time": "2017-03-24T16:33:53+00:00"
         },
         {
             "name": "psr/container",
@@ -4107,16 +4403,16 @@
         },
         {
             "name": "sensio/generator-bundle",
-            "version": "v3.1.3",
+            "version": "v3.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioGeneratorBundle.git",
-                "reference": "c76c7833ed5ffe0f5aeef15e13939ddb59a684eb"
+                "reference": "37f9f4e165b033fb76cc2320838321cc57140e65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/c76c7833ed5ffe0f5aeef15e13939ddb59a684eb",
-                "reference": "c76c7833ed5ffe0f5aeef15e13939ddb59a684eb",
+                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/37f9f4e165b033fb76cc2320838321cc57140e65",
+                "reference": "37f9f4e165b033fb76cc2320838321cc57140e65",
                 "shasum": ""
             },
             "require": {
@@ -4128,7 +4424,9 @@
             },
             "require-dev": {
                 "doctrine/orm": "~2.4",
-                "symfony/doctrine-bridge": "~2.7|~3.0"
+                "symfony/doctrine-bridge": "~2.7|~3.0",
+                "symfony/filesystem": "~2.7|~3.0",
+                "symfony/phpunit-bridge": "^3.3"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -4155,7 +4453,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2017-03-03T15:22:50+00:00"
+            "time": "2017-03-15T01:02:10+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -4237,16 +4535,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.2.6",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "9103d17dd57c512a3a027bb5628f6701464d6fef"
+                "reference": "00916603c524b8048906de460b7ea0dfa1651281"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/9103d17dd57c512a3a027bb5628f6701464d6fef",
-                "reference": "9103d17dd57c512a3a027bb5628f6701464d6fef",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/00916603c524b8048906de460b7ea0dfa1651281",
+                "reference": "00916603c524b8048906de460b7ea0dfa1651281",
                 "shasum": ""
             },
             "require": {
@@ -4295,7 +4593,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2017-03-09T12:58:16+00:00"
+            "time": "2017-04-12T14:13:17+00:00"
         }
     ],
     "aliases": [],

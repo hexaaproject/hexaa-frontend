@@ -257,9 +257,6 @@ class OrganizationController extends Controller
             }
 
             $inviteLink = $this->generateUrl('app_organization_resolveinvitationtoken', array("token" => $invitation['token'], "organizationid" => $id), UrlGeneratorInterface::ABSOLUTE_URL);
-            // emails
-            //$data_to_backend['emails'] = explode(',', preg_replace('/\s+/', '', $data['emails']));
-
 
             return $this->render(
                 'AppBundle:Organization:users.html.twig',
@@ -415,7 +412,7 @@ class OrganizationController extends Controller
 
 
     /**
-     * @Route("/resolveInvitationToken/{token}/{organizationid}/{landing_url}")
+     * @Route("/resolveInvitationToken/{token}/{organizationid}/{landing_url}", defaults={"landing_url" = null})
      * @Template()
      * @return Response
      * @param   string $token          Invitation token
