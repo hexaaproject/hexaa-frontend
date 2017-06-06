@@ -1,0 +1,19 @@
+.progress {
+    border-radius: 0px;
+    height: 8px;
+}
+.progress-bar-blue {
+    background-color: #61AFC5;
+}
+
+.progressbar-header {
+    font-weight: bold;
+    font-size: larger;
+    color: #61AFC5;
+}
+
+.progressbar-order {
+    font-style: italic;
+    color: #61AFC5;
+    margin-bottom: 24px;
+}

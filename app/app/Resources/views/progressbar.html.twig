@@ -1,0 +1,37 @@
+{#
+
+usage in twig example:
+
+{{ include('::progressbar.html.twig',
+    {
+        header: 'Create virtual organization',
+        prev_id: 'first',
+        percent: 20,
+        next_id: 'third',
+        next_button_id: 'next-2'
+     }
+    )
+}}
+
+#}
+
+<div class="row">
+    <span class="progressbar-header">{{ header }}</span>
+    <span class="pull-right">
+        {% if prev_id is defined %}
+        <button class="stepper btnhexaa btn-blue" data-target="{{ prev_id }}" type="button">Back</button>
+        {% endif %}
+        {% if next_id is defined %}
+            <button {% if next_button_id is defined %} id="{{ next_button_id }}" {% endif %} class="stepper btnhexaa btn-blue" data-target="{{ next_id }}" type="button">Next</button>
+        {% else %}
+            <input class="btnhexaa btn-red" type="submit" role="button" value="Finish"></input>
+        {% endif %}
+    </span>
+</div>
+<div class="row" style="margin-top: 12px;">
+    <div class="progress">
+        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="{{ percent }}"
+             aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%;">
+        </div>
+    </div>
+</div>

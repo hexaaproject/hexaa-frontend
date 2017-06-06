@@ -54,7 +54,7 @@ services:
         - hexaa-net
 
   grid:
-    image: elgalu/selenium
+    image: elgalu/selenium:3.2.0-p4
     container_name: grid
     networks:
         - hexaa-net
