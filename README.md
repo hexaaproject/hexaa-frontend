@@ -20,6 +20,9 @@ telepítve, így ajánlott a [telepítési útmutatót](https://getcomposer.org/
 
 7. egy átlagos user azonosítója `e` jelszava `pass`
 
+8. még üres az adatbázis? Így lehet megtölteni némi teszt adattal:
+ `docker exec -ti project.local /var/www/project/vendor/bin/behat -c /var/www/project/behat.yml --tags reset`
+
 
 FAQ
 -----
@@ -66,10 +69,10 @@ Teszt
 3. kódoljunk app: https://project.local, logok: localhost:8080
 
 4. teszteljünk, hogy sikerült-e a kódunk:
-  `docker exec -ti project.local /var/www/project/vendor/bin/behat -c /var/www/project/behat.yml /var/www/project`,
+  `docker exec -ti project.local /var/www/project/vendor/bin/behat -c /var/www/project/behat.yml`,
   a tesztet localhoston futó VNC szerveren keresztül hátradőlve élvezhetjük. A test.sh a behat wrapper-e, a második
   argumentuma után fogadja a behat argumentumokat. pl.
-  `docker exec -ti project.local /var/www/project/vendor/bin/behat -c /var/www/project/behat.yml /var/www/project --help`
+  `docker exec -ti project.local /var/www/project/vendor/bin/behat -c /var/www/project/behat.yml --help`
 
 5. navigáljunk ide: `http://localhost:6080`, és hátradőlve nézhetjük, ahogy a robot helyettünk kattintgatva tesztel
 
