@@ -36,4 +36,5 @@ class Role extends AbstractBaseResource
     {
         return $this->putCall($this->pathName.'/'.$id.'/entitlements/'.$entitlementId, []);
     }
+
 }

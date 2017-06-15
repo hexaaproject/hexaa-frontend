@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
 use AppBundle\Form\OrganizationType;
+use AppBundle\Model\Organization;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -49,7 +50,7 @@ class OrganizationController extends Controller
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(OrganizationType::class);
+        $form = $this->createForm(OrganizationType::class, array('role' => 'default'));
 
         $form->handleRequest($request);
 
@@ -57,6 +58,28 @@ class OrganizationController extends Controller
             $data = $form->getData();
 
             $dataToBackend = $data;
+
+            // create organization
+            $organization = $this->get('organization')->create(
+                $dataToBackend["name"],
+                $dataToBackend["description"]
+            );
+
+            // create role
+            $role = $this->get('organization')->createRole(
+                $organization['id'],
+                $dataToBackend['role']
+            );
+
+            // create invitations
+            if ($dataToBackend["invitation_emails"]) {
+                $this->sendInvitations($organization, $role, $dataToBackend["invitation_emails"]);
+            }
+
+            // connect to service
+            // $dataToBackend["service_token"],
+
+            return $this->render('AppBundle:Organization:created.html.twig', array('neworg' => $organization));
         }
 
         return $this->render('AppBundle:Organization:create.html.twig', array('form' => $form->createView()));
@@ -717,5 +740,36 @@ class OrganizationController extends Controller
         }
 
         return $servicesAccordion;
+    }
+
+    private function sendInvitations($organization, $role, string $emails)
+    {
+        $emails = explode(',', preg_replace('/\s+/', '', $emails));
+        $config = $this->getParameter('invitation_config');
+        $mailer = $this->get('mailer');
+        try {
+            $message = $mailer->createMessage()
+                ->setSubject($config['subject'])
+                ->setFrom($config['from'])
+                ->setCc($emails)
+                ->setReplyTo($config['reply-to'])
+                ->setBody(
+                    $this->render(
+                        'AppBundle:Organization:invitationEmail.txt.twig',
+                        array(
+                            'organization' => $organization,
+                            'footer' => $config['footer'],
+                            'role' => $role,
+                            'message' => $data['message'],
+                        )
+                    ),
+                    'text/plain'
+                );
+
+            $mailer->send($message);
+            $this->get('session')->getFlashBag()->add('success', 'Invitations sent succesfully.');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Invitation sending failure. <br> Please send the invitation link manually to your partners. <br> The error was: <br> '.$e->getMessage());
+        }
     }
 }

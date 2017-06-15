@@ -44,5 +44,6 @@ Feature: When I go to create organization
     When I fill in "Meghívottak email címei" with "user@example.com"
     And I press "next-4"
     Then I should see "Siker"
+    And I should see "Teszt szervezet"
 
   Scenario: Step backs in steps

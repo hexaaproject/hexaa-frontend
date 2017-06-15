@@ -8,23 +8,28 @@ usage in twig example:
         prev_id: 'first',
         percent: 20,
         next_id: 'third',
-        next_button_id: 'next-2'
+        next_button_id: 'next-2',
+        next_button_color: 'red'
      }
     )
 }}
 
 #}
+{% set next_button_class="btn-blue" %}
+{% if next_button_color is defined %}
+    {% set next_button_class="btn-" ~ next_button_color %}
+{% endif %}
 
 <div class="row">
     <span class="progressbar-header">{{ header }}</span>
     <span class="pull-right">
         {% if prev_id is defined %}
-        <button class="stepper btnhexaa btn-blue" data-target="{{ prev_id }}" type="button">Back</button>
+            <button class="stepper btnhexaa btn-blue" data-target="{{ prev_id }}" type="button">Back</button>
         {% endif %}
         {% if next_id is defined %}
-            <button {% if next_button_id is defined %} id="{{ next_button_id }}" {% endif %} class="stepper btnhexaa btn-blue" data-target="{{ next_id }}" type="button">Next</button>
+            <button {% if next_button_id is defined %} id="{{ next_button_id }}" {% endif %} class="stepper nextstepper btnhexaa {{ next_button_class }}" data-target="{{ next_id }}" type="button" disabled >Next</button>
         {% else %}
-            <input class="btnhexaa btn-red" type="submit" role="button" value="Finish"></input>
+            <input class="btnhexaa {{ next_button_class }}" type="submit" role="button" value="Finish"></input>
         {% endif %}
     </span>
 </div>
