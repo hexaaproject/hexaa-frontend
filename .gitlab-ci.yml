@@ -70,6 +70,7 @@ test:
     - docker run --network=hexaa-test -d --name hexaa-backend hexaaproject/hexaa-backend:for-dev
     - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
     - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
+    - docker exec -t project.local sh -c 'service shibd restart'
     - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml'
   tags:
     - dind
