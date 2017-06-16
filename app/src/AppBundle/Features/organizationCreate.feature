@@ -42,7 +42,7 @@ Feature: When I go to create organization
 
     #Fill the fourth step
     When I fill in "Meghívottak email címei" with "user@example.com"
-    And I press "next-4"
+    And I press "Finish"
     Then I should see "Siker"
     #And I should see the connected service, and permissions in members role
     And there is a mail to "user@example.com"

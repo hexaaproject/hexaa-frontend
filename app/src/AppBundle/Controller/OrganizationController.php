@@ -50,7 +50,6 @@ class OrganizationController extends Controller
      */
     public function createAction(Request $request)
     {
-        dump($this->getUser());
         $form = $this->createForm(OrganizationType::class, array('role' => 'default'));
 
         $form->handleRequest($request);
