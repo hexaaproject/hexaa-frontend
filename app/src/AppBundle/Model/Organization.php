@@ -106,6 +106,13 @@ class Organization extends AbstractBaseResource
         return $this->getCollection($this->pathName.'/'.$id.'/entitlementpacks', $verbose, $offset, $pageSize);
     }
 
+    /**
+     * Create new Organization
+     *
+     * @param string      $name
+     * @param string|null $description
+     * @return array expanded organization
+     */
     public function create(string $name, string $description = null)
     {
         $organizationData = array();
@@ -126,17 +133,18 @@ class Organization extends AbstractBaseResource
     /**
      * Create new role
      *
-     * @param string $id
+     * @param string $id   of organization
      * @param string $name
+     * @param Role   $role
      * @return ResponseInterface
      */
-    public function createRole(string $id, string $name){
+    public function createRole(string $id, string $name, Role $role)
+    {
         $response = $this->postCall($this->pathName.'/'.$id.'/roles', array("name" => $name));
         $locations = $response->getHeader('Location');
         $location = $locations[0];
         $id = preg_replace('#.*/#', '', $location);
 
-        return $this->get($id);
+        return $role->get($id, "expanded");
     }
-
 }
