@@ -1,0 +1,35 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block title %}Add organization{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'css/progressbar.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block container %}
+
+    <div id="fifth" class="progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    percent: 100,
+                    next_button_color: 'red',
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                Siker
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

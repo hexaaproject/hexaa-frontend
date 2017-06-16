@@ -1,9 +1,9 @@
 <?php
 namespace AppBundle\Model;
 
-use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class Invitation
@@ -33,5 +33,41 @@ class Invitation extends AbstractBaseResource
         $id = $token."/accept/token";
 
         return $this->get($id);
+    }
+
+    /**
+     * Create invitation in hexaa
+     *
+     * @param int         $organizationId
+     * @param Router      $router
+     * @param int|null    $roleId
+     * @param string|null $landingUrl
+     * @return string invitationAcceptLink
+     */
+    public function createHexaaInvitation(int $organizationId, Router $router, int $roleId = null, string $landingUrl = null)
+    {
+        $data['organization'] = $organizationId;
+        $data['role'] = $roleId;
+        $invite = $this->sendInvitation($data);
+
+        $headers = $invite->getHeaders();
+
+        $invitationId = basename(parse_url($headers['Location'][0], PHP_URL_PATH));
+        $invitation = $this->get($invitationId);
+
+        if (!empty($landingUrl)) {
+            $landingUrl = urlencode($landingUrl);
+        }
+        $inviteLink = $router->generate(
+            'app_organization_resolveinvitationtoken',
+            array(
+                "token" => $invitation['token'],
+                "organizationid" => $organizationId,
+                "landing_url" => $landingUrl,
+            ),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        return $inviteLink;
     }
 }
