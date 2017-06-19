@@ -26,7 +26,7 @@ class OrganizationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Szervezet neve",
+                        "placeholder" => "Name of organization",
                     ),
                     "required" => true,
                 )
@@ -37,7 +37,7 @@ class OrganizationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Szervezet leírása",
+                        "placeholder" => "Description of organization",
                     ),
                     "required" => false,
                 )
@@ -48,7 +48,7 @@ class OrganizationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Alapértelmezett szerepkör",
+                        "placeholder" => "Name of default role",
                     ),
                     "required" => true,
                 )
@@ -59,7 +59,7 @@ class OrganizationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Szolgáltatás token-je",
+                        "placeholder" => "Token of service",
                     ),
                     "required" => false,
                 )
@@ -70,7 +70,7 @@ class OrganizationType extends AbstractType
                 array(
                     "label" => false,
                     "attr" => array(
-                        "placeholder" => "Meghívottak email címei",
+                        "placeholder" => "Invitation email addresses",
                     ),
                     "required" => false,
                 )
