@@ -71,7 +71,7 @@ test:
     - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
     - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
     - docker exec -t project.local sh -c 'service shibd restart'
-    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml' || docker exec -t project.local cat /var/log/shibboleth/shibd.log && exit 1
+    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml' || ( docker exec -t project.local cat /var/log/shibboleth/shibd.log && exit 1 )
   tags:
     - dind
 
