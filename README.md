@@ -14,13 +14,21 @@ telepítve, így ajánlott a [telepítési útmutatót](https://getcomposer.org/
 4. indítsuk el a docker fogatot:
 `docker-compose -f docker/docker-compose-dev.yml up`
 
-5. böngészőben látogassunk el ide: `localhost:8080` itt találjuk a logokat (tailon)
+5. buildeljük le a symfony-t (dependenciák, assetek.)
+Ehhez be kell lépni a docker konténerbe, és ott buildelni (ott van php környezet)
+`docker exec -ti project.local bash`
+`cd /var/www/html/project`
+`composer install`
+`chown -R www-data /tmp/symfony/*`
+`bin/console ass:dump`
 
-6. böngészőben látogassunk el id: `https://project.local` és már indulunk is (a cert miatt sirmákolni fog a böngésző, de legyintsünk rá)
+6. böngészőben látogassunk el ide: `localhost:8080` itt találjuk a logokat (tailon)
 
-7. egy átlagos user azonosítója `e` jelszava `pass`
+7. böngészőben látogassunk el id: `https://project.local` és már indulunk is (a cert miatt sirmákolni fog a böngésző, de legyintsünk rá)
 
-8. még üres az adatbázis? Így lehet megtölteni némi teszt adattal:
+8. egy átlagos user azonosítója `e` jelszava `pass`
+
+9. még üres az adatbázis? Így lehet megtölteni némi teszt adattal:
  `docker exec -ti project.local /var/www/project/vendor/bin/behat -c /var/www/project/behat.yml --tags reset`
 
 
@@ -54,10 +62,11 @@ Ezt a metodikát próbáljuk követni:
 
 Coding standard
 ----------------
+Telepítsük a Symfony2 CS-t egyszer:
+`docker exec -t project.local /var/www/project/vendor/bin/phpcs --config-set installed_paths /var/www/project/vendor/escapestudios/symfony2-coding-standard`
 
-Futtassuk le ezt, hogy lássuk, mennyit hibáztunk a symfony2 cs-hez képest
-
-`vendor/bin/phpcs --standard=Symfony2 src/AppBundle/`
+Futtassuk le ezt commitok előtt, hogy lássuk, mennyit hibáztunk a symfony2 cs-hez képest
+`docker exec -ti project.local /var/www/project/vendor/bin/phpcs --standard=Symfony2 /var/www/project/src/AppBundle`
 
 Teszt
 -----
