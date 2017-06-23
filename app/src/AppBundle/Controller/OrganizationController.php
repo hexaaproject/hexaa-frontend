@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
 use AppBundle\Form\OrganizationType;
+use AppBundle\Model\Organization;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -49,7 +50,7 @@ class OrganizationController extends Controller
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(OrganizationType::class);
+        $form = $this->createForm(OrganizationType::class, array('role' => 'default'));
 
         $form->handleRequest($request);
 
@@ -57,6 +58,38 @@ class OrganizationController extends Controller
             $data = $form->getData();
 
             $dataToBackend = $data;
+
+            // create organization
+            $organization = $this->get('organization')->create(
+                $dataToBackend["name"],
+                $dataToBackend["description"]
+            );
+
+            // valami miatt erre szükség van, mert amúgy más értéket fog meghívni a createRole
+            $orgid = $organization['id'];
+
+            // create role
+            $role = $this->get('organization')->createRole(
+                $orgid,
+                $dataToBackend['role'],
+                $this->get('role')
+            );
+            // put creator to role
+            $self = $this->get('principal')->getSelf();
+            $this->get('role')->putPrincipal($role['id'], $self['id']);
+
+            // set role to default in organization
+            $this->get('organization')->patch($orgid, array("default_role" => $role['id']));
+
+            // create invitations
+            if ($dataToBackend["invitation_emails"]) {
+                $this->sendInvitations($organization, $role, $dataToBackend["invitation_emails"]);
+            }
+
+            // connect to service
+            // $dataToBackend["service_token"],
+
+            return $this->render('AppBundle:Organization:created.html.twig', array('neworg' => $this->get('organization')->get($orgid, "expanded")));
         }
 
         return $this->render('AppBundle:Organization:create.html.twig', array('form' => $form->createView()));
@@ -283,6 +316,10 @@ class OrganizationController extends Controller
             $data = $form->getData();
 
             $dataToBackend = $data;
+
+            // TODO invitation->createHexaaInvitation()
+            // TODO this->sendInvitations()
+
             $invitationResource = $this->get('invitation');
             $dataToBackend['organization'] = $id;
             $invite = $invitationResource->sendInvitation($dataToBackend);
@@ -333,6 +370,7 @@ class OrganizationController extends Controller
             $config = $this->getParameter('invitation_config');
             $mailer = $this->get('mailer');
             $link = $data['link'];
+            // TODO this->sendInvitations()
             try {
                 $message = $mailer->createMessage()
                     ->setSubject($config['subject'])
@@ -405,7 +443,7 @@ class OrganizationController extends Controller
      * @param   int     $id      Organization ID
      * @param   Request $request request
      */
-    public function removeusersAction($id, Request $request)
+    public function removeUsersAction($id, Request $request)
     {
         $pids = $request->get('userId');
         $organizationResource = $this->get('organization');
@@ -717,5 +755,44 @@ class OrganizationController extends Controller
         }
 
         return $servicesAccordion;
+    }
+
+    /**
+     * Create and send hexaa invitations
+     *
+     * @param $organization
+     * @param $role
+     * @param string $emails
+     * @param string|null $messageInMail
+     */
+    private function sendInvitations($organization, $role, string $emails, string $messageInMail = null)
+    {
+        $emails = explode(',', preg_replace('/\s+/', '', $emails));
+        $config = $this->getParameter('invitation_config');
+        $mailer = $this->get('mailer');
+
+        // create invitation
+
+        $tokenResolverLink = $this->get('invitation')->createHexaaInvitation($organization['id'], $this->get('router'), $role['id']);
+        $message = $mailer->createMessage()
+            ->setSubject($config['subject'])
+            ->setFrom($config['from'])
+            ->setCc($emails)
+            ->setReplyTo($config['reply-to'])
+            ->setBody(
+                $this->render(
+                    'AppBundle:Organization:invitationEmail.txt.twig',
+                    array(
+                        'link' => $tokenResolverLink,
+                        'organization' => $organization,
+                        'footer' => $config['footer'],
+                        'role' => $role,
+                        'message' => $messageInMail,
+                    )
+                ),
+                'text/plain'
+            );
+
+        $mailer->send($message);
     }
 }

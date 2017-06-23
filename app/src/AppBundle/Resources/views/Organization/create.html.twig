@@ -29,11 +29,12 @@
         </div>
         <div class="row">
             <div class="col-md-5 col-md-offset-5">
-                <div class="text-center progressbar-order">Add meg a
-                    szervezeted alapadatait
+                <div class="text-center progressbar-order">Enter your organization's main parameters
                 </div>
-                {{ form_row(form.name) }}
-                {{ form_row(form.description) }}
+                <fieldset>
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.description) }}
+                </fieldset>
             </div>
         </div>
     </div>
@@ -54,11 +55,11 @@
         </div>
         <div class="row">
             <div class="col-md-5 col-md-offset-5">
-                <div class="text-center progressbar-order">Add meg az alapértelmezett
-                    szerepkör
-                    nevét
+                <div class="text-center progressbar-order">Enter the name of default role
                 </div>
-                {{ form_row(form.role) }}
+                <fieldset>
+                    {{ form_row(form.role) }}
+                </fieldset>
             </div>
         </div>
     </div>
@@ -79,8 +80,10 @@
         </div>
         <div class="row">
             <div class="col-md-5 col-md-offset-5">
-                <div class="text-center progressbar-order">Szolgáltatás összekapcsolása</div>
-                {{ form_row(form.service_token) }}
+                <div class="text-center progressbar-order">Connect service with token</div>
+                <fieldset>
+                    {{ form_row(form.service_token) }}
+                </fieldset>
             </div>
         </div>
     </div>
@@ -93,38 +96,17 @@
                     header: 'Create virtual organization',
                     prev_id: 'third',
                     percent: 80,
-                    next_id: 'fifth',
-                    next_button_id: 'next-4'
                 }
                 ) }}
             </div>
         </div>
         <div class="row">
             <div class="col-md-5 col-md-offset-5">
-                <div class="text-center progressbar-order">Tagok meghívása az alapértelmezett
-                    szerepbe
+                <div class="text-center progressbar-order">Invite members to default role
                 </div>
-                {{ form_row(form.invitation_emails) }}
-
-            </div>
-        </div>
-    </div>
-
-    <div id="fifth" class="hidden progresswrapper">
-        <div class="row">
-            <div class="col-md-11 col-md-offset-2">
-                {{ include('::progressbar.html.twig',
-                {
-                    header: 'Create virtual organization',
-                    prev_id: 'fourth',
-                    percent: 100,
-                }
-                ) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-5 col-md-offset-5">
-                Siker
+                <fieldset>
+                    {{ form_row(form.invitation_emails) }}
+                </fieldset>
             </div>
         </div>
     </div>
@@ -135,12 +117,6 @@
 
 {% block javascripts %}
 <script>
-    $(document).ready(function () {
-        $(document).on('click', '.stepper', function (event) {
-            event.preventDefault();
-            $('.progresswrapper').addClass('hidden');
-            $('#' + $(this).data('target')).removeClass('hidden');
-        })
-    });
+    {{ include('::progressbar.js.twig') }}
 </script>
 {% endblock %}
