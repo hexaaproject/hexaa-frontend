@@ -28,6 +28,7 @@
                 formaction: path('app_service_removeattributes', {id: service.id })
             })
         }}
+        {{ include('AppBundle:Service:addAttributeSpec.html.twig', {}) }}
     {% endif %}
 {% endblock %}
 

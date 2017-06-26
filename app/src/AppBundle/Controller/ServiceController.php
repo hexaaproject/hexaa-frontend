@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ServicePropertiesType;
 use AppBundle\Form\ServiceOwnerType;
 use AppBundle\Form\ServicePrivacyType;
+use AppBundle\Form\ServiceAddAttributeSpecificationType;
 
 /**
  * @Route("/service")
@@ -280,7 +281,7 @@ class ServiceController extends Controller
     public function removemanagersAction($id, Request $request)
     {
         $pids = $request->get('userId');
-         dump($request);
+        dump($request);
         $serviceResource = $this->get('service');
         $errors = array();
         $errormessages = array();
@@ -309,7 +310,7 @@ class ServiceController extends Controller
      * @param integer $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function attributesAction($id)
+    public function attributesAction($id, Request $request)
     {
         $service = $this->getService($id);
         $attributes = $this->getServiceAttributes($service);
@@ -325,6 +326,14 @@ class ServiceController extends Controller
             ),
         );
 
+        $form = $this->createAddAttributeSpecificationForm($service);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+        }
+
         return $this->render(
                 'AppBundle:Service:attributes.html.twig',
                 array(
@@ -334,8 +343,46 @@ class ServiceController extends Controller
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'attributes' => $attributes,
                 'attributes_buttons' => $attributesButtons,
+                'addAttributeSpecForm' => $form->createView(),
                 )
         );
+    }
+
+    /**
+     * @param $service
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createAddAttributeSpecificationForm($service)
+    {
+        $attributespecifications = array();
+        $serviceattributespecifications = array();
+        $verbose = "expanded";
+        
+        //service attribute specifications without names
+        $serviceattributespecs = $this->get('service')->getAttributeSpecs($service['id'])['items'];
+
+        foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
+            foreach ($serviceattributespecs as $serviceattributespec) {
+                if ($attributespecification['id'] == $serviceattributespec['attribute_spec_id']) {
+                    $serviceattributespecifications[$attributespecification['name']] = $serviceattributespec['attribute_spec_id'];
+                }
+            }
+        }
+
+        //all attribute specifications
+        foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
+            $attributespecifications[$attributespecification['name']] = $attributespecification['id'];
+        }
+        
+        //attribute specifications which don't belong to the service
+        $result=array_diff($attributespecifications, $serviceattributespecifications);
+
+        $form = $this->createForm(
+            ServiceAddAttributeSpecificationType::class,
+            array('attributespecifications' => $result)
+        );
+
+        return $form;
     }
 
     /**
