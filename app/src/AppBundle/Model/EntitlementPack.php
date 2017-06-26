@@ -26,4 +26,10 @@ class EntitlementPack extends AbstractBaseResource
     {
         return $this->getCollection($this->pathName.'/public', $verbose, $offset, $pageSize);
     }
+    
+    public function getEntitlementsOfEntitlementpack(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    {
+        return $this->getCollection($this->pathName.'/'.$id.'/entitlements',
+                $verbose, $offset, $pageSize);
+    }
 }

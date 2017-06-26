@@ -78,23 +78,35 @@ class Service extends AbstractBaseResource
         $path = $this->pathName.'/'.$id.'/managers/'.$pid;
 
         $response = $this->client->delete(
-            $path,
-            [
+            $path, [
             'headers' => $this->getHeaders(),
             ]
         );
 
         return $response;
     }
-    
-     public function deleteAttributeSpec(string $id, string $asid)
+
+    public function deleteAttributeSpec(string $id, string $asid)
     {
         $path = $this->pathName.'/'.$id.'/attributespecs/'.$asid;
 
         $response = $this->client->delete(
-            $path,
-            [
+            $path, [
             'headers' => $this->getHeaders(),
+            ]
+        );
+
+        return $response;
+    }
+
+    public function addAttributeSpec(string $id, string $asid, bool $is_public=true)
+    {
+   
+        $path = $this->pathName.'/'.$id.'/attributespecs/'.$asid;
+
+        $response = $this->putCall(
+            $path, [
+            'is_public' => $is_public
             ]
         );
 

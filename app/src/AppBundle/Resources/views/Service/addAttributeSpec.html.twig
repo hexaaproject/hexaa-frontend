@@ -5,7 +5,7 @@
         button:
             {
                 text: 'Create',
-                class: 'btn-blue'
+                class: 'btn-blue',
             },
         leftbutton:
             {
@@ -23,9 +23,16 @@
 <script>
     $(document).ready(function () {
 
-        $(document).on('click', 'button#add', function (event) {
+        $(document).on('click', 'button#add', function (
+                event) {
             event.preventDefault();
             $('#add_attributespec').modal({backdrop: 'static'});
+        });
+
+        $(document).on('click', '.modal#add_attributespec button[type=submit]', function (
+                event) {
+            event.preventDefault();
+            $('form[name=service_add_attribute_specification]').submit();
         });
 
     });

@@ -331,7 +331,20 @@ class ServiceController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            $data = $request->request->all();
+            dump($data);
+            $added = $data['service_add_attribute_specification']['specname'];
+
+          /*  $verbose = "expanded";
+            $attributespecid = null;
+            foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
+                if ($added == $attributespecification["id"]) {
+                    $attributespecid = $attributespecification['id'];
+                }
+            }*/
+            $this->get('service')->addAttributeSpec($id, $added);
+
+            return $this->redirect($request->getUri());
         }
 
         return $this->render(
@@ -357,7 +370,7 @@ class ServiceController extends Controller
         $attributespecifications = array();
         $serviceattributespecifications = array();
         $verbose = "expanded";
-        
+
         //service attribute specifications without names
         $serviceattributespecs = $this->get('service')->getAttributeSpecs($service['id'])['items'];
 
@@ -373,9 +386,10 @@ class ServiceController extends Controller
         foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
             $attributespecifications[$attributespecification['name']] = $attributespecification['id'];
         }
-        
+
         //attribute specifications which don't belong to the service
-        $result=array_diff($attributespecifications, $serviceattributespecifications);
+        $result = array_diff($attributespecifications,
+            $serviceattributespecifications);
 
         $form = $this->createForm(
             ServiceAddAttributeSpecificationType::class,
@@ -449,9 +463,8 @@ class ServiceController extends Controller
      */
     public function permissionssetsAction($id)
     {
-        $verbose = "expanded";
-        $permissionsset = $this->get('service')->getEntitlementPacks($id,
-                $verbose)['items'];
+        
+        $permissionsset = $this->get('service')->getEntitlementPacks($id)['items'];
 
         return $this->render(
                 'AppBundle:Service:permissionssets.html.twig',
@@ -519,15 +532,22 @@ class ServiceController extends Controller
     {
         $permissionsAccordionSet = array();
         foreach ($permissionSets as $permissionSet) {
+            dump($permissionSet);
             $permissionsAccordionSet[$permissionSet['id']]['title'] = $permissionSet['name'];
+            dump($permissionsAccordionSet);
             $description = array();
             $type = array();
             $permissions = array();
             array_push($description, $permissionSet['description']);
             array_push($type, $permissionSet['type']);
-            foreach ($permissionSet['entitlements'] as $entitlement) {
-                $permissions[] = $entitlement['name'];
+            
+            foreach ($permissionSet['entitlement_ids'] as $entitlement_id) {
+                dump($entitlement_id);
+                $entitlement=$this->get('entitlement')->getEntitlement($entitlement_id);
+                array_push($permissions, $entitlement['name']);
+                         
             }
+            
             $permissionsAccordionSet[$permissionSet['id']]['contents'] = array(
                 array(
                     'key' => 'Description',
