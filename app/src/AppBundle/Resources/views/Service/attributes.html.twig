@@ -11,7 +11,7 @@
     {% if attributes is defined and attributes|length %}
         <div class="row">
             <div class="col-md-15">
-                {{ include('::tables.html.twig', {variant: 'red', tdcolor:'base', caption: 'Used attribute specifications', checkbox: true, attributes: true, users: attributes, table_id: 'attributes_table', buttons: attributes_buttons, search_placeholder: 'Search attribute' }) }}
+                {{ include('::tables.html.twig', {variant: 'red', checkbox_all: 'Attributes', tdcolor:'base', caption: 'Used attribute specifications', checkbox: true, attributes: true, users: attributes, table_id: 'attributes_table', buttons: attributes_buttons, search_placeholder: 'Search attribute' }) }}
             </div>
         </div>
         {{ include('::modal.html.twig',
