@@ -335,13 +335,6 @@ class ServiceController extends Controller
             dump($data);
             $added = $data['service_add_attribute_specification']['specname'];
 
-          /*  $verbose = "expanded";
-            $attributespecid = null;
-            foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
-                if ($added == $attributespecification["id"]) {
-                    $attributespecid = $attributespecification['id'];
-                }
-            }*/
             $this->get('service')->addAttributeSpec($id, $added);
 
             return $this->redirect($request->getUri());
@@ -386,6 +379,7 @@ class ServiceController extends Controller
         foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
             $attributespecifications[$attributespecification['name']] = $attributespecification['id'];
         }
+        dump($attributespecifications);
 
         //attribute specifications which don't belong to the service
         $result = array_diff($attributespecifications,
