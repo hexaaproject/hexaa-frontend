@@ -1,5 +1,5 @@
 {# empty Twig template #}
-<div class="desktopbutton"><a href="{{ path('app_organization_addstepone') }}"><img class="{{desktopbuttonimageafterlogin}}" alt="Add organization" src="/img/add_organization.svg"/><br/><br/>Add organization</a></div>
+<div class="desktopbutton"><a href="{{ path('app_organization_create') }}"><img class="{{desktopbuttonimageafterlogin}}" alt="Add organization" src="/img/add_organization.svg"/><br/><br/>Add organization</a></div>
 {% if hasService is defined %}
     <div class="desktopbutton"><a href="{{ path('app_service_addstepone') }}"><img class="{{desktopbuttonimageafterlogin}}" alt="Add service" src="/img/add service.svg"/><br/><br/>Add service</a></div>
 {% endif %}
