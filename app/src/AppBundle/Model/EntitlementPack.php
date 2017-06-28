@@ -24,12 +24,28 @@ class EntitlementPack extends AbstractBaseResource
      */
     public function getPublic(string $verbose = 'normal', int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/public', $verbose, $offset, $pageSize);
+        return $this->getCollection(
+            $this->pathName.'/public',
+            $verbose,
+            $offset,
+            $pageSize
+        );
     }
-    
+
+    /**
+     * @param string $id
+     * @param string $verbose
+     * @param int    $offset
+     * @param int    $pageSize
+     * @return array
+     */
     public function getEntitlementsOfEntitlementpack(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/'.$id.'/entitlements',
-                $verbose, $offset, $pageSize);
+        return $this->getCollection(
+            $this->pathName.'/'.$id.'/entitlements',
+            $verbose,
+            $offset,
+            $pageSize
+        );
     }
 }

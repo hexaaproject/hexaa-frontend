@@ -11,10 +11,21 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 class Entitlement extends AbstractBaseResource
 {
     protected $pathName = 'entitlements';
-    
+
+    /**
+     * @param string $id
+     * @param string $verbose
+     * @param int    $offset
+     * @param int    $pageSize
+     * @return array
+     */
     public function getEntitlement(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/'.$id,
-                $verbose, $offset, $pageSize);
+        return $this->getCollection(
+            $this->pathName.'/'.$id,
+            $verbose,
+            $offset,
+            $pageSize
+        );
     }
 }
