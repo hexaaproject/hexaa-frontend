@@ -130,6 +130,7 @@ niif_shib_auth:
     # sessionInitiator: "%shib_auth_session_initiator%" # optional, have default value: Login
     # logoutPath:       "%shib_auth_logout_path%" # optional, have default value: Logout
     # logoutReturnPath:       "%shib_auth_logout_return_path%" # optional, have default value: "/"
+    logoutReturnPath:  "%shib_auth_logout_return_path%" # optional, have default value: "/"
     usernameAttribute: "%shib_auth_username_attribute%" # optional, have default value: REMOTE_USER
 
 guzzle:
