@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class DefaultController
@@ -23,25 +24,43 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $organizations = [];
+        $services = [];
 
-        $client = $this->getUser()->getClient();
-        try {
-            $organizations = $this->get('organization')->cget();
-            $services = $this->get('service')->cget();
-        } catch (ClientException $e) {
-            return $this->render('error.html.twig', array('clientexception' => $e));
-        } catch (ServerException $e) {
-            return $this->render('error.html.twig', array('serverexception' => $e));
-        } finally {
-            if (!isset($organizations)) {
-                $organizations = [];
-            }
-            if (!isset($services)) {
-                $services = [];
+        if ($this->getUser()) { // authenticated
+            $client = $this->getUser()->getClient();
+            try {
+                $organizations = $this->get('organization')->cget();
+                $services = $this->get('service')->cget();
+            } catch (ClientException $e) {
+                return $this->render('error.html.twig', array('clientexception' => $e));
+            } catch (ServerException $e) {
+                return $this->render('error.html.twig', array('serverexception' => $e));
             }
         }
 
         return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services' => $services, 'orgsubmenubox' => $this->getOrgSubmenuPoints(), 'servsubmenubox' => $this->getServSubmenuPoints()));
+    }
+
+    /**
+     * @Route("/login")
+     * @Template()
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function loginAction()
+    {
+        return $this->redirect($this->generateUrl('homepage'));
+    }
+
+    /**
+     * @Route("/logout")
+     * @Template()
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function logoutAction()
+    {
+        return $this->redirect($this->generateUrl('homepage'));
     }
 
     private function getOrgSubmenuPoints()

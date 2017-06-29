@@ -29,8 +29,7 @@
     {% javascripts
     '@jquery_js'
     '@bootstrap_js'
-    'js/jquery.validate.js'
-    %}
+    'js/jquery.validate.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -84,11 +83,15 @@
                 {% endif %}
 
                 <div id="logout">
-                            <span id="logobox">
-                                <a href="">
-                                    <img id="logpng" src="/img/logout.png">
-                                </a>
-                            </span>
+                    <span id="logobox">
+                        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <a href="{{ path('app_default_login') }}" id="login_button" role="button">
+                        {% else %}
+                            <a href="{{ logout_path('default') }}" id="logout_button" role="button">
+                        {% endif %}
+                            <img id="logpng" src="/img/logout.png">
+                        </a>
+                    </span>
                 </div>
             </div>
         </div>
