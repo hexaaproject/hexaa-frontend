@@ -17,7 +17,7 @@
             </span>
         </div>
         <div class="panelaccordionhamburger">
-            {% if organizations is defined %}
+            {% if organizations.items is defined %}
                 {% for organization in organizations.items %}
                     <div class="link">
                         <a href="{{ path('app_organization_show', {id: organization.id}) }}"
@@ -33,7 +33,7 @@
             </span>
         </div>
         <div class="panelaccordionhamburger">
-            {% if services is defined %}
+            {% if services.items is defined %}
                 {% for service in services.items %}
                     <div class="link">
                         <a href="{{ path('app_service_show', {id: service.id}) }}"
