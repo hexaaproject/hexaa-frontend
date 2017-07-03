@@ -1,0 +1,41 @@
+/**
+ * Created by gyufi on 2017. 06. 15..
+ */
+$(document).ready(function () {
+
+    initNextSteppers();
+
+    $(document).on('click', '.stepper', function (event) {
+        event.preventDefault();
+        $('.progresswrapper').addClass('hidden');
+        $('#' + $(this).data('target')).removeClass('hidden');
+    })
+
+    $(document).on('keyup', 'input', function (event) {
+        fieldset = $(this).closest('fieldset');
+        setTheNextStepper(fieldset);
+    });
+
+});
+
+function setTheNextStepper(fieldset) {
+    fieldsetValidity = true;
+    nextstepper = fieldset.closest('.progresswrapper').find('.nextstepper');
+    $.each(fieldset.find('input'), function (index, element) {
+        fieldsetValidity = fieldsetValidity && element.validity.valid;
+        if (! element.validity.valid) {
+            fieldsetValidity = false;
+        }
+    });
+    if (fieldsetValidity) {
+        nextstepper.removeAttr('disabled');
+    } else {
+        nextstepper.attr('disabled', 'disabled');
+    }
+}
+
+function initNextSteppers() {
+    $.each($('fieldset'), function (index, fieldset) {
+        setTheNextStepper($(fieldset));
+    });
+}

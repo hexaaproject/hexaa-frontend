@@ -36,4 +36,14 @@ class Role extends AbstractBaseResource
     {
         return $this->putCall($this->pathName.'/'.$id.'/entitlements/'.$entitlementId, []);
     }
+
+    /**
+     * @param string $id
+     * @param string $principalId
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function putPrincipal(string $id, string $principalId)
+    {
+        return $this->putCall($this->pathName.'/'.$id.'/principals/'.$principalId, []);
+    }
 }

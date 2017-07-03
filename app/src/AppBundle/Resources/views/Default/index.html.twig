@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    {% if services.items == null %}
+    {% if services.items is not defined or services.items == null %}
         <div id="welcomediv">
             <div id="welcomecontent">
                 {% include 'AppBundle:Default:welcomediv.html.twig' %}

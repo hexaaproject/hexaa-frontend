@@ -5,14 +5,16 @@ Feature: When I go to organizations
 
   Background:
     Given mailhog inbox is empty
-     And I am on "/Shibboleth.sso/Login"
-    Then I wait for "Username" to appear
+    And I am on "/"
+    When I press "login_button"
+    #Then I reload the page
+    And I wait for "Username" to appear
     When I fill in "username" with "e"
-     And I fill in "password" with "pass"
-     And I press "Login"
-    Then I should be on "/"
+    And I fill in "password" with "pass"
+    And I press "Login"
     Then I wait for "Welcome to" to appear
-     And I should see "employee@project.local"
+    Then I should be on "/"
+    And I should see "employee@project.local"
      And I follow "testOrg1"
     Then I wait for "Users" to appear
      And I follow "Users"
@@ -28,6 +30,7 @@ Feature: When I go to organizations
      And I wait for "Your invitation is done" to appear
      And I press "Done"
      And I should not see "Your invitation is done"
+     And I wait for "Users" to appear
 
     When I press "Invite"
      And I wait for "Create invitation" to appear
@@ -36,6 +39,7 @@ Feature: When I go to organizations
      And I wait for "Your invitation is done" to appear
      And I press "Done"
      And I should not see "Your invitation is done"
+    And I wait for "Users" to appear
 
     When I press "Invite"
      And I wait for "Create invitation" to appear
@@ -44,6 +48,7 @@ Feature: When I go to organizations
      And I wait for "Your invitation is done" to appear
      And I press "Done"
      And I should not see "Your invitation is done"
+    And I wait for "Users" to appear
 
     When I press "Invite"
      And I wait for "Create invitation" to appear
