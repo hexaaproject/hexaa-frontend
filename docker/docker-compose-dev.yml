@@ -54,7 +54,7 @@ services:
     container_name: memcached
 
   grid:
-    image: elgalu/selenium
+    image: elgalu/selenium:3.2.0-p4
     container_name: grid
     ports:
         - 5900:25900
