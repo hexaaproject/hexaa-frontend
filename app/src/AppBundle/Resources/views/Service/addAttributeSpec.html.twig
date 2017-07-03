@@ -1,0 +1,39 @@
+{{ include('::modal.html.twig',
+    {
+        id: 'add_attributespec',
+        title: 'Add attribute specification to this service',
+        button:
+            {
+                text: 'Create',
+                class: 'btn-blue',
+            },
+        leftbutton:
+            {
+                text: 'Cancel',
+                class: 'btn-blue',
+                id: "add_cancel",
+                dismiss: true
+            },
+        bodycontent: form_start(addAttributeSpecForm)
+                    ~ form_row(addAttributeSpecForm.specname)
+                    ~ form_end(addAttributeSpecForm)
+    })
+}}
+
+<script>
+    $(document).ready(function () {
+
+        $(document).on('click', 'button#add', function (
+                event) {
+            event.preventDefault();
+            $('#add_attributespec').modal({backdrop: 'static'});
+        });
+
+        $(document).on('click', '.modal#add_attributespec button[type=submit]', function (
+                event) {
+            event.preventDefault();
+            $('form[name=service_add_attribute_specification]').submit();
+        });
+
+    });
+</script>

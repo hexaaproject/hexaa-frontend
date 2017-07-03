@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Model;
 
 use GuzzleHttp\Client;
@@ -23,7 +24,12 @@ class Service extends AbstractBaseResource
      */
     public function getAttributeSpecs(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/'.$id.'/attributespecs', $verbose, $offset, $pageSize);
+        return $this->getCollection(
+            $this->pathName.'/'.$id.'/attributespecs',
+            $verbose,
+            $offset,
+            $pageSize
+        );
     }
 
     /**
@@ -37,7 +43,12 @@ class Service extends AbstractBaseResource
      */
     public function getManagers(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/'.$id.'/managers', $verbose, $offset, $pageSize);
+        return $this->getCollection(
+            $this->pathName.'/'.$id.'/managers',
+            $verbose,
+            $offset,
+            $pageSize
+        );
     }
 
     /**
@@ -51,7 +62,12 @@ class Service extends AbstractBaseResource
      */
     public function getEntitlements(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/'.$id.'/entitlements', $verbose, $offset, $pageSize);
+        return $this->getCollection(
+            $this->pathName.'/'.$id.'/entitlements',
+            $verbose,
+            $offset,
+            $pageSize
+        );
     }
 
     /**
@@ -65,6 +81,76 @@ class Service extends AbstractBaseResource
      */
     public function getEntitlementPacks(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/'.$id.'/entitlementpacks', $verbose, $offset, $pageSize);
+        return $this->getCollection(
+            $this->pathName.'/'.$id.'/entitlementpacks',
+            $verbose,
+            $offset,
+            $pageSize
+        );
+    }
+
+    /**
+     *DELETE managers of Service
+     *
+     * @param string $id  ID of service
+     * @param string $pid ID of principal
+     * @return response
+     */
+    public function deleteMember(string $id, string $pid)
+    {
+        $path = $this->pathName.'/'.$id.'/managers/'.$pid;
+
+        $response = $this->client->delete(
+            $path,
+            [
+            'headers' => $this->getHeaders(),
+            ]
+        );
+
+        return $response;
+    }
+
+    /**
+     *DELETE attribute specifications of Service
+     *
+     * @param string $id   ID of service
+     * @param string $asid ID of attribute specification
+     * @return response
+     */
+    public function deleteAttributeSpec(string $id, string $asid)
+    {
+        $path = $this->pathName.'/'.$id.'/attributespecs/'.$asid;
+
+        $response = $this->client->delete(
+            $path,
+            [
+            'headers' => $this->getHeaders(),
+            ]
+        );
+
+        return $response;
+    }
+
+    /**
+     *Add attribute specification to Service
+     *
+     * @param string $id       ID of service
+     * @param string $asid     ID of attribute specification
+     * @param bool   $ispublic Attribute specification is public or not
+     * @return response
+     */
+    public function addAttributeSpec(string $id, string $asid, bool $ispublic = true)
+    {
+
+        $path = $this->pathName.'/'.$id.'/attributespecs/'.$asid;
+
+        $response = $this->putCall(
+            $path,
+            [
+            'is_public' => $ispublic,
+            ]
+        );
+
+        return $response;
     }
 }
