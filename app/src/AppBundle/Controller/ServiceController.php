@@ -294,6 +294,42 @@ class ServiceController extends Controller
     }
 
     /**
+     * @Route("/removemanagers/{id}")
+     * @Template()
+     * @param integer $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removemanagersAction($id, Request $request)
+    {
+        $pids = $request->get('userId');
+        dump($request);
+        $serviceResource = $this->get('service');
+        $errors = array();
+        $errormessages = array();
+        foreach ($pids as $pid) {
+            try {
+                $serviceResource->deleteMember($id, $pid);
+                dump($serviceResource);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                implode(', ', $errormessages)
+            );
+            $this->get('logger')->error(
+                'User remove failed'
+            );
+        }
+
+        return $this->redirect($this->generateUrl('app_service_managers', array('id' => $id, )));
+    }
+
+    /**
      * @Route("/attributes/{id}")
      * @Template()
      * @param integer $id
@@ -388,6 +424,16 @@ class ServiceController extends Controller
             )
         );
     }
+    
+      /**
+     * @Route("/generatetoken/")
+     * @Template()
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function generatetokenAction()
+    {
+        return $this->redirect($this->generateUrl('app_service_permissionssets', array( )));
+    }
 
     /**
      * @Route("/connectedorganizations/{id}")
@@ -405,42 +451,6 @@ class ServiceController extends Controller
                 'service' => $this->getService($id),
             )
         );
-    }
-
-    /**
-     * @Route("/removemanagers/{id}")
-     * @Template()
-     * @param integer $id
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    private function removemanagersAction($id, Request $request)
-    {
-        $pids = $request->get('userId');
-        dump($request);
-        $serviceResource = $this->get('service');
-        $errors = array();
-        $errormessages = array();
-        foreach ($pids as $pid) {
-            try {
-                $serviceResource->deleteMember($id, $pid);
-                dump($serviceResource);
-            } catch (\Exception $e) {
-                $errors[] = $e;
-                $errormessages[] = $e->getMessage();
-            }
-        }
-        if (count($errors)) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                implode(', ', $errormessages)
-            );
-            $this->get('logger')->error(
-                'User remove failed'
-            );
-        }
-
-        return $this->redirect($this->generateUrl('app_service_managers', array('id' => $id, )));
     }
 
     /**
