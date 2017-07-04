@@ -462,12 +462,24 @@ class ServiceController extends Controller
     /**
      * @Route("/generatetoken/{id}")
      * @param integer $id
+     * @param string $permissionsetname
      * @Template()
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function generatetokenAction($id)
+    public function generatetokenAction($id, $permissionsetname)
     {
-        dump($id);
+        $permissionssets = $this->get('service')->getEntitlementPacks($id)['items'];
+        dump($permissionssets);
+        dump($permissionsetname);
+        $permissionsetid = null;
+        foreach($permissionssets as $permissionset){
+            dump($permissionset);
+            if($permissionset['name'] == $permissionsetname){
+                $permissionsetid = $permissionset.id;
+            }
+        }
+        //$token = this->getPermissionSetToken($permissionsetid);
+        dump($permissionsetid);
         return $this->redirect($this->generateUrl('app_service_permissionssets', array('id' => $id)));
     }
 

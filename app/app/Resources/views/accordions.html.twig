@@ -102,7 +102,7 @@
                             {% if token is defined %}
                                 <tr class="accordion">
                                     <td>
-                                        <button type="submit"><a href="{{ path('app_service_generatetoken', {'id': service_id}) }}">Generate token</a></button>
+                                        <button type="submit"><a href="{{ path('app_service_generatetoken', {'id': service_id, 'permissionsetname': item.title}) }}">Generate token</a></button>
                                     </td>
                                     <td>
                                         <input type="text" id="generatedtoken" disabled>
