@@ -467,6 +467,7 @@ class ServiceController extends Controller
      */
     public function generatetokenAction($id)
     {
+        dump($id);
         return $this->redirect($this->generateUrl('app_service_permissionssets', array('id' => $id)));
     }
 
