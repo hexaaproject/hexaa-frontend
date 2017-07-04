@@ -381,6 +381,40 @@ class ServiceController extends Controller
     }
 
     /**
+     * @Route("/removeattributes/{id}")
+     * @Template()
+     * @param integer $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeattributesAction($id, Request $request)
+    {
+        $asids = $request->get('attributespecId');
+        dump($request);
+        $serviceResource = $this->get('service');
+        $errors = array();
+        $errormessages = array();
+        foreach ($asids as $asid) {
+            try {
+                $serviceResource->deleteAttributeSpec($id, $asid);
+                dump($serviceResource);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                implode(', ', $errormessages)
+            );
+            $this->get('logger')->error('User remove failed');
+        }
+
+        return $this->redirect($this->generateUrl('app_service_attributes', array('id' => $id, )));
+    }
+
+    /**
      * @Route("/permissions/{id}")
      * @Template()
      * @param integer $id
@@ -424,15 +458,16 @@ class ServiceController extends Controller
             )
         );
     }
-    
-      /**
-     * @Route("/generatetoken/")
+
+    /**
+     * @Route("/generatetoken/{id}")
+     * @param integer $id
      * @Template()
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function generatetokenAction()
+    public function generatetokenAction($id)
     {
-        return $this->redirect($this->generateUrl('app_service_permissionssets', array( )));
+        return $this->redirect($this->generateUrl('app_service_permissionssets', array('id' => $id)));
     }
 
     /**
@@ -492,40 +527,6 @@ class ServiceController extends Controller
         );
 
         return $form;
-    }
-
-    /**
-     * @Route("/removeattributes/{id}")
-     * @Template()
-     * @param integer $id
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    private function removeattributesAction($id, Request $request)
-    {
-        $asids = $request->get('attributespecId');
-        dump($request);
-        $serviceResource = $this->get('service');
-        $errors = array();
-        $errormessages = array();
-        foreach ($asids as $asid) {
-            try {
-                $serviceResource->deleteAttributeSpec($id, $asid);
-                dump($serviceResource);
-            } catch (\Exception $e) {
-                $errors[] = $e;
-                $errormessages[] = $e->getMessage();
-            }
-        }
-        if (count($errors)) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                implode(', ', $errormessages)
-            );
-            $this->get('logger')->error('User remove failed');
-        }
-
-        return $this->redirect($this->generateUrl('app_service_attributes', array('id' => $id, )));
     }
 
     /**

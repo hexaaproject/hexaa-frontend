@@ -21,7 +21,7 @@
     </div>
      <div class="row">
         <div class="col-md-11 col-md-offset-2">
-            {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set, token: "true" }) }}
+            {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set, token: "true", service_id: service.id }) }}
         </div>
     </div>
 {% endblock %}
