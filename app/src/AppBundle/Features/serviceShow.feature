@@ -4,23 +4,22 @@ Feature: When I go to a specific service
 		I want to see service properties
 
 	Background:
-
-	   Given I am on "/Shibboleth.sso/Login"
-		Then I wait for "Username" to appear
-		When I fill in "username" with "e"
-		 And I fill in "password" with "pass"
-		 And I press "Login"
-		Then I should be on "/"
-		Then I wait for "Welcome to" to appear
-		Then I should see "employee@project.local"
-		 And I should see "testService5"
+	    Given I am on "/"
+            When I press "login_button"
+            And I wait for "Username" to appear
+            When I fill in "username" with "e"
+            And I fill in "password" with "pass"
+            And I press "Login"
+            Then I wait for "Welcome to" to appear
+            Then I should be on "/"
+            And I should see "employee@project.local"
 
 	Scenario: Navigate to service show page
 	   Given I am on "/"
-		Then I wait for "testService5" to appear
-	    Then I follow "testService5"
-		And I wait for "testService5" to appear
-	    Then I should see "testService5"
+		Then I wait for "testService1" to appear
+	    Then I follow "testService1"
+		And I wait for "testService1" to appear
+	    Then I should see "testService1"
 	     And I should see "Properties"
 	     And I should see "Managers"
 	     And I should see "Attributes"
@@ -37,8 +36,8 @@ Feature: When I go to a specific service
 
 	Scenario: Navigate to service properties
 	   Given I am on "/"
-		 And I wait for "testService5" to appear
-	    Then I follow "testService5"
+		 And I wait for "testService1" to appear
+	    Then I follow "testService1"
 		 And I wait for "Properties" to appear
 	     And I follow "Properties"
 	    Then I should see "Properties"
@@ -48,20 +47,20 @@ Feature: When I go to a specific service
 
         Scenario: Edit service properties
 	   Given I am on "/"
-		 And I wait for "testService5" to appear
-	    Then I follow "testService5"
+		 And I wait for "testService1" to appear
+	    Then I follow "testService1"
 		 And I wait for "Properties" to appear
 	     And I follow "Properties"
 	    Then I should see "Properties"
                 When I press "pencil"
-                 And I fill in "Name" with "testService6"
+                 And I fill in "Description" with "Tesztelés miatt módosult"
                  And I press "done"
-                Then I should see testService6 
+                Then I should see "Tesztelés miatt módosult" 
 
 	Scenario: Navigate to service managers
 	   Given I am on "/"
-	    When I wait for "testService6" to appear
-	    Then I follow "testService6"
+	    When I wait for "testService1" to appear
+	    Then I follow "testService1"
 	     And I wait for "Managers" to appear
 	     And I follow "Managers"
 	    Then I should see "Remove"
@@ -70,8 +69,8 @@ Feature: When I go to a specific service
 
         Scenario: Navigate to service attributes
 	   Given I am on "/"
-	    When I wait for "testService6" to appear
-	    Then I follow "testService6"
+	    When I wait for "testService1" to appear
+	    Then I follow "testService1"
 	     And I wait for "Attributes" to appear
 	     And I follow "Attributes"
 	    Then I should see "Remove"
@@ -81,8 +80,8 @@ Feature: When I go to a specific service
 
 	Scenario: Service managers tables
 	   Given I am on "/"
-	    When I wait for "testService6" to appear
-	    Then I follow "testService6"
+	    When I wait for "testService1" to appear
+	    Then I follow "testService1"
 	    When I wait for "Managers" to appear
 	     And I follow "Managers"
 	    Then I wait for "Managers" to appear
@@ -96,8 +95,8 @@ Feature: When I go to a specific service
 
 	Scenario: Navigate to service permissions
 	   Given I am on "/"
-	    When I wait for "testService6" to appear
-	    Then I follow "testService6"
+	    When I wait for "testService1" to appear
+	    Then I follow "testService1"
 	    When I wait for "Permissions" to appear
 	     And I follow "Permissions"
 	    When I wait for "Permissions" to appear
