@@ -64,6 +64,8 @@ services:
     environment:
         - NOVNC=true
         - USE_SELENIUM=2
+        - SCREEN_WIDTH=1024
+        - SCREEN_HEIGHT=768
 
   smtp:
     image: mailhog/mailhog
