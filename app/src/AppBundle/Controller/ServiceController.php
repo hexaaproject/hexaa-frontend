@@ -42,7 +42,6 @@ class ServiceController extends Controller
             $organizations = $this->get('organization')->cget();
 
             $services = $this->get('service')->cget();
-
         } catch (ServerException $e) {
             return $this->render(
                 'error.html.twig',

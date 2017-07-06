@@ -31,11 +31,12 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
 
     /**
      * ShibbolethUser constructor.
-     * @param array   $shibAttributeMap
-     * @param string  $hexaaScopedKey
-     * @param string  $baseUri
-     * @param Session $session
-     * @param Client  $guzzleclient
+     * @param array     $shibAttributeMap
+     * @param string    $hexaaScopedKey
+     * @param string    $baseUri
+     * @param Session   $session
+     * @param Client    $guzzleclient
+     * @param Principal $principal
      */
     public function __construct($shibAttributeMap, $hexaaScopedKey, $baseUri, Session $session, Client $guzzleclient, Principal $principal)
     {
@@ -191,7 +192,6 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
     public function getToken():string
     {
         if ($this->session->has('token')) {
-
             $principalResource = $this->principal;
 
             try {
@@ -203,7 +203,7 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
                     throw $e;
                 }
             }
-            
+
             $now = new \DateTime();
             $diff = $now->diff($this->session->get('tokenAcquiredAt'), true);
             if ($diff->h == 0 && $diff->d == 0 && $diff->m == 0 && $diff->y == 0) {
