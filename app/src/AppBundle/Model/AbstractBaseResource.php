@@ -215,7 +215,7 @@ abstract class AbstractBaseResource
                 'headers' => $this->getHeaders(),
             ]
         );
-
-        return $response;
+        
+        return $response->getHeader('Location');
     }
 }

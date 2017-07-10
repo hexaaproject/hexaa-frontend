@@ -358,7 +358,6 @@ class ServiceController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $request->request->all();
-            dump($data);
             $added = $data['service_add_attribute_specification']['specname'];
 
             $this->get('service')->addAttributeSpec($id, $added);
@@ -390,14 +389,12 @@ class ServiceController extends Controller
     public function removeattributesAction($id, Request $request)
     {
         $asids = $request->get('attributespecId');
-        dump($request);
         $serviceResource = $this->get('service');
         $errors = array();
         $errormessages = array();
         foreach ($asids as $asid) {
             try {
                 $serviceResource->deleteAttributeSpec($id, $asid);
-                dump($serviceResource);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -460,7 +457,7 @@ class ServiceController extends Controller
     }
 
     /**
-     * @Route("/generatetoken/{id}")
+     * @Route("/generatetoken/{id}/{permissionsetname}")
      * @param integer $id
      * @param string $permissionsetname
      * @Template()
@@ -475,9 +472,14 @@ class ServiceController extends Controller
         foreach($permissionssets as $permissionset){
             dump($permissionset);
             if($permissionset['name'] == $permissionsetname){
-                $permissionsetid = $permissionset.id;
+                $permissionsetid = $permissionset['id'];
             }
         }
+        $postarray = array($id, [$permissionsetid]);
+        dump($postarray);
+        $response = $this->get('link')->post($postarray);
+        dump($response);
+        
         //$token = this->getPermissionSetToken($permissionsetid);
         dump($permissionsetid);
         return $this->redirect($this->generateUrl('app_service_permissionssets', array('id' => $id)));
@@ -526,7 +528,6 @@ class ServiceController extends Controller
         foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
             $attributespecifications[$attributespecification['name']] = $attributespecification['id'];
         }
-        dump($attributespecifications);
 
         //attribute specifications which don't belong to the service
         $result = array_diff(

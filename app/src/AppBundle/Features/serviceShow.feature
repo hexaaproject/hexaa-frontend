@@ -45,7 +45,7 @@ Feature: When I go to a specific service
 	     And I should see "Ez a szolgáltatás teszteléshez készült."
 	     And I should see "Owner details"
 	     And I should see "Privacy Information"
-
+@wip
         Scenario: Edit service properties
 	   Given I am on "/"
 		 And I wait for "testService1" to appear
@@ -54,9 +54,9 @@ Feature: When I go to a specific service
 	     And I follow "Properties"
 	    Then I should see "Properties"
                 When I press "pencil"
-                 And I fill in "Description" with "Tesztelés miatt módosult"
+                 And I fill in "Home page" with "https://service.com/4"
                  And I press "done"
-                Then I should see "Tesztelés miatt módosult"
+                Then I should see "https://service.com/4"
 
 	Scenario: Navigate to service managers
 	   Given I am on "/"
@@ -67,7 +67,7 @@ Feature: When I go to a specific service
 	    Then I should see "Remove"
 	     And I should see "Invite"
 	     And I should see "Managers"
-
+@hallo
         Scenario: Navigate to service attributes
 	   Given I am on "/"
 	    When I wait for "testService1" to appear
