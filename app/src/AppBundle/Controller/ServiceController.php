@@ -435,12 +435,14 @@ class ServiceController extends Controller
     }
 
     /**
-     * @Route("/permissionssets/{id}")
+     * @Route("/permissionssets/{id}/{token}/{permissionsetname}")
      * @Template()
      * @param integer $id
+     * @param string $token
+     * @param string $permissionsetname
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function permissionssetsAction($id)
+    public function permissionssetsAction($id, $token = null, $permissionsetname = null)
     {
         $permissionsset = $this->get('service')->getEntitlementPacks($id)['items'];
 
@@ -452,6 +454,8 @@ class ServiceController extends Controller
                 'service' => $this->getService($id),
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'permissions_accordion_set' => $this->permissionSetToAccordion($permissionsset),
+                'token' => $token,
+                'permissionsetname' => $permissionsetname,
             )
         );
     }
@@ -466,23 +470,20 @@ class ServiceController extends Controller
     public function generatetokenAction($id, $permissionsetname)
     {
         $permissionssets = $this->get('service')->getEntitlementPacks($id)['items'];
-        dump($permissionssets);
-        dump($permissionsetname);
         $permissionsetid = null;
         foreach($permissionssets as $permissionset){
-            dump($permissionset);
             if($permissionset['name'] == $permissionsetname){
                 $permissionsetid = $permissionset['id'];
             }
         }
-        $postarray = array($id, [$permissionsetid]);
-        dump($postarray);
+
+        $postarray = array("service"=>$id, "entitlement_packs"=>[$permissionsetid]);
         $response = $this->get('link')->post($postarray);
-        dump($response);
-        
-        //$token = this->getPermissionSetToken($permissionsetid);
-        dump($permissionsetid);
-        return $this->redirect($this->generateUrl('app_service_permissionssets', array('id' => $id)));
+        $headers = $response->getHeader('Location');
+        $headers_parts_ary = explode("/", $headers[0]);
+        $getlink = $this->get('link')->getNewLinkToken(array_pop($headers_parts_ary));
+
+        return $this->redirect($this->generateUrl('app_service_permissionssets', array('id' => $id, 'token' => $getlink['token'], 'permissionsetname' => $permissionsetname)));
     }
 
     /**

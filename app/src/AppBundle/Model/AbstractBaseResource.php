@@ -216,6 +216,6 @@ abstract class AbstractBaseResource
             ]
         );
         
-        return $response->getHeader('Location');
+        return $response;
     }
 }

@@ -3,25 +3,21 @@
 {% block container %}
     {% block stylesheets %}
         {% stylesheets
-            'css/accordions.css'
-            filter='cssrewrite'
-        %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
+        'css/accordions.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
     {% endblock %}
 
 
-    <div class="row" style="margin-bottom: 24px;">
-        <div class="col-md-6 col-md-offset-2">
-            <input id="hexaaSearchFieldPermission" type="text" name="filter" class="hexaaSearchField pull-left" placeholder="Search permission set">
-        </div>
-        <div class="col-md-offset-9">
-            <button class="btnhexaa btn-red btnhexaa-sm pull right"><i class="material-icons">add</i> Create</button>
-        </div>
+    <div class="col-sm-11 col-sm-offset-2">
+        <input id="hexaaSearchFieldPermission" type="text" name="filter" class="hexaaSearchField pull-left"
+               placeholder="Search permission set">
+
+
+        <button class="btnhexaa btn-red btnhexaa-sm pull-right"><i class="material-icons">add</i> Create</button>
     </div>
-     <div class="row">
-        <div class="col-md-11 col-md-offset-2">
-            {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set, token: "true", service_id: service.id }) }}
-        </div>
+    <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
+        {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set, token: "true", service_id: service.id, tokenstring: token }) }}
     </div>
 {% endblock %}
