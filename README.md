@@ -17,7 +17,7 @@ telepítve, így ajánlott a [telepítési útmutatót](https://getcomposer.org/
 5. buildeljük le a symfony-t (dependenciák, assetek.)
 Ehhez be kell lépni a docker konténerbe, és ott buildelni (ott van php környezet)
 `docker exec -ti project.local bash`
-`cd /var/www/html/project`
+`cd /var/www/project`
 `composer install`
 `chown -R www-data /tmp/symfony/*`
 `bin/console ass:dump`
@@ -29,7 +29,6 @@ Ehhez be kell lépni a docker konténerbe, és ott buildelni (ott van php körny
 8. egy átlagos user azonosítója `e` jelszava `pass`
 
 9. még üres az adatbázis? Így lehet megtölteni némi teszt adattal:
- `docker exec -ti project.local /var/www/project/vendor/bin/behat -c /var/www/project/behat.yml --tags reset`
 
 
 FAQ
@@ -44,6 +43,25 @@ ssh ubuntu@newaai.niif.hu
 cd hexaa-newui/app
 php bin/console assetic:dump
 ```
+
+Xdebug és phpstorm 
+-------------------
+
+(ez benne van a webapp runner containerben)
+xdebug.remote_host=10.254.254.254
+xdebug.remote_autostart=1
+xdebug.idekey = PHPSTORM
+xdebug.default_enable = 0
+xdebug.remote_enable = 1
+xdebug.remote_connect_back = 0
+xdebug.profiler_enable = 1
+
+sudo ifconfig en0 alias 10.254.254.254 255.255.255.0
+
++ DBGp proxy beállítás
+ - host: 10.254.254.254
+ - port: 9000
+ - ide key: PHPSTORM
 
 Git éa branch
 -------------

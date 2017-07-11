@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -28,12 +27,9 @@ class DefaultController extends Controller
         $services = [];
 
         if ($this->getUser()) { // authenticated
-            $client = $this->getUser()->getClient();
             try {
                 $organizations = $this->get('organization')->cget();
                 $services = $this->get('service')->cget();
-            } catch (ClientException $e) {
-                return $this->render('error.html.twig', array('clientexception' => $e));
             } catch (ServerException $e) {
                 return $this->render('error.html.twig', array('serverexception' => $e));
             }

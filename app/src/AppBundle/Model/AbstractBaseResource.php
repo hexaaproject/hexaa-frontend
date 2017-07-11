@@ -23,9 +23,11 @@ abstract class AbstractBaseResource
      */
     public function __construct(Client $client, TokenStorage $tokenStorage)
     {
-        $user = $tokenStorage->getToken()->getUser();
         $this->client = $client;
-        $this->token = $user->getToken();
+        if ($tokenStorage->getToken()) {
+            $user = $tokenStorage->getToken()->getUser();
+            $this->token = $user->getToken();
+        }
     }
 
 

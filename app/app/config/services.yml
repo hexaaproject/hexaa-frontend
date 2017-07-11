@@ -40,4 +40,4 @@ services:
 
     shibboleth.user.provider:
       class: AppBundle\Security\User\ShibbolethUser
-      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@session", "@guzzle.client.hexaa_api", "@security.token_storage"]
+      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@session", "@guzzle.client.hexaa_api", "@principal"]
