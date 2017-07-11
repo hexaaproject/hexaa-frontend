@@ -73,8 +73,9 @@ Teszt
 
 1. indítsuk el a dev környezetet, ahogy felül írva vagyon.
 
-2. írjunk egy ütős feature-t és hozzá tartozó forgatókönyveket a `features` könyvtárban. Tippek: [features and scenarios](http://docs.behat.org/en/latest/user_guide/features_scenarios.html)
-	
+2. írjunk egy ütős feature-t és hozzá tartozó forgatókönyveket a `features` könyvtárban.
+    Tippek: [features and scenarios](http://docs.behat.org/en/latest/user_guide/features_scenarios.html)
+	<http://docs.behat.org/en/v2.5/guides/1.gherkin.html>
 3. kódoljunk app: https://project.local, logok: localhost:8080
 
 4. teszteljünk, hogy sikerült-e a kódunk:
