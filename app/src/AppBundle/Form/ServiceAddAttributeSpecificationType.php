@@ -19,7 +19,6 @@ class ServiceAddAttributeSpecificationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
-        dump($datas);
         $builder
             ->add(
                 'specname',

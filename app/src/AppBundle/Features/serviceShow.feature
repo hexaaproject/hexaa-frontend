@@ -32,8 +32,8 @@ Feature: When I go to a specific service
 	     And I should see "Add attribute specification"
 	     And I should see "Invite manager"
 	     And I should see "Contact admin"
-             And I should see "View history"
-             And I should see "Delete service"
+		 And I should see "View history"
+		 And I should see "Delete service"
 
 	Scenario: Navigate to service properties
 	   Given I am on "/"
@@ -53,10 +53,10 @@ Feature: When I go to a specific service
 		 And I wait for "Properties" to appear
 	     And I follow "Properties"
 	    Then I should see "Properties"
-                When I press "pencil"
-                 And I fill in "Home page" with "https://service.com/4"
-                 And I press "done"
-                Then I should see "https://service.com/4"
+	    When I press "pencil-1"
+	    And I fill in "Home page" with "https://service.com/4"
+	    And I press "done"
+	    Then I should see "https://service.com/4"
 
 	Scenario: Navigate to service managers
 	   Given I am on "/"
@@ -104,8 +104,7 @@ Feature: When I go to a specific service
 	    Then I should see "Permissions" in the ".accordion-header" element
 	     And I should see "Permission 1"
 	     And I should see "Permission 2"
-             And I should see "Permission 3"
-
+		And I should see "Permission 3"
 	    When I click on accordion "Permission 1"
 		Then I should see "Description"
 		 And I should see "URI"

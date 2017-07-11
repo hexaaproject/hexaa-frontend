@@ -303,14 +303,12 @@ class ServiceController extends Controller
     public function removemanagersAction($id, Request $request)
     {
         $pids = $request->get('userId');
-        dump($request);
         $serviceResource = $this->get('service');
         $errors = array();
         $errormessages = array();
         foreach ($pids as $pid) {
             try {
                 $serviceResource->deleteMember($id, $pid);
-                dump($serviceResource);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -438,8 +436,8 @@ class ServiceController extends Controller
      * @Route("/permissionssets/{id}/{token}/{permissionsetname}")
      * @Template()
      * @param integer $id
-     * @param string $token
-     * @param string $permissionsetname
+     * @param string  $token
+     * @param string  $permissionsetname
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function permissionssetsAction($id, $token = null, $permissionsetname = null)
@@ -463,7 +461,7 @@ class ServiceController extends Controller
     /**
      * @Route("/generatetoken/{id}/{permissionsetname}")
      * @param integer $id
-     * @param string $permissionsetname
+     * @param string  $permissionsetname
      * @Template()
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -471,17 +469,17 @@ class ServiceController extends Controller
     {
         $permissionssets = $this->get('service')->getEntitlementPacks($id)['items'];
         $permissionsetid = null;
-        foreach($permissionssets as $permissionset){
-            if($permissionset['name'] == $permissionsetname){
+        foreach ($permissionssets as $permissionset) {
+            if ($permissionset['name'] == $permissionsetname) {
                 $permissionsetid = $permissionset['id'];
             }
         }
 
-        $postarray = array("service"=>$id, "entitlement_packs"=>[$permissionsetid]);
+        $postarray = array("service" => $id, "entitlement_packs" => [$permissionsetid]);
         $response = $this->get('link')->post($postarray);
         $headers = $response->getHeader('Location');
-        $headers_parts_ary = explode("/", $headers[0]);
-        $getlink = $this->get('link')->getNewLinkToken(array_pop($headers_parts_ary));
+        $headerspartsary = explode("/", $headers[0]);
+        $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
 
         return $this->redirect($this->generateUrl('app_service_permissionssets', array('id' => $id, 'token' => $getlink['token'], 'permissionsetname' => $permissionsetname)));
     }
@@ -580,16 +578,13 @@ class ServiceController extends Controller
     {
         $permissionsAccordionSet = array();
         foreach ($permissionSets as $permissionSet) {
-            dump($permissionSet);
             $permissionsAccordionSet[$permissionSet['id']]['title'] = $permissionSet['name'];
-            dump($permissionsAccordionSet);
             $description = array();
             $type = array();
             $permissions = array();
             array_push($description, $permissionSet['description']);
             array_push($type, $permissionSet['type']);
             foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
-                dump($entitlementid);
                 $entitlement = $this->get('entitlement')->getEntitlement($entitlementid);
                 array_push($permissions, $entitlement['name']);
             }
