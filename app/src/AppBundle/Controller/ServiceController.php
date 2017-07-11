@@ -286,6 +286,40 @@ class ServiceController extends Controller
     }
 
     /**
+     * @Route("/removemanagers/{id}")
+     * @Template()
+     * @param integer $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removemanagersAction($id, Request $request)
+    {
+        $pids = $request->get('userId');
+        $serviceResource = $this->get('service');
+        $errors = array();
+        $errormessages = array();
+        foreach ($pids as $pid) {
+            try {
+                $serviceResource->deleteMember($id, $pid);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                implode(', ', $errormessages)
+            );
+            $this->get('logger')->error(
+                'User remove failed'
+            );
+        }
+
+        return $this->redirect($this->generateUrl('app_service_managers', array('id' => $id, )));
+    }
+
+    /**
      * @Route("/attributes/{id}")
      * @Template()
      * @param integer $id
@@ -314,7 +348,6 @@ class ServiceController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $request->request->all();
-            dump($data);
             $added = $data['service_add_attribute_specification']['specname'];
 
             $this->get('service')->addAttributeSpec($id, $added);
@@ -334,6 +367,38 @@ class ServiceController extends Controller
                 'addAttributeSpecForm' => $form->createView(),
             )
         );
+    }
+
+    /**
+     * @Route("/removeattributes/{id}")
+     * @Template()
+     * @param integer $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeattributesAction($id, Request $request)
+    {
+        $asids = $request->get('attributespecId');
+        $serviceResource = $this->get('service');
+        $errors = array();
+        $errormessages = array();
+        foreach ($asids as $asid) {
+            try {
+                $serviceResource->deleteAttributeSpec($id, $asid);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                implode(', ', $errormessages)
+            );
+            $this->get('logger')->error('User remove failed');
+        }
+
+        return $this->redirect($this->generateUrl('app_service_attributes', array('id' => $id, )));
     }
 
     /**
@@ -360,12 +425,14 @@ class ServiceController extends Controller
     }
 
     /**
-     * @Route("/permissionssets/{id}")
+     * @Route("/permissionssets/{id}/{token}/{permissionsetname}")
      * @Template()
      * @param integer $id
+     * @param string  $token
+     * @param string  $permissionsetname
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function permissionssetsAction($id)
+    public function permissionssetsAction($id, $token = null, $permissionsetname = null)
     {
         $permissionsset = $this->get('service')->getEntitlementPacks($id)['items'];
 
@@ -377,8 +444,36 @@ class ServiceController extends Controller
                 'service' => $this->getService($id),
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'permissions_accordion_set' => $this->permissionSetToAccordion($permissionsset),
+                'token' => $token,
+                'permissionsetname' => $permissionsetname,
             )
         );
+    }
+
+    /**
+     * @Route("/generatetoken/{id}/{permissionsetname}")
+     * @param integer $id
+     * @param string  $permissionsetname
+     * @Template()
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function generatetokenAction($id, $permissionsetname)
+    {
+        $permissionssets = $this->get('service')->getEntitlementPacks($id)['items'];
+        $permissionsetid = null;
+        foreach ($permissionssets as $permissionset) {
+            if ($permissionset['name'] == $permissionsetname) {
+                $permissionsetid = $permissionset['id'];
+            }
+        }
+
+        $postarray = array("service" => $id, "entitlement_packs" => [$permissionsetid]);
+        $response = $this->get('link')->post($postarray);
+        $headers = $response->getHeader('Location');
+        $headerspartsary = explode("/", $headers[0]);
+        $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
+
+        return $this->redirect($this->generateUrl('app_service_permissionssets', array('id' => $id, 'token' => $getlink['token'], 'permissionsetname' => $permissionsetname)));
     }
 
     /**
@@ -397,42 +492,6 @@ class ServiceController extends Controller
                 'service' => $this->getService($id),
             )
         );
-    }
-
-    /**
-     * @Route("/removemanagers/{id}")
-     * @Template()
-     * @param integer $id
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    private function removemanagersAction($id, Request $request)
-    {
-        $pids = $request->get('userId');
-        dump($request);
-        $serviceResource = $this->get('service');
-        $errors = array();
-        $errormessages = array();
-        foreach ($pids as $pid) {
-            try {
-                $serviceResource->deleteMember($id, $pid);
-                dump($serviceResource);
-            } catch (\Exception $e) {
-                $errors[] = $e;
-                $errormessages[] = $e->getMessage();
-            }
-        }
-        if (count($errors)) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                implode(', ', $errormessages)
-            );
-            $this->get('logger')->error(
-                'User remove failed'
-            );
-        }
-
-        return $this->redirect($this->generateUrl('app_service_managers', array('id' => $id, )));
     }
 
     /**
@@ -460,7 +519,6 @@ class ServiceController extends Controller
         foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
             $attributespecifications[$attributespecification['name']] = $attributespecification['id'];
         }
-        dump($attributespecifications);
 
         //attribute specifications which don't belong to the service
         $result = array_diff(
@@ -474,40 +532,6 @@ class ServiceController extends Controller
         );
 
         return $form;
-    }
-
-    /**
-     * @Route("/removeattributes/{id}")
-     * @Template()
-     * @param integer $id
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    private function removeattributesAction($id, Request $request)
-    {
-        $asids = $request->get('attributespecId');
-        dump($request);
-        $serviceResource = $this->get('service');
-        $errors = array();
-        $errormessages = array();
-        foreach ($asids as $asid) {
-            try {
-                $serviceResource->deleteAttributeSpec($id, $asid);
-                dump($serviceResource);
-            } catch (\Exception $e) {
-                $errors[] = $e;
-                $errormessages[] = $e->getMessage();
-            }
-        }
-        if (count($errors)) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                implode(', ', $errormessages)
-            );
-            $this->get('logger')->error('User remove failed');
-        }
-
-        return $this->redirect($this->generateUrl('app_service_attributes', array('id' => $id, )));
     }
 
     /**
@@ -546,16 +570,13 @@ class ServiceController extends Controller
     {
         $permissionsAccordionSet = array();
         foreach ($permissionSets as $permissionSet) {
-            dump($permissionSet);
             $permissionsAccordionSet[$permissionSet['id']]['title'] = $permissionSet['name'];
-            dump($permissionsAccordionSet);
             $description = array();
             $type = array();
             $permissions = array();
             array_push($description, $permissionSet['description']);
             array_push($type, $permissionSet['type']);
             foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
-                dump($entitlementid);
                 $entitlement = $this->get('entitlement')->getEntitlement($entitlementid);
                 array_push($permissions, $entitlement['name']);
             }

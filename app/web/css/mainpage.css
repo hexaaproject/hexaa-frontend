@@ -90,6 +90,14 @@ hr {
     padding: 0;
 }
 
+.button {
+    text-decoration: none;
+    background-color: #FA8072;
+    color: #fafafa;
+    padding: 5px 10px 5px 10px;
+    border: 1px solid #FA8072;
+}
+
 div.hr {
     text-align: center;
     margin: 0 auto;

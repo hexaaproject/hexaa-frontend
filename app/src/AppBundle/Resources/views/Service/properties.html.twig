@@ -45,8 +45,8 @@
         {{ form_start(propertiesform) }}
         <div class="header" style="padding-top:0.5em">
             Properties
-            <button type="submit" class="sendbutton pull-right" alt="pencil" style="display:none"><i class="material-icons">done</i></button>
-            <button type="button" class="editbutton" alt="done" style="display: inline" onclick="edit()"><i class="material-icons">create</i></button>
+            <button type="submit" class="sendbutton pull-right" id="done" style="display:none"><i class="material-icons">done</i></button>
+            <button type="button" name="pencil" class="editbutton" alt="pencil" style="display: inline" onclick="edit()"><i class="material-icons">create</i></button>
 
         </div>
         <div>
@@ -105,15 +105,15 @@
 
     <br>
     <div class="propertyblocknoedit" id="row">
-        {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()" }) }}
+        {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1"}) }}
     </div>
     <br>
     <div class="ownerblocknoedit" id="row">
-        {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()" }) }}
+        {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()", pencilid:"2"}) }}
     </div>
     <br>
     <div class="privacyblocknoedit" id="row">
-        {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy()" }) }}
+        {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy()", pencilid:"3"}) }}
     </div>
 
     {# <form action="{{ path('app_service_properties', {id: service.id}) }}" method="POST" role="form">
