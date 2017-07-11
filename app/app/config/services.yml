@@ -34,7 +34,10 @@ services:
     invitation:
       class: AppBundle\Model\Invitation
       arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+    link:
+      class: AppBundle\Model\Link
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
 
     shibboleth.user.provider:
       class: AppBundle\Security\User\ShibbolethUser
-      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@session", "@guzzle.client.hexaa_api"]
+      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@session", "@guzzle.client.hexaa_api", "@security.token_storage"]

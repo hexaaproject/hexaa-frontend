@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ServicePropertiesType;
 use AppBundle\Form\ServiceOwnerType;
 use AppBundle\Form\ServicePrivacyType;
+use AppBundle\Form\ServiceAddAttributeSpecificationType;
 
 /**
  * @Route("/service")
@@ -43,17 +44,28 @@ class ServiceController extends Controller
 
             $services = $this->get('service')->cget();
         } catch (ClientException $e) {
-            return $this->render('error.html.twig', array('clientexception' => $e));
+            return $this->render(
+                'error.html.twig',
+                array(
+                'clientexception' => $e,
+                )
+            );
         } catch (ServerException $e) {
-            return $this->render('error.html.twig', array('serverexception' => $e));
+            return $this->render(
+                'error.html.twig',
+                array('serverexception' => $e)
+            );
         }
 
-        return $this->render('AppBundle:Service:index.html.twig', array(
+        return $this->render(
+            'AppBundle:Service:index.html.twig',
+            array(
                 'service' => $service,
                 'organizations' => $organizations,
                 'services' => $services,
                 'menu' => $menu,
-        ));
+            )
+        );
     }
 
     /**
@@ -78,9 +90,12 @@ class ServiceController extends Controller
         $verbose = "expanded";
         $attributespecs = $this->get('attribute_spec')->cget($verbose);
 
-        return $this->render('AppBundle:Service:addStepTwo.html.twig', array(
-            'attributes' => $attributespecs,
-        ));
+        return $this->render(
+            'AppBundle:Service:addStepTwo.html.twig',
+            array(
+                'attributes' => $attributespecs,
+            )
+        );
     }
 
     /**
@@ -168,37 +183,58 @@ class ServiceController extends Controller
         $propertiesDatas['servicePrivacyDescription'] = $service['priv_description'];
         $propertiesDatas['serviceEntityIDs'] = $choicearray;
 
-        $formproperties = $this->createForm(ServicePropertiesType::class, array('properties' => $propertiesDatas));
+        $formproperties = $this->createForm(
+            ServicePropertiesType::class,
+            array(
+                'properties' => $propertiesDatas,
+            )
+        );
 
         $formproperties->handleRequest($request);
 
         if ($formproperties->isSubmitted() && $formproperties->isValid()) {
             $data = $request->request->all();
-            $modified = array('name' => $data['service_properties']['serviceName'], 'entityid' => $data['service_properties']['serviceSAML'], 'description' => $data['service_properties']['serviceDescription'], 'url' => $data['service_properties']['serviceURL']);
+            $modified = array('name' => $data['service_properties']['serviceName'],
+                'entityid' => $data['service_properties']['serviceSAML'], 'description' => $data['service_properties']['serviceDescription'],
+                'url' => $data['service_properties']['serviceURL'], );
             $this->get('service')->patch($id, $modified);
 
             return $this->redirect($request->getUri());
         }
 
-        $formowner = $this->createForm(ServiceOwnerType::class, array('properties' => $propertiesDatas));
+        $formowner = $this->createForm(
+            ServiceOwnerType::class,
+            array(
+                'properties' => $propertiesDatas,
+            )
+        );
 
         $formowner->handleRequest($request);
 
         if ($formowner->isSubmitted() && $formowner->isValid()) {
             $data = $request->request->all();
-            $modified = array('org_name' => $data['service_owner']['serviceOwnerName'], 'org_short_name' => $data['service_owner']['serviceOwnerShortName'], 'org_description' => $data['service_owner']['serviceOwnerDescription'], 'org_url' => $data['service_owner']['serviceOwnerURL']);
+            $modified = array('org_name' => $data['service_owner']['serviceOwnerName'],
+                'org_short_name' => $data['service_owner']['serviceOwnerShortName'],
+                'org_description' => $data['service_owner']['serviceOwnerDescription'],
+                'org_url' => $data['service_owner']['serviceOwnerURL'], );
             $this->get('service')->patch($id, $modified);
 
             return $this->redirect($request->getUri());
         }
 
-        $formprivacy = $this->createForm(ServicePrivacyType::class, array('properties' => $propertiesDatas));
+        $formprivacy = $this->createForm(
+            ServicePrivacyType::class,
+            array(
+                'properties' => $propertiesDatas,
+            )
+        );
 
         $formprivacy->handleRequest($request);
 
         if ($formprivacy->isSubmitted() && $formprivacy->isValid()) {
             $data = $request->request->all();
-            $modified = array('priv_url' => $data['service_privacy']['servicePrivacyURL'], 'priv_description' => $data['service_privacy']['servicePrivacyDescription']);
+            $modified = array('priv_url' => $data['service_privacy']['servicePrivacyURL'],
+                'priv_description' => $data['service_privacy']['servicePrivacyDescription'], );
             $this->get('service')->patch($id, $modified);
 
             return $this->redirect($request->getUri());
@@ -266,29 +302,44 @@ class ServiceController extends Controller
      */
     public function removemanagersAction($id, Request $request)
     {
-        try {
-            // do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($e);
+        $pids = $request->get('userId');
+        $serviceResource = $this->get('service');
+        $errors = array();
+        $errormessages = array();
+        foreach ($pids as $pid) {
+            try {
+                $serviceResource->deleteMember($id, $pid);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                implode(', ', $errormessages)
+            );
+            $this->get('logger')->error(
+                'User remove failed'
+            );
         }
 
-        return $this->redirect($this->generateUrl('app_service_managers', array('id' => $id)));
+        return $this->redirect($this->generateUrl('app_service_managers', array('id' => $id, )));
     }
 
     /**
      * @Route("/attributes/{id}")
      * @Template()
      * @param integer $id
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function attributesAction($id)
+    public function attributesAction($id, Request $request)
     {
         $service = $this->getService($id);
         $attributes = $this->getServiceAttributes($service);
         $attributesButtons = array(
-            "change_attributes" => array(
+            "remove" => array(
                 "class" => "btn-blue pull-left",
                 "text" => "Remove",
             ),
@@ -299,6 +350,19 @@ class ServiceController extends Controller
             ),
         );
 
+        $form = $this->createAddAttributeSpecificationForm($service);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $request->request->all();
+            $added = $data['service_add_attribute_specification']['specname'];
+
+            $this->get('service')->addAttributeSpec($id, $added);
+
+            return $this->redirect($request->getUri());
+        }
+
         return $this->render(
             'AppBundle:Service:attributes.html.twig',
             array(
@@ -308,8 +372,41 @@ class ServiceController extends Controller
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'attributes' => $attributes,
                 'attributes_buttons' => $attributesButtons,
+                'addAttributeSpecForm' => $form->createView(),
             )
         );
+    }
+
+    /**
+     * @Route("/removeattributes/{id}")
+     * @Template()
+     * @param integer $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeattributesAction($id, Request $request)
+    {
+        $asids = $request->get('attributespecId');
+        $serviceResource = $this->get('service');
+        $errors = array();
+        $errormessages = array();
+        foreach ($asids as $asid) {
+            try {
+                $serviceResource->deleteAttributeSpec($id, $asid);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                implode(', ', $errormessages)
+            );
+            $this->get('logger')->error('User remove failed');
+        }
+
+        return $this->redirect($this->generateUrl('app_service_attributes', array('id' => $id, )));
     }
 
     /**
@@ -336,15 +433,16 @@ class ServiceController extends Controller
     }
 
     /**
-     * @Route("/permissionssets/{id}")
+     * @Route("/permissionssets/{id}/{token}/{permissionsetname}")
      * @Template()
      * @param integer $id
+     * @param string  $token
+     * @param string  $permissionsetname
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function permissionssetsAction($id)
+    public function permissionssetsAction($id, $token = null, $permissionsetname = null)
     {
-        $verbose = "expanded";
-        $permissionsset = $this->get('service')->getEntitlementPacks($id, $verbose)['items'];
+        $permissionsset = $this->get('service')->getEntitlementPacks($id)['items'];
 
         return $this->render(
             'AppBundle:Service:permissionssets.html.twig',
@@ -354,8 +452,36 @@ class ServiceController extends Controller
                 'service' => $this->getService($id),
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'permissions_accordion_set' => $this->permissionSetToAccordion($permissionsset),
+                'token' => $token,
+                'permissionsetname' => $permissionsetname,
             )
         );
+    }
+
+    /**
+     * @Route("/generatetoken/{id}/{permissionsetname}")
+     * @param integer $id
+     * @param string  $permissionsetname
+     * @Template()
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function generatetokenAction($id, $permissionsetname)
+    {
+        $permissionssets = $this->get('service')->getEntitlementPacks($id)['items'];
+        $permissionsetid = null;
+        foreach ($permissionssets as $permissionset) {
+            if ($permissionset['name'] == $permissionsetname) {
+                $permissionsetid = $permissionset['id'];
+            }
+        }
+
+        $postarray = array("service" => $id, "entitlement_packs" => [$permissionsetid]);
+        $response = $this->get('link')->post($postarray);
+        $headers = $response->getHeader('Location');
+        $headerspartsary = explode("/", $headers[0]);
+        $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
+
+        return $this->redirect($this->generateUrl('app_service_permissionssets', array('id' => $id, 'token' => $getlink['token'], 'permissionsetname' => $permissionsetname)));
     }
 
     /**
@@ -374,6 +500,46 @@ class ServiceController extends Controller
                 'service' => $this->getService($id),
             )
         );
+    }
+
+    /**
+     * @param $service
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createAddAttributeSpecificationForm($service)
+    {
+        $attributespecifications = array();
+        $serviceattributespecifications = array();
+        $verbose = "expanded";
+
+        //service attribute specifications without names
+        $serviceattributespecs = $this->get('service')->getAttributeSpecs($service['id'])['items'];
+
+        foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
+            foreach ($serviceattributespecs as $serviceattributespec) {
+                if ($attributespecification['id'] == $serviceattributespec['attribute_spec_id']) {
+                    $serviceattributespecifications[$attributespecification['name']] = $serviceattributespec['attribute_spec_id'];
+                }
+            }
+        }
+
+        //all attribute specifications
+        foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
+            $attributespecifications[$attributespecification['name']] = $attributespecification['id'];
+        }
+
+        //attribute specifications which don't belong to the service
+        $result = array_diff(
+            $attributespecifications,
+            $serviceattributespecifications
+        );
+
+        $form = $this->createForm(
+            ServiceAddAttributeSpecificationType::class,
+            array('attributespecifications' => $result)
+        );
+
+        return $form;
     }
 
     /**
@@ -418,8 +584,9 @@ class ServiceController extends Controller
             $permissions = array();
             array_push($description, $permissionSet['description']);
             array_push($type, $permissionSet['type']);
-            foreach ($permissionSet['entitlements'] as $entitlement) {
-                $permissions[] = $entitlement['name'];
+            foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
+                $entitlement = $this->get('entitlement')->getEntitlement($entitlementid);
+                array_push($permissions, $entitlement['name']);
             }
             $permissionsAccordionSet[$permissionSet['id']]['contents'] = array(
                 array(

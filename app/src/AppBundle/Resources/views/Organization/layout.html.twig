@@ -16,7 +16,11 @@
             app_organization_connectedservices: "Connected services"
             }
      %}
-    {{ include('::navbar.html.twig', { organization: organization, names: names}) }}
+    {% if organization is defined %}
+        {{ include('::navbar.html.twig', { organization: organization, names: names}) }}
+    {% else %}
+        {{ include('::navbar.html.twig') }}
+    {% endif %}
     <div class="container">
         {% block container %}{% endblock %}
     </div>

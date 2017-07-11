@@ -59,6 +59,9 @@ buttons array:
                                                                                        val) {
                         $(this).prop('disabled', false);
                     });
+                    
+    {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
+                    $('#{{checkbox_all}}').prop('checked', false);
                 }
             });
 
@@ -69,14 +72,34 @@ buttons array:
                 });
             }
         });
+        $('#{{checkbox_all}}').click(function() {
+            var checkedStatus = this.checked;
+            $('#{{ table_id }} tbody tr').find('td:first :checkbox').each(function() {
+                $(this).prop('checked', checkedStatus);
+                
+            });
+            if ($(this).prop('checked')) {
+                $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
+                                                                                       val) {
+                    $(this).prop('disabled', false);
+                });
+            }
+            if (!$(this).prop('checked')) {
+                $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
+                                                                                   val) {
+                    $(this).prop('disabled', 'disabled');
+                });
+            }
+            
+        });
 
     });
 </script>
 
-<div class="{{ table_id }}_actionButtons" style="margin-top: 12px;">
+<div class="{{ table_id }}_actionButtons" id="tablewithcheckbox" style="margin-top: 12px; ">
 
     {% if form is not defined %}
-        <input class="hexaaCheckBox hidden-xs pull-left" type="checkbox" value="">
+        <input class="hexaaCheckBox hidden-xs pull-left" id="{{checkbox_all}}" type="checkbox" value="" name="selectAll">
         <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left"
                {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
     {% endif %}

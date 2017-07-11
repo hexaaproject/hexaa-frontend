@@ -5,15 +5,16 @@ Feature: When I go to a specific organization
   I want to see the organization all properties
 
   Background:
-
-    Given I am on "/Shibboleth.sso/Login"
-    Then I wait for "Username" to appear
+    Given I am on "/"
+    When I press "login_button"
+    #Then I reload the page
+    And I wait for "Username" to appear
     When I fill in "username" with "e"
     And I fill in "password" with "pass"
     And I press "Login"
-    Then I should be on "/"
     Then I wait for "Welcome to" to appear
-    Then I should see "employee@project.local"
+    Then I should be on "/"
+    And I should see "employee@project.local"
     And I should see "testOrg1"
 
   Scenario: Navigate to organization show page

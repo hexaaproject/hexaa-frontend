@@ -1,5 +1,5 @@
 body {
-    font-family: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 #maindiv {
@@ -88,6 +88,14 @@ hr {
     border: 0;
     border-top: 1px solid #61AFC5;
     padding: 0;
+}
+
+.button {
+    text-decoration: none;
+    background-color: #FA8072;
+    color: #fafafa;
+    padding: 5px 10px 5px 10px;
+    border: 1px solid #FA8072;
 }
 
 div.hr {
@@ -185,17 +193,20 @@ div.hr {
 }
 
 .hexaaCheckBox {
-    background-color: #fafafa;
+   background-color: #fafafa;
     border-color: #61AFC5;
     border-style: solid;
     border-width: 6px 12px 6px 12px;
     -webkit-appearance: none;
     display: inline-block;
-    padding: 6px 12px !important;
+   
     margin: 0px 4px !important;
     width: 48px;
     height: 34px;
     vertical-align: middle;
+    border-radius: 2px;
+    position: relative;
+   
 }
 
 .form-control {

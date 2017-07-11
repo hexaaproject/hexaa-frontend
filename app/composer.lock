@@ -1945,16 +1945,16 @@
         },
         {
             "name": "niif/shib-auth-bundle",
-            "version": "v1.2.3",
+            "version": "v1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NIIF/ShibAuthBundle.git",
-                "reference": "4e78f23e14593543d92bd9076df116d8ce7e6c24"
+                "reference": "ea844867abb9bf0ab914e33bf194f2f786d53ba2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NIIF/ShibAuthBundle/zipball/4e78f23e14593543d92bd9076df116d8ce7e6c24",
-                "reference": "4e78f23e14593543d92bd9076df116d8ce7e6c24",
+                "url": "https://api.github.com/repos/NIIF/ShibAuthBundle/zipball/ea844867abb9bf0ab914e33bf194f2f786d53ba2",
+                "reference": "ea844867abb9bf0ab914e33bf194f2f786d53ba2",
                 "shasum": ""
             },
             "type": "library",
@@ -1978,7 +1978,7 @@
                 }
             ],
             "description": "Shibboleth based (federated SAML) user authentication bundle",
-            "time": "2017-02-16T16:26:15+00:00"
+            "time": "2017-06-30T06:27:52+00:00"
         },
         {
             "name": "paragonie/random_compat",

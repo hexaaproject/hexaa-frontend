@@ -14,6 +14,7 @@ security:
             security: false
 
         default:
+            anonymous: ~
             guard:
                 authenticators:
                     - niif_shib_auth.shib_authenticator
@@ -32,4 +33,4 @@ security:
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
     access_control:
-        - { path: ^/.*, roles: ROLE_USER }
+        - { path: ^/.+, roles: ROLE_USER }

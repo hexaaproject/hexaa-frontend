@@ -172,3 +172,8 @@ td.accordion-hr {
     margin-top: 12px;
     margin-left: 16px;
 }
+
+#generatedtoken {
+    width: 250px;
+    margin-left: 40px;
+}

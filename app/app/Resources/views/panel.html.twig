@@ -49,7 +49,7 @@ return $this->render(
 <div id="propertiespanelnoedit">
     <div class="header">
         {{ heading }}
-        <button type="button" class="editbutton" style="display: {{ buttonappear }}" {% if changebutton is defined %} onclick="{{ changebutton }}" {% endif %}><i
+        <button type="button" {% if pencilid is defined %}id="pencil-{{ pencilid }}" {% endif %} class="editbutton" style="display: {{ buttonappear }}" {% if changebutton is defined %} onclick="{{ changebutton }}" {% endif %}><i
                     class="material-icons">create</i></button>
     </div>
     {% for key, value in items %}
