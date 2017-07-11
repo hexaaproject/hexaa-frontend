@@ -17,7 +17,7 @@ telepítve, így ajánlott a [telepítési útmutatót](https://getcomposer.org/
 5. buildeljük le a symfony-t (dependenciák, assetek.)
 Ehhez be kell lépni a docker konténerbe, és ott buildelni (ott van php környezet)
 `docker exec -ti project.local bash`
-`cd /var/www/html/project`
+`cd /var/www/project`
 `composer install`
 `chown -R www-data /tmp/symfony/*`
 `bin/console ass:dump`
