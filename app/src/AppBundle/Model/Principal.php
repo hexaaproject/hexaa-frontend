@@ -18,8 +18,11 @@ class Principal extends AbstractBaseResource
      * @param string $verbose One of minimal, normal or expanded
      * @return array
      */
-    public function getSelf(string $verbose = "normal")
+    public function getSelf(string $verbose = "normal", $hexaatoken = null)
     {
+        if ($hexaatoken) {
+            $this->token = $hexaatoken;
+        }
         return $this->getSingular($this->pathName.'/self', $verbose);
     }
 

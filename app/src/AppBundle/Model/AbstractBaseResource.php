@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Model;
 
+use Behat\Mink\Exception\Exception;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -97,9 +98,13 @@ abstract class AbstractBaseResource
      */
     public function getHeaders(): array
     {
-        $config = $this->client->getConfig();
-        $headers = $config["headers"];
-        $headers['X-HEXAA-AUTH'] = $this->token;
+        if ($this->token) {
+            $config = $this->client->getConfig();
+            $headers = $config["headers"];
+            $headers['X-HEXAA-AUTH'] = $this->token;
+        } else {
+            throw new \Exception('No token');
+        }
 
         return $headers;
     }
