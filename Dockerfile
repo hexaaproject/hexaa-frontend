@@ -1,4 +1,5 @@
-FROM szabogyula/saml-webapp-runner
+#FROM szabogyula/saml-webapp-runner
+FROM szabogyula/apache-php-for-niif-shibauthbundle
 
 #ADD docker/run.sh /run.sh
 #ADD docker/test.sh /test.sh
