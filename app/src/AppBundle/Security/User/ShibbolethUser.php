@@ -49,7 +49,6 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
         $this->guzzleclient = $guzzleclient;
         $this->shibAttributeMap = $shibAttributeMap;
         $this->principal = $principal;
-        $this->token = $this->getToken();
     }
 
     /**
