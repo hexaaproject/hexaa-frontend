@@ -33,7 +33,6 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
      * @param array     $shibAttributeMap
      * @param string    $hexaaScopedKey
      * @param string    $baseUri
-     * @param Session   $session
      * @param Client    $guzzleclient
      * @param Principal $principal
      */
