@@ -75,7 +75,7 @@ class OrganizationController extends Controller
                 $this->get('role')
             );
             // put creator to role
-            $self = $this->get('principal')->getSelf();
+            $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
             $this->get('role')->putPrincipal($role['id'], $self['id']);
 
             // set role to default in organization
