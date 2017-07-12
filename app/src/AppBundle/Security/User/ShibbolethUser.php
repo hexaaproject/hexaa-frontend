@@ -24,7 +24,6 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
     private $tokenAcquiredAt;
     private $hexaaScopedKey;
 
-    private $session;
     private $guzzleclient;
 
     private $principal;
@@ -34,11 +33,10 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
      * @param array     $shibAttributeMap
      * @param string    $hexaaScopedKey
      * @param string    $baseUri
-     * @param Session   $session
      * @param Client    $guzzleclient
      * @param Principal $principal
      */
-    public function __construct($shibAttributeMap, $hexaaScopedKey, $baseUri, Session $session, Client $guzzleclient, Principal $principal)
+    public function __construct($shibAttributeMap, $hexaaScopedKey, $baseUri, Client $guzzleclient, Principal $principal)
     {
         foreach (array('eppn', 'displayName', 'email') as $key) {
             if (array_key_exists($shibAttributeMap[$key], $_SERVER)) {
@@ -47,7 +45,6 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
         }
         $this->baseUri = $baseUri;
         $this->hexaaScopedKey = $hexaaScopedKey;
-        $this->session = $session;
         $this->guzzleclient = $guzzleclient;
         $this->shibAttributeMap = $shibAttributeMap;
         $this->principal = $principal;
@@ -191,11 +188,13 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
      */
     public function getToken():string
     {
-        if ($this->session->has('token')) {
+        if (! $this->token) {
+            $this->requestNewToken();
+        } else {
             $principalResource = $this->principal;
 
-            try {
-                $principalResource->getSelf();
+/*            try {
+                $principalResource->getSelf("normal", $this->token);
             } catch (ClientException $e) {
                 if (401 == $e->getCode()) {
                     $this->requestNewToken();
@@ -203,19 +202,17 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
                     throw $e;
                 }
             }
-
+*/
             $now = new \DateTime();
-            $diff = $now->diff($this->session->get('tokenAcquiredAt'), true);
+            $diff = $now->diff($this->tokenAcquiredAt, true);
             if ($diff->h == 0 && $diff->d == 0 && $diff->m == 0 && $diff->y == 0) {
-                return $this->session->get('token');
+                return $this->token;
             } else {
                 $this->requestNewToken();
             }
-        } else {
-            $this->requestNewToken();
         }
 
-        return $this->session->get('token') ?? '';
+        return $this->token;
     }
 
     /**
@@ -241,7 +238,7 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
                     ),
                 )
             );
-            $this->session->set('token', json_decode($response->getBody(), true)['token']);
-            $this->session->set('tokenAcquiredAt', $time);
+            $this->token = json_decode($response->getBody(), true)['token'];
+            $this->tokenAcquiredAt = $time;
     }
 }
