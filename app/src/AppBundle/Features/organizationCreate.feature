@@ -4,18 +4,6 @@ Feature: When I go to create organization
   As an authenticaed user
   I can create an organization
 
-  Background:
-    Given I am on "/"
-    When I press "login_button"
-    #Then I reload the page
-    And I wait for "Username" to appear
-    When I fill in "username" with "e"
-    And I fill in "password" with "pass"
-    And I press "Login"
-    Then I wait for "Welcome to" to appear
-    Then I should be on "/"
-    And I should see "employee@project.local"
-
   Scenario: Navigate to create organization first step page
     Given I am on "/"
     Then I follow "Add organization"
