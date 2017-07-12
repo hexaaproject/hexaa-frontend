@@ -13,6 +13,8 @@ telepítve, így ajánlott a [telepítési útmutatót](https://getcomposer.org/
 
 4. indítsuk el a docker fogatot:
 `docker-compose -f docker/docker-compose-dev.yml up`
+shibless fogat:
+`docker-compose -f docker/docker-compose-fakeshib.yml up`
 
 5. buildeljük le a symfony-t (dependenciák, assetek.)
 Ehhez be kell lépni a docker konténerbe, és ott buildelni (ott van php környezet)
