@@ -48,6 +48,6 @@ Feature: When I go to create organization
     And I wait for "Teszt szervezet" to appear
     When I click the "#deleteDiv" element
     Then I wait for "Are you sure?" to appear
-    When I press "Delete organization"a
+    When I press "Delete organization"
     Then I am on "/"
     And I should not see "Teszt szervezet"
