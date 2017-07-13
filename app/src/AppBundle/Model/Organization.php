@@ -129,7 +129,6 @@ class Organization extends AbstractBaseResource
         return $this->get($organizationId, "expanded");
     }
 
-
     /**
      * Create new role
      *

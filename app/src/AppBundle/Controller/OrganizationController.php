@@ -6,6 +6,7 @@ use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
 use AppBundle\Form\OrganizationType;
 use AppBundle\Model\Organization;
+use GuzzleHttp\Exception\ClientException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -592,6 +593,19 @@ class OrganizationController extends Controller
         );
     }
 
+    /**
+     * @Route("/delete/{id}")
+     * @Template()
+     * @return Response
+     * @param int $id Organization Id
+     *
+     */
+    public function deleteAction($id)
+    {
+        $organizationResource = $this->get('organization');
+        $organizationResource->delete($id);
+        return $this->redirectToRoute("homepage");
+    }
 
     /**
      * @param $organization
