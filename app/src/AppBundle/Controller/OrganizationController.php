@@ -604,6 +604,7 @@ class OrganizationController extends Controller
     {
         $organizationResource = $this->get('organization');
         $organizationResource->delete($id);
+
         return $this->redirectToRoute("homepage");
     }
 
