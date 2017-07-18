@@ -411,7 +411,7 @@ class ServiceController extends Controller
             $statusCode = $e->getResponse()->getStatusCode();
             switch ($statusCode) {
                 case '409':
-                    return array("error" => "You are already member of this service.");
+                    return array("error" => "You are already manager of this service.");
                     break;
                 default:
                     return array("error" => $e->getMessage());
