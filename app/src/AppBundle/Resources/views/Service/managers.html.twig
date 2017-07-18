@@ -46,6 +46,12 @@
         }}
         </div>
     {% endif %}
+
+    {{ include('AppBundle:Service:userInvitation.html.twig', {}) }}
+    {% if invite_link is defined %}
+        {{ include('AppBundle:Service:userInvitationDone.html.twig', {}) }}
+    {% endif %}
+
 {% endblock %}
 
 {% block javascripts %}    
