@@ -4,6 +4,10 @@ Feature: When I go to create organization
   As an authenticaed user
   I can create an organization
 
+  Background:
+    Given I am on "/"
+    And I should see "employee@project.local"
+
   Scenario: Navigate to create organization first step page
     Given I am on "/"
     Then I follow "Add organization"
@@ -35,5 +39,15 @@ Feature: When I go to create organization
     And I should see "Get your new organziation"
     And there is a mail to "user@example.com"
 
-  Scenario: Step backs in steps
-  Scenario: Required fields validation
+#  Scenario: Step backs in steps
+#  Scenario: Required fields validation
+
+  Scenario: Delete organization
+    Given I am on "/"
+    Then I follow "Teszt szervezet"
+    And I wait for "Teszt szervezet" to appear
+    When I click the "#deleteDiv" element
+    Then I wait for "Are you sure?" to appear
+    When I press "Delete organization"
+    Then I am on "/"
+    And I should not see "Teszt szervezet"

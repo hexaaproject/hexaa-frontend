@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Model;
 
+use Behat\Mink\Exception\Exception;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -93,13 +94,29 @@ abstract class AbstractBaseResource
     }
 
     /**
+     * DELETE resource
+     *
+     * @param string $id ID of resource to GET
      * @return array
+     */
+    public function delete(string $id)
+    {
+        return $this->deleteCall($this->pathName.'/'.$id);
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
      */
     public function getHeaders(): array
     {
-        $config = $this->client->getConfig();
-        $headers = $config["headers"];
-        $headers['X-HEXAA-AUTH'] = $this->token;
+        if ($this->token) {
+            $config = $this->client->getConfig();
+            $headers = $config["headers"];
+            $headers['X-HEXAA-AUTH'] = $this->token;
+        } else {
+            throw new \Exception('No token');
+        }
 
         return $headers;
     }
@@ -214,6 +231,24 @@ abstract class AbstractBaseResource
             $path,
             [
                 'json' => $data,
+                'headers' => $this->getHeaders(),
+            ]
+        );
+
+        return $response;
+    }
+
+
+    /**
+     * @param string $path
+     * @param array $data
+     * @return ResponseInterface
+     */
+    protected function deleteCall(string $path): ResponseInterface
+    {
+        $response = $this->client->delete(
+            $path,
+            [
                 'headers' => $this->getHeaders(),
             ]
         );
