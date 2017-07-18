@@ -65,9 +65,9 @@ Usage:
                 <div class="modal-footer">
                     {% if leftbutton is defined %}
                         <button type="button" id="{% if leftbutton.id is defined %}{{ leftbutton.id }}{% else %}leftbutton{% endif %}"
-                                class="btnhexaa {% if leftbutton.class is defined %}{{ leftbutton.class }}{% else %}btn-blue{% endif %}" {% if leftbutton.dismiss is defined %} data-dismiss="modal" {% endif %}>{{ leftbutton.text }}</button>
+                                class="pull-left btnhexaa {% if leftbutton.class is defined %}{{ leftbutton.class }}{% else %}btn-blue{% endif %}" {% if leftbutton.dismiss is defined %} data-dismiss="modal" {% endif %}>{{ leftbutton.text }}</button>
                     {% else %}
-                        <button type="button" id="leftbutton" class="btnhexaa btn-blue" data-dismiss="modal">Cancel</button>
+                        <button type="button" id="leftbutton" class="pull-left btnhexaa btn-blue" data-dismiss="modal">Cancel</button>
                     {% endif %}
                     <button type="submit" {% if button.id is defined %} id="{{ button.id }}" {% endif %}
                             class="pull-right btnhexaa {{ button.class }}">{{ button.text }}</button>

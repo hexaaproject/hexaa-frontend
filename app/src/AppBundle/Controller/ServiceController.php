@@ -6,11 +6,16 @@ use GuzzleHttp\Exception\ServerException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ServicePropertiesType;
 use AppBundle\Form\ServiceOwnerType;
 use AppBundle\Form\ServicePrivacyType;
 use AppBundle\Form\ServiceAddAttributeSpecificationType;
+use AppBundle\Form\ServiceUserInvitationSendEmailType;
+use AppBundle\Form\ServiceUserInvitationType;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/service")
@@ -254,9 +259,10 @@ class ServiceController extends Controller
      * @Route("/managers/{id}")
      * @Template()
      * @param integer $id
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function managersAction($id)
+    public function managersAction($id, Request $request)
     {
         $service = $this->getService($id);
         $managers = $this->getManagers($service);
@@ -272,6 +278,53 @@ class ServiceController extends Controller
             ),
         );
 
+        $form = $this->createCreateInvitationForm($service);
+        $sendInEmailForm = $this->createForm(
+            ServiceUserInvitationSendEmailType::class,
+            array(),
+            array(
+                "action" => $this->generateUrl("app_service_sendinvitation", array("id" => $id)),
+                "method" => "POST",
+            )
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $dataToBackend = $data;
+            $dataToBackend['service'] = $id;
+            $invitationResource = $this->get('invitation');
+            $invite = $invitationResource->sendInvitation($dataToBackend);
+
+            $headers = $invite->getHeaders();
+
+            try {
+                $invitationId = basename(parse_url($headers['Location'][0], PHP_URL_PATH));
+                $invitation = $invitationResource->get($invitationId);
+            } catch (\Exception $e) {
+                throw $this->createNotFoundException('Invitation not found at backend');
+            }
+
+            $inviteLink = $this->generateUrl('app_service_resolveinvitationtoken', array("token" => $invitation['token'], "serviceid" => $id), UrlGeneratorInterface::ABSOLUTE_URL);
+
+            return $this->render(
+                'AppBundle:Service:managers.html.twig',
+                array(
+                    'organizations' => $this->getOrganizations(),
+                    'services' => $this->getServices(),
+                    'service' => $this->getService($id),
+                    'servsubmenubox' => $this->getServSubmenuPoints(),
+                    'managers' => $managers,
+                    'managers_buttons' => $managersButtons,
+                    "invite_link" => $inviteLink,
+                    "inviteForm" => $form->createView(),
+                    "sendInEmailForm" => $sendInEmailForm->createView(),
+                )
+            );
+        }
+
         return $this->render(
             'AppBundle:Service:managers.html.twig',
             array(
@@ -281,9 +334,100 @@ class ServiceController extends Controller
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'managers' => $managers,
                 'managers_buttons' => $managersButtons,
+                "inviteForm" => $form->createView(),
+                "sendInEmailForm" => $sendInEmailForm->createView(),
             )
         );
     }
+
+    /**
+     * @Route("/sendInvitation/{id}")
+     * @Method("POST")
+     * @Template()
+     * @return Response
+     * @param   int     $id      Service ID
+     * @param   Request $request request
+     */
+    public function sendInvitationAction($id, Request $request)
+    {
+        $service = $this->getService($id);
+        $form = $this->createForm(ServiceUserInvitationSendEmailType::class);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            if (! $data['emails']) { // there is no email, we are done
+                return $this->redirect($this->generateUrl('app_service_managers', array("id" => $id)));
+            }
+
+            $emails = explode(',', preg_replace('/\s+/', '', $data['emails']));
+            $config = $this->getParameter('invitation_config');
+            $mailer = $this->get('mailer');
+            $link = $data['link'];
+            // TODO this->sendInvitations()
+            try {
+                $message = $mailer->createMessage()
+                    ->setSubject($config['subject'])
+                    ->setFrom($config['from'])
+                    ->setCc($emails)
+                    ->setReplyTo($config['reply-to'])
+                    ->setBody(
+                        $this->render(
+                            'AppBundle:Service:invitationEmail.txt.twig',
+                            array(
+                                'link' => $link,
+                                'service' => $service,
+                                'footer' => $config['footer'],
+                                'message' => $data['message'],
+                            )
+                        ),
+                        'text/plain'
+                    );
+
+                $mailer->send($message);
+                $this->get('session')->getFlashBag()->add('success', 'Invitations sent succesfully.');
+            } catch (\Exception $e) {
+                $this->get('session')->getFlashBag()->add('error', 'Invitation sending failure. <br> Please send the invitation link manually to your partners. <br> The link is: <br><strong>'.$link.'</strong><br> The error was: <br> '.$e->getMessage());
+            }
+
+            return $this->redirect($this->generateUrl('app_service_managers', array("id" => $id)));
+        }
+    }
+
+    /**
+     * @Route("/resolveInvitationToken/{token}/{serviceid}/{landing_url}", defaults={"landing_url" = null})
+     * @Template()
+     * @return Response
+     * @param string $token      Invitation token
+     * @param int    $serviceid  Service ID
+     * @param string $landingUrl Url to redirect after accept invitation
+     */
+    public function resolveInvitationTokenAction($token, $serviceid, $landingUrl = null)
+    {
+        $invitationResource = $this->get('invitation');
+        try {
+            $invitationResource->accept($token);
+        } catch (\Exception $e) {
+            $statusCode = $e->getResponse()->getStatusCode();
+            switch ($statusCode) {
+                case '409':
+                    return array("error" => "You are already member of this service.");
+                    break;
+                default:
+                    return array("error" => $e->getMessage());
+                    break;
+            }
+        }
+        if ($landingUrl) {
+            $decodedurl = urldecode($landingUrl);
+
+            return $this->redirect($decodedurl);
+        }
+        $this->get('session')->getFlashBag()->add('success', 'The invitation accepted successfully.');
+
+        return $this->redirect($this->generateUrl('app_service_show', array("id" => $serviceid)));
+    }
+
 
     /**
      * @Route("/removemanagers/{id}")
@@ -318,6 +462,57 @@ class ServiceController extends Controller
 
         return $this->redirect($this->generateUrl('app_service_managers', array('id' => $id, )));
     }
+
+    /**
+     * @Route("/createInvitation/{id}")
+     * @Method("POST")
+     * @Template()
+     * @return Response
+     * @param   int     $id      Service ID
+     * @param   Request $request request
+     */
+    public function createInvitationAction($id, Request $request)
+    {
+
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(array('message' => 'You can access this only using Ajax!'), 400);
+        }
+        $service = $this->getService($id);
+        $form = $this->createForm(ServiceUserInvitationType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $dataToBackend = $data;
+
+            // TODO invitation->createHexaaInvitation()
+            // TODO this->sendInvitations()
+
+            $invitationResource = $this->get('invitation');
+            $dataToBackend['service'] = $id;
+            $invite = $invitationResource->sendInvitation($dataToBackend);
+
+            $headers = $invite->getHeaders();
+
+            try {
+                $invitationId = basename(parse_url($headers['Location'][0], PHP_URL_PATH));
+                $invitation = $invitationResource->get($invitationId);
+            } catch (\Exception $e) {
+                throw $this->createNotFoundException('Invitation not found at backend');
+            }
+
+            $landingUrl = null;
+            if (! empty($data['landing_url'])) {
+                $landingUrl = urlencode($data['landing_url']);
+            }
+            $inviteLink = $this->generateUrl('app_service_resolveinvitationtoken', array("token" => $invitation['token'], "serviceid" => $id, "landing_url" => $landingUrl), UrlGeneratorInterface::ABSOLUTE_URL);
+
+            return new JsonResponse(array('link' => $inviteLink), 200);
+        }
+    }
+
 
     /**
      * @Route("/attributes/{id}")
@@ -492,6 +687,28 @@ class ServiceController extends Controller
                 'service' => $this->getService($id),
             )
         );
+    }
+
+    /**
+     * @param $service
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createCreateInvitationForm($service)
+    {
+
+        $form = $this->createForm(
+            ServiceUserInvitationType::class,
+            array(
+                "start_date" => date("Y-m-d"),
+                "end_date" => date("Y-m-d", strtotime("+1 week")),
+            ),
+            array(
+                "action" => $this->generateUrl("app_service_createinvitation", array("id" => $service['id'])),
+                "method" => "POST",
+            )
+        );
+
+        return $form;
     }
 
     /**
