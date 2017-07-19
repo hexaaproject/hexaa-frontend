@@ -1,21 +1,60 @@
 {% extends "AppBundle:Service:layout.html.twig" %}
 
+{% block stylesheets %}
+    {% stylesheets
+    'css/modal.css'
+    filter='cssrewrite'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block container %}
     <div id="srvmain">
         <div id="maindivcontents">
             <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/create_permission.svg"/><br/> <p><b>Create permission</b></p></div>
             
-            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/invite_organization.svg"/><br/><p><b>Invite organiztaion</b></p></div>
+            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/invite_organization.svg"/><br/><p><b>Invite organization</b></p></div>
             
-            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/add_attribute_specification.svg"/><br/><p><b>Add attribute specification</b></p></div>
+            <div class="desktopbuttonorg"><a href="{{ path("app_service_attributes", {"id": service.id}) }}"><img class="desktopbuttonimage" src="/img/add_attribute_specification.svg"/><br/><p><b>Add attribute specification</b></p></a></div>
             
-            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/invite_manager.svg"/><br/><p><b>Invite manager</b></p></div>
+            <div class="desktopbuttonorg"><a href="{{ path("app_service_managers", {"id": service.id}) }}"><img class="desktopbuttonimage" src="/img/invite_manager.svg"/><br/><p><b>Invite manager</b></p></a></div>
             
             <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/contact_admin.svg"/><br/><p><b>Contact admin</b></p></div>
             
             <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/view_history.svg"/><br/><p><b>View history</b></p></div>
             
-            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/delete_organization.svg"/><br/><p><b>Delete service</b></p></div> 
+            <div class="desktopbuttonorg"><a id="deleteService"><img class="desktopbuttonimage" src="/img/delete_organization.svg"/><br/><p><b>Delete service</b></p></div></div></div></div>
         </div>
     </div>
+    {{ include('::modal.html.twig',
+    {
+        id: 'deleteServiceBox',
+        title: 'Are you sure?',
+        bodycontent: 'If you press the delete button, your service will be deleted.',
+        button:
+        {
+            text: 'Delete service',
+            class: 'btn-red',
+            id: 'deleteButton'
+        },
+        leftbutton:
+        {
+            text: 'Cancel',
+            class: 'btn-blue',
+            id: 'id_of_leftbutton',
+            dismiss: true
+        },
+        formaction: path('app_service_delete', {id: service.id })
+    })
+    }}
+    <script>
+        $(document).ready(function() {
+            $('#maindivcontents').on('click', '#deleteService', function(event) {
+                event.preventDefault();
+                $('#deleteServiceBox').modal('show');
+            });
+        });
+    </script>
+
 {% endblock %}
