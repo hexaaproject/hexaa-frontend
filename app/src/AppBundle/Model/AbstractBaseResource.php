@@ -16,6 +16,7 @@ abstract class AbstractBaseResource
     /** @var  Client */
     protected $client;
     protected $token;
+    protected $tokenStorage;
 
     /**
      * BaseResource constructor.
@@ -25,10 +26,22 @@ abstract class AbstractBaseResource
     public function __construct(Client $client, TokenStorage $tokenStorage)
     {
         $this->client = $client;
+        $this->tokenStorage = $tokenStorage;
         if ($tokenStorage->getToken()) {
             $user = $tokenStorage->getToken()->getUser();
             $this->token = $user->getToken();
         }
+    }
+
+    /**
+     */
+    public function getToken()
+    {
+        if ($this->tokenStorage->getToken()) {
+            $user = $this->tokenStorage->getToken()->getUser();
+            $this->token = $user->getToken();
+        }
+        return $this->token;
     }
 
 
@@ -110,7 +123,7 @@ abstract class AbstractBaseResource
      */
     public function getHeaders(): array
     {
-        if ($this->token) {
+        if ($this->getToken()) {
             $config = $this->client->getConfig();
             $headers = $config["headers"];
             $headers['X-HEXAA-AUTH'] = $this->token;

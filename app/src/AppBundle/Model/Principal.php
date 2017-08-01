@@ -41,4 +41,17 @@ class Principal extends AbstractBaseResource
     {
         return $this->getCollection($this->pathName.'/attributevalueprincipal', $verbose, $offset, $pageSize);
     }
+
+    /**
+     * Principal is admin or not?
+     *
+     * @param string $verbose    One of minimal, normal or expanded
+     * @param string $hexaatoken hexaa api token
+     * @return array
+     */
+    public function isAdmin(string $verbose = "normal")
+    {
+        return $this->getSingular($this->pathName.'/isadmin', $verbose);
+    }
+
 }

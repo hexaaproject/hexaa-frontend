@@ -30,12 +30,15 @@ class DefaultController extends Controller
             try {
                 $organizations = $this->get('organization')->cget();
                 $services = $this->get('service')->cget();
+                $adminorno = $this->get('principal')->isAdmin();
+                $admin = $adminorno["is_admin"];
+                dump($admin);
             } catch (ServerException $e) {
                 return $this->render('error.html.twig', array('serverexception' => $e));
             }
         }
 
-        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services' => $services, 'orgsubmenubox' => $this->getOrgSubmenuPoints(), 'servsubmenubox' => $this->getServSubmenuPoints()));
+        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services' => $services, 'orgsubmenubox' => $this->getOrgSubmenuPoints(), 'servsubmenubox' => $this->getServSubmenuPoints(), 'admin' => $admin));
     }
 
     /**

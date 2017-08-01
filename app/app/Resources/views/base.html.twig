@@ -75,6 +75,13 @@
                             {% endif %}
                         </div>
                     {% endif %}
+                    {% if admin == "true" %}
+                        <div class="dropdowns">
+                            <button onclick="adminClick()" class="dropbtn">
+                                Admin
+                            </button>
+                        </div>
+                    {% endif %}
                 </div>
             {% endif %}
             <div id="container">
