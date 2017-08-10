@@ -111,6 +111,7 @@ class OrganizationController extends Controller
                 'organization' => $organization,
                 'organizations' => $this->get('organization')->cget(),
                 'services' => $this->get('service')->cget(),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
@@ -148,6 +149,7 @@ class OrganizationController extends Controller
                 "organization" => $organization,
                 "roles" => $roles,
                 "propertiesbox" => $propertiesbox,
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
@@ -258,6 +260,7 @@ class OrganizationController extends Controller
                     "invite_link" => $inviteLink,
                     "inviteForm" => $form->createView(),
                     "sendInEmailForm" => $sendInEmailForm->createView(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 )
             );
         }
@@ -274,6 +277,7 @@ class OrganizationController extends Controller
                 "members_buttons" => $membersButtons,
                 "inviteForm" => $form->createView(),
                 "sendInEmailForm" => $sendInEmailForm->createView(),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
@@ -566,6 +570,7 @@ class OrganizationController extends Controller
                 "roles" => $roles,
                 "services" => $this->get('service')->cget(),
                 "roles_accordion" => $rolesAccordion,
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
@@ -589,6 +594,7 @@ class OrganizationController extends Controller
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $services,
                 "services_accordion" => $servicesAccordion,
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }

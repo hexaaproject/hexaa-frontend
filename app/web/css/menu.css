@@ -1,5 +1,5 @@
 
-.dropbtn, .servicecl {
+.dropbtn, .servicecl, .adminhref {
     background-color: #2e2d2d;
     color: white;
     position: relative;
@@ -11,6 +11,24 @@
     height: 100%;
     width: 200px;
     text-align: center;
+    outline: 0;
+    text-decoration: none;
+}
+
+.adminhref:link{
+    color: white;
+}
+.adminhref:visited{
+    color: white;
+}
+.adminhref:hover{
+    color: white;
+}
+.adminhref:focus{
+    color: white;
+}
+.adminhref:active{
+    color: white;
 }
 
 .dropdowns {

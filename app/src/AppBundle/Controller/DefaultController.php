@@ -32,13 +32,12 @@ class DefaultController extends Controller
                 $services = $this->get('service')->cget();
                 $adminorno = $this->get('principal')->isAdmin();
                 $admin = $adminorno["is_admin"];
-                dump($admin);
             } catch (ServerException $e) {
                 return $this->render('error.html.twig', array('serverexception' => $e));
             }
         }
 
-        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services' => $services, 'orgsubmenubox' => $this->getOrgSubmenuPoints(), 'servsubmenubox' => $this->getServSubmenuPoints(), 'admin' => $admin));
+        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services' => $services, 'orgsubmenubox' => $this->getOrgSubmenuPoints(), 'servsubmenubox' => $this->getServSubmenuPoints(), 'admin' => $admin, 'adminsubmenubox' => $this->getAdminSubmenuPoints()));
     }
 
     /**
@@ -86,5 +85,22 @@ class DefaultController extends Controller
         );
 
         return $submenuBox;
+    }
+
+
+    /**
+     * @return array
+     */
+    private function getAdminSubmenuPoints()
+    {
+        $submenubox = array(
+            "app_admin_attributes" => "Attributes",
+            "app_admin_principals" => "Principals",
+            "app_admin_entity" => "Entity IDs",
+            "app_admin_security" => "Security domains",
+            "app_admin_contact" => "Contact",
+        );
+
+        return $submenubox;
     }
 }

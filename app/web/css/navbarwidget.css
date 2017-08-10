@@ -36,7 +36,11 @@
 
 .navbarlinkactive {
     padding-bottom: 0.3vh;
-    border-bottom: 1.2vh solid #ec666a;
+    border-bottom: 1.2vh solid #EC666A;
+}
+
+.navbarlinkadminactive {
+    border-bottom: 1.2vh solid #61AFC5;
 }
 
 .desktoplinkdivstyle {

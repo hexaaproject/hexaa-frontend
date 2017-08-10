@@ -23,7 +23,7 @@
                         <a href="{{ path('app_organization_show', {id: organization.id}) }}"
                            class="hamburgercontentpanelname">{{ organization.name|e }}</a>
                     </div>
-            {% endfor %}
+                {% endfor %}
             {% endif %}
         </div>
 
@@ -109,7 +109,7 @@
                 {% set route = app.request.get('_route') %}
                 {% if loop.first %}
                     <span id="navbarmenupoints">
-                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
+                    <a class="navbarlink{% if route == key %} navbarlinkactive {% endif %}"
                        href="{{ path(key, {id: service.id}) }}">{{ value }}</a>
                 {% elseif loop.last %}
                     <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
@@ -118,6 +118,28 @@
                 {% else %}
                     <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
                        href="{{ path(key, {id: service.id}) }}">{{ value }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+{% if submenu is defined and names %}
+    <div class="desktopcontainer" style="background-color: #EA7E73">
+        <div class="desktoplinkdivstyle">
+            {% for key,value in names %}
+                {% set route = app.request.get('_route') %}
+                {% if loop.first %}
+                    <span id="navbarmenupoints">
+                    <a class="navbarlink{% if route == key %} navbarlinkadminactive {% endif %}"
+                       href="{{ path(key, {admin: admin}) }}">{{ value }}</a>
+                {% elseif loop.last %}
+                    <a class="navbarlink{% if route == key %} navbarlinkadminactive {% endif %}"
+                       href="{{ path(key, {admin: admin}) }}">{{ value }}</a>
+                    </span>
+                {% else %}
+                    <a class="navbarlink{% if route == key %} navbarlinkadminactive {% endif %}"
+                       href="{{ path(key, {admin: admin}) }}">{{ value }}</a>
                 {% endif %}
             {% endfor %}
         </div>
