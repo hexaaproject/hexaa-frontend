@@ -5,9 +5,11 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
+
 
 /**
- * @Route("admin")
+ * @Route("/admin")
  */
 class AdminController extends Controller
 {
@@ -39,7 +41,6 @@ class AdminController extends Controller
     public function attributesAction($admin)
     {
         $attributespecifications = $this->get('attribute_spec')->cget();
-        dump($attributespecifications);
         return $this->render('AppBundle:Admin:attributes.html.twig',
             array(
                 "organizations" => $this->get('organization')->cget(),
@@ -60,15 +61,58 @@ class AdminController extends Controller
      */
     public function principalsAction($admin)
     {
+        $principals = $this->get('principal')->getAllPrincipals()["items"];
+        dump($principals);
+        $principalsButtons = array(
+            "remove" => array(
+                "class" => "btn-blue pull-left",
+                "text" => "Remove",
+            ),
+        );
         return $this->render('AppBundle:Admin:principals.html.twig',
             array(
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 "submenu" => "true",
-                'adminsubmenubox' => $this->getAdminSubmenupoints(),
+                "adminsubmenubox" => $this->getAdminSubmenupoints(),
+                "principals_buttons" => $principalsButtons,
+                "principals" => $principals,
             )
         );
+    }
+
+    /**
+     * @Route("/removeprincipals")
+     * @Template()
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeprincipalsAction(Request $request)
+    {
+        $pids = $request->get('userId');
+        dump($pids);
+        $errors = array();
+        $errormessages = array();
+        foreach ($pids as $pid) {
+            try {
+                $this->get('principal')->deletePrincipal($this->get('principal')->isAdmin()["is_admin"], $pid);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                implode(', ', $errormessages)
+            );
+            $this->get('logger')->error(
+                'User remove failed'
+            );
+        }
+
+        return $this->redirect($this->generateUrl('app_admin_principals', array("admin" => $this->get('principal')->isAdmin()["is_admin"],)));
     }
 
     /**
@@ -188,4 +232,6 @@ class AdminController extends Controller
         }
         return $attributesAccordion;
     }
+
+
 }

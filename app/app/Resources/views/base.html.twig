@@ -75,7 +75,7 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                    {% if admin is defined and admin == "true" or admin == "1" %}
+                    {% if admin is defined and (admin == "true" or admin == "1") %}
                         <div class="dropdowns">
                                 <a href="{{ path("app_admin_attributes", { admin: admin }) }}" class="adminhref" style="text-decoration:none;">
                                     Admin

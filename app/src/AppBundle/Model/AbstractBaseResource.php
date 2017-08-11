@@ -175,6 +175,32 @@ abstract class AbstractBaseResource
 
     /**
      * @param string $path
+     * @param string $admin
+     * @param string $verbose
+     * @param int $offset
+     * @param int $pageSize
+     * @return array
+     */
+    protected function getCollectionAdmin(string $path, string $admin = "true",  string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
+    {
+        $response = $this->client->get(
+            $path,
+            array(
+                'headers' => $this->getHeaders(),
+                'query' => array(
+                    'verbose' => $verbose,
+                    'offset' => $offset,
+                    'limit' => $pageSize,
+                    'admin' => $admin
+                ),
+            )
+        );
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * @param string $path
      * @param string $verbose
      * @return array
      */
