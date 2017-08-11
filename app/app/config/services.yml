@@ -37,6 +37,9 @@ services:
     link:
       class: AppBundle\Model\Link
       arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+    entity_id:
+      class: AppBundle\Model\EntityID
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
 
     shibboleth.user.provider:
       class: AppBundle\Security\User\ShibbolethUser

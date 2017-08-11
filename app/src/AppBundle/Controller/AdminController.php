@@ -62,7 +62,6 @@ class AdminController extends Controller
     public function principalsAction($admin)
     {
         $principals = $this->get('principal')->getAllPrincipals()["items"];
-        dump($principals);
         $principalsButtons = array(
             "remove" => array(
                 "class" => "btn-blue pull-left",
@@ -123,6 +122,8 @@ class AdminController extends Controller
      */
     public function entityAction($admin)
     {
+        $entityids = $this->get('entity_id')->cget();
+
         return $this->render('AppBundle:Admin:entity.html.twig',
             array(
                 "organizations" => $this->get('organization')->cget(),
@@ -130,6 +131,7 @@ class AdminController extends Controller
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 "submenu" => "true",
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
+                'entityids_accordion' => $this->entityIDsToAccordion($entityids),
             )
         );
     }
@@ -233,5 +235,42 @@ class AdminController extends Controller
         return $attributesAccordion;
     }
 
+
+    /**
+     * @param $entityIDs
+     * @return array
+     */
+    private function entityIDsToAccordion($entityIDs)
+    {
+        $entityIDsAccordion = array();
+        $keys = array_keys($entityIDs['items']);
+        foreach ($keys as $key) {
+            $entityIDsAccordion[$key]['title'] = $key;
+
+            $entityarray = $entityIDs['items'][$key];
+            $type = array();
+            $email = array();
+            foreach ($entityarray as $entityfeature) {
+                array_push($type, $entityfeature['type']);
+                array_push($email, $entityfeature['email']);
+            }
+            $entityIDsAccordion[$key]['contents'] = array(
+                array(
+                    'key' => 'Type',
+                    'values' => $type,
+                ),
+                array(
+                    'key' => 'Email',
+                    'values' => $email,
+                ),
+            );
+
+
+        }
+        dump($entityIDsAccordion);
+
+
+        return $entityIDsAccordion;
+    }
 
 }

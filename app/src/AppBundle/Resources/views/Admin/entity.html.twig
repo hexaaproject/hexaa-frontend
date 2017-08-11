@@ -1,6 +1,19 @@
 {% extends "AppBundle:Admin:layout.html.twig" %}
 
 {% block container %}
+    {% block stylesheets %}
+        {% stylesheets
+        'css/accordions.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
 
-
+    <div class="col-sm-11 col-sm-offset-2">
+        <input id="hexaaSearchFieldEntityIDs" type="text" name="filter" class="hexaaSearchField pull-left"
+               placeholder="Search entity IDs">
+    </div>
+    <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
+        {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion }) }}
+    </div>
 {% endblock %}
