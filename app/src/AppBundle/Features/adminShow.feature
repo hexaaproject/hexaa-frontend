@@ -23,7 +23,7 @@ Feature: When I am an admin
 	     And I should see "Entity IDs"
 	     And I should see "Security domains"
 	     And I should see "Contact"
-		When I click on accordion "Favourite coffee of the principal "
+		When I click on accordion "Favourite coffee of the principal"
 		Then I should see "Description"
 		And I should see "URI"
 		And I should see "Syntax"
