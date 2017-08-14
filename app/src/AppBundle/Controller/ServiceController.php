@@ -611,6 +611,7 @@ class ServiceController extends Controller
     {
         $verbose = "expanded";
         $permissions = $this->get('service')->getEntitlements($id, $verbose)['items'];
+
         return $this->render(
             'AppBundle:Service:permissions.html.twig',
             array(
@@ -820,6 +821,7 @@ class ServiceController extends Controller
                 ),
             );
         }
+
         return $permissionsAccordionSet;
     }
 

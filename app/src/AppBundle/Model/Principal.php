@@ -45,10 +45,10 @@ class Principal extends AbstractBaseResource
     /**
      * GET All principals
      *
+     * @param string $admin
      * @param string $verbose  One of minimal, normal or expanded
      * @param int    $offset   paging: item to start from
      * @param int    $pageSize paging: number of items to return
-     * @param bool   $admin
      * @return array
      */
     public function getAllPrincipals(string $admin = "true", string $verbose = "normal", int $offset = 0, int $pageSize = 25)
@@ -65,10 +65,10 @@ class Principal extends AbstractBaseResource
      */
     public function deletePrincipal(string $admin, string $pid)
     {
-        if($admin == "1"){
+        if ($admin == "1") {
             $admin = "true";
         }
-        $id= (int)($pid);
+        $id = (int) ($pid);
         $path = 'principals/'.$id.'/id';
 
         $response = $this->client->delete(
@@ -76,7 +76,7 @@ class Principal extends AbstractBaseResource
             [
                 'headers' => $this->getHeaders(),
                 'query' => array(
-                    'admin' => $admin
+                    'admin' => $admin,
                 ),
             ]
         );
@@ -88,13 +88,11 @@ class Principal extends AbstractBaseResource
     /**
      * Principal is admin or not?
      *
-     * @param string $verbose    One of minimal, normal or expanded
-     * @param string $hexaatoken hexaa api token
+     * @param string $verbose One of minimal, normal or expanded
      * @return array
      */
     public function isAdmin(string $verbose = "normal")
     {
         return $this->getSingular($this->pathName.'/isadmin', $verbose);
     }
-
 }

@@ -34,6 +34,8 @@ abstract class AbstractBaseResource
     }
 
     /**
+     * GET token
+     * @return token
      */
     public function getToken()
     {
@@ -41,6 +43,7 @@ abstract class AbstractBaseResource
             $user = $this->tokenStorage->getToken()->getUser();
             $this->token = $user->getToken();
         }
+
         return $this->token;
     }
 
@@ -177,11 +180,11 @@ abstract class AbstractBaseResource
      * @param string $path
      * @param string $admin
      * @param string $verbose
-     * @param int $offset
-     * @param int $pageSize
+     * @param int  $offset
+     * @param int  $pageSize
      * @return array
      */
-    protected function getCollectionAdmin(string $path, string $admin = "true",  string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
+    protected function getCollectionAdmin(string $path, string $admin = "true", string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
     {
         $response = $this->client->get(
             $path,
@@ -191,7 +194,7 @@ abstract class AbstractBaseResource
                     'verbose' => $verbose,
                     'offset' => $offset,
                     'limit' => $pageSize,
-                    'admin' => $admin
+                    'admin' => $admin,
                 ),
             )
         );

@@ -7,13 +7,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * @Route("/admin")
  */
 class AdminController extends Controller
 {
-    /*
+    /**
     * @Route("/")
     * @Template()
     * @return Response
@@ -41,7 +40,9 @@ class AdminController extends Controller
     public function attributesAction($admin)
     {
         $attributespecifications = $this->get('attribute_spec')->cget();
-        return $this->render('AppBundle:Admin:attributes.html.twig',
+
+        return $this->render(
+            'AppBundle:Admin:attributes.html.twig',
             array(
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -68,7 +69,9 @@ class AdminController extends Controller
                 "text" => "Remove",
             ),
         );
-        return $this->render('AppBundle:Admin:principals.html.twig',
+
+        return $this->render(
+            'AppBundle:Admin:principals.html.twig',
             array(
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -111,7 +114,7 @@ class AdminController extends Controller
             );
         }
 
-        return $this->redirect($this->generateUrl('app_admin_principals', array("admin" => $this->get('principal')->isAdmin()["is_admin"],)));
+        return $this->redirect($this->generateUrl('app_admin_principals', array("admin" => $this->get('principal')->isAdmin()["is_admin"])));
     }
 
     /**
@@ -124,7 +127,8 @@ class AdminController extends Controller
     {
         $entityids = $this->get('entity_id')->cget();
 
-        return $this->render('AppBundle:Admin:entity.html.twig',
+        return $this->render(
+            'AppBundle:Admin:entity.html.twig',
             array(
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -144,7 +148,8 @@ class AdminController extends Controller
      */
     public function securityAction($admin)
     {
-        return $this->render('AppBundle:Admin:security.html.twig',
+        return $this->render(
+            'AppBundle:Admin:security.html.twig',
             array(
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -163,7 +168,8 @@ class AdminController extends Controller
      */
     public function contactAction($admin)
     {
-        return $this->render('AppBundle:Admin:contact.html.twig',
+        return $this->render(
+            'AppBundle:Admin:contact.html.twig',
             array(
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -232,6 +238,7 @@ class AdminController extends Controller
                 ),
             );
         }
+
         return $attributesAccordion;
     }
 
@@ -264,13 +271,8 @@ class AdminController extends Controller
                     'values' => $email,
                 ),
             );
-
-
         }
-        dump($entityIDsAccordion);
-
 
         return $entityIDsAccordion;
     }
-
 }
