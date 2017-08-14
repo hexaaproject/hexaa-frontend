@@ -1,0 +1,80 @@
+{% extends "AppBundle:Admin:layout.html.twig" %}
+
+{% block container %}
+
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
+    {% block stylesheets %}
+        {% stylesheets 'css/tables.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+
+    <div class="row" style="margin-top: 48px;">
+        <div class="col-md-15">
+            {{ include('::tables.html.twig', {variant: 'blue', checkbox_all: 'Principals', tdcolor:'base', caption: 'Principals', checkbox: true, users: principals, table_id: 'principals_table', buttons: principals_buttons, search_placeholder: 'Search principal' }) }}
+        </div>
+        {{ include('::modal.html.twig',
+        {
+            id: 'principalsRemove',
+            title: 'Remove principals',
+            bodyhead: 'Are you ready to remove these principals from HEXAA?',
+            bodycontent: 'Optional',
+            button:
+            {
+                text: 'Remove',
+                class: 'btn-red'
+            },
+            formaction: path('app_admin_removeprincipals')
+        })
+        }}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+{% javascripts
+'@datatables_js'
+'js/clipboard.js'
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<script>
+    $(document).ready(function () {
+        function populateList(
+            ul,
+            el) {
+            var row = $(el).closest('tr');
+            var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
+            var objectId = row.attr('id');
+            ul.append('<li>' + displayString + '</li>');
+            ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
+        }
+        var principalsTableActionButtons = $('.principals_table_actionButtons');
+        principalsTableActionButtons.on('click', '#remove', function (
+            event) {
+            event.preventDefault();
+            var content = $('#principalsRemove').find('.modal-body-content');
+            content.empty();
+            content.append('<ul></ul>');
+            var ul =$('#principalsRemove').find('ul');
+            $('#principals_table input:checked').each(function (
+                index,
+                el) {
+                populateList(ul, el);
+            });
+            $('#principalsRemove').modal('show');
+        });
+    });
+</script>
+{% endblock %}

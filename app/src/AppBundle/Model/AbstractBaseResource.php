@@ -16,6 +16,7 @@ abstract class AbstractBaseResource
     /** @var  Client */
     protected $client;
     protected $token;
+    protected $tokenStorage;
 
     /**
      * BaseResource constructor.
@@ -25,10 +26,25 @@ abstract class AbstractBaseResource
     public function __construct(Client $client, TokenStorage $tokenStorage)
     {
         $this->client = $client;
+        $this->tokenStorage = $tokenStorage;
         if ($tokenStorage->getToken()) {
             $user = $tokenStorage->getToken()->getUser();
             $this->token = $user->getToken();
         }
+    }
+
+    /**
+     * GET token
+     * @return token
+     */
+    public function getToken()
+    {
+        if ($this->tokenStorage->getToken()) {
+            $user = $this->tokenStorage->getToken()->getUser();
+            $this->token = $user->getToken();
+        }
+
+        return $this->token;
     }
 
 
@@ -110,7 +126,7 @@ abstract class AbstractBaseResource
      */
     public function getHeaders(): array
     {
-        if ($this->token) {
+        if ($this->getToken()) {
             $config = $this->client->getConfig();
             $headers = $config["headers"];
             $headers['X-HEXAA-AUTH'] = $this->token;
@@ -153,6 +169,32 @@ abstract class AbstractBaseResource
                     'verbose' => $verbose,
                     'offset' => $offset,
                     'limit' => $pageSize,
+                ),
+            )
+        );
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * @param string $path
+     * @param string $admin
+     * @param string $verbose
+     * @param int  $offset
+     * @param int  $pageSize
+     * @return array
+     */
+    protected function getCollectionAdmin(string $path, string $admin = "true", string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
+    {
+        $response = $this->client->get(
+            $path,
+            array(
+                'headers' => $this->getHeaders(),
+                'query' => array(
+                    'verbose' => $verbose,
+                    'offset' => $offset,
+                    'limit' => $pageSize,
+                    'admin' => $admin,
                 ),
             )
         );

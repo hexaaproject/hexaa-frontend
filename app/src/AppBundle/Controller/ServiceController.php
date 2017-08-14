@@ -145,6 +145,7 @@ class ServiceController extends Controller
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
                 'servsubmenubox' => $this->getServSubmenuPoints(),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
@@ -251,6 +252,7 @@ class ServiceController extends Controller
                 'propertiesform' => $formproperties->createView(),
                 'ownerform' => $formowner->createView(),
                 'privacyform' => $formprivacy->createView(),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
@@ -321,6 +323,7 @@ class ServiceController extends Controller
                     "invite_link" => $inviteLink,
                     "inviteForm" => $form->createView(),
                     "sendInEmailForm" => $sendInEmailForm->createView(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 )
             );
         }
@@ -336,6 +339,7 @@ class ServiceController extends Controller
                 'managers_buttons' => $managersButtons,
                 "inviteForm" => $form->createView(),
                 "sendInEmailForm" => $sendInEmailForm->createView(),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
@@ -560,6 +564,7 @@ class ServiceController extends Controller
                 'attributes' => $attributes,
                 'attributes_buttons' => $attributesButtons,
                 'addAttributeSpecForm' => $form->createView(),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
@@ -615,6 +620,7 @@ class ServiceController extends Controller
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
                 'permissions_accordion' => $this->permissionsToAccordion($permissions),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
@@ -641,6 +647,7 @@ class ServiceController extends Controller
                 'permissions_accordion_set' => $this->permissionSetToAccordion($permissionsset),
                 'token' => $token,
                 'permissionsetname' => $permissionsetname,
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
@@ -685,6 +692,8 @@ class ServiceController extends Controller
                 'organizations' => $this->getOrganizations(),
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'servsubmenubox' => $this->getServSubmenuPoints(),
             )
         );
     }

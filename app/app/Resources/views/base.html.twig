@@ -75,6 +75,13 @@
                             {% endif %}
                         </div>
                     {% endif %}
+                    {% if admin is defined and (admin == "true" or admin == "1") %}
+                        <div class="dropdowns">
+                                <a href="{{ path("app_admin_attributes", { admin: admin }) }}" class="adminhref" style="text-decoration:none;">
+                                    Admin
+                                </a>
+                        </div>
+                    {% endif %}
                 </div>
             {% endif %}
             <div id="container">
@@ -85,11 +92,11 @@
                 <div id="logout">
                     <span id="logobox">
                         {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <a href="{{ path('app_default_login') }}" id="login_button" role="button">
+                        <a href="{{ path('app_default_login') }}" id="login_button" role="button">
                         {% else %}
                             <a href="{{ logout_path('default') }}" id="logout_button" role="button">
                         {% endif %}
-                            <img id="logpng" src="/img/logout.png">
+                                <img id="logpng" src="/img/logout.png">
                         </a>
                     </span>
                 </div>

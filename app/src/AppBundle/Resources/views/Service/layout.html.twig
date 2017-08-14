@@ -4,12 +4,11 @@
 
 {% block body %}
     {% stylesheets
-        'css/service.css'
-        filter='cssrewrite'
-    %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
+    'css/service.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
-    
+
     {{ include('::navbar.html.twig', {service: service, names:servsubmenubox}) }}
     <div class="container">
         {% block container %}{% endblock %}
@@ -18,21 +17,22 @@
 
 {% block javascripts %}
     <script>
-        $("#orgaccordion").remove();
-        var b = $(".servicecl");
-        for (i = 0; i < b.length; i++) {
-            b[i].style.backgroundColor = "#61AFC5";
-            a = b[i].getElementsByTagName("a");
-            for (j = 0; j < a.length; j++) {
-                if (a[j].innerHTML == "Tesztelő szolgáltatás") {
-                    a[j].style.backgroundColor = "#61AFC5";
-                }
-            }
-        }
-        var b2 = $(".dropbtn");
-        for (i = 0; i < b2.length; i++) {
-            b2[i].style.backgroundColor = "#2e2d2d";
-        }
-
+        /*
+         $("#orgaccordion").remove();
+         var b = $(".servicecl");
+         for (i = 0; i < b.length; i++) {
+         b[i].style.backgroundColor = "#61AFC5";
+         a = b[i].getElementsByTagName("a");
+         for (j = 0; j < a.length; j++) {
+         if (a[j].innerHTML == "Tesztelő szolgáltatás") {
+         a[j].style.backgroundColor = "#61AFC5";
+         }
+         }
+         }
+         var b2 = $(".dropbtn");
+         for (i = 0; i < b2.length; i++) {
+         b2[i].style.backgroundColor = "#2e2d2d";
+         }
+         */
     </script>
 {% endblock %}
