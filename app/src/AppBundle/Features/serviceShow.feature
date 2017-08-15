@@ -4,7 +4,7 @@ Feature: When I go to a specific service
 		I want to see service properties
 
 	Background:
-       Given I am on "/"
+        Given I am on "/"
         And I should see "employee@project.local"
         And I should see "testService1"
 

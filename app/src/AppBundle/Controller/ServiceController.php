@@ -699,6 +699,21 @@ class ServiceController extends Controller
     }
 
     /**
+     * @Route("/delete/{id}")
+     * @Template()
+     * @return Response
+     * @param int $id Service Id
+     *
+     */
+    public function deleteAction($id)
+    {
+        $serviceResource = $this->get('service');
+        $serviceResource->delete($id);
+
+        return $this->redirectToRoute("homepage");
+    }
+
+    /**
      * @param $service
      * @return \Symfony\Component\Form\Form
      */
