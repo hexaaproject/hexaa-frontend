@@ -4,12 +4,6 @@ Feature: When I go to services
   I want to invite manager to my service
 
   Background:
-    Given I prepare a DELETE request on "/all"
-    When I send the request
-    Then I should receive a 204 response
-    Given I prepare a GET request on "/setup"
-    When I send the request
-    And I should receive a 204 response
     Given mailhog inbox is empty
     And I am on "/"
     And I should see "employee@project.local"

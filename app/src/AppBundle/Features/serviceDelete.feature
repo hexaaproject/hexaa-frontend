@@ -9,8 +9,8 @@ Feature: When I go to specific service
     Then I wait for "testService1" to appear
     And I should see "testService1"
     And I should see "testService2"
-    Then I follow "testService1"
-    And I wait for "testService1" to appear
+    Then I follow "testService2"
+    And I wait for "testService2" to appear
     And I should see "Delete service"
 
   Scenario: After click cancel button in delete form
@@ -26,5 +26,5 @@ Feature: When I go to specific service
     Then I wait for "Are you sure?" to appear
     Then I press "Delete service"
     Then I am on "/"
-    And I should not see "testService1"
-    And I should see "testService2"
+    And I should not see "testService2"
+    And I should see "testService1"
