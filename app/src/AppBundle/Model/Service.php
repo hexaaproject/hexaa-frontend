@@ -153,4 +153,32 @@ class Service extends AbstractBaseResource
 
         return $response;
     }
+
+    /**
+     * Create new Service
+     *
+     * @param string      $name
+     * @param string|null $description
+     * @param string|null $url
+     * @param string      $entityid
+     * @return array expanded organization
+     */
+    public function create(string $name, string $description = null, string $uri = null, string $entityid)
+    {
+        $serviceData = array();
+        $serviceData['name'] = $name;
+        if ($description) {
+            $serviceData['description'] = $description;
+        }
+        if ($uri) {
+            $serviceData['uri'] = $uri;
+        }
+        $serviceData['entityid'] = $entityid;
+        $response = $this->post($serviceData);
+        $locations = $response->getHeader('Location');
+        $location = $locations[0];
+        $serviceId = preg_replace('#.*/#', '', $location);
+
+        return $this->get($serviceId, "expanded");
+    }
 }

@@ -1,0 +1,38 @@
+{% extends "AppBundle:Service:layout.html.twig" %}
+
+{% block title %}Add service{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'css/progressbar.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block container %}
+
+    <div id="fifth" class="progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create service',
+                    percent: 100,
+                    next_button_color: 'red',
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                Success
+                <p>
+                    <a href="{{ path('app_service_show', {'id': newserv.id}) }}">Get your new service</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

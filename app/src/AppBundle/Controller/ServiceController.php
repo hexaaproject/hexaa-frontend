@@ -14,6 +14,8 @@ use AppBundle\Form\ServicePrivacyType;
 use AppBundle\Form\ServiceAddAttributeSpecificationType;
 use AppBundle\Form\ServiceUserInvitationSendEmailType;
 use AppBundle\Form\ServiceUserInvitationType;
+use AppBundle\Form\ServiceType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -71,7 +73,7 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addStepOneAction(Request $request)
+  /*  public function addStepOneAction(Request $request)
     {
         return $this->render('AppBundle:Service:addStepOne.html.twig', array());
     }
@@ -82,7 +84,7 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addStepTwoAction(Request $request)
+ /*   public function addStepTwoAction(Request $request)
     {
         $verbose = "expanded";
         $attributespecs = $this->get('attribute_spec')->cget($verbose);
@@ -101,7 +103,7 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addStepThreeAction(Request $request)
+  /*  public function addStepThreeAction(Request $request)
     {
         $verbose = "expanded";
         $permissionsset = $this->get('entitlement_pack')->getPublic($verbose)['items'];
@@ -115,7 +117,7 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addStepFourAction(Request $request)
+ /*   public function addStepFourAction(Request $request)
     {
         return $this->render('AppBundle:Service:addStepFour.html.twig', array());
     }
@@ -126,10 +128,10 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addStepFiveAction(Request $request)
+ /*   public function addStepFiveAction(Request $request)
     {
         return $this->render('AppBundle:Service:addStepFive.html.twig', array());
-    }
+    }*/
 
     /**
      * @Route("/show/{id}")
@@ -148,6 +150,82 @@ class ServiceController extends Controller
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
+    }
+
+    /**
+     * @Route("/create")
+     * @Template()
+     * @return Response
+     * @param   Request $request request
+     */
+    public function createAction(Request $request)
+    {
+
+        $entityidsarray = array();
+        $entityids = $this->get('entity_id')->cget();
+        $keys = array_keys($entityids['items']);
+        foreach ($keys as $key) {
+            $entityidsarray[$key] = $key;
+        }
+
+        $form = $this->createForm(ServiceType::class);
+        $form->add(
+            'entityid',
+            ChoiceType::class,
+            array(
+                "label" => false,
+                'choices' => $entityidsarray,
+                'required' => true,
+                'placeholder' => 'Which entity id?',
+                'attr' => array(
+                    'class' => "col-md-5 col-md-offset-5"
+                ),
+            )
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $dataToBackend = $data;
+/*
+            // create service
+            $service = $this->get('service')->create(
+                $dataToBackend["name"],
+                $dataToBackend["description"],
+                $dataToBackend["url"],
+                $dataToBackend["entityid"]
+            );*/
+
+            // valami miatt erre szükség van, mert amúgy más értéket fog meghívni a createRole
+   /*         $servid = $service['id'];*/
+/*
+            // create role
+            $role = $this->get('organization')->createRole(
+                $orgid,
+                $dataToBackend['role'],
+                $this->get('role')
+            );
+            // put creator to role
+            $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
+            $this->get('role')->putPrincipal($role['id'], $self['id']);
+
+            // set role to default in organization
+            $this->get('organization')->patch($orgid, array("default_role" => $role['id']));
+
+            // create invitations
+            if ($dataToBackend["invitation_emails"]) {
+                $this->sendInvitations($organization, $role, $dataToBackend["invitation_emails"]);
+            }*/
+
+            // connect to service
+            // $dataToBackend["service_token"],
+
+   /*         return $this->render('AppBundle:Service:created.html.twig', array('newserv' => $this->get('service')->get($servid, "expanded"), ));*/
+        }
+
+        return $this->render('AppBundle:Service:create.html.twig', array('form' => $form->createView(), 'organizations' => $this->getOrganizations(),));
     }
 
     /**

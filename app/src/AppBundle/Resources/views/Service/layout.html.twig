@@ -8,8 +8,11 @@
     filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
-
-    {{ include('::navbar.html.twig', {service: service, names:servsubmenubox}) }}
+    {% if service is defined %}
+        {{ include('::navbar.html.twig', {service: service, names:servsubmenubox}) }}
+    {% else %}
+        {{ include('::navbar.html.twig') }}
+    {% endif %}
     <div class="container">
         {% block container %}{% endblock %}
     </div>
