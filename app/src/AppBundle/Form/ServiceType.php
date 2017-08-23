@@ -1,12 +1,15 @@
 <?php
+
 namespace AppBundle\Form;
 
+use Faker\Provider\Text;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class OrganizationType
@@ -15,9 +18,9 @@ class ServiceType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $entityidsarray)
     {
         $builder
             ->add(
@@ -54,6 +57,56 @@ class ServiceType extends AbstractType
                         "class" => "col-md-5 col-md-offset-5"
                     ),
                     "required" => false,
+                )
+            )
+            ->add(
+                'entityid',
+                ChoiceType::class,
+                array(
+                    "label" => false,
+                    'choices' => $entityidsarray['data'],
+                    'required' => true,
+                    'placeholder' => 'Which entity id?',
+                    'attr' => array(
+                        'class' => "col-md-5 col-md-offset-5"
+                    ),
+                )
+            )
+            ->add(
+                'entitlement',
+                TextType::class,
+                array(
+                    "label" => false,
+                    'required' => true,
+                    'data' => 'default',
+                    //       'placeholder' => 'Name of default permission',
+                    'attr' => array(
+                        'class' => "col-md-5 col-md-offset-5"
+                    ),
+                )
+            )
+            ->add(
+                'entitlementplus1',
+                TextType::class,
+                array(
+                    "label" => false,
+                    'required' => false,
+                    'attr' => array(
+                        'class' => "col-md-5 col-md-offset-5",
+                        'placeholder' => 'Name of plus permission',
+                    ),
+                )
+            )
+            ->add(
+                'entitlementplus2',
+                TextType::class,
+                array(
+                    "label" => false,
+                    'required' => false,
+                    'attr' => array(
+                        'class' => "col-md-5 col-md-offset-5",
+                        'placeholder' => 'Name of plus permission'
+                    ),
                 )
             );
     }

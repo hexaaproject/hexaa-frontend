@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Model\Entitlement;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -168,20 +169,7 @@ class ServiceController extends Controller
             $entityidsarray[$key] = $key;
         }
 
-        $form = $this->createForm(ServiceType::class);
-        $form->add(
-            'entityid',
-            ChoiceType::class,
-            array(
-                "label" => false,
-                'choices' => $entityidsarray,
-                'required' => true,
-                'placeholder' => 'Which entity id?',
-                'attr' => array(
-                    'class' => "col-md-5 col-md-offset-5"
-                ),
-            )
-        );
+        $form = $this->createForm(ServiceType::class, $entityidsarray);
 
         $form->handleRequest($request);
 
@@ -189,43 +177,93 @@ class ServiceController extends Controller
             $data = $form->getData();
 
             $dataToBackend = $data;
-/*
+
             // create service
             $service = $this->get('service')->create(
                 $dataToBackend["name"],
                 $dataToBackend["description"],
                 $dataToBackend["url"],
                 $dataToBackend["entityid"]
-            );*/
-
-            // valami miatt erre szükség van, mert amúgy más értéket fog meghívni a createRole
-   /*         $servid = $service['id'];*/
-/*
-            // create role
-            $role = $this->get('organization')->createRole(
-                $orgid,
-                $dataToBackend['role'],
-                $this->get('role')
             );
-            // put creator to role
+
+            $servid = $service['id'];
+
+            //add manager to the service
             $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
-            $this->get('role')->putPrincipal($role['id'], $self['id']);
+            $this->get('service')->putManager($servid, $self['id']);
 
-            // set role to default in organization
-            $this->get('organization')->patch($orgid, array("default_role" => $role['id']));
 
-            // create invitations
-            if ($dataToBackend["invitation_emails"]) {
-                $this->sendInvitations($organization, $role, $dataToBackend["invitation_emails"]);
-            }*/
+            // create permission
+            $permission = $this->get('service')->createPermission(
+                $this->getParameter("hexaa_permissionprefix"),
+                $servid,
+                $dataToBackend['entitlement'],
+                $this->get('entitlement')
+            );
 
-            // connect to service
-            // $dataToBackend["service_token"],
+            // create permissionset to permission
+            $permissionset = $this->get('service')->createPermissionSet(
+                $servid,
+                'default',
+                $this->get('entitlement_pack')
+            );
 
-   /*         return $this->render('AppBundle:Service:created.html.twig', array('newserv' => $this->get('service')->get($servid, "expanded"), ));*/
+            //add permission to permissionset
+            $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                $permissionset['id'],
+                $permission['id']
+            );
+
+            if($dataToBackend['entitlementplus1']!=null){
+
+                $permissionplus1 = $this->get('service')->createPermission(
+                    $this->getParameter("hexaa_permissionprefix"),
+                    $servid,
+                    $dataToBackend['entitlementplus1'],
+                    $this->get('entitlement')
+                );
+
+                $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                    $permissionset['id'],
+                    $permissionplus1['id']
+                );
+            }
+
+            if($dataToBackend['entitlementplus2']!=null){
+
+                $permissionplus2 = $this->get('service')->createPermission(
+                    $this->getParameter("hexaa_permissionprefix"),
+                    $servid,
+                    $dataToBackend['entitlementplus2'],
+                    $this->get('entitlement')
+                );
+
+                $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                    $permissionset['id'],
+                    $permissionplus2['id']
+                );
+            }
+
+            //generate token to permissionset
+            $permissionssets = $this->get('service')->getEntitlementPacks($servid)['items'];
+            $permissionsetid = null;
+            foreach ($permissionssets as $permissionset) {
+                if ($permissionset['name'] == 'default') {
+                    $permissionsetid = $permissionset['id'];
+                }
+            }
+
+            $postarray = array("service" => $servid, "entitlement_packs" => [$permissionsetid]);
+            $response = $this->get('link')->post($postarray);
+            $headers = $response->getHeader('Location');
+            $headerspartsary = explode("/", $headers[0]);
+            $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
+
+
+           return $this->render('AppBundle:Service:created.html.twig', array('newserv' => $this->get('service')->get($servid, "expanded"), 'token' => $getlink['token']));
         }
 
-        return $this->render('AppBundle:Service:create.html.twig', array('form' => $form->createView(), 'organizations' => $this->getOrganizations(),));
+        return $this->render('AppBundle:Service:create.html.twig', array('form' => $form->createView(),));
     }
 
     /**

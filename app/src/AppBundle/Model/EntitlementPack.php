@@ -48,4 +48,15 @@ class EntitlementPack extends AbstractBaseResource
             $pageSize
         );
     }
+
+    /**
+     * Add permission to permissionset
+     * @param string $id   of entitlementpack
+     * @param string $permid of entitlement
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function addPermissionToPermissionSet(string $id, string $permid)
+    {
+        return $this->putCall($this->pathName.'/'.$id.'/entitlements'.'/'.$permid, []);
+    }
 }

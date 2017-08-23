@@ -20,7 +20,7 @@
                 {{ include('::progressbar.html.twig',
                 {
                     header: 'Create service',
-                    percent: 20,
+                    percent: 33,
                     next_id: 'second',
                     next_button_id: 'next-1'
                 }
@@ -31,16 +31,18 @@
 
         <div class="text-center progressbar-order">Enter your service's main parameters
         </div>
-
-        {{ form_row(form.name) }}
-        <br><br><br>
-        {{ form_row(form.description) }}
-        <br><br>
-        {{ form_row(form.url) }}
-        <br><br>
-
+        <fieldset>
+            {{ form_row(form.name) }}
+            <br><br>
+            {{ form_row(form.description) }}
+            <br><br>
+            {{ form_row(form.url) }}
+            <br><br>
+            {{ form_row(form.entityid) }}
+        </fieldset>
 
     </div>
+
 
     <div id="second" class="hidden progresswrapper">
         <div class="row">
@@ -49,70 +51,23 @@
                 {
                     header: 'Create service',
                     prev_id: 'first',
-                    percent: 40,
-                    next_id: 'third',
-                    next_button_id: 'next-2'
+                    done: 'finish',
+                    percent: 67,
                 }
                 ) }}
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-5 col-md-offset-5">
-                <div class="text-center progressbar-order">Choose attribute specifications to your service
-                </div>
-                <fieldset>
 
-                </fieldset>
-            </div>
-        </div>
+        <div class="text-center progressbar-order">Create your entitlements of your service</div>
+        <fieldset>
+            {{ form_row(form.entitlement) }}
+            <br><br>
+            {{ form_row(form.entitlementplus1) }}
+            <br><br>
+            {{ form_row(form.entitlementplus2) }}
+        </fieldset>
     </div>
 
-    <div id="third" class="hidden progresswrapper">
-        <div class="row">
-            <div class="col-md-11 col-md-offset-2">
-                {{ include('::progressbar.html.twig',
-                {
-                    header: 'Create service',
-                    prev_id: 'second',
-                    percent: 60,
-                    next_id: 'fourth',
-                    next_button_id: 'next-3'
-                }
-                ) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-5 col-md-offset-5">
-                <div class="text-center progressbar-order">Create your entitlements of your service</div>
-                <fieldset>
-
-                </fieldset>
-            </div>
-        </div>
-    </div>
-
-    <div id="fourth" class="hidden progresswrapper">
-        <div class="row">
-            <div class="col-md-11 col-md-offset-2">
-                {{ include('::progressbar.html.twig',
-                {
-                    header: 'Create service',
-                    prev_id: 'third',
-                    percent: 80,
-                }
-                ) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-5 col-md-offset-5">
-                <div class="text-center progressbar-order">Create your entitlements packages to add entitlements
-                </div>
-                <fieldset>
-
-                </fieldset>
-            </div>
-        </div>
-    </div>
 
     {{ form_end(form) }}
 
