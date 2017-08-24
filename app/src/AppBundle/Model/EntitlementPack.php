@@ -51,7 +51,7 @@ class EntitlementPack extends AbstractBaseResource
 
     /**
      * Add permission to permissionset
-     * @param string $id   of entitlementpack
+     * @param string $id     of entitlementpack
      * @param string $permid of entitlement
      * @return \Psr\Http\Message\ResponseInterface
      */

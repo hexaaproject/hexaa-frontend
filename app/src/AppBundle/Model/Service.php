@@ -159,7 +159,7 @@ class Service extends AbstractBaseResource
      *
      * @param string      $name
      * @param string|null $description
-     * @param string|null $url
+     * @param string|null $uri
      * @param string      $entityid
      * @return array expanded organization
      */
@@ -185,8 +185,9 @@ class Service extends AbstractBaseResource
     /**
      * Create new permission
      *
-     * @param string $id   of service
-     * @param string $name
+     * @param string      $prefix
+     * @param string      $id
+     * @param string      $name
      * @param Entitlement $entitlement
      * @return ResponseInterface
      */
@@ -203,8 +204,8 @@ class Service extends AbstractBaseResource
     /**
      * Create new permissionset
      *
-     * @param string $id   of service
-     * @param string $name
+     * @param string          $id
+     * @param string          $name
      * @param EntitlementPack $entitlementpack
      * @return ResponseInterface
      */

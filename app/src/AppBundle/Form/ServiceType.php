@@ -2,14 +2,13 @@
 
 namespace AppBundle\Form;
 
-use Faker\Provider\Text;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 /**
  * Class OrganizationType
@@ -18,7 +17,7 @@ class ServiceType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $entityidsarray
      */
     public function buildForm(FormBuilderInterface $builder, array $entityidsarray)
     {
@@ -30,7 +29,7 @@ class ServiceType extends AbstractType
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Name of service",
-                        "class" => "col-md-5 col-md-offset-5"
+                        "class" => "col-md-5 col-md-offset-5",
                     ),
                     "required" => true,
                 )
@@ -42,21 +41,22 @@ class ServiceType extends AbstractType
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Description of service",
-                        "class" => "col-md-5 col-md-offset-5"
+                        "class" => "col-md-5 col-md-offset-5",
                     ),
                     "required" => false,
                 )
             )
             ->add(
                 'url',
-                TextType::class,
+                UrlType::class,
                 array(
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "URL of service",
-                        "class" => "col-md-5 col-md-offset-5"
+                        "class" => "col-md-5 col-md-offset-5",
                     ),
                     "required" => false,
+                    "constraints" => new Constraints\Url(),
                 )
             )
             ->add(
@@ -68,7 +68,7 @@ class ServiceType extends AbstractType
                     'required' => true,
                     'placeholder' => 'Which entity id?',
                     'attr' => array(
-                        'class' => "col-md-5 col-md-offset-5"
+                        'class' => "col-md-5 col-md-offset-5",
                     ),
                 )
             )
@@ -81,7 +81,7 @@ class ServiceType extends AbstractType
                     'data' => 'default',
                     //       'placeholder' => 'Name of default permission',
                     'attr' => array(
-                        'class' => "col-md-5 col-md-offset-5"
+                        'class' => "col-md-5 col-md-offset-5",
                     ),
                 )
             )
@@ -105,7 +105,7 @@ class ServiceType extends AbstractType
                     'required' => false,
                     'attr' => array(
                         'class' => "col-md-5 col-md-offset-5",
-                        'placeholder' => 'Name of plus permission'
+                        'placeholder' => 'Name of plus permission',
                     ),
                 )
             );

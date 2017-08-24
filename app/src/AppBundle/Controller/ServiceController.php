@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Model\Entitlement;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,7 +15,6 @@ use AppBundle\Form\ServiceAddAttributeSpecificationType;
 use AppBundle\Form\ServiceUserInvitationSendEmailType;
 use AppBundle\Form\ServiceUserInvitationType;
 use AppBundle\Form\ServiceType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -214,8 +212,7 @@ class ServiceController extends Controller
                 $permission['id']
             );
 
-            if($dataToBackend['entitlementplus1']!=null){
-
+            if ($dataToBackend['entitlementplus1'] != null) {
                 $permissionplus1 = $this->get('service')->createPermission(
                     $this->getParameter("hexaa_permissionprefix"),
                     $servid,
@@ -229,8 +226,7 @@ class ServiceController extends Controller
                 );
             }
 
-            if($dataToBackend['entitlementplus2']!=null){
-
+            if ($dataToBackend['entitlementplus2'] != null) {
                 $permissionplus2 = $this->get('service')->createPermission(
                     $this->getParameter("hexaa_permissionprefix"),
                     $servid,
@@ -260,10 +256,10 @@ class ServiceController extends Controller
             $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
 
 
-           return $this->render('AppBundle:Service:created.html.twig', array('newserv' => $this->get('service')->get($servid, "expanded"), 'token' => $getlink['token']));
+            return $this->render('AppBundle:Service:created.html.twig', array('newserv' => $this->get('service')->get($servid, "expanded"), 'token' => $getlink['token'], ));
         }
 
-        return $this->render('AppBundle:Service:create.html.twig', array('form' => $form->createView(),));
+        return $this->render('AppBundle:Service:create.html.twig', array('form' => $form->createView(), ));
     }
 
     /**
