@@ -39,17 +39,17 @@ Feature: When I go to create service
     And I should see "Permissions sets"
     When I follow "Permissions"
     Then I should see "Permissions" in the ".accordion-header" element
-    And I should see "Permission 4"
-    And I should see "Permission 5"
-    When I click on accordion "Permission 4"
+    And I should see "Permission4"
+    And I should see "Permission5"
+    When I click on accordion "Permission4"
     Then I should see "Description"
     And I should see "URI"
     When I follow "Permissions sets"
     Then I should see "Permission sets" in the ".accordion-header" element
     And I should see "default"
     When I click on accordion "default"
-    Then I should see "Permission 4"
-    And I should see "Permission 5"
+    Then I should see "Permission4"
+    And I should see "Permission5"
 
   Scenario: Delete service
     Given I am on "/"
