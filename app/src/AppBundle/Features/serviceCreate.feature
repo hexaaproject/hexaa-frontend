@@ -25,8 +25,8 @@ Feature: When I go to create service
     Then I should see "Create your entitlements of your service"
 
     # Fill the second step
-    When I fill in "service_entitlement" with "permisson4"
-    And I fill in "service_entitlementplus1" with "permisson5"
+    When I fill in "service_entitlement" with "permission4"
+    And I fill in "service_entitlementplus1" with "permission5"
     And I press "Finish"
     Then I should see "Your service is done."
     And I should see "Generated token"
@@ -39,17 +39,17 @@ Feature: When I go to create service
     And I should see "Permissions sets"
     When I follow "Permissions"
     Then I should see "Permissions" in the ".accordion-header" element
-    And I should see "Permission4"
-    And I should see "Permission5"
-    When I click on accordion "Permission4"
+    And I should see "permission4"
+    And I should see "permission5"
+    When I click on accordion "permission4"
     Then I should see "Description"
     And I should see "URI"
     When I follow "Permissions sets"
     Then I should see "Permission sets" in the ".accordion-header" element
     And I should see "default"
     When I click on accordion "default"
-    Then I should see "Permission4"
-    And I should see "Permission5"
+    Then I should see "permission4"
+    And I should see "permission5"
 
   Scenario: Delete service
     Given I am on "/"
