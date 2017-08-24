@@ -36,7 +36,7 @@ Feature: When I go to create service
     When I follow "Get your new service"
     Then I should see "Test service 4"
     And I should see "Permissions"
-    And I should see "Permissions sets
+    And I should see "Permissions sets"
     When I follow "Permissions"
     Then I should see "Permissions" in the ".accordion-header" element
     And I should see "Permission 4"
