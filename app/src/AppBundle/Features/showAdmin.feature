@@ -1,15 +1,9 @@
-@admin
+@showadmin
 
 Feature: When I am an admin
 		I want to see admin features
 
 	Background:
-		Given I prepare a DELETE request on "/all"
-		When I send the request
-		Then I should receive a 204 response
-		Given I prepare a GET request on "/setup"
-		When I send the request
-		And I should receive a 204 response
        Given I am on "/"
         And I should see "employee@project.local"
 

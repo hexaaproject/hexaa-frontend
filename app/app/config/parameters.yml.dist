@@ -13,6 +13,7 @@ parameters:
         email: mail
     shib_auth_logout_return_path: homepage
     hexaa_base_uri: http://hexaa-backend/api/
+    hexaa_permissionprefix: 'some:entitlement:prefix:hexaa'
     # to be acquired from hexaa_backend_dir/app/config/parameters.yml
     hexaa_scoped_key: InsertSomeSecretHere
     invitation_config:

@@ -1,0 +1,80 @@
+{% extends "AppBundle:Service:layout.html.twig" %}
+
+{% block title %}Add service{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'css/progressbar.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block container %}
+
+    {{ form_start(form) }}
+
+    <div id="first" class="progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create service',
+                    percent: 33,
+                    next_id: 'second',
+                    next_button_id: 'next-1'
+                }
+                ) }}
+            </div>
+        </div>
+
+
+        <div class="text-center progressbar-order">Enter your service's main parameters
+        </div>
+        <fieldset>
+            {{ form_row(form.name) }}
+            <br><br>
+            {{ form_row(form.description) }}
+            <br><br>
+            {{ form_row(form.url) }}
+            <br><br>
+            {{ form_row(form.entityid) }}
+        </fieldset>
+
+    </div>
+
+
+    <div id="second" class="hidden progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create service',
+                    prev_id: 'first',
+                    done: 'finish',
+                    percent: 67,
+                }
+                ) }}
+            </div>
+        </div>
+
+        <div class="text-center progressbar-order">Create your entitlements of your service</div>
+        <fieldset>
+            {{ form_row(form.entitlement) }}
+            <br><br>
+            {{ form_row(form.entitlementplus1) }}
+            <br><br>
+            {{ form_row(form.entitlementplus2) }}
+        </fieldset>
+    </div>
+
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        {{ include('::progressbar.js.twig') }}
+    </script>
+{% endblock %}

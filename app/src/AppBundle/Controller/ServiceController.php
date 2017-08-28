@@ -14,6 +14,7 @@ use AppBundle\Form\ServicePrivacyType;
 use AppBundle\Form\ServiceAddAttributeSpecificationType;
 use AppBundle\Form\ServiceUserInvitationSendEmailType;
 use AppBundle\Form\ServiceUserInvitationType;
+use AppBundle\Form\ServiceType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -71,7 +72,7 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addStepOneAction(Request $request)
+  /*  public function addStepOneAction(Request $request)
     {
         return $this->render('AppBundle:Service:addStepOne.html.twig', array());
     }
@@ -82,7 +83,7 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addStepTwoAction(Request $request)
+ /*   public function addStepTwoAction(Request $request)
     {
         $verbose = "expanded";
         $attributespecs = $this->get('attribute_spec')->cget($verbose);
@@ -101,7 +102,7 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addStepThreeAction(Request $request)
+  /*  public function addStepThreeAction(Request $request)
     {
         $verbose = "expanded";
         $permissionsset = $this->get('entitlement_pack')->getPublic($verbose)['items'];
@@ -115,7 +116,7 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addStepFourAction(Request $request)
+ /*   public function addStepFourAction(Request $request)
     {
         return $this->render('AppBundle:Service:addStepFour.html.twig', array());
     }
@@ -126,10 +127,10 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addStepFiveAction(Request $request)
+ /*   public function addStepFiveAction(Request $request)
     {
         return $this->render('AppBundle:Service:addStepFive.html.twig', array());
-    }
+    }*/
 
     /**
      * @Route("/show/{id}")
@@ -148,6 +149,117 @@ class ServiceController extends Controller
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
+    }
+
+    /**
+     * @Route("/create")
+     * @Template()
+     * @return Response
+     * @param   Request $request request
+     */
+    public function createAction(Request $request)
+    {
+
+        $entityidsarray = array();
+        $entityids = $this->get('entity_id')->cget();
+        $keys = array_keys($entityids['items']);
+        foreach ($keys as $key) {
+            $entityidsarray[$key] = $key;
+        }
+
+        $form = $this->createForm(ServiceType::class, $entityidsarray);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $dataToBackend = $data;
+
+            // create service
+            $service = $this->get('service')->create(
+                $dataToBackend["name"],
+                $dataToBackend["description"],
+                $dataToBackend["url"],
+                $dataToBackend["entityid"]
+            );
+
+            $servid = $service['id'];
+
+            //add manager to the service
+            $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
+            $this->get('service')->putManager($servid, $self['id']);
+
+
+            // create permission
+            $permission = $this->get('service')->createPermission(
+                $this->getParameter("hexaa_permissionprefix"),
+                $servid,
+                $dataToBackend['entitlement'],
+                $this->get('entitlement')
+            );
+
+            // create permissionset to permission
+            $permissionset = $this->get('service')->createPermissionSet(
+                $servid,
+                'default',
+                $this->get('entitlement_pack')
+            );
+
+            //add permission to permissionset
+            $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                $permissionset['id'],
+                $permission['id']
+            );
+
+            if ($dataToBackend['entitlementplus1'] != null) {
+                $permissionplus1 = $this->get('service')->createPermission(
+                    $this->getParameter("hexaa_permissionprefix"),
+                    $servid,
+                    $dataToBackend['entitlementplus1'],
+                    $this->get('entitlement')
+                );
+
+                $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                    $permissionset['id'],
+                    $permissionplus1['id']
+                );
+            }
+
+            if ($dataToBackend['entitlementplus2'] != null) {
+                $permissionplus2 = $this->get('service')->createPermission(
+                    $this->getParameter("hexaa_permissionprefix"),
+                    $servid,
+                    $dataToBackend['entitlementplus2'],
+                    $this->get('entitlement')
+                );
+
+                $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                    $permissionset['id'],
+                    $permissionplus2['id']
+                );
+            }
+
+            //generate token to permissionset
+            $permissionssets = $this->get('service')->getEntitlementPacks($servid)['items'];
+            $permissionsetid = null;
+            foreach ($permissionssets as $permissionset) {
+                if ($permissionset['name'] == 'default') {
+                    $permissionsetid = $permissionset['id'];
+                }
+            }
+
+            $postarray = array("service" => $servid, "entitlement_packs" => [$permissionsetid]);
+            $response = $this->get('link')->post($postarray);
+            $headers = $response->getHeader('Location');
+            $headerspartsary = explode("/", $headers[0]);
+            $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
+
+
+            return $this->render('AppBundle:Service:created.html.twig', array('newserv' => $this->get('service')->get($servid, "expanded"), 'token' => $getlink['token'], ));
+        }
+
+        return $this->render('AppBundle:Service:create.html.twig', array('form' => $form->createView(), ));
     }
 
     /**

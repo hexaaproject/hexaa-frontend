@@ -153,4 +153,79 @@ class Service extends AbstractBaseResource
 
         return $response;
     }
+
+    /**
+     * Create new Service
+     *
+     * @param string      $name
+     * @param string|null $description
+     * @param string|null $uri
+     * @param string      $entityid
+     * @return array expanded organization
+     */
+    public function create(string $name, string $description = null, string $uri = null, string $entityid)
+    {
+        $serviceData = array();
+        $serviceData['name'] = $name;
+        if ($description) {
+            $serviceData['description'] = $description;
+        }
+        if ($uri) {
+            $serviceData['uri'] = $uri;
+        }
+        $serviceData['entityid'] = $entityid;
+        $response = $this->post($serviceData);
+        $locations = $response->getHeader('Location');
+        $location = $locations[0];
+        $serviceId = preg_replace('#.*/#', '', $location);
+
+        return $this->get($serviceId, "expanded");
+    }
+
+    /**
+     * Create new permission
+     *
+     * @param string      $prefix
+     * @param string      $id
+     * @param string      $name
+     * @param Entitlement $entitlement
+     * @return ResponseInterface
+     */
+    public function createPermission(string $prefix, string $id, string $name, Entitlement $entitlement)
+    {
+        $response = $this->postCall($this->pathName.'/'.$id.'/entitlements', array("uri" => $prefix.":".$id.":".$name, "name" => $name));
+        $locations = $response->getHeader('Location');
+        $location = $locations[0];
+        $id = preg_replace('#.*/#', '', $location);
+
+        return $entitlement->get($id, "expanded");
+    }
+
+    /**
+     * Create new permissionset
+     *
+     * @param string          $id
+     * @param string          $name
+     * @param EntitlementPack $entitlementpack
+     * @return ResponseInterface
+     */
+    public function createPermissionSet(string $id, string $name, EntitlementPack $entitlementpack)
+    {
+        $response = $this->postCall($this->pathName.'/'.$id.'/entitlementpacks', array("name" => $name, "type" => "public"));
+        $locations = $response->getHeader('Location');
+        $location = $locations[0];
+        $id = preg_replace('#.*/#', '', $location);
+
+        return $entitlementpack->get($id, "expanded");
+    }
+
+    /**
+     * @param string $id
+     * @param string $principalId
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function putManager(string $id, string $principalId)
+    {
+        return $this->putCall($this->pathName.'/'.$id.'/managers/'.$principalId, []);
+    }
 }
