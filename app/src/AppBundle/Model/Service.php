@@ -33,6 +33,52 @@ class Service extends AbstractBaseResource
     }
 
     /**
+     * GET all services
+     *
+     * @param string $admin    Admin call to get all services
+     * @param string $verbose  One of minimal, normal or expanded
+     * @param int    $offset   paging: item to start from
+     * @param int    $pageSize paging: number of items to return
+     * @return array
+     */
+    public function getAll(string $admin = "true", string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    {
+        return $this->getCollectionAdmin(
+            $this->pathName,
+            $admin,
+            $verbose,
+            $offset,
+            $pageSize
+        );
+    }
+
+    /**
+     * @param string $path
+     * @param string $admin
+     * @param string $verbose
+     * @param int  $offset
+     * @param int  $pageSize
+     * @return array
+     */
+    protected function getCollectionAdmin(string $path, string $admin = "true", string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
+    {
+        $response = $this->client->get(
+            $path,
+            array(
+                'headers' => $this->getHeaders(),
+                'query' => array(
+                    'verbose' => $verbose,
+                    'offset' => $offset,
+                    'limit' => $pageSize,
+                    'admin' => $admin,
+                ),
+            )
+        );
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
      * GET managers of Service
      *
      * @param string $id       ID of service
