@@ -92,6 +92,9 @@ assetic:
             inputs:
                 - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.woff2'
             output: fonts/MaterialIcons-Regular.woff2
+        typeahead_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twitter/typeahead.js/dist/typeahead.jquery.js"
 
 
 # Doctrine Configuration

@@ -245,3 +245,13 @@ div.hr {
     border-bottom-color: #61AFC5;
     border-bottom-width: thick;
 }
+
+.twitter-typeahead{
+    position: relative;
+    display: inline-block;
+    width: 650px;
+}
+
+.tt-menu{
+    background: none no-repeat scroll 0 0 #fff;
+}

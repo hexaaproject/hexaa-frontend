@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 /**
- * Class OrganizationType
+ * Class ServiceType
  */
 class ServiceType extends AbstractType
 {

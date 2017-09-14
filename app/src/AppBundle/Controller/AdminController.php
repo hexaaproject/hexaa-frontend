@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\OrgManagersContactType;
+use AppBundle\Form\ServManagersContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -164,10 +166,150 @@ class AdminController extends Controller
      * @Route("/contact/{admin}")
      * @Template()
      * @param bool $admin
+     * @param Request $request
      * @return Response
      */
-    public function contactAction($admin)
+    public function contactAction($admin, Request $request)
     {
+        $services = $this->get('service')->getAll();
+        $servicesNames = array();
+        foreach ($services['items'] as $service){
+            array_push($servicesNames, $service['name']);
+        }
+
+        $organizations = $this->get('organization')->getAll();
+        $organizationsNames = array();
+        foreach ($organizations['items'] as $organization){
+            array_push($organizationsNames, $organization['name']);
+        }
+
+        $orgManagersForm = $this->createForm(OrgManagersContactType::class, array(
+            'organizations' => $organizationsNames,
+        ));
+        $managersForm = $this->createForm(ServManagersContactType::class, array(
+            'services' => $servicesNames,
+        ));
+
+        $principal = $this->get('principal')->getSelf();
+
+        $orgManagersForm->handleRequest($request);
+        $managersForm->handleRequest($request);
+
+        if ($orgManagersForm->isSubmitted() && $orgManagersForm->isValid()) {
+            $data = $orgManagersForm->getData();
+
+            $organizationName = $data['organization'];
+            $organizationID = null;
+            foreach ($organizations['items'] as $organization){
+                if($organization['name'] == $organizationName){
+                    $organizationID = $organization['id'];
+                    break;
+                }
+            }
+            if($organizationID == null){
+                $this->get('session')->getFlashBag()->add('error', 'Organization is not exist.');
+            }
+            else {
+                $managers = $this->get('organization')->getManagers($organizationID);
+
+                $orgManagersEmail = array();
+                foreach ($managers['items'] as $manager) {
+                    array_push($orgManagersEmail, $manager['email']);
+                }
+
+                $config = $this->getParameter('managers_message_config');
+                $mailer = $this->get('mailer');
+
+                try {
+                    $message = $mailer->createMessage()
+                        ->setSubject($data['orgManagersTitle'])
+                        ->setFrom($principal['email'])
+                        ->setCc($orgManagersEmail)
+                        ->setReplyTo($config['reply-to'])
+                        ->setBody(
+                            $this->render(
+                                'AppBundle:Admin:AdminEmail.txt.twig',
+                                array(
+                                    'footer' => $config['footer'],
+                                    'message' => $data['orgManagersMessage'],
+                                )
+                            ),
+                            'text/plain'
+                        );
+
+                    $mailer->send($message);
+                    $this->get('session')->getFlashBag()->add('success', 'Message sent succesfully.');
+
+                    return $this->render(
+                        'AppBundle:Admin:contact.html.twig',
+                        array(
+                            "organizations" => $this->get('organization')->cget(),
+                            "services" => $this->get('service')->cget(),
+                            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                            "submenu" => "true",
+                            "orgEmailSended" => "true",
+                            "adminsubmenubox" => $this->getAdminSubmenupoints(),
+                            "formOrgManagers" => $orgManagersForm->createView(),
+                            "formManagers" => $managersForm->createView(),
+                            "servicesName" => $servicesNames,
+                        )
+                    );
+
+                } catch (\Exception $e) {
+                    $this->get('session')->getFlashBag()->add('error', 'Message sending failure. <br> The error was: <br> ' . $e->getMessage());
+                }
+            }
+        }
+
+        if ($managersForm->isSubmitted() && $managersForm->isValid()) {
+            $data = $managersForm->getData();
+
+            $serviceName = $data['service'];
+            $serviceID = null;
+            foreach ($services['items'] as $service){
+                if($service['name'] == $serviceName){
+                    $serviceID = $service['id'];
+                    break;
+                }
+            }
+            if($serviceID == null){
+                $this->get('session')->getFlashBag()->add('error', 'Service is not exist.');
+            }
+            else {
+                $managers = $this->get('service')->getManagers($serviceID);
+                $managersEmail = array();
+                foreach ($managers['items'] as $manager) {
+                    array_push($managersEmail, $manager['email']);
+                }
+
+                $config = $this->getParameter('managers_message_config');
+                $mailer = $this->get('mailer');
+                try {
+                    $message = $mailer->createMessage()
+                        ->setSubject($data['managersTitle'])
+                        ->setFrom($principal['email'])
+                        ->setCc($managersEmail)
+                        ->setReplyTo($config['reply-to'])
+                        ->setBody(
+                            $this->render(
+                                'AppBundle:Admin:AdminEmail.txt.twig',
+                                array(
+                                    'footer' => $config['footer'],
+                                    'message' => $data['managersMessage'],
+                                )
+                            ),
+                            'text/plain'
+                        );
+
+                    $mailer->send($message);
+                    $this->get('session')->getFlashBag()->add('success', 'Message sent succesfully.');
+                } catch (\Exception $e) {
+                    $this->get('session')->getFlashBag()->add('error', 'Message sending failure. <br> The error was: <br> ' . $e->getMessage());
+                }
+            }
+
+        }
+
         return $this->render(
             'AppBundle:Admin:contact.html.twig',
             array(
@@ -175,7 +317,10 @@ class AdminController extends Controller
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 "submenu" => "true",
-                'adminsubmenubox' => $this->getAdminSubmenupoints(),
+                "adminsubmenubox" => $this->getAdminSubmenupoints(),
+                "formOrgManagers" => $orgManagersForm->createView(),
+                "formManagers" => $managersForm->createView(),
+                "servicesName" => $servicesNames,
             )
         );
     }
