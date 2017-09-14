@@ -53,32 +53,6 @@ class Service extends AbstractBaseResource
     }
 
     /**
-     * @param string $path
-     * @param string $admin
-     * @param string $verbose
-     * @param int  $offset
-     * @param int  $pageSize
-     * @return array
-     */
-    protected function getCollectionAdmin(string $path, string $admin = "true", string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
-    {
-        $response = $this->client->get(
-            $path,
-            array(
-                'headers' => $this->getHeaders(),
-                'query' => array(
-                    'verbose' => $verbose,
-                    'offset' => $offset,
-                    'limit' => $pageSize,
-                    'admin' => $admin,
-                ),
-            )
-        );
-
-        return json_decode($response->getBody(), true);
-    }
-
-    /**
      * GET managers of Service
      *
      * @param string $id       ID of service
@@ -273,5 +247,31 @@ class Service extends AbstractBaseResource
     public function putManager(string $id, string $principalId)
     {
         return $this->putCall($this->pathName.'/'.$id.'/managers/'.$principalId, []);
+    }
+
+    /**
+     * @param string $path
+     * @param string $admin
+     * @param string $verbose
+     * @param int  $offset
+     * @param int  $pageSize
+     * @return array
+     */
+    protected function getCollectionAdmin(string $path, string $admin = "true", string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
+    {
+        $response = $this->client->get(
+            $path,
+            array(
+                'headers' => $this->getHeaders(),
+                'query' => array(
+                    'verbose' => $verbose,
+                    'offset' => $offset,
+                    'limit' => $pageSize,
+                    'admin' => $admin,
+                ),
+            )
+        );
+
+        return json_decode($response->getBody(), true);
     }
 }

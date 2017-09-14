@@ -165,7 +165,7 @@ class AdminController extends Controller
     /**
      * @Route("/contact/{admin}")
      * @Template()
-     * @param bool $admin
+     * @param bool    $admin
      * @param Request $request
      * @return Response
      */
@@ -173,13 +173,13 @@ class AdminController extends Controller
     {
         $services = $this->get('service')->getAll();
         $servicesNames = array();
-        foreach ($services['items'] as $service){
+        foreach ($services['items'] as $service) {
             array_push($servicesNames, $service['name']);
         }
 
         $organizations = $this->get('organization')->getAll();
         $organizationsNames = array();
-        foreach ($organizations['items'] as $organization){
+        foreach ($organizations['items'] as $organization) {
             array_push($organizationsNames, $organization['name']);
         }
 
@@ -200,16 +200,15 @@ class AdminController extends Controller
 
             $organizationName = $data['organization'];
             $organizationID = null;
-            foreach ($organizations['items'] as $organization){
-                if($organization['name'] == $organizationName){
+            foreach ($organizations['items'] as $organization) {
+                if ($organization['name'] == $organizationName) {
                     $organizationID = $organization['id'];
                     break;
                 }
             }
-            if($organizationID == null){
+            if ($organizationID == null) {
                 $this->get('session')->getFlashBag()->add('error', 'Organization is not exist.');
-            }
-            else {
+            } else {
                 $managers = $this->get('organization')->getManagers($organizationID);
 
                 $orgManagersEmail = array();
@@ -254,9 +253,8 @@ class AdminController extends Controller
                             "servicesName" => $servicesNames,
                         )
                     );
-
                 } catch (\Exception $e) {
-                    $this->get('session')->getFlashBag()->add('error', 'Message sending failure. <br> The error was: <br> ' . $e->getMessage());
+                    $this->get('session')->getFlashBag()->add('error', 'Message sending failure.<br> The error was: <br>'.$e->getMessage());
                 }
             }
         }
@@ -266,16 +264,15 @@ class AdminController extends Controller
 
             $serviceName = $data['service'];
             $serviceID = null;
-            foreach ($services['items'] as $service){
-                if($service['name'] == $serviceName){
+            foreach ($services['items'] as $service) {
+                if ($service['name'] == $serviceName) {
                     $serviceID = $service['id'];
                     break;
                 }
             }
-            if($serviceID == null){
+            if ($serviceID == null) {
                 $this->get('session')->getFlashBag()->add('error', 'Service is not exist.');
-            }
-            else {
+            } else {
                 $managers = $this->get('service')->getManagers($serviceID);
                 $managersEmail = array();
                 foreach ($managers['items'] as $manager) {
@@ -304,10 +301,9 @@ class AdminController extends Controller
                     $mailer->send($message);
                     $this->get('session')->getFlashBag()->add('success', 'Message sent succesfully.');
                 } catch (\Exception $e) {
-                    $this->get('session')->getFlashBag()->add('error', 'Message sending failure. <br> The error was: <br> ' . $e->getMessage());
+                    $this->get('session')->getFlashBag()->add('error', 'Message sending failure.<br> The error was: <br>'.$e->getMessage());
                 }
             }
-
         }
 
         return $this->render(

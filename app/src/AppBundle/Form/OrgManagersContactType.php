@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-
 /**
  * Class AdminContactType
  */
@@ -17,12 +16,13 @@ class OrgManagersContactType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('organization',
+            ->add(
+                'organization',
                 TypeaheadType::class,
                 array(
                     'label' => 'Organization',
