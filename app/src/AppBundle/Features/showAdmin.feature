@@ -15,7 +15,6 @@ Feature: When I am an admin
 	    Then I should see "Attribute specifications"
 	     And I should see "Principals"
 	     And I should see "Entity IDs"
-	     And I should see "Security domains"
 	     And I should see "Contact"
 		When I click on accordion "Favourite coffee of the principal"
 		Then I should see "Description"

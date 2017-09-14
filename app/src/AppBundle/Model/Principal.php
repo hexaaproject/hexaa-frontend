@@ -31,11 +31,11 @@ class Principal extends AbstractBaseResource
     /**
      * GET info about Principal
      *
-     * @param string $verbose    One of minimal, normal or expanded
-     * @param string $id         Id of principal
+     * @param string $id      Id of principal
+     * @param string $verbose One of minimal, normal or expanded
      * @return array
      */
-    public function getPrincipalInfo(string $verbose = "normal", string $id)
+    public function getPrincipalInfo(string $id, string $verbose = "normal")
     {
         return $this->getSingular('principals'.'/'.$id.'/id', $verbose);
     }
