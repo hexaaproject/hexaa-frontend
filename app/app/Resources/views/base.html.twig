@@ -4,6 +4,10 @@
     <meta charset="UTF-8"/>
     <title>{% block title %}HEXAA{% endblock %}</title>
 
+
+    {% block stylesheets %}
+    {% endblock %}
+
     {% stylesheets
     '@bootstrap_css'
     '@material_css'
@@ -20,8 +24,6 @@
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 
-    {% block stylesheets %}
-    {% endblock %}
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,12 +94,14 @@
                 <div id="logout">
                     <span id="logobox">
                         {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a href="{{ path('app_default_login') }}" id="login_button" role="button">
+                            <a href="{{ path('app_default_login') }}" id="login_button" role="button">
+                                <img id="logpng" src="/img/logout.png">
+                            </a>
                         {% else %}
                             <a href="{{ logout_path('default') }}" id="logout_button" role="button">
-                        {% endif %}
                                 <img id="logpng" src="/img/logout.png">
-                        </a>
+                            </a>
+                        {% endif %}
                     </span>
                 </div>
             </div>
