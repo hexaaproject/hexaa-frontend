@@ -32,8 +32,11 @@ class ServManagersContactType extends AbstractType
                     'matcher' => 'starts_with', // ends_with, contains
                     'source' => $options['data']['services'],
                     'required' => 'true',
+                    "attr" => array(
+                        "autocomplete" => "off",
+                    ),
                     //'limit'       => 3,
-                    'invalid_message' => 'There is not any service with this name',
+
                 )
             )
             ->add(

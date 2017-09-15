@@ -195,6 +195,8 @@ class AdminController extends Controller
         $orgManagersForm->handleRequest($request);
         $managersForm->handleRequest($request);
 
+        $orgemailsended = "false";
+
         if ($orgManagersForm->isSubmitted() && $orgManagersForm->isValid()) {
             $data = $orgManagersForm->getData();
 
@@ -207,6 +209,7 @@ class AdminController extends Controller
                 }
             }
             if ($organizationID == null) {
+                $orgemailsended="true";
                 $this->get('session')->getFlashBag()->add('error', 'Organization is not exist.');
             } else {
                 $managers = $this->get('organization')->getManagers($organizationID);
@@ -238,7 +241,7 @@ class AdminController extends Controller
 
                     $mailer->send($message);
                     $this->get('session')->getFlashBag()->add('success', 'Message sent succesfully.');
-
+                    $orgemailsended = "true";
                     return $this->render(
                         'AppBundle:Admin:contact.html.twig',
                         array(
@@ -246,7 +249,7 @@ class AdminController extends Controller
                             "services" => $this->get('service')->cget(),
                             "admin" => $this->get('principal')->isAdmin()["is_admin"],
                             "submenu" => "true",
-                            "orgEmailSended" => "true",
+                            "orgEmailSended" => $orgemailsended,
                             "adminsubmenubox" => $this->getAdminSubmenupoints(),
                             "formOrgManagers" => $orgManagersForm->createView(),
                             "formManagers" => $managersForm->createView(),
@@ -254,6 +257,7 @@ class AdminController extends Controller
                         )
                     );
                 } catch (\Exception $e) {
+                    $orgemailsended = "true";
                     $this->get('session')->getFlashBag()->add('error', 'Message sending failure.<br> The error was: <br>'.$e->getMessage());
                 }
             }
@@ -263,6 +267,7 @@ class AdminController extends Controller
             $data = $managersForm->getData();
 
             $serviceName = $data['service'];
+            dump($serviceName);
             $serviceID = null;
             foreach ($services['items'] as $service) {
                 if ($service['name'] == $serviceName) {
@@ -271,6 +276,7 @@ class AdminController extends Controller
                 }
             }
             if ($serviceID == null) {
+                $orgemailsended="false";
                 $this->get('session')->getFlashBag()->add('error', 'Service is not exist.');
             } else {
                 $managers = $this->get('service')->getManagers($serviceID);
@@ -300,12 +306,28 @@ class AdminController extends Controller
 
                     $mailer->send($message);
                     $this->get('session')->getFlashBag()->add('success', 'Message sent succesfully.');
+                    $orgemailsended = "false";
+                    return $this->render(
+                        'AppBundle:Admin:contact.html.twig',
+                        array(
+                            "organizations" => $this->get('organization')->cget(),
+                            "services" => $this->get('service')->cget(),
+                            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                            "submenu" => "true",
+                            "orgEmailSended" => $orgemailsended,
+                            "adminsubmenubox" => $this->getAdminSubmenupoints(),
+                            "formOrgManagers" => $orgManagersForm->createView(),
+                            "formManagers" => $managersForm->createView(),
+                            "servicesName" => $servicesNames,
+                        )
+                    );
+
                 } catch (\Exception $e) {
+                    $orgemailsended = "false";
                     $this->get('session')->getFlashBag()->add('error', 'Message sending failure.<br> The error was: <br>'.$e->getMessage());
                 }
             }
         }
-
         return $this->render(
             'AppBundle:Admin:contact.html.twig',
             array(
@@ -313,6 +335,7 @@ class AdminController extends Controller
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 "submenu" => "true",
+                "orgEmailSended" => $orgemailsended,
                 "adminsubmenubox" => $this->getAdminSubmenupoints(),
                 "formOrgManagers" => $orgManagersForm->createView(),
                 "formManagers" => $managersForm->createView(),
