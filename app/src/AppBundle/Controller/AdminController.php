@@ -143,26 +143,6 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/security/{admin}")
-     * @Template()
-     * @param bool $admin
-     * @return Response
-     */
-    public function securityAction($admin)
-    {
-        return $this->render(
-            'AppBundle:Admin:security.html.twig',
-            array(
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                "submenu" => "true",
-                'adminsubmenubox' => $this->getAdminSubmenupoints(),
-            )
-        );
-    }
-
-    /**
      * @Route("/contact/{admin}/{orgEmailSended}", defaults={"orgEmailSended" = "false"})
      * @Template()
      * @param bool    $admin
@@ -345,7 +325,6 @@ class AdminController extends Controller
             "app_admin_attributes" => "Attributes",
             "app_admin_principals" => "Principals",
             "app_admin_entity" => "Entity IDs",
-            "app_admin_security" => "Security domains",
             "app_admin_contact" => "Contact",
         );
 
