@@ -641,7 +641,6 @@ class OrganizationController extends Controller
         $organizationResource = $this->get('organization');
         $principalResource = $this->get('principals');
         $data = $organizationResource->getHistory($id);
-        dump($data);
         $displayNames = array();
         for ($i = 0; $i < $data['item_number']; $i++) {
             $principalId = $data['items'][$i]['principal_id'];
