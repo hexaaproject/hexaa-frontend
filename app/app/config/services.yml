@@ -13,6 +13,9 @@ services:
     principal:
       class: AppBundle\Model\Principal
       arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+    principals:
+          class: AppBundle\Model\Principals
+          arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
     role:
       class: AppBundle\Model\Role
       arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]

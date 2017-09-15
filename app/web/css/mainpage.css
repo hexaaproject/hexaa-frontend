@@ -179,7 +179,7 @@ div.hr {
     cursor: pointer;
 }
 
-.hexaaSearchField {
+.hexaaSearchField, .dataTables_wrapper .dataTables_filter input {
     border: 2px solid #61AFC5;
     background-image: url(../img/search.PNG);
     background-size: 34px;
@@ -209,12 +209,16 @@ div.hr {
    
 }
 
-.form-control {
+.form-control, .dataTables_wrapper .dataTables_length select{
     font-size: inherit;
     color: #61AFC5;
     background-color: #DFEDEE;
     border: 1px solid #61AFC5;
     border-radius: 0px;
+    height: 34px;
+    padding: 6px 12px;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
 }
 
 .form-control::-moz-placeholder {

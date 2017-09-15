@@ -218,3 +218,45 @@
     border: 1px solid transparent;
     border-radius: 2px;
 }
+
+table.dataTable.no-footer {
+     border-bottom: inherit;
+}
+
+.btnhexaa {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0px 4px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 2px solid transparent;
+    min-height: 34px;
+}
+
+.btn-red {
+    background-color: #EA7373;
+    color: white;
+}
+
+.btn-red:disabled, .btn-red-inverse {
+    background-color: white;
+    color: #EA7373;
+    border-color: #EA7373;
+}
+
+.btn-blue {
+    background-color: #61AFC5;
+    color: white;
+}
+
+.btn-blue:disabled, .btn-blue-inverse {
+    background-color: white;
+    color: #61AFC5;
+    border-color: #61AFC5;
+}

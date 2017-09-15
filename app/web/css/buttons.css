@@ -1,4 +1,4 @@
-.btnhexaa {
+.btnhexaa, .paginate_button {
     display: inline-block;
     padding: 6px 12px;
     margin: 0px 4px;
@@ -10,7 +10,7 @@
     vertical-align: middle;
     cursor: pointer;
     background-image: none;
-    border: 2px solid transparent;
+    border: 0px solid transparent;
     min-height: 34px;
 }
 
@@ -25,7 +25,7 @@
     border-color: #EA7373;
 }
 
-.btn-blue {
+.btn-blue, .paginate_button {
     background-color: #61AFC5;
     color: white;
 }

@@ -615,6 +615,52 @@ class OrganizationController extends Controller
     }
 
     /**
+     * @Route("/history/{id}")
+     * @Template()
+     * @return array
+     * @param int $id Organization Id
+     *
+     */
+    public function historyAction($id)
+    {
+        $organizationResource = $this->get('organization');
+        $organization = $organizationResource->get($id);
+
+        return array("organization" => $organization);
+    }
+
+    /**
+     * @Route("/history/json/{id}")
+     * @param string       $id       Organization id
+     * @param integer|null $offset   Offset
+     * @param integer      $pageSize Pagesize
+     * @return array
+     */
+    public function historyJSONAction($id, $offset = null, $pageSize = 25)
+    {
+        $organizationResource = $this->get('organization');
+        $principalResource = $this->get('principals');
+        $data = $organizationResource->getHistory($id);
+        dump($data);
+        $displayNames = array();
+        for ($i = 0; $i < $data['item_number']; $i++) {
+            $principalId = $data['items'][$i]['principal_id'];
+            if ($principalId) {
+                if (! array_key_exists($principalId, $displayNames)) {
+                    $principal = $principalResource->getById($principalId);
+                    $displayNames[$principalId] = $principal['display_name']." «".$principal['email']."»";
+                }
+                $data['items'][$i]['principal_display_name'] = $displayNames[$principalId];
+            } else {
+                $data['items'][$i]['principal_display_name'] = 'NaN';
+            }
+        }
+        $response = new JsonResponse($data);
+
+        return $response;
+    }
+
+    /**
      * @param $organization
      * @return \Symfony\Component\Form\Form
      */
