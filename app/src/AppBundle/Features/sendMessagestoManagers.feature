@@ -19,7 +19,6 @@ Feature: When I am an admin
 	     And I should see "Title"
 		 And I should see "Message"
 
-	@javascript
 	Scenario: Send email to Service Managers
 	#	When I fill in "typeahead_serv_managers_contact_service" with "test"
 	#	And I wait for the suggestion box to appear
