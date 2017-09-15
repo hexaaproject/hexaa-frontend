@@ -32,11 +32,6 @@ class ServManagersContactType extends AbstractType
                     'matcher' => 'starts_with', // ends_with, contains
                     'source' => $options['data']['services'],
                     'required' => 'true',
-                    "attr" => array(
-                        "autocomplete" => "off",
-                    ),
-                    //'limit'       => 3,
-
                 )
             )
             ->add(
@@ -44,7 +39,6 @@ class ServManagersContactType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Title",
-                    "attr" => array(),
                     "required" => false,
                 )
             )
@@ -53,7 +47,6 @@ class ServManagersContactType extends AbstractType
                 TextareaType::class,
                 array(
                     "label" => "Message",
-                    "attr" => array(),
                     "required" => false,
                 )
             );

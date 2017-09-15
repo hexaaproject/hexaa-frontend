@@ -21,6 +21,11 @@ parameters:
         from: "no_reply@hexaa.eduid.hu"
         reply-to: "no_reply@hexaa.eduid.hu"
         footer: "sincerely: hexaa.eduid.hu"
+    managers_message_config:
+        subject: '[HEXAA] message'
+        from: no_reply@hexaa.eduid.hu
+        reply-to: no_reply@hexaa.eduid.hu
+        footer: 'sincerely: hexaa.eduid.hu'
     mailer_transport: smtp
     mailer_host: smtp
     mailer_port: 1025

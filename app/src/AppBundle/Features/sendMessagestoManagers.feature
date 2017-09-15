@@ -20,19 +20,7 @@ Feature: When I am an admin
 		 And I should see "Message"
 
 	Scenario: Send email to Service Managers
-	#	When I fill in "typeahead_serv_managers_contact_service" with "test"
-	#	And I wait for the suggestion box to appear
-	#	Then I should see "testService1"
-	#	When I type "test" into search box
-	#	And I wait for the suggestion box to appear
-	#	Then I should see "testService1"
-	#	When I select "testService1" after filling "test" in "typeahead_serv_managers_contact_service"
-	#	When I fill in "typeahead_serv_managers_contact_service" with "test"
-	#	And I wait 1 seconds
-	#	Then I select autosuggestion option "testService1"
-	#	And I wait 1 seconds
 	    Then I fill in dropdown "typeahead_serv_managers_contact_service" with "testService"
-	#	When I fill in "typeahead_serv_managers_contact_service" with "testService1"
 		And I fill in "serv_managers_contact_managersTitle" with "Próba üzenet"
 		And I fill in "serv_managers_contact_managersMessage" with "Ez az üzenet tesztelés céljából készült."
 		And I press "servManagersSend"
@@ -50,7 +38,7 @@ Feature: When I am an admin
 
 	Scenario: Send email to Organization Managers
 		When I press "rightbutton"
-		Then I fill in "typeahead_org_managers_contact_organization" with "testOrg1"
+		Then I fill in dropdown "typeahead_org_managers_contact_organization" with "testOrg1"
 		And I fill in "org_managers_contact_orgManagersTitle" with "Próba üzenet2"
 		And I fill in "org_managers_contact_orgManagersMessage" with "Ez az üzenet ismét tesztelés céljából készült."
 		And I press "orgManagersSend"
@@ -65,4 +53,3 @@ Feature: When I am an admin
 		And I fill in "Message" with "Ez az üzenet rossz service megadásának tesztelésére szolgál."
 		And I press "servManagersSend"
 		Then I wait for "There was some failure!" to appear
-		Then there are 3 mail

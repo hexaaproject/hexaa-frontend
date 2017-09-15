@@ -40,9 +40,6 @@ class OrgManagersContactType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Title",
-                    "attr" => array(
-
-                    ),
                     "required" => false,
                 )
             )
@@ -51,9 +48,6 @@ class OrgManagersContactType extends AbstractType
                 TextareaType::class,
                 array(
                     "label" => "Message",
-                    "attr" => array(
-
-                    ),
                     "required" => false,
                 )
             );

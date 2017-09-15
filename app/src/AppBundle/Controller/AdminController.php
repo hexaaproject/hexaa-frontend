@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 class AdminController extends Controller
 {
     /**
-    * @Route("/")
-    * @Template()
-    * @return Response
-    */
+     * @Route("/")
+     * @Template()
+     * @return Response
+     */
     public function indexAction()
     {
         $adminorno = $this->get('principal')->isAdmin();
@@ -166,11 +166,11 @@ class AdminController extends Controller
      * @Route("/contact/{admin}/{orgEmailSended}", defaults={"orgEmailSended" = "false"})
      * @Template()
      * @param bool    $admin
-     * @param string  $orgemailsended
      * @param Request $request
+     * @param string  $orgEmailSended
      * @return Response
      */
-    public function contactAction($admin, $orgEmailSended = "false", Request $request)
+    public function contactAction($admin, Request $request, $orgEmailSended = "false")
     {
         $services = $this->get('service')->getAll();
         $servicesNames = array();
@@ -196,7 +196,7 @@ class AdminController extends Controller
         $orgManagersForm->handleRequest($request);
         $managersForm->handleRequest($request);
 
-       // $orgemailsended = "false";
+        // $orgemailsended = "false";
 
         if ($orgManagersForm->isSubmitted() && $orgManagersForm->isValid()) {
             $data = $orgManagersForm->getData();
@@ -210,7 +210,7 @@ class AdminController extends Controller
                 }
             }
             if ($organizationID == null) {
-                $orgEmailSended="true";
+                $orgEmailSended = "true";
                 $this->get('session')->getFlashBag()->add('error', 'Organization is not exist.');
             } else {
                 $managers = $this->get('organization')->getManagers($organizationID);
@@ -220,7 +220,7 @@ class AdminController extends Controller
                     array_push($orgManagersEmail, $manager['email']);
                 }
 
-                $config = $this->getParameter('managers_message_config');
+                $config = $this->getParameter('invitation_config');
                 $mailer = $this->get('mailer');
 
                 try {
@@ -243,9 +243,16 @@ class AdminController extends Controller
                     $mailer->send($message);
                     $this->get('session')->getFlashBag()->add('success', 'Message sent succesfully.');
                     $orgemailsended = "true";
-                    return $this->redirect($this->generateUrl('app_admin_contact', array( "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                        "orgEmailSended" => $orgemailsended, )));
 
+                    return $this->redirect(
+                        $this->generateUrl(
+                            'app_admin_contact',
+                            array(
+                                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                                "orgEmailSended" => $orgemailsended,
+                            )
+                        )
+                    );
                 } catch (\Exception $e) {
                     $orgEmailSended = "true";
                     $this->get('session')->getFlashBag()->add('error', 'Message sending failure.<br> The error was: <br>'.$e->getMessage());
@@ -255,9 +262,7 @@ class AdminController extends Controller
 
         if ($managersForm->isSubmitted() && $managersForm->isValid()) {
             $data = $managersForm->getData();
-
             $serviceName = $data['service'];
-            dump($serviceName);
             $serviceID = null;
             foreach ($services['items'] as $service) {
                 if ($service['name'] == $serviceName) {
@@ -266,7 +271,7 @@ class AdminController extends Controller
                 }
             }
             if ($serviceID == null) {
-                $orgEmailSended="false";
+                $orgEmailSended = "false";
                 $this->get('session')->getFlashBag()->add('error', 'Service is not exist.');
             } else {
                 $managers = $this->get('service')->getManagers($serviceID);
@@ -275,7 +280,7 @@ class AdminController extends Controller
                     array_push($managersEmail, $manager['email']);
                 }
 
-                $config = $this->getParameter('managers_message_config');
+                $config = $this->getParameter('invitation_config');
                 $mailer = $this->get('mailer');
                 try {
                     $message = $mailer->createMessage()
@@ -297,16 +302,24 @@ class AdminController extends Controller
                     $mailer->send($message);
                     $this->get('session')->getFlashBag()->add('success', 'Message sent succesfully.');
                     $orgemailsended = "false";
-                    return $this->redirect($this->generateUrl('app_admin_contact', array( "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                        "submenu" => "true",
-                        "orgEmailSended" => $orgemailsended,)));
 
+                    return $this->redirect(
+                        $this->generateUrl(
+                            'app_admin_contact',
+                            array(
+                                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                                "submenu" => "true",
+                                "orgEmailSended" => $orgemailsended,
+                            )
+                        )
+                    );
                 } catch (\Exception $e) {
                     $orgEmailSended = "false";
                     $this->get('session')->getFlashBag()->add('error', 'Message sending failure.<br> The error was: <br>'.$e->getMessage());
                 }
             }
         }
+
         return $this->render(
             'AppBundle:Admin:contact.html.twig',
             array(

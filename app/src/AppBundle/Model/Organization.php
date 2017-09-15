@@ -192,4 +192,19 @@ class Organization extends AbstractBaseResource
 
         return json_decode($response->getBody(), true);
     }
+
+    /**
+     * Get the history of the organization
+     * @param string      $id
+     * @param string      $verbose
+     * @param int         $offset
+     * @param int         $pageSize
+     * @param string|null $tags
+     * @return array
+     */
+    public function getHistory(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25, string $tags = null)
+    {
+        return $this->getCollection($this->pathName.'/'.$id.'/news', $verbose, $offset, $pageSize, $tags);
+    }
+
 }
