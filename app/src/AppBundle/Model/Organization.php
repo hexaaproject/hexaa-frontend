@@ -148,6 +148,20 @@ class Organization extends AbstractBaseResource
     }
 
     /**
+     * Get the history of the organization
+     * @param string      $id
+     * @param string      $verbose
+     * @param int         $offset
+     * @param int         $pageSize
+     * @param string|null $tags
+     * @return array
+     */
+    public function getHistory(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25, string $tags = null)
+    {
+        return $this->getCollection($this->pathName.'/'.$id.'/news', $verbose, $offset, $pageSize, $tags);
+    }
+
+    /**
      * GET all organizations
      *
      * @param string $admin    Admin call to get all organizations
@@ -192,19 +206,4 @@ class Organization extends AbstractBaseResource
 
         return json_decode($response->getBody(), true);
     }
-
-    /**
-     * Get the history of the organization
-     * @param string      $id
-     * @param string      $verbose
-     * @param int         $offset
-     * @param int         $pageSize
-     * @param string|null $tags
-     * @return array
-     */
-    public function getHistory(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25, string $tags = null)
-    {
-        return $this->getCollection($this->pathName.'/'.$id.'/news', $verbose, $offset, $pageSize, $tags);
-    }
-
 }
