@@ -28,6 +28,18 @@ class Principal extends AbstractBaseResource
         return $this->getSingular($this->pathName.'/self', $verbose);
     }
 
+    /**
+     * GET info about Principal
+     *
+     * @param string $id      Id of principal
+     * @param string $verbose One of minimal, normal or expanded
+     * @return array
+     */
+    public function getPrincipalInfo(string $id, string $verbose = "normal")
+    {
+        return $this->getSingular('principals'.'/'.$id.'/id', $verbose);
+    }
+
 
     /**
      * GET attribute values of the current Principal

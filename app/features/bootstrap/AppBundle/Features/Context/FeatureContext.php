@@ -6,7 +6,9 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Tester\Exception\PendingException;
 use Knp\FriendlyContexts\Context\MinkContext;
+//use Behat\MinkExtension\Context\MinkContext;
 use Behat\Mink\Exception\ResponseTextException;
+use WebDriver\Key;
 
 /**
  * Defines application features from the specific context.
@@ -22,6 +24,30 @@ class FeatureContext extends MinkContext
      */
     public function __construct()
     {
+    }
+
+    /**
+     * @Then I fill in dropdown :arg1 with :arg2
+     */
+    public function iFillInDropdownWith($arg1, $arg2)
+    {
+        $xpath = $this->getSession()->getPage()->findById($arg1)->getXpath();
+        $element = $this->getSession()->getDriver()->getWebDriverSession()->element("xpath", $xpath);
+        $value = strval($arg2);
+       // $value = strval($arg2).Key::DOWN_ARROW.Key::ENTER;
+       /* $this->getSession()
+            ->getDriver()
+            ->getWebDriverSession()
+            ->element('xpath', $xpath)
+            ->postValue(['value' => [$value]]);*/
+
+        $element->postValue(array('value' => array($value)));
+        sleep(5);
+      //  $this->getSession()->wait(500);
+       $element->postValue(array('value' => array(Key::DOWN_ARROW)));
+
+       // $value = Key::TAB;
+       $element->postValue(array('value' => array(Key::ENTER)));
     }
 
     /**
