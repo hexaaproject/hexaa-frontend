@@ -1,4 +1,5 @@
 @serv
+@servshow
 
 Feature: When I go to a specific service
 		I want to see service properties
@@ -51,6 +52,7 @@ Feature: When I go to a specific service
 	    And I fill in "Home page" with "https://service.com/4"
 	    And I press "done"
 	    Then I should see "https://service.com/4"
+
 
 	Scenario: Navigate to service managers
 	   Given I am on "/"

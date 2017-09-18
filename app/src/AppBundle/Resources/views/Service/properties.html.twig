@@ -10,7 +10,16 @@
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
+
+    {% javascripts
+    '@typeahead_js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {{ form_javascript(propertiesform) }}
     <script>
+
         function property() {
           
             $(".propertyblocknoedit")[0].style.display = "none";
@@ -37,15 +46,20 @@
              $("#service_properties_serviceURL").removeAttr('disabled');
              $("#service_properties_serviceSAML").removeAttr('disabled');*/
         }
-     
 
     </script>
 
-    <div class="propertyblockedit" id="propertiespanel" style="display:none">
+
+    <br>
+    <div class="propertyblocknoedit" id="row">
+        {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1"}) }}
+    </div>
+
+    <div class="propertyblockedit" style="display:none">
         {{ form_start(propertiesform) }}
         <div class="header" style="padding-top:0.5em">
             Properties
-            <button type="submit" class="sendbutton pull-right" id="done" style="display:none"><i class="material-icons">done</i></button>
+            <button type="submit" class="sendbutton pull-right" alt= "done-1" id="done1" style="display:none"><i class="material-icons" alt= "done-1" name="done-1">done</i></button>
             <button type="button" name="pencil" class="editbutton" alt="pencil" style="display: inline" onclick="edit()"><i class="material-icons">create</i></button>
 
         </div>
@@ -64,11 +78,16 @@
         {{ form_end(propertiesform) }}
     </div>
 
-    <div class="ownerblockedit" id="propertiespanel"  style="display:none">
+    <br>
+    <div class="ownerblocknoedit" id="row">
+        {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()", pencilid:"2"}) }}
+    </div>
+
+    <div class="ownerblockedit"  style="display:none">
         {{ form_start(ownerform) }}
         <div class="header" style="padding-top:0.5em">
             Owner details
-            <button type="submit" class="sendownerbutton pull-right" style="display:none"><i class="material-icons">done</i></button>
+            <button type="submit" class="sendownerbutton pull-right" id="done2" style="display:none"><i class="material-icons">done</i></button>
             <button type="button" class="editbutton" style="display: inline" onclick="editowner()"><i class="material-icons">create</i></button>
         </div>
         <div>
@@ -86,11 +105,16 @@
         {{ form_end(ownerform) }}
     </div>
 
-    <div class="privacyblockedit" id="propertiespanel"  style="display:none">
+    <br>
+    <div class="privacyblocknoedit" id="row">
+        {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy()", pencilid:"3"}) }}
+    </div>
+
+    <div class="privacyblockedit" style="display:none">
         {{ form_start(privacyform) }}
         <div class="header" style="padding-top:0.5em">
             Privacy Information
-            <button type="submit" class="sendprivacybutton pull-right" style="display:none"><i class="material-icons">done</i></button>
+            <button type="submit" class="sendprivacybutton pull-right" id="done3" style="display:none"><i class="material-icons" id="ic1">done</i></button>
             <button type="button" class="editbutton" style="display: inline" onclick="editprivacy()"><i class="material-icons">create</i></button>
         </div>
         <div>
@@ -101,40 +125,5 @@
         </div>
         {{ form_end(privacyform) }}
     </div>
-
-
-    <br>
-    <div class="propertyblocknoedit" id="row">
-        {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1"}) }}
-    </div>
-    <br>
-    <div class="ownerblocknoedit" id="row">
-        {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()", pencilid:"2"}) }}
-    </div>
-    <br>
-    <div class="privacyblocknoedit" id="row">
-        {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy()", pencilid:"3"}) }}
-    </div>
-
-    {# <form action="{{ path('app_service_properties', {id: service.id}) }}" method="POST" role="form">
-         <div class="row">
-             <div class="col-md-10 col-md-offset-2">
-                 {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property" }) }}
-             </div>
-         </div>
-         <br>
-         <div class="row">
-             <div class="col-md-10 col-md-offset-2">
-                 {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner" }) }}
-             </div>
-         </div>
-         <br>
-         <div class="row">
-             <div class="col-md-10 col-md-offset-2">
-                 {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy" }) }}
-             </div>
-         </div>
-     </form> #}
-
 
 {% endblock %}

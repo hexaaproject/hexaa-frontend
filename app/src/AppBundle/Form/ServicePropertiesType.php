@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Devmachine\Bundle\FormBundle\Form\Type\TypeaheadType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -59,6 +60,22 @@ class ServicePropertiesType extends AbstractType
             )
             ->add(
                 'serviceSAML',
+                TypeaheadType::class,
+                array(
+                    'label' => 'SAML SP Entity ID',
+                    'data' => $datas['data']['properties']['serviceSAML'],
+                    'label_attr' => array('class' => 'formlabel'),
+                    'source_name' => 'saml',
+                    'min_length' => 1,
+                    'placeholder' => 'Start typing',
+                    'matcher' => 'starts_with', // ends_with, contains
+                    'source' => $datas['data']['properties']['serviceEntityIDs'],
+                    'required' => 'true',
+                    'attr' => array('class' => 'modified_twitter pull-right'),
+                )
+            );
+          /*  ->add(
+                'serviceSAML',
                 ChoiceType::class,
                 array(
                     "label" => "SAML SP Entity ID",
@@ -71,8 +88,8 @@ class ServicePropertiesType extends AbstractType
                                 return \AppBundle\Model\BaseResource::getEntityIds();
                             }
                     )*/
-                )
-            );
+       /*         )
+            );*/
     }
 
     /**

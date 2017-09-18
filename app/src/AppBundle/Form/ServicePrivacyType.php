@@ -50,7 +50,7 @@ class ServicePrivacyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'disabled' => true,
+            'disabled' => false,
         ));
     }
 }

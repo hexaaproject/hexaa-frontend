@@ -250,7 +250,7 @@ div.hr {
     border-bottom-width: thick;
 }
 
-.twitter-typeahead{
+#servManagers .twitter-typeahead, #orgManagers .twitter-typeahead{
     position: relative;
     display: inline-block;
     width: 650px;
@@ -258,4 +258,10 @@ div.hr {
 
 .tt-menu{
     background: none no-repeat scroll 0 0 #fff;
+}
+
+.propertyblockedit .twitter-typeahead, .ownerblockedit .twitter-typeahead, .privacyblockedit .twitter-typeahead{
+    position: relative;
+    display: inline-block;
+    margin-left: 127.90px;
 }
