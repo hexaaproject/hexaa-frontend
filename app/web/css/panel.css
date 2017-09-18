@@ -96,7 +96,6 @@ form[name="service_properties"] {
 form[name="service_owner"] {
     border: 2px solid #61AFC5;
     width: 100%;
-    padding-top: 0.5em;
     padding-bottom: 0.5em;
 }
 

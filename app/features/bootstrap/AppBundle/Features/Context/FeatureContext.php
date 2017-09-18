@@ -51,6 +51,28 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Then I fill in full typeahead :arg1 with :arg2
+     */
+    public function iFillInTypeaheadWith($arg1, $arg2)
+    {
+        $xpath = $this->getSession()->getPage()->findById($arg1)->getXpath();
+        $element = $this->getSession()->getDriver()->getWebDriverSession()->element("xpath", $xpath);
+
+        $existingValueLength = strlen($this->getSession()->getPage()->findById($arg1)->getValue());
+
+        $element->postValue(array('value' => array(str_repeat(Key::BACKSPACE.Key::DELETE, $existingValueLength))));
+        sleep(5);
+
+        $element->postValue(array('value' => array(strval($arg2))));
+        sleep(5);
+        //  $this->getSession()->wait(500);
+        $element->postValue(array('value' => array(Key::DOWN_ARROW)));
+
+        // $value = Key::TAB;
+        $element->postValue(array('value' => array(Key::ENTER)));
+    }
+
+    /**
      * @Given a field should contain placeholder :arg1
      */
     public function aFieldShouldContainPlaceholder($arg1)
@@ -163,4 +185,5 @@ class FeatureContext extends MinkContext
 
         $element->click();
     }
+
 }
