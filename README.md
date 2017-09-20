@@ -1,3 +1,6 @@
+[![pipeline status](https://git.hbit.sztaki.hu/hexaa/hexaa-newui/badges/master/pipeline.svg)](https://git.hbit.sztaki.hu/hexaa/hexaa-newui/commits/master)
+
+
 Fejlesztő környezet
 -------------------
 

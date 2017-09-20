@@ -14,5 +14,5 @@ Feature: When I go to an organization history
   Scenario: Navigate to create organization first step page
     When I follow "View history"
     And I wait for "History" to appear
-    And I wait for "No data available" to disappear
+    And I wait for "Title" to appear
     Then I should see a table with 4 row
