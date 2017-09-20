@@ -186,7 +186,7 @@ div.hr {
     background-position: right;
     background-repeat: no-repeat;
     padding: 6px 12px;
-    margin: 0px 4px;
+    margin: 0px 4px 0px 0px !important;
     font-size: 14px;
     font-weight: normal;
     vertical-align: middle;
@@ -199,7 +199,6 @@ div.hr {
     border-width: 6px 12px 6px 12px;
     -webkit-appearance: none;
     display: inline-block;
-   
     margin: 0px 4px !important;
     width: 48px;
     height: 34px;
@@ -214,11 +213,9 @@ div.hr {
     color: #61AFC5;
     background-color: #DFEDEE;
     border: 1px solid #61AFC5;
-    border-radius: 0px;
+    border-radius: 0px !important;
     height: 34px;
     padding: 6px 12px;
-    -webkit-appearance: none;
-    -webkit-border-radius: 0px;
 }
 
 .form-control::-moz-placeholder {
@@ -264,4 +261,35 @@ div.hr {
     position: relative;
     display: inline-block;
     margin-left: 127.90px;
+}
+
+/*loader by Anna */
+@keyframes blink {
+    0% {
+        opacity: .2;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: .2;
+    }
+}
+
+.loader span {
+    color: #61AFC5;
+    font-family: sans;
+    font-size: 200px;
+    animation-name: blink;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
+.loader span:nth-child(2) {
+    animation-delay: .4s;
+}
+
+.loader span:nth-child(3) {
+    animation-delay: .8s;
 }
