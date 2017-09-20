@@ -35,21 +35,29 @@
                 </div>
             </div>
             <div class="hr"><hr/></div>
-            <div id="maintables">
-                <div id="orgtablemain">
-                    <div id="orgtableheader"><b>ORGANIZATIONS</b></div>
-                    {% if organizations.items == null %}
-                        <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
-                    {% endif %}
-                    {% for organization in organizations.items %}
-                        <div id="orgtablecontent"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name|e }}</a></div>
-                        {% endfor %}
-                </div>
-                <div id="servtablemain">
-                    <div id="servtableheader"><b>SERVICES</b></div>
-                    {% for service in services.items %}
-                        <div id="servtablecontent"><a href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|e }}</a></div>
-                        {% endfor %}             
+            <div id="maintables container">
+                <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-4">
+                        <div id="orgtablemain">
+                            <div id="orgtableheader"><b>ORGANIZATIONS</b></div>
+                            {% if organizations.items == null %}
+                                <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
+                            {% endif %}
+                            {% for organization in organizations.items %}
+                                <div id="orgtablecontent"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name|e }}</a></div>
+                                {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-4">
+                        <div id="servtablemain">
+                            <div id="servtableheader"><b>SERVICES</b></div>
+                            {% for service in services.items %}
+                                <div id="servtablecontent"><a href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|e }}</a></div>
+                                {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

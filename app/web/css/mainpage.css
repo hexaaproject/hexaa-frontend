@@ -115,12 +115,13 @@ div.hr {
 #orgtablemain {
     border: 1px solid #61AFC5;
     padding-left: 30px;
-    padding-right: 20px;
-    padding-top: 15px;
-    padding-bottom: 20px;
-    max-width: 220px;
+    padding-right: 30px;
+    /*padding-top: 15px;*/
+    /*padding-bottom: 20px;*/
+    /*max-width: 220px;*/
     min-height: 148px;
-    float: left;
+    width: auto;
+    /*float: left;*/
 
 }
 
@@ -143,13 +144,14 @@ div.hr {
 #servtablemain {
     border: 1px solid #FA8072;
     min-height: 148px;
-    max-width: 220px;
-    float: right;
+    width: auto;
+    /*max-width: 220px;*/
+    /*float: right;*/
     padding-left: 30px;
-    padding-right: 20px;
-    padding-top: 15px;
-    padding-bottom: 20px;
-    text-align: left;
+    padding-right: 30px;
+    /*padding-top: 15px;*/
+    /*padding-bottom: 20px;*/
+    /*text-align: left;*/
 
 }
 
