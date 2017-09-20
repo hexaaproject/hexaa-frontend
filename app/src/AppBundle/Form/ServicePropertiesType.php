@@ -72,7 +72,7 @@ class ServicePropertiesType extends AbstractType
                     'source' => $datas['data']['properties']['serviceEntityIDs'],
                     'required' => 'true',
                     'attr' => array('class' => 'modified_twitter pull-right'),
-                    'limit' => 30
+                    'limit' => 30,
                 )
             );
           /*  ->add(
