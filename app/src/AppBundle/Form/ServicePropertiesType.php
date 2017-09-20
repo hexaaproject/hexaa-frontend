@@ -68,10 +68,11 @@ class ServicePropertiesType extends AbstractType
                     'source_name' => 'saml',
                     'min_length' => 1,
                     'placeholder' => 'Start typing',
-                    'matcher' => 'starts_with', // ends_with, contains
+                    'matcher' => 'contains', // ends_with, contains
                     'source' => $datas['data']['properties']['serviceEntityIDs'],
                     'required' => 'true',
                     'attr' => array('class' => 'modified_twitter pull-right'),
+                    'limit' => 30,
                 )
             );
           /*  ->add(
