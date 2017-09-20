@@ -661,7 +661,7 @@ class OrganizationController extends Controller
             }
 
             $dateTime = new \DateTime($data['items'][$i]['created_at']);
-            $data['items'][$i]['created_at'] =  "<div style='white-space: nowrap'>" . $dateTime->format('Y-m-d H:i') . "</div>";
+            $data['items'][$i]['created_at'] =  "<div style='white-space: nowrap'>".$dateTime->format('Y-m-d H:i')."</div>";
         }
         $response = new JsonResponse($data);
 
