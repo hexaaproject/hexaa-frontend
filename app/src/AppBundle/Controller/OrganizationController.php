@@ -615,18 +615,24 @@ class OrganizationController extends Controller
     }
 
     /**
+     * Get the history of the requested organization.
      * @Route("/history/{id}")
      * @Template()
      * @return array
      * @param int $id Organization Id
-     *
      */
     public function historyAction($id)
     {
         $organizationResource = $this->get('organization');
         $organization = $organizationResource->get($id);
 
-        return array("organization" => $organization);
+        return array(
+            "organization" => $organization,
+
+            "organizations" => $this->get('organization')->cget(),
+            "services" => $this->get('service')->cget(),
+            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+        );
     }
 
     /**
