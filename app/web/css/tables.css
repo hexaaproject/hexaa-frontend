@@ -183,6 +183,8 @@
 
 .dataTables_wrapper .dataTables_length {
     float: left;
+    padding-top: 3px;
+    padding-left: 6px;
 }
 
 .dataTables_wrapper .dataTables_filter {
@@ -259,4 +261,28 @@ table.dataTable.no-footer {
     background-color: white;
     color: #61AFC5;
     border-color: #61AFC5;
+}
+
+#history_paginate > div > button.mdl-button.mdl-button--raised.mdl-button--colored {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0px 4px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 2px solid transparent;
+    min-height: 34px;
+    background-color: #61AFC5;
+    color: white;
+    border-radius: 0px;
+    box-shadow: none;
+}
+
+.bottom {
+    padding-top: 10px;
 }

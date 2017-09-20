@@ -2,8 +2,8 @@
 
 {% block container %}
 <h2>History</h2>
-
-    <table class="datatable datatable-blue" id="history">
+    <div class="loader"></div>
+    <table class="datatable datatable-blue hidden" id="history">
         <thead>
         <tr>
                 <th>Title</th>
@@ -41,26 +41,31 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
+        loader();
         $(document).ready(function() {
             var dataArray = [];
-            var table = $('#history').DataTable({
-                "process": true,
-                "data": dataArray,
-                "columns": [
-                    { "data": "title" },
-                    { "data": "message" },
-                    { "data": "principal_display_name" },
-                    { "data": "created_at" }
-                ]
-            });
-
             $.ajax({
                 url: "{{ path('app_organization_historyjson', { id: organization.id }) }}"
             }).done(function(rawjson) {
-                console.log(rawjson);
+                var table = $('#history').DataTable({
+                    "dom": '<"top"f>rt<"bottom"ilp><"clear">',
+                    "language": {
+                        "search": ""
+                    },
+                    "process": true,
+                    "data": dataArray,
+                    "columns": [
+                        { "data": "title" },
+                        { "data": "message" },
+                        { "data": "principal_display_name" },
+                        { "data": "created_at" }
+                    ]
+                });
                 table.clear().draw();
                 table.rows.add(rawjson.items); // Add new data
                 table.columns.adjust().draw(); // Redraw the DataTable
+                loader('stop');
+                $('#history').removeClass('hidden');
             });
         } );
     </script>
