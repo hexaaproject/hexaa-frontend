@@ -88,7 +88,7 @@ class OrganizationController extends Controller
             }
 
             // connect to service
-            // $dataToBackend["service_token"],
+            // $dataToBackend["service_token"], //TODO issue #103
 
             return $this->render('AppBundle:Organization:created.html.twig', array('neworg' => $this->get('organization')->get($orgid, "expanded")));
         }
@@ -615,18 +615,24 @@ class OrganizationController extends Controller
     }
 
     /**
+     * Get the history of the requested organization.
      * @Route("/history/{id}")
      * @Template()
      * @return array
      * @param int $id Organization Id
-     *
      */
     public function historyAction($id)
     {
         $organizationResource = $this->get('organization');
         $organization = $organizationResource->get($id);
 
-        return array("organization" => $organization);
+        return array(
+            "organization" => $organization,
+
+            "organizations" => $this->get('organization')->cget(),
+            "services" => $this->get('service')->cget(),
+            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+        );
     }
 
     /**
@@ -651,8 +657,11 @@ class OrganizationController extends Controller
                 }
                 $data['items'][$i]['principal_display_name'] = $displayNames[$principalId];
             } else {
-                $data['items'][$i]['principal_display_name'] = 'NaN';
+                $data['items'][$i]['principal_display_name'] = '';
             }
+
+            $dateTime = new \DateTime($data['items'][$i]['created_at']);
+            $data['items'][$i]['created_at'] =  "<div style='white-space: nowrap'>".$dateTime->format('Y-m-d H:i')."</div>";
         }
         $response = new JsonResponse($data);
 

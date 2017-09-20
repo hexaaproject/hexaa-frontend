@@ -156,7 +156,7 @@ class Organization extends AbstractBaseResource
      * @param string|null $tags
      * @return array
      */
-    public function getHistory(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25, string $tags = null)
+    public function getHistory(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 500, string $tags = null)
     {
         return $this->getCollection($this->pathName.'/'.$id.'/news', $verbose, $offset, $pageSize, $tags);
     }
