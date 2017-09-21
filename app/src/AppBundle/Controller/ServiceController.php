@@ -826,6 +826,61 @@ class ServiceController extends Controller
     }
 
     /**
+     * Get the history of the requested service.
+     * @Route("/history/{id}")
+     * @Template()
+     * @return array
+     * @param int $id Service Id
+     */
+    public function historyAction($id)
+    {
+        $serviceResource = $this->get('service');
+        $service = $serviceResource->get($id);
+
+        return array(
+            "service" => $service,
+
+            "organizations" => $this->get('organization')->cget(),
+            "services" => $this->get('service')->cget(),
+            'servsubmenubox' => $this->getServSubmenuPoints(),
+            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+        );
+    }
+
+    /**
+     * @Route("/history/json/{id}")
+     * @param string       $id       Service id
+     * @param integer|null $offset   Offset
+     * @param integer      $pageSize Pagesize
+     * @return array
+     */
+    public function historyJSONAction($id, $offset = null, $pageSize = 25)
+    {
+        $serviceResource = $this->get('service');
+        $principalResource = $this->get('principals');
+        $data = $serviceResource->getHistory($id);
+        $displayNames = array();
+        for ($i = 0; $i < $data['item_number']; $i++) {
+            $principalId = $data['items'][$i]['principal_id'];
+            if ($principalId) {
+                if (! array_key_exists($principalId, $displayNames)) {
+                    $principal = $principalResource->getById($principalId);
+                    $displayNames[$principalId] = $principal['display_name']." «".$principal['email']."»";
+                }
+                $data['items'][$i]['principal_display_name'] = $displayNames[$principalId];
+            } else {
+                $data['items'][$i]['principal_display_name'] = '';
+            }
+
+            $dateTime = new \DateTime($data['items'][$i]['created_at']);
+            $data['items'][$i]['created_at'] =  "<div style='white-space: nowrap'>".$dateTime->format('Y-m-d H:i')."</div>";
+        }
+        $response = new JsonResponse($data);
+
+        return $response;
+    }
+
+    /**
      * @param $service
      * @return \Symfony\Component\Form\Form
      */

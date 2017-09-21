@@ -250,6 +250,20 @@ class Service extends AbstractBaseResource
     }
 
     /**
+     * Get the history of the service
+     * @param string      $id
+     * @param string      $verbose
+     * @param int         $offset
+     * @param int         $pageSize
+     * @param string|null $tags
+     * @return array
+     */
+    public function getHistory(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 500, string $tags = null)
+    {
+        return $this->getCollection($this->pathName.'/'.$id.'/news', $verbose, $offset, $pageSize, $tags);
+    }
+
+    /**
      * @param string $path
      * @param string $admin
      * @param string $verbose

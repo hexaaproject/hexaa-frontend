@@ -113,6 +113,13 @@
 {% if app.request.get('_route')=="homepage" %}
     {{ include('::navbar.html.twig', {names:null}) }}
 {% endif %}
+
+{% block alertcontainer %}
+    <div class="alert-danger alert alertContainer hidden">
+        Alert <div id="alert"></div>
+    </div>
+{% endblock %}
+
 {% block body %}
 
 {% endblock %}
@@ -169,6 +176,12 @@
         errorClass: "help-block has-error",
         errorElement: "p"
     });
+
+    function alert(message) {
+        $('#alert').text(message);
+        $('.alertContainer').removeClass('hidden');
+    }
+
 </script>
 {% block javascripts %}
 {% endblock %}

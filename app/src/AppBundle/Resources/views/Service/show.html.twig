@@ -22,7 +22,7 @@
             
             <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/contact_admin.svg"/><br/><p><b>Contact admin</b></p></div>
             
-            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/view_history.svg"/><br/><p><b>View history</b></p></div>
+            <div class="desktopbuttonorg"><a href="{{ path("app_service_history", {"id": service.id}) }}"><img class="desktopbuttonimage" src="/img/view_history.svg"/><br/><p><b>View history</b></p></a></div>
             
             <div class="desktopbuttonorg"><a href="#" id="deleteService"><img class="desktopbuttonimage" src="/img/delete_organization.svg"/><br><b>Delete service</b></a></div>
         </div>
