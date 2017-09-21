@@ -1,6 +1,7 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    {% if services.items is not defined or services.items == null %}
+    {% set hasServices = services.items is defined and services.item_number > 0 %}
+    {% if not hasServices %}
         <div id="welcomediv">
             <div id="welcomecontent">
                 {% include 'AppBundle:Default:welcomediv.html.twig' %}
@@ -12,10 +13,6 @@
         <div id="maindiv">
             <div id="maindivcontents">
                 {{ include('AppBundle:Default:welcomepagebuttons.html.twig', { desktopbuttonimageafterlogin: "desktopbuttonimageafterloginlarge"}) }}
-            </div>
-            <br>
-            <div id="footertext">
-                Are you an expert hexaa user? <a href="{{ path('app_service_create') }}">Create your own service.</a>
             </div>
         </div>
     {% else %}
@@ -34,21 +31,29 @@
                     {{ include('AppBundle:Default:welcomepagebuttons.html.twig', { hasService: false, desktopbuttonimageafterlogin: "desktopbuttonimageafterloginsmall"}) }}
                 </div>
             </div>
-            <div class="hr"><hr/></div>
-            <div id="maintables container">
-                <div class="row">
+    {% endif %}
+    <div class="clearfix"></div>
+    <div class="hr"><hr/></div>
+        <div id="maintables container">
+            <div class="row">
+                {% if hasServices %}
                     <div class="col-sm-3"></div>
-                    <div class="col-sm-4">
-                        <div id="orgtablemain">
-                            <div id="orgtableheader"><b>ORGANIZATIONS</b></div>
-                            {% if organizations.items == null %}
-                                <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
-                            {% endif %}
-                            {% for organization in organizations.items %}
-                                <div id="orgtablecontent"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name|e }}</a></div>
-                                {% endfor %}
-                        </div>
+                {% else %}
+                    <div class="col-sm-6"></div>
+                {% endif %}
+                <div class="col-sm-4">
+                    <div id="orgtablemain">
+                        <div id="orgtableheader"><b>ORGANIZATIONS</b></div>
+                        {% if organizations.items == null %}
+                            <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
+                        {% endif %}
+                        {% for organization in organizations.items %}
+                            <div id="orgtablecontent"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name|e }}</a></div>
+                            {% endfor %}
                     </div>
+                </div>
+
+                {% if hasServices %}
                     <div class="col-sm-1"></div>
                     <div class="col-sm-4">
                         <div id="servtablemain">
@@ -58,8 +63,16 @@
                                 {% endfor %}
                         </div>
                     </div>
-                </div>
+                {% else %}
+                    <div class="clearfix"></div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-11">
+                        <div id="footertext">
+                            Are you an expert hexaa user? <a href="{{ path('app_service_create') }}">Create your own service.</a>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
-    {% endif %}
+    </div>
 {% endblock %}

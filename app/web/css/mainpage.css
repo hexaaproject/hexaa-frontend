@@ -53,6 +53,8 @@ body {
 
 #footertext {
     font-style: italic;
+    text-align: right;
+    padding-top: 12px;
 }
 
 #maindivcontentsafterlogin {

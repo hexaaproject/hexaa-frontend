@@ -65,7 +65,7 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                    {% if services is defined %}
+                    {% if services is defined and services.item_number > 0 %}
                         <div class="dropdowns">
                             <button onclick="servClick()" class="servicecl">
                                 Services

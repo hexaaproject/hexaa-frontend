@@ -27,21 +27,21 @@
             {% endif %}
         </div>
 
-        <div class="accordionhamburger" id="servaccordion">
-            <span class="hamburgercontentname">
-                Services
-            </span>
-        </div>
-        <div class="panelaccordionhamburger">
-            {% if services.items is defined %}
+        {% if services.items is defined %}
+            <div class="accordionhamburger" id="servaccordion">
+                <span class="hamburgercontentname">
+                    Services
+                </span>
+            </div>
+            <div class="panelaccordionhamburger">
                 {% for service in services.items %}
                     <div class="link">
                         <a href="{{ path('app_service_show', {id: service.id}) }}"
                            class="hamburgercontentpanelname">{{ service.name|e }}</a>
                     </div>
                 {% endfor %}
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
 
         <div class="link">
             <a href="{{ path('app_profile_index') }}" class="hamburgercontentname"><i class="material-icons">person</i>Profile</a>
