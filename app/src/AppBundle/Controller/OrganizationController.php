@@ -129,12 +129,13 @@ class OrganizationController extends Controller
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
         $defaultRoleName = "";
+        $rolesForFieldSource = array();
 
         foreach ($roles as $role) {
             if ($organization['default_role_id'] == $role['id']) {
                 $defaultRoleName = $role['name'];
-                break;
             }
+            $rolesForFieldSource[$role['id']] = $role['name'];
         }
         $organization['default_role_name'] = $defaultRoleName;
 
@@ -145,15 +146,13 @@ class OrganizationController extends Controller
             "Default role" => "default_role_name",
         );
 
-        $roles = array();
-
         $propertiesDatas = array();
 
         $propertiesDatas['name'] = $organization['name'];
         $propertiesDatas['description'] = $organization['description'];
         $propertiesDatas['url'] = $organization['url'];
         $propertiesDatas['default_role_id'] = $organization['default_role_id'];
-        $propertiesDatas['roles'] = $roles;
+        $propertiesDatas['roles'] = $rolesForFieldSource;
 
         $formproperties = $this->createForm(
             OrganizationPropertiesType::class,
