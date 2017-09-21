@@ -1,4 +1,4 @@
-{% extends 'AppBundle:Organization:layout.html.twig' %}
+{% extends 'AppBundle:Service:layout.html.twig' %}
 
 {% block container %}
 <h2>History</h2>
@@ -45,7 +45,7 @@
         $(document).ready(function() {
             var dataArray = [];
             $.ajax({
-                url: "{{ path('app_organization_historyjson', { id: organization.id }) }}"
+                url: "{{ path('app_service_historyjson', { id: service.id }) }}"
             }).done(function(rawjson) {
                 var table = $('#history').DataTable({
                     "dom": '<"top"f>rt<"bottom"ilp><"clear">',
