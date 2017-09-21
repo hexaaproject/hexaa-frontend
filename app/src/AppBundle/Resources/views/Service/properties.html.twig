@@ -4,16 +4,14 @@
 
     {% block stylesheets %}
         {% stylesheets
-            'css/panel.css'
-            filter='cssrewrite'
-        %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
+        'css/panel.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
     {% endblock %}
 
     {% javascripts
-    '@typeahead_js'
-    %}
+    '@typeahead_js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -21,11 +19,11 @@
     <script>
 
         function property() {
-          
+
             $(".propertyblocknoedit")[0].style.display = "none";
             $(".sendbutton")[0].style.display = "inline";
             $(".propertyblockedit")[0].style.display = "inline";
-           // $(".propertyblockedit").toggle();
+            // $(".propertyblockedit").toggle();
         }
 
         function owner() {
@@ -59,8 +57,10 @@
         {{ form_start(propertiesform) }}
         <div class="header" style="padding-top:0.5em">
             Properties
-            <button type="submit" class="sendbutton pull-right" alt= "done-1" id="done1" style="display:none"><i class="material-icons" alt= "done-1" name="done-1">done</i></button>
-            <button type="button" name="pencil" class="editbutton" alt="pencil" style="display: inline" onclick="edit()"><i class="material-icons">create</i></button>
+            <button type="submit" class="sendbutton pull-right" alt="done-1" id="done1" style="display:none"><i
+                        class="material-icons" alt="done-1" name="done-1">done</i></button>
+            <button type="button" name="pencil" class="editbutton" alt="pencil" style="display: inline"
+                    onclick="edit()"><i class="material-icons">create</i></button>
 
         </div>
         <div>
@@ -72,9 +72,10 @@
         <div>
             {{ form_row(propertiesform.serviceURL) }}
         </div>
-        <div>
+        <div id="scrollable-dropdown-menu">
             {{ form_row(propertiesform.serviceSAML) }}
         </div>
+
         {{ form_end(propertiesform) }}
     </div>
 
@@ -83,12 +84,14 @@
         {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()", pencilid:"2"}) }}
     </div>
 
-    <div class="ownerblockedit"  style="display:none">
+    <div class="ownerblockedit" style="display:none">
         {{ form_start(ownerform) }}
         <div class="header" style="padding-top:0.5em">
             Owner details
-            <button type="submit" class="sendownerbutton pull-right" id="done2" style="display:none"><i class="material-icons">done</i></button>
-            <button type="button" class="editbutton" style="display: inline" onclick="editowner()"><i class="material-icons">create</i></button>
+            <button type="submit" class="sendownerbutton pull-right" id="done2" style="display:none"><i
+                        class="material-icons">done</i></button>
+            <button type="button" class="editbutton" style="display: inline" onclick="editowner()"><i
+                        class="material-icons">create</i></button>
         </div>
         <div>
             {{ form_row(ownerform.serviceOwnerName) }}
@@ -114,8 +117,10 @@
         {{ form_start(privacyform) }}
         <div class="header" style="padding-top:0.5em">
             Privacy Information
-            <button type="submit" class="sendprivacybutton pull-right" id="done3" style="display:none"><i class="material-icons" id="ic1">done</i></button>
-            <button type="button" class="editbutton" style="display: inline" onclick="editprivacy()"><i class="material-icons">create</i></button>
+            <button type="submit" class="sendprivacybutton pull-right" id="done3" style="display:none"><i
+                        class="material-icons" id="ic1">done</i></button>
+            <button type="button" class="editbutton" style="display: inline" onclick="editprivacy()"><i
+                        class="material-icons">create</i></button>
         </div>
         <div>
             {{ form_row(privacyform.servicePrivacyURL) }}

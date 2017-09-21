@@ -29,9 +29,10 @@ class ServManagersContactType extends AbstractType
                     'source_name' => 'services',
                     'min_length' => 1,
                     'placeholder' => 'Start typing',
-                    'matcher' => 'starts_with', // ends_with, contains
+                    'matcher' => 'contains', // ends_with, contains
                     'source' => $options['data']['services'],
                     'required' => 'true',
+                    'limit' => 30,
                 )
             )
             ->add(
