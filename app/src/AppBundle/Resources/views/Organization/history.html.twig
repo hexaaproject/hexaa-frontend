@@ -66,6 +66,9 @@
                 table.columns.adjust().draw(); // Redraw the DataTable
                 loader('stop');
                 $('#history').removeClass('hidden');
+            }).fail(function() {
+                loader('stop');
+                alert('Error in load history');
             });
         } );
     </script>
