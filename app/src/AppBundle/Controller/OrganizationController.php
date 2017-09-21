@@ -2,9 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\OrganizationPropertiesType;
 use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
 use AppBundle\Form\OrganizationType;
+use AppBundle\Form\ServicePropertiesType;
 use AppBundle\Model\Organization;
 use GuzzleHttp\Exception\ClientException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -125,14 +127,16 @@ class OrganizationController extends Controller
     public function propertiesAction($id)
     {
         $organization = $this->getOrganization($id);
-        $roles = $this->rolesToAccordion($this->getRoles($organization));
-        $organization['default_role_name'] = null;
-        foreach ($this->getRoles($organization) as $role) {
-            if ($role['id'] == $organization['default_role_id']) {
-                $defaultrole = $role;
-                $organization['default_role_name'] = $role["name"];
+        $roles = $this->getRoles($organization);
+        $defaultRoleName = "";
+
+        foreach ($roles as $role) {
+            if ($organization['default_role_id'] == $role['id']) {
+                $defaultRoleName = $role['name'];
+                break;
             }
         }
+        $organization['default_role_name'] = $defaultRoleName;
 
         $propertiesbox = array(
             "Name" => "name",
@@ -141,15 +145,34 @@ class OrganizationController extends Controller
             "Default role" => "default_role_name",
         );
 
+        $roles = array();
+
+        $propertiesDatas = array();
+
+        $propertiesDatas['name'] = $organization['name'];
+        $propertiesDatas['description'] = $organization['description'];
+        $propertiesDatas['url'] = $organization['url'];
+        $propertiesDatas['default_role_id'] = $organization['default_role_id'];
+        $propertiesDatas['roles'] = $roles;
+
+        $formproperties = $this->createForm(
+            OrganizationPropertiesType::class,
+            array(
+                'properties' => $propertiesDatas,
+            )
+        );
+
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
+                "organization" => $organization,
+                "propertiesbox" => $propertiesbox,
+                'propertiesform' => $formproperties->createView(),
+
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
-                "organization" => $organization,
-                "roles" => $roles,
-                "propertiesbox" => $propertiesbox,
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+
             )
         );
     }
