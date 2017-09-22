@@ -58,17 +58,21 @@ class OrganizationPropertiesType extends AbstractType
                 )
             )
             ->add(
-                'default_role',
+                'default_role_id',
                 TypeaheadType::class,
                 array(
                     'label' => 'Default role',
-                    'data' => $datas['data']['properties']['default_role_id'],
                     'label_attr' => array('class' => 'formlabel'),
+
+                    'data' => $datas['data']['properties']['default_role_id'],
                     'source_name' => 'roles',
+                    'source' => $datas['data']['properties']['roles'],
+                    'label_key' => 'name',
+                    'value_key' => 'id',
+
                     'min_length' => 1,
                     'placeholder' => 'Start typing',
                     'matcher' => 'contains', // ends_with, contains
-                    'source' => $datas['data']['properties']['roles'],
                     'required' => 'false',
                     'attr' => array('class' => 'modified_twitter pull-right'),
                     'limit' => 7,

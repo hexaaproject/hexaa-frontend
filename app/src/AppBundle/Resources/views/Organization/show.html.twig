@@ -20,7 +20,7 @@
                 
                 <div class="desktopbuttonorg"><a href="{{ path("app_organization_users", {"id": organization.id}) }}"><img class="desktopbuttonimage" src="/img/manage_users.svg"/><br/><p><b>Manage users</b></p></a></div>
                 
-                <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/edit_properties.svg"/><br/><p><b>Edit properties</b></p></div>
+                <div class="desktopbuttonorg"><a href="{{ path("app_organization_properties", {"id": organization.id, "action": "edit"}) }}"><img class="desktopbuttonimage" src="/img/edit_properties.svg"/><br/><p><b>Edit properties</b></p></a></div>
                 
                 <div class="desktopbuttonorg"><a href="{{ path("app_organization_history", {"id": organization.id}) }}"><img class="desktopbuttonimage" src="/img/view_history.svg"/><br/><p><b>View history</b></p></a></div>
                 

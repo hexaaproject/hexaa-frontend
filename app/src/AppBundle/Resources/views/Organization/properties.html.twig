@@ -26,17 +26,12 @@
             // $(".propertyblockedit").toggle();
         }
 
-        function owner() {
-            $(".ownerblocknoedit")[0].style.display = "none";
-            $(".sendownerbutton")[0].style.display = "inline";
-            $(".ownerblockedit")[0].style.display = "inline";
-        }
+        $(document).ready(function() {
+            if ("{{ action }}" == "edit") {
+                property();
+            }
+        });
 
-        function privacy() {
-            $(".privacyblocknoedit")[0].style.display = "none";
-            $(".sendprivacybutton")[0].style.display = "inline";
-            $(".privacyblockedit")[0].style.display = "inline";
-        }
         function edit() {
             /*  $(".sendbutton")[0].style.display = "inline";
              $("#service_properties_serviceName").removeAttr('disabled');
@@ -79,8 +74,8 @@
         <div>
             {{ form_row(propertiesform.url) }}
         </div>
-        <div id="scrollable-dropdown-menu">
-            {{ form_row(propertiesform.default_role) }}
+        <div>
+            {{ form_row(propertiesform.default_role_id) }}
         </div>
 
         {{ form_end(propertiesform) }}

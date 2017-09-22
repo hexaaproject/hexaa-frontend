@@ -119,12 +119,14 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/properties/{id}")
+     * @Route("/properties/{id}/{action}", defaults={"action" = null})
      * @Template()
      * @return Response
-     * @param   int $id Organization ID
+     * @param   int         $id      Organization ID
+     * @param   string|null $action  Turn edit mode inmediatly on with `edit` value
+     * @param   Request     $request request
      */
-    public function propertiesAction($id)
+    public function propertiesAction(Request $request, int $id, string $action = null)
     {
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
@@ -135,7 +137,10 @@ class OrganizationController extends Controller
             if ($organization['default_role_id'] == $role['id']) {
                 $defaultRoleName = $role['name'];
             }
-            $rolesForFieldSource[$role['id']] = $role['name'];
+            $rolesForFieldSource[] = array (
+                'id' => $role['id'],
+                'name' => $role['name']
+            );
         }
         $organization['default_role_name'] = $defaultRoleName;
 
@@ -154,24 +159,38 @@ class OrganizationController extends Controller
         $propertiesDatas['default_role_id'] = $organization['default_role_id'];
         $propertiesDatas['roles'] = $rolesForFieldSource;
 
-        $formproperties = $this->createForm(
+        $formProperties = $this->createForm(
             OrganizationPropertiesType::class,
             array(
                 'properties' => $propertiesDatas,
             )
         );
 
+        $formProperties->handleRequest($request);
+
+        if ($formProperties->isSubmitted() && $formProperties->isValid()) {
+            $data = $request->request->all();
+            $modified = array(
+                'name' => $data['organization_properties']['name'],
+                'default_role' => $data['organization_properties']['default_role_id'],
+                'description' => $data['organization_properties']['description'],
+                'url' => $data['organization_properties']['url'],
+            );
+            $this->get('organization')->patch($id, $modified);
+            $action = null;
+        }
+
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
                 "organization" => $organization,
                 "propertiesbox" => $propertiesbox,
-                'propertiesform' => $formproperties->createView(),
+                "propertiesform" => $formProperties->createView(),
+                "action" => $action,
 
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
-
             )
         );
     }
