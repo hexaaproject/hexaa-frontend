@@ -72,65 +72,65 @@ class ServiceController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-  /*  public function addStepOneAction(Request $request)
-    {
-        return $this->render('AppBundle:Service:addStepOne.html.twig', array());
-    }
+    /*  public function addStepOneAction(Request $request)
+      {
+          return $this->render('AppBundle:Service:addStepOne.html.twig', array());
+      }
 
-    /**
-     * @Route("/addStepTwo")
-     * @Template()
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
- /*   public function addStepTwoAction(Request $request)
-    {
-        $verbose = "expanded";
-        $attributespecs = $this->get('attribute_spec')->cget($verbose);
+      /**
+       * @Route("/addStepTwo")
+       * @Template()
+       * @param Request $request
+       * @return \Symfony\Component\HttpFoundation\Response
+       */
+    /*   public function addStepTwoAction(Request $request)
+       {
+           $verbose = "expanded";
+           $attributespecs = $this->get('attribute_spec')->cget($verbose);
 
-        return $this->render(
-            'AppBundle:Service:addStepTwo.html.twig',
-            array(
-                'attributes' => $attributespecs,
-            )
-        );
-    }
+           return $this->render(
+               'AppBundle:Service:addStepTwo.html.twig',
+               array(
+                   'attributes' => $attributespecs,
+               )
+           );
+       }
 
-    /**
-     * @Route("/addStepThree")
-     * @Template()
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-  /*  public function addStepThreeAction(Request $request)
-    {
-        $verbose = "expanded";
-        $permissionsset = $this->get('entitlement_pack')->getPublic($verbose)['items'];
+       /**
+        * @Route("/addStepThree")
+        * @Template()
+        * @param Request $request
+        * @return \Symfony\Component\HttpFoundation\Response
+        */
+    /*  public function addStepThreeAction(Request $request)
+      {
+          $verbose = "expanded";
+          $permissionsset = $this->get('entitlement_pack')->getPublic($verbose)['items'];
 
-        return $this->render('AppBundle:Service:addStepThree.html.twig');
-    }
+          return $this->render('AppBundle:Service:addStepThree.html.twig');
+      }
 
-    /**
-     * @Route("/addStepFour")
-     * @Template()
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
- /*   public function addStepFourAction(Request $request)
-    {
-        return $this->render('AppBundle:Service:addStepFour.html.twig', array());
-    }
+      /**
+       * @Route("/addStepFour")
+       * @Template()
+       * @param Request $request
+       * @return \Symfony\Component\HttpFoundation\Response
+       */
+    /*   public function addStepFourAction(Request $request)
+       {
+           return $this->render('AppBundle:Service:addStepFour.html.twig', array());
+       }
 
-    /**
-     * @Route("/addStepFive")
-     * @Template()
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
- /*   public function addStepFiveAction(Request $request)
-    {
-        return $this->render('AppBundle:Service:addStepFive.html.twig', array());
-    }*/
+       /**
+        * @Route("/addStepFive")
+        * @Template()
+        * @param Request $request
+        * @return \Symfony\Component\HttpFoundation\Response
+        */
+    /*   public function addStepFiveAction(Request $request)
+       {
+           return $this->render('AppBundle:Service:addStepFive.html.twig', array());
+       }*/
 
     /**
      * @Route("/show/{id}")
@@ -472,7 +472,7 @@ class ServiceController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
-            if (! $data['emails']) { // there is no email, we are done
+            if (!$data['emails']) { // there is no email, we are done
                 return $this->redirect($this->generateUrl('app_service_managers', array("id" => $id)));
             }
 
@@ -620,7 +620,7 @@ class ServiceController extends Controller
             }
 
             $landingUrl = null;
-            if (! empty($data['landing_url'])) {
+            if (!empty($data['landing_url'])) {
                 $landingUrl = urlencode($data['landing_url']);
             }
             $inviteLink = $this->generateUrl('app_service_resolveinvitationtoken', array("token" => $invitation['token'], "serviceid" => $id, "landing_url" => $landingUrl), UrlGeneratorInterface::ABSOLUTE_URL);
@@ -794,10 +794,45 @@ class ServiceController extends Controller
      * @Route("/connectedorganizations/{id}")
      * @Template()
      * @param integer $id
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function connectedOrganizationsAction($id)
+    public function connectedOrganizationsAction($id, Request $request)
     {
+        $all = $this->get('entitlement_pack')->getPublic();
+        $verbose = "expanded";
+
+        $organizations = $this->get('service')->getOrganizations($id);
+
+        $requests = $this->get('service')->getLinkRequests($id);
+
+        $allData = array();
+        foreach ($requests['items'] as $request) {
+            $allData[$request['organization_id']]['name'] = $this->get('organization')->get($request['organization_id'])['name'];
+            $allData[$request['organization_id']]['id'] = $request['organization_id'];
+            $allData[$request['organization_id']]['service_id'] = $request['service_id'];
+            $allData[$request['organization_id']]['status'] = $request['status'];
+            $allData[$request['organization_id']]['link_id'] = $request['id'];
+            $entitlementpacks = $this->get('link')->getEntitlementPacks($request['id']);
+            $entitlementpackNames = null;
+            $i = 0;
+            $len = count($entitlementpacks['items']);
+            foreach ($entitlementpacks['items'] as $entitlementpack) {
+                if ($i == $len - 1) {
+                    $entitlementpackNames = $entitlementpackNames.$entitlementpack['name'];
+                } else {
+                    $entitlementpackNames = $entitlementpackNames.$entitlementpack['name'].', ';
+                }
+                $i++;
+            }
+            $allData[$request['organization_id']]['contents'] = array(
+                array(
+                    'key' => 'entitlementpacks',
+                    'values' => $entitlementpackNames,
+                ),
+            );
+        }
+
         return $this->render(
             'AppBundle:Service:connectedorganizations.html.twig',
             array(
@@ -806,8 +841,87 @@ class ServiceController extends Controller
                 'service' => $this->getService($id),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 'servsubmenubox' => $this->getServSubmenuPoints(),
+                'all_data' => $allData,
             )
         );
+    }
+
+    /**
+     * @Route("/removeConnectedOrganizations/{id}")
+     * @Template()
+     * @param integer $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeConnectedOrganizations($id, Request $request)
+    {
+        $linkIds = $request->get('linkId');
+        $errors = array();
+        $errormessages = array();
+        foreach ($linkIds as $linkId) {
+            try {
+                $this->get('link')->deleteLink($linkId);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                implode(', ', $errormessages)
+            );
+            $this->get('logger')->error(
+                'Organization remove failed'
+            );
+        }
+
+        return $this->redirect($this->generateUrl('app_service_connectedorganizations', array('id' => $id, )));
+    }
+
+    /**
+     * @Route("/acceptConnectedOrganizations/{id}")
+     * @Template()
+     * @param integer $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function acceptConnectedOrganizations($id, Request $request)
+    {
+        $linkIds = $request->get('linkId');
+        $errors = array();
+        $errormessages = array();
+        foreach ($linkIds as $linkId) {
+            try {
+                $requests = $this->get('service')->getLinkRequests($id);
+                foreach ($requests['items'] as $request) {
+                    $data = array();
+                    $data['service'] = $request['service_id'];
+                    $data['organization'] = $request['organization_id'];
+                    $entitlementpacksIds = array();
+                    $entitlementpacks = $this->get('link')->getEntitlementPacks($request['id']);
+                    foreach ($entitlementpacks['items'] as $entitlementpack) {
+                        array_push($entitlementpacksIds, $entitlementpack['id']);
+                    }
+                    $data['status'] = "accepted";
+                    $this->get('link')->editLink($request['id'], $data);
+                }
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                implode(', ', $errormessages)
+            );
+            $this->get('logger')->error(
+                'Organization accepted failed'
+            );
+        }
+
+        return $this->redirect($this->generateUrl('app_service_connectedorganizations', array('id' => $id, )));
     }
 
     /**

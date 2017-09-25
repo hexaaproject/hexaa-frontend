@@ -50,6 +50,23 @@ class EntitlementPack extends AbstractBaseResource
     }
 
     /**
+     * @param string $id
+     * @param string $verbose
+     * @param int    $offset
+     * @param int    $pageSize
+     * @return array
+     */
+    public function getEntitlementsDetails(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    {
+        return $this->getCollection(
+            $this->pathName.'/'.$id,
+            $verbose,
+            $offset,
+            $pageSize
+        );
+    }
+
+    /**
      * Add permission to permissionset
      * @param string $id     of entitlementpack
      * @param string $permid of entitlement

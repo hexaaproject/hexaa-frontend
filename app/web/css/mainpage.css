@@ -341,3 +341,15 @@ div.hr {
 .loader span:nth-child(3) {
     animation-delay: .8s;
 }
+
+/*.datatable-blue input{
+    border:none;
+}*/
+
+#deleteBin{
+    border: none;
+}
+
+.sorting{
+    background : none;
+}
