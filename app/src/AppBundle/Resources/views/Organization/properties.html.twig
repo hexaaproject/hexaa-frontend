@@ -4,7 +4,7 @@
     {% block stylesheets %}
         {% stylesheets
             'css/accordions.css'
-            'css/panel.css'
+            'css/grid_panel.css'
         filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
@@ -15,70 +15,39 @@
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    {{ form_javascript(propertiesform) }}
     <script>
-
-        function property() {
-
-            $(".propertyblocknoedit")[0].style.display = "none";
-            $(".sendbutton")[0].style.display = "inline";
-            $(".propertyblockedit")[0].style.display = "inline";
-            // $(".propertyblockedit").toggle();
-        }
-
         $(document).ready(function() {
             if ("{{ action }}" == "edit") {
-                property();
+                edit();
             }
         });
-
-        function edit() {
-            /*  $(".sendbutton")[0].style.display = "inline";
-             $("#service_properties_serviceName").removeAttr('disabled');
-             $("#service_properties_serviceDescription").removeAttr('disabled');
-             $("#service_properties_serviceURL").removeAttr('disabled');
-             $("#service_properties_serviceSAML").removeAttr('disabled');*/
-        }
     </script>
 
-    <div class="propertyblocknoedit">
-        {{ include('::panel.html.twig', {
-                heading: "Properties",
-                buttonappear: "inline",
-                main: organization,
-                items: propertiesbox,
-                changeedit:"property",
-                changebutton:"property()",
-                pencilid:"1"
-            })
-        }}
-
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-11">
+                {{ include('::grid_panel.html.twig', {
+                    heading: "Properties",
+                    buttonappear: "inline",
+                    main: organization,
+                    items: propertiesbox,
+                    changeedit: "property",
+                    changebutton: "property_button",
+                    panel_id: "1",
+                    form: propertiesform,
+                    })
+                }}
+        </div>
     </div>
 
-    <div class="propertyblockedit" style="display:none">
-        {{ form_start(propertiesform) }}
-        <div class="header" style="padding-top:0.5em">
-            Properties
-            <button type="submit" class="sendbutton pull-right" alt="done-1" id="done1" style="display:none"><i
-                        class="material-icons" alt="done-1" name="done-1">done</i></button>
-            <button type="button" name="pencil" class="editbutton" alt="pencil" style="display: inline"
-                    onclick="edit()"><i class="material-icons">create</i></button>
-
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-11" style="padding-top: 12px;">
+            {{ include('::accordions.html.twig', {
+                heading: "Roles",
+                variant: "dark",
+                items: roles
+                })
+            }}
         </div>
-        <div>
-            {{ form_row(propertiesform.name) }}
-        </div>
-        <div>
-            {{ form_row(propertiesform.description) }}
-        </div>
-        <div>
-            {{ form_row(propertiesform.url) }}
-        </div>
-        <div>
-            {{ form_row(propertiesform.default_role_id) }}
-        </div>
-
-        {{ form_end(propertiesform) }}
     </div>
 
 {% endblock %}

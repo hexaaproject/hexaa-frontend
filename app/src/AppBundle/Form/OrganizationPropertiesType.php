@@ -31,7 +31,7 @@ class OrganizationPropertiesType extends AbstractType
                     "label" => "Name",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['name'],
-                    'attr' => array('class' => 'pull-right'),
+                    'attr' => array(),
                     'required' => true,
                 )
             )
@@ -42,7 +42,7 @@ class OrganizationPropertiesType extends AbstractType
                     "label" => "Description",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['description'],
-                    'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
+                    'attr' => array('rows' => '3'),
                     'required' => false,
                 )
             )
@@ -53,7 +53,6 @@ class OrganizationPropertiesType extends AbstractType
                     "label" => "Home page",
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['url'],
-                    'attr' => array('class' => 'pull-right'),
                     'required' => false,
                 )
             )
@@ -74,7 +73,7 @@ class OrganizationPropertiesType extends AbstractType
                     'placeholder' => 'Start typing',
                     'matcher' => 'contains', // ends_with, contains
                     'required' => 'false',
-                    'attr' => array('class' => 'modified_twitter pull-right'),
+                    'attr' => array('class' => 'modified_twitter'),
                     'limit' => 7,
                 )
             );

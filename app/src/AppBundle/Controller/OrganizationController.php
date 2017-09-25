@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -168,6 +169,8 @@ class OrganizationController extends Controller
 
         $formProperties->handleRequest($request);
 
+//        $formProperties->addError(new FormError("ERROR"));
+
         if ($formProperties->isSubmitted() && $formProperties->isValid()) {
             $data = $request->request->all();
             $modified = array(
@@ -177,7 +180,7 @@ class OrganizationController extends Controller
                 'url' => $data['organization_properties']['url'],
             );
             $this->get('organization')->patch($id, $modified);
-            $action = null;
+            return $this->redirect($request->getUri());
         }
 
         return $this->render(
@@ -187,6 +190,8 @@ class OrganizationController extends Controller
                 "propertiesbox" => $propertiesbox,
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
+
+                "roles" => $this->rolesToAccordion($roles),
 
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
