@@ -123,9 +123,9 @@ class OrganizationController extends Controller
      * @Route("/properties/{id}/{action}", defaults={"action" = null})
      * @Template()
      * @return Response
+     * @param   Request     $request request
      * @param   int         $id      Organization ID
      * @param   string|null $action  Turn edit mode inmediatly on with `edit` value
-     * @param   Request     $request request
      */
     public function propertiesAction(Request $request, int $id, string $action = null)
     {
@@ -140,7 +140,7 @@ class OrganizationController extends Controller
             }
             $rolesForFieldSource[] = array (
                 'id' => $role['id'],
-                'name' => $role['name']
+                'name' => $role['name'],
             );
         }
         $organization['default_role_name'] = $defaultRoleName;
@@ -180,6 +180,7 @@ class OrganizationController extends Controller
                 'url' => $data['organization_properties']['url'],
             );
             $this->get('organization')->patch($id, $modified);
+
             return $this->redirect($request->getUri());
         }
 
