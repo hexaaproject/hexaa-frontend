@@ -3,10 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\OrganizationPropertiesType;
+use AppBundle\Form\OrganizationRoleType;
 use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
 use AppBundle\Form\OrganizationType;
-use AppBundle\Form\ServicePropertiesType;
 use AppBundle\Model\Organization;
 use GuzzleHttp\Exception\ClientException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -422,7 +422,6 @@ class OrganizationController extends Controller
             $config = $this->getParameter('invitation_config');
             $mailer = $this->get('mailer');
             $link = $data['link'];
-            // TODO this->sendInvitations()
             try {
                 $message = $mailer->createMessage()
                     ->setSubject($config['subject'])
@@ -601,22 +600,52 @@ class OrganizationController extends Controller
      * @Route("/roles/{id}")
      * @Template()
      * @return Response
-     * @param   int $id Organization ID
+     * @param int     $id      Organization ID
+     * @param Request $request Request
      */
-    public function rolesAction($id)
+    public function rolesAction($id, Request $request)
     {
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
         $rolesAccordion = $this->rolesToAccordion($roles);
 
+        $form = $this->createForm(
+            OrganizationRoleType::class,
+            array()
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            //create role
+            $role = $this->get('organization')->createRole(
+                $id,
+                $data['name'],
+                $this->get('role')
+            );
+
+            // put creator to role
+            if ($data["wantToBeAMember"]) {
+                $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
+                $this->get('role')->putPrincipal($role['id'], $self['id']);
+            }
+
+            return $this->redirect($request->getUri());
+        }
+
         return $this->render(
             'AppBundle:Organization:roles.html.twig',
             array(
                 "organization" => $organization,
-                "organizations" => $this->get('organization')->cget(),
                 "roles" => $roles,
-                "services" => $this->get('service')->cget(),
                 "roles_accordion" => $rolesAccordion,
+
+                "form" => $form->createView(),
+
+                "organizations" => $this->get('organization')->cget(),
+                "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
