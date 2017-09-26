@@ -4,16 +4,57 @@
     {% block stylesheets %}
         {% stylesheets
             'css/accordions.css'
-            filter='cssrewrite'
+            'css/grid_panel.css'
+        filter='cssrewrite'
         %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
-    
+
+    <script>
+        function showCreateForm(){
+            $('#createRoleForm').removeClass('hidden');
+            $('#panel_container').find('form').attr("id", "current_form");
+            $('#current_form').find('input:first').focus();
+        }
+
+        function cancel(){
+            $('#createRoleForm').addClass('hidden');
+        }
+
+    </script>
+
+    <div class="row">
+        <div class="col-md-11 col-md-offset-2">
+            <div class="grid_panel hidden" id="createRoleForm">
+                <div class="header">
+                    Create role
+                    <div class="pull-right">
+                        <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i class="material-icons">cancel</i></button>
+                        <button type="submit" id="submitbutton" class="actionbutton" onclick="$('#current_form').submit();" ><i class="material-icons">done</i></button>
+                    </div>
+                </div>
+                <div id="panel_container">
+                    {{ form_start(form) }}
+                    {% for key, field in form  %}
+                        <div class="row {% if ("_token" == key) %} hidden {% endif %}" style="padding-top: 12px;">
+                            <div class="col-sm-3 propname">{{ form_label(field) }}</div>
+                            <div class="col-sm-11"> {{ form_widget(field) }}</div>
+                            {% if field.vars.errors|length %}
+                                <div class="col-sm-offset-3 col-sm-11 has-error">{{ field.vars.errors|length }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row" style="margin-bottom: 24px;">
         <div class="col-md-4 col-md-offset-3">
-            <button class="btnhexaa btn-red btn-block btnhexaa-lg"><i class="material-icons" aria-hidden="true">add</i> New role</button>
+            <button class="btnhexaa btn-red btn-block btnhexaa-lg" onclick="showCreateForm()"><i class="material-icons" aria-hidden="true">add</i> New role</button>
         </div>
         <div class="col-md-4 col-md-offset-1">
             <button class="btnhexaa btn-red-inverse btn-block btnhexaa-lg">Add role to user</button>
