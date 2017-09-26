@@ -27,6 +27,6 @@ Feature: When I go to organization's roles
     Then I should see "Second brand new role"
 
     When I press "New role"
-    And I fill in "name" with "Third brand new role"
+    And I fill in "Name" with "Third brand new role"
     And I press "cancel"
     Then I should not see "Create role"
