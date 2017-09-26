@@ -43,6 +43,7 @@ variables:
 build:
   stage: build
   script:
+    - apt-get install git
     - docker build -t $CONTAINER_TEST_IMAGE .
     - docker push $CONTAINER_TEST_IMAGE
   tags:
