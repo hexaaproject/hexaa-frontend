@@ -1,0 +1,89 @@
+{#
+grid alapú pozícionálásra szánt panel
+
+usage in twig:
+{{ include('::grid_panel.html.twig', {heading: 'foobar', buttonappear:'none/inline' main: service/organization, items: items}) }}
+
+TODO
+
+usage in symfony (example:key1=Name, value1=name):
+return $this->render(
+            'AppBundle:Whatever.html.twig',
+            array(
+                "items" => array(
+                    "key1" => "value1", 
+                    "key2" => "value2"
+                    .
+                    .
+                    .
+                ),
+                "main" => service/organization
+            )
+        );
+#}
+
+<script>
+
+    function edit(){
+        $('#panel_container').html($('#form_content').html());
+        $('#panel_container').find('form').attr("id", "current_form");
+        $('#current_form').find('input:first').focus();
+
+        $('#submitbutton').removeClass('hidden');
+        $('#cancelbutton').removeClass('hidden');
+        $('#editbutton').addClass('hidden');
+    }
+
+    function cancel(){
+        $('#panel_container').html($('#ro_content').html());
+
+        $('#submitbutton').addClass('hidden');
+        $('#cancelbutton').addClass('hidden');
+        $('#editbutton').removeClass('hidden');
+    }
+
+</script>
+
+<div class="grid_propertiespanelnoedit">
+    <div class="header">
+        {{ heading }}
+        <div class="pull-right">
+            <button type="button" id="editbutton"   class="actionbutton editbutton" onclick="edit()"><i class="material-icons">create</i></button>
+            <button type="button" id="cancelbutton" class="actionbutton hidden" onclick="cancel()"><i class="material-icons">cancel</i></button>
+            <button type="submit" id="submitbutton" class="actionbutton hidden" onclick="$('#current_form').submit();" ><i class="material-icons">done</i></button>
+        </div>
+    </div>
+    <div id="panel_container">
+        {% for key, value in items %}
+            <div class="row">
+                <div class="col-sm-3 propname ">{{ key }}</div>
+                <div class="col-sm-11"> {% if main[value] %} {{ main[value] }} {% endif %}</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="ro_content" class="hidden">
+    {% for key, value in items %}
+        <div class="row">
+            <div class="col-sm-3 propname ">{{ key }}</div>
+            <div class="col-sm-11"> {% if main[value] %} {{ main[value] }} {% endif %}</div>
+        </div>
+    {% endfor %}
+</div>
+
+<div id="form_content" class="hidden">
+    {{ form_javascript(form) }}
+    {{ form_start(form) }}
+    {% for key, field in form  %}
+        <div class="row {% if ("_token" == key) %} hidden {% endif %}" style="padding-top: 12px;">
+            <div class="col-sm-3 propname">{{ form_label(field) }}</div>
+            <div class="col-sm-11"> {{ form_widget(field) }}</div>
+            {% if field.vars.errors|length %}
+                <div class="col-sm-offset-3 col-sm-11 has-error">{{ field.vars.errors|length }}</div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    {{ form_end(form) }}
+</div>

@@ -2,9 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\OrganizationPropertiesType;
 use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
 use AppBundle\Form\OrganizationType;
+use AppBundle\Form\ServicePropertiesType;
 use AppBundle\Model\Organization;
 use GuzzleHttp\Exception\ClientException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -117,22 +120,30 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/properties/{id}")
+     * @Route("/properties/{id}/{action}", defaults={"action" = null})
      * @Template()
      * @return Response
-     * @param   int $id Organization ID
+     * @param   Request     $request request
+     * @param   int         $id      Organization ID
+     * @param   string|null $action  Turn edit mode inmediatly on with `edit` value
      */
-    public function propertiesAction($id)
+    public function propertiesAction(Request $request, int $id, string $action = null)
     {
         $organization = $this->getOrganization($id);
-        $roles = $this->rolesToAccordion($this->getRoles($organization));
-        $organization['default_role_name'] = null;
-        foreach ($this->getRoles($organization) as $role) {
-            if ($role['id'] == $organization['default_role_id']) {
-                $defaultrole = $role;
-                $organization['default_role_name'] = $role["name"];
+        $roles = $this->getRoles($organization);
+        $defaultRoleName = "";
+        $rolesForFieldSource = array();
+
+        foreach ($roles as $role) {
+            if ($organization['default_role_id'] == $role['id']) {
+                $defaultRoleName = $role['name'];
             }
+            $rolesForFieldSource[] = array (
+                'id' => $role['id'],
+                'name' => $role['name'],
+            );
         }
+        $organization['default_role_name'] = $defaultRoleName;
 
         $propertiesbox = array(
             "Name" => "name",
@@ -141,14 +152,50 @@ class OrganizationController extends Controller
             "Default role" => "default_role_name",
         );
 
+        $propertiesDatas = array();
+
+        $propertiesDatas['name'] = $organization['name'];
+        $propertiesDatas['description'] = $organization['description'];
+        $propertiesDatas['url'] = $organization['url'];
+        $propertiesDatas['default_role_id'] = $organization['default_role_id'];
+        $propertiesDatas['roles'] = $rolesForFieldSource;
+
+        $formProperties = $this->createForm(
+            OrganizationPropertiesType::class,
+            array(
+                'properties' => $propertiesDatas,
+            )
+        );
+
+        $formProperties->handleRequest($request);
+
+//        $formProperties->addError(new FormError("ERROR"));
+
+        if ($formProperties->isSubmitted() && $formProperties->isValid()) {
+            $data = $request->request->all();
+            $modified = array(
+                'name' => $data['organization_properties']['name'],
+                'default_role' => $data['organization_properties']['default_role_id'],
+                'description' => $data['organization_properties']['description'],
+                'url' => $data['organization_properties']['url'],
+            );
+            $this->get('organization')->patch($id, $modified);
+
+            return $this->redirect($request->getUri());
+        }
+
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
+                "organization" => $organization,
+                "propertiesbox" => $propertiesbox,
+                "propertiesform" => $formProperties->createView(),
+                "action" => $action,
+
+                "roles" => $this->rolesToAccordion($roles),
+
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
-                "organization" => $organization,
-                "roles" => $roles,
-                "propertiesbox" => $propertiesbox,
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );

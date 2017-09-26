@@ -4,22 +4,50 @@
     {% block stylesheets %}
         {% stylesheets
             'css/accordions.css'
-            'css/panel.css'
+            'css/grid_panel.css'
         filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
 
+    {% javascripts
+    '@typeahead_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        $(document).ready(function() {
+            if ("{{ action }}" == "edit") {
+                edit();
+            }
+        });
+    </script>
+
     <div class="row">
-        <div class="col-md-11 col-md-offset-2">
-            {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: organization, items: propertiesbox }) }}
+        <div class="col-sm-offset-2 col-sm-11">
+                {{ include('::grid_panel.html.twig', {
+                    heading: "Properties",
+                    buttonappear: "inline",
+                    main: organization,
+                    items: propertiesbox,
+                    changeedit: "property",
+                    changebutton: "property_button",
+                    panel_id: "1",
+                    form: propertiesform,
+                    })
+                }}
         </div>
     </div>
 
-    <div class="row" style="margin-top: 12px;">
-        <div class="col-md-11 col-md-offset-2">
-        {{ include('::accordions.html.twig', { heading: "Roles", variant: "dark", items: roles }) }}
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-11" style="padding-top: 12px;">
+            {{ include('::accordions.html.twig', {
+                heading: "Roles",
+                variant: "dark",
+                items: roles
+                })
+            }}
         </div>
     </div>
-    
+
 {% endblock %}
