@@ -14,4 +14,4 @@ Feature: When I go to an service history
     When I follow "View history"
     And I wait for "History" to appear
     And I wait for "Title" to appear
-    Then I should see a table with 6 row
+    Then I should see a table with 7 row
