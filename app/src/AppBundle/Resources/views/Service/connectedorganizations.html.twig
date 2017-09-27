@@ -44,7 +44,7 @@
 
 
                 {# hide pagination if one page #}
-                if (($('#connected_org').DataTable().page.info().pages == 1) | ($('#connected_org').DataTable().page.info().pages == 0) ) {
+                if (($('#connected_org').DataTable().page.info().pages == 1) | ($('#connected_org').DataTable().page.info().pages == 0)) {
                     $('#connected_org_info').hide();
                     $('#connected_org_paginate').hide();
                     $('#connected_org_length').hide();
@@ -103,8 +103,8 @@
                     }
 
                 });
-
-               {# hide pagination if one page #}
+                {% if pending == true %}
+                {# hide pagination if one page #}
                 if (($('#connected_org_pending').DataTable().page.info().pages == 1) | ($('#connected_org_pending').DataTable().page.info().pages == 0)) {
                     $('#connected_org_pending_info').hide();
                     $('#connected_org_pending_paginate').hide();
@@ -164,7 +164,7 @@
                     }
 
                 });
-
+                {% endif %}
                 function populateList(ul,
                                       el) {
                     var row = $(el).closest('tr');
@@ -188,7 +188,7 @@
                     });
                     connectedOrgRemove.modal('show');
                 });
-
+                {% if pending == true %}
                 var pendingConnectedOrgTableActionButtons = $('.connected_org_pending_actionButtons');
                 var connectedOrgAccept = $('#connectedOrganizationsAccept');
                 pendingConnectedOrgTableActionButtons.on('click', '#accept', function (event) {
@@ -204,18 +204,20 @@
                     connectedOrgAccept.modal('show');
                 });
 
+                var connectedOrgDelete = $('#connectedOrganizationsRemovePending');
                 pendingConnectedOrgTableActionButtons.on('click', '#deletePending', function (event) {
                     event.preventDefault();
-                    var content = connectedOrgAccept.find('.modal-body-content');
+                    var content = connectedOrgDelete.find('.modal-body-content');
                     content.empty();
                     content.append('<ul></ul>');
-                    var ul = connectedOrgAccept.find('ul');
+                    var ul = connectedOrgDelete.find('ul');
                     $('#connected_org_pending input:checked').each(function (index,
                                                                              el) {
                         populateList(ul, el);
                     });
-                    connectedOrgAccept.modal('show');
+                    connectedOrgDelete.modal('show');
                 });
+                {% endif %}
             });
         </script>
 
@@ -234,8 +236,89 @@
         </div>
     {% endfor %}
 
+    {% if pending == true %}
+        <div class="connected_org_pending_actionButtons" id="tablewithcheckbox"
+             style="margin-top: 12px; padding-top: 30px">
 
-    <div class="connected_org_actionButtons" id="tablewithcheckbox" style="margin-top: 12px; ">
+            <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all_pending" type="checkbox" value=""
+                   name="selectAll">
+            <input id="connected_org_pending_hexaaSearchField" type="text" name="filter"
+                   class="hexaaSearchField pull-left"
+                   placeholder="Search pending orgs">
+
+            <button class="btnhexaa btnhexaa-sm btn-red dependent" disabled="disabled"
+                    id="deletePending"> Delete
+            </button>
+            <button class="btnhexaa btnhexaa-sm btn-red dependent" disabled="disabled"
+                    id="accept"> Accept
+            </button>
+
+            <div class="visible-xs" style="margin-top: 12px;">
+                <input class="hexaaCheckBox" type="checkbox" value="">
+            </div>
+
+        </div>
+<div>
+        {{ include('::modal.html.twig',
+        {
+            id: 'connectedOrganizationsAccept',
+            title: 'Accept connected organizations',
+            bodyhead: 'Are you ready to accept these organizations connected to your service?',
+            bodycontent: 'Optional',
+            button:
+            {
+                text: 'Accept link',
+                class: 'btn-red'
+            },
+            formaction: path('app_service_acceptconnectedorganizations', {id: service.id })
+        }) }}
+</div>
+        {{ include('::modal.html.twig',
+        {
+            id: 'connectedOrganizationsRemovePending',
+            title: 'Remove connected organizations',
+            bodyhead: 'Are you ready to remove these pending organizations?',
+            bodycontent: 'Optional',
+            button:
+            {
+                text: 'Remove',
+                class: 'btn-red'
+            },
+            formaction: path('app_service_removeconnectedorganizations', {id: service.id })
+        }) }}
+
+        <h2 style="color: #61AFC5">Pending</h2>
+
+        <table class="datatable datatable-blue" id="connected_org_pending">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Organization</th>
+                <th>Permission sets</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for one_data in all_data %}
+                {% if one_data.status == "pending" %}
+                    <tr id="{{ one_data.link_id }}">
+                        <td><input type="checkbox" name="checkbox"></td>
+                        <td>{{ one_data.name }}</td>
+                        {% for one_content in one_data.contents %}
+                            {% if one_content.key == "entitlementpacks" %}
+                                <td> {{ one_content.values }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <!--  <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="/img/red_rubbishbin.svg" onclick="deletelink()"/></td>
+                          <td><button type="button" class="btnhexaa btnhexaa-sm btn-red" onclick="acceptlink()">Accept</button></td>-->
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <div class="connected_org_actionButtons" id="tablewithcheckbox" style="padding-top: 30px">
 
         <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all" type="checkbox" value="" name="selectAll">
         <input id="connected_org_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left"
@@ -250,7 +333,7 @@
         </div>
 
     </div>
-
+    <div>
     {{ include('::modal.html.twig',
     {
         id: 'connectedOrganizationsRemove',
@@ -264,7 +347,7 @@
         },
         formaction: path('app_service_removeconnectedorganizations', {id: service.id })
     }) }}
-
+    </div>
     <h2 style="color: #61AFC5">Accepted</h2>
 
     <table class="datatable datatable-blue" id="connected_org">
@@ -279,85 +362,6 @@
         <tbody>
         {% for one_data in all_data %}
             {% if one_data.status == "accepted" %}
-                <tr id="{{ one_data.link_id }}">
-                    <td><input type="checkbox" name="checkbox"></td>
-                    <td>{{ one_data.name }}</td>
-                    {% for one_content in one_data.contents %}
-                        {% if one_content.key == "entitlementpacks" %}
-                            <td> {{ one_content.values }}</td>
-                        {% endif %}
-                    {% endfor %}
-                    <!--  <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="/img/red_rubbishbin.svg" onclick="deletelink()"/></td>
-                      <td><button type="button" class="btnhexaa btnhexaa-sm btn-red" onclick="acceptlink()">Accept</button></td>-->
-                </tr>
-            {% endif %}
-        {% endfor %}
-        </tbody>
-    </table>
-
-
-    <div class="connected_org_pending_actionButtons" id="tablewithcheckbox" style="margin-top: 12px; padding-top: 30px">
-
-        <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all_pending" type="checkbox" value=""
-               name="selectAll">
-        <input id="connected_org_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left"
-               placeholder="Search pending orgs">
-
-        <button class="btnhexaa btnhexaa-sm btn-red dependent" disabled="disabled"
-                id="deletePending"> Delete
-        </button>
-        <button class="btnhexaa btnhexaa-sm btn-red dependent" disabled="disabled"
-                id="accept"> Accept
-        </button>
-
-        <div class="visible-xs" style="margin-top: 12px;">
-            <input class="hexaaCheckBox" type="checkbox" value="">
-        </div>
-
-    </div>
-
-    {{ include('::modal.html.twig',
-    {
-        id: 'connectedOrganizationsAccept',
-        title: 'Accept connected organizations',
-        bodyhead: 'Are you ready to accept these organizations connected to your service?',
-        bodycontent: 'Optional',
-        button:
-        {
-            text: 'Accept',
-            class: 'btn-red'
-        },
-        formaction: path('app_service_acceptconnectedorganizations', {id: service.id })
-    }) }}
-
-    {{ include('::modal.html.twig',
-    {
-        id: 'connectedOrganizationsRemovePending',
-        title: 'Remove connected organizations',
-        bodyhead: 'Are you ready to remove these pending organizations?',
-        bodycontent: 'Optional',
-        button:
-        {
-            text: 'Remove',
-            class: 'btn-red'
-        },
-        formaction: path('app_service_removeconnectedorganizations', {id: service.id })
-    }) }}
-
-    <h2 style="color: #61AFC5">Pending</h2>
-
-    <table class="datatable datatable-blue" id="connected_org_pending">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Organization</th>
-            <th>Permission sets</th>
-
-        </tr>
-        </thead>
-        <tbody>
-        {% for one_data in all_data %}
-            {% if one_data.status == "pending" %}
                 <tr id="{{ one_data.link_id }}">
                     <td><input type="checkbox" name="checkbox"></td>
                     <td>{{ one_data.name }}</td>

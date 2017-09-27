@@ -799,10 +799,6 @@ class ServiceController extends Controller
      */
     public function connectedOrganizationsAction($id, Request $request)
     {
-        $all = $this->get('entitlement_pack')->getPublic();
-        $verbose = "expanded";
-
-        $organizations = $this->get('service')->getOrganizations($id);
 
         $requests = $this->get('service')->getLinkRequests($id);
 
@@ -833,6 +829,14 @@ class ServiceController extends Controller
             );
         }
 
+        $pending = false;
+        foreach ($allData as $oneData) {
+            if ($oneData['status'] == 'pending') {
+                $pending = true;
+                break;
+            }
+        }
+
         return $this->render(
             'AppBundle:Service:connectedorganizations.html.twig',
             array(
@@ -842,6 +846,7 @@ class ServiceController extends Controller
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'all_data' => $allData,
+                'pending'  => $pending,
             )
         );
     }

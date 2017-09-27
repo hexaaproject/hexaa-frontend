@@ -103,7 +103,7 @@ Feature: When I go to a specific service
 	    When I click on accordion "Permission 1"
 		Then I should see "Description"
 		 And I should see "URI"
-@wip1
+
 	Scenario: Connected organizations tables
 		Given I am on "/"
 		When I wait for "testService1" to appear
@@ -118,7 +118,7 @@ Feature: When I go to a specific service
 		When I fill in "Search pending orgs" with "hamis"
 		Then I should see the following table portion
 			| No matching records found |
-@wip2
+
 	Scenario: Delete connected organization
 		Given I am on "/"
 		When I wait for "testService1" to appear
@@ -126,9 +126,8 @@ Feature: When I go to a specific service
 		When I wait for "Connected organizations" to appear
 		And I follow "Connected organizations"
 		Then I wait for "Connected organizations" to appear
-		When I click the "#checkbox_all" element
-		Then I click the "#delete" element
-		Then I wait for "Are you sure?" to appear
-		Then I press "Remove"
-		Then I should not see "testOrg1"
-		And I should not see "testOrg2"
+		When I click the "#checkbox_all_pending" element
+		Then I click the "#accept" element
+		Then I wait for "Are you ready" to appear
+		Then I press "Accept link"
+		Then I should see a table with 3 rows
