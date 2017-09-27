@@ -1,7 +1,381 @@
 {% extends "AppBundle:Service:layout.html.twig" %}
 
-{% block title %}AppBundle:Service:show{% endblock %}
-
 {% block container %}
-  
+
+    {% block stylesheets %}
+
+        {% stylesheets
+        '@datatables_css'
+        'css/tables.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% javascripts
+        '@datatables_js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        <script>
+            $('#connected_org').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false
+                }],
+                'aaSorting': [[1, 'asc']]
+            });
+
+            $('#connected_org_pending').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false
+                }],
+                'aaSorting': [[1, 'asc']]
+            });
+
+        </script>
+
+        <script type="text/javascript">
+
+
+            $(document).ready(function () {
+
+
+                {# hide pagination if one page #}
+                if (($('#connected_org').DataTable().page.info().pages == 1) | ($('#connected_org').DataTable().page.info().pages == 0)) {
+                    $('#connected_org_info').hide();
+                    $('#connected_org_paginate').hide();
+                    $('#connected_org_length').hide();
+                }
+
+                {# hide filter label (text: Search:) #}
+                $('#connected_org_filter').children('label').contents().first().remove();
+                $('#connected_org_filter input').addClass('hexaaSearchField');
+
+                $('#connected_org_hexaaSearchField').on('keyup', function () {
+                    $('#connected_org').DataTable().search(this.value).draw();
+                });
+
+                {# toggle disabled action buttons #}
+                $('#connected_org').on('change', 'input[type=checkbox]', function () {
+                    var checked = false;
+                    $('#connected_org input[type=checkbox]').each(function (index,
+                                                                            el) {
+
+                        if ($(this).prop('checked')) {
+                            checked = true;
+                            $('.connected_org_actionButtons button.dependent').each(function (index,
+                                                                                              val) {
+                                $(this).prop('disabled', false);
+                            });
+
+                            {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
+                            $('#checkbox_all').prop('checked', false);
+                        }
+                    });
+
+                    if (!checked) {
+                        $('.connected_org_actionButtons button.dependent').each(function (index,
+                                                                                          val) {
+                            $(this).prop('disabled', 'disabled');
+                        });
+                    }
+                });
+                $('#checkbox_all').click(function () {
+                    var checkedStatus = this.checked;
+                    $('#connected_org tbody tr').find('td:first :checkbox').each(function () {
+                        $(this).prop('checked', checkedStatus);
+
+                    });
+                    if ($(this).prop('checked')) {
+                        $('.connected_org_actionButtons button.dependent').each(function (index,
+                                                                                          val) {
+                            $(this).prop('disabled', false);
+                        });
+                    }
+                    if (!$(this).prop('checked')) {
+                        $('.connected_org_actionButtons button.dependent').each(function (index,
+                                                                                          val) {
+                            $(this).prop('disabled', 'disabled');
+                        });
+                    }
+
+                });
+                {% if pending == true %}
+                {# hide pagination if one page #}
+                if (($('#connected_org_pending').DataTable().page.info().pages == 1) | ($('#connected_org_pending').DataTable().page.info().pages == 0)) {
+                    $('#connected_org_pending_info').hide();
+                    $('#connected_org_pending_paginate').hide();
+                    $('#connected_org_pending_length').hide();
+                }
+
+                {# hide filter label (text: Search:) #}
+                $('#connected_org_pending_filter').children('label').contents().first().remove();
+                $('#connected_org_pending_filter input').addClass('hexaaSearchField');
+
+                $('#connected_org_pending_hexaaSearchField').on('keyup', function () {
+                    $('#connected_org_pending').DataTable().search(this.value).draw();
+                });
+
+                {# toggle disabled action buttons #}
+                $('#connected_org_pending').on('change', 'input[type=checkbox]', function () {
+                    var checked = false;
+                    $('#connected_org_pending input[type=checkbox]').each(function (index,
+                                                                                    el) {
+
+                        if ($(this).prop('checked')) {
+                            checked = true;
+                            $('.connected_org_pending_actionButtons button.dependent').each(function (index,
+                                                                                                      val) {
+                                $(this).prop('disabled', false);
+                            });
+
+                            {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
+                            $('#checkbox_all_pending').prop('checked', false);
+                        }
+                    });
+
+                    if (!checked) {
+                        $('.connected_org_pending_actionButtons button.dependent').each(function (index,
+                                                                                                  val) {
+                            $(this).prop('disabled', 'disabled');
+                        });
+                    }
+                });
+                $('#checkbox_all_pending').click(function () {
+                    var checkedStatus = this.checked;
+                    $('#connected_org_pending tbody tr').find('td:first :checkbox').each(function () {
+                        $(this).prop('checked', checkedStatus);
+
+                    });
+                    if ($(this).prop('checked')) {
+                        $('.connected_org_pending_actionButtons button.dependent').each(function (index,
+                                                                                                  val) {
+                            $(this).prop('disabled', false);
+                        });
+                    }
+                    if (!$(this).prop('checked')) {
+                        $('.connected_org_pending_actionButtons button.dependent').each(function (index,
+                                                                                                  val) {
+                            $(this).prop('disabled', 'disabled');
+                        });
+                    }
+
+                });
+                {% endif %}
+                function populateList(ul,
+                                      el) {
+                    var row = $(el).closest('tr');
+                    var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
+                    var objectId = row.attr('id');
+                    ul.append('<li>' + displayString + '</li>');
+                    ul.append('<input name="linkId[]" value="' + objectId + '" class="hidden">');
+                }
+
+                var connectedOrgTableActionButtons = $('.connected_org_actionButtons');
+                var connectedOrgRemove = $('#connectedOrganizationsRemove');
+                connectedOrgTableActionButtons.on('click', '#delete', function (event) {
+                    event.preventDefault();
+                    var content = connectedOrgRemove.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = connectedOrgRemove.find('ul');
+                    $('#connected_org input:checked').each(function (index,
+                                                                     el) {
+                        populateList(ul, el);
+                    });
+                    connectedOrgRemove.modal('show');
+                });
+                {% if pending == true %}
+                var pendingConnectedOrgTableActionButtons = $('.connected_org_pending_actionButtons');
+                var connectedOrgAccept = $('#connectedOrganizationsAccept');
+                pendingConnectedOrgTableActionButtons.on('click', '#accept', function (event) {
+                    event.preventDefault();
+                    var content = connectedOrgAccept.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = connectedOrgAccept.find('ul');
+                    $('#connected_org_pending input:checked').each(function (index,
+                                                                             el) {
+                        populateList(ul, el);
+                    });
+                    connectedOrgAccept.modal('show');
+                });
+
+                var connectedOrgDelete = $('#connectedOrganizationsRemovePending');
+                pendingConnectedOrgTableActionButtons.on('click', '#deletePending', function (event) {
+                    event.preventDefault();
+                    var content = connectedOrgDelete.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = connectedOrgDelete.find('ul');
+                    $('#connected_org_pending input:checked').each(function (index,
+                                                                             el) {
+                        populateList(ul, el);
+                    });
+                    connectedOrgDelete.modal('show');
+                });
+                {% endif %}
+            });
+        </script>
+
+    {% endblock %}
+
+    <!--<div class="loader"></div>-->
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
+    {% if pending == true %}
+        <div class="connected_org_pending_actionButtons" id="tablewithcheckbox"
+             style="margin-top: 12px; padding-top: 30px">
+
+            <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all_pending" type="checkbox" value=""
+                   name="selectAll">
+            <input id="connected_org_pending_hexaaSearchField" type="text" name="filter"
+                   class="hexaaSearchField pull-left"
+                   placeholder="Search pending orgs">
+
+            <button class="btnhexaa btnhexaa-sm btn-red dependent" disabled="disabled"
+                    id="deletePending"> Delete
+            </button>
+            <button class="btnhexaa btnhexaa-sm btn-red dependent" disabled="disabled"
+                    id="accept"> Accept
+            </button>
+
+            <div class="visible-xs" style="margin-top: 12px;">
+                <input class="hexaaCheckBox" type="checkbox" value="">
+            </div>
+
+        </div>
+<div>
+        {{ include('::modal.html.twig',
+        {
+            id: 'connectedOrganizationsAccept',
+            title: 'Accept connected organizations',
+            bodyhead: 'Are you ready to accept these organizations connected to your service?',
+            bodycontent: 'Optional',
+            button:
+            {
+                text: 'Accept link',
+                class: 'btn-red'
+            },
+            formaction: path('app_service_acceptconnectedorganizations', {id: service.id })
+        }) }}
+</div>
+        {{ include('::modal.html.twig',
+        {
+            id: 'connectedOrganizationsRemovePending',
+            title: 'Remove connected organizations',
+            bodyhead: 'Are you ready to remove these pending organizations?',
+            bodycontent: 'Optional',
+            button:
+            {
+                text: 'Remove',
+                class: 'btn-red'
+            },
+            formaction: path('app_service_removeconnectedorganizations', {id: service.id })
+        }) }}
+
+        <h2 style="color: #61AFC5">Pending</h2>
+
+        <table class="datatable datatable-blue" id="connected_org_pending">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Organization</th>
+                <th>Permission sets</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for one_data in all_data %}
+                {% if one_data.status == "pending" %}
+                    <tr id="{{ one_data.link_id }}">
+                        <td><input type="checkbox" name="checkbox"></td>
+                        <td>{{ one_data.name }}</td>
+                        {% for one_content in one_data.contents %}
+                            {% if one_content.key == "entitlementpacks" %}
+                                <td> {{ one_content.values }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <!--  <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="/img/red_rubbishbin.svg" onclick="deletelink()"/></td>
+                          <td><button type="button" class="btnhexaa btnhexaa-sm btn-red" onclick="acceptlink()">Accept</button></td>-->
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <div class="connected_org_actionButtons" id="tablewithcheckbox" style="padding-top: 30px">
+
+        <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all" type="checkbox" value="" name="selectAll">
+        <input id="connected_org_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left"
+               placeholder="Search connected orgs">
+
+        <button class="btnhexaa btnhexaa-sm btn-red dependent" disabled="disabled"
+                id="delete"> Delete
+        </button>
+
+        <div class="visible-xs" style="margin-top: 12px;">
+            <input class="hexaaCheckBox" type="checkbox" value="">
+        </div>
+
+    </div>
+    <div>
+    {{ include('::modal.html.twig',
+    {
+        id: 'connectedOrganizationsRemove',
+        title: 'Remove connected organizations',
+        bodyhead: 'Are you ready to remove these organizations connected to your service?',
+        bodycontent: 'Optional',
+        button:
+        {
+            text: 'Remove',
+            class: 'btn-red'
+        },
+        formaction: path('app_service_removeconnectedorganizations', {id: service.id })
+    }) }}
+    </div>
+    <h2 style="color: #61AFC5">Accepted</h2>
+
+    <table class="datatable datatable-blue" id="connected_org">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Organization</th>
+            <th>Permission sets</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for one_data in all_data %}
+            {% if one_data.status == "accepted" %}
+                <tr id="{{ one_data.link_id }}">
+                    <td><input type="checkbox" name="checkbox"></td>
+                    <td>{{ one_data.name }}</td>
+                    {% for one_content in one_data.contents %}
+                        {% if one_content.key == "entitlementpacks" %}
+                            <td> {{ one_content.values }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    <!--  <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="/img/red_rubbishbin.svg" onclick="deletelink()"/></td>
+                      <td><button type="button" class="btnhexaa btnhexaa-sm btn-red" onclick="acceptlink()">Accept</button></td>-->
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}

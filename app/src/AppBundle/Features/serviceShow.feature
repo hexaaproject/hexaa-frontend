@@ -73,7 +73,6 @@ Feature: When I go to a specific service
 	    Then I should see "Remove"
 	     And I should see "Add"
 	     And I should see "Used attribute specification"
-	    
 
 	Scenario: Service managers tables
 	   Given I am on "/"
@@ -105,3 +104,30 @@ Feature: When I go to a specific service
 		Then I should see "Description"
 		 And I should see "URI"
 
+	Scenario: Connected organizations tables
+		Given I am on "/"
+		When I wait for "testService1" to appear
+		Then I follow "testService1"
+		When I wait for "Connected organizations" to appear
+		And I follow "Connected organizations"
+		Then I wait for "Connected organizations" to appear
+		And I should see a table with 2 row
+		And I should see a table with 1 row
+		When I fill in "Search connected orgs" with "testOrg1"
+		Then I should see a table with 1 rows
+		When I fill in "Search pending orgs" with "hamis"
+		Then I should see the following table portion
+			| No matching records found |
+
+	Scenario: Delete connected organization
+		Given I am on "/"
+		When I wait for "testService1" to appear
+		Then I follow "testService1"
+		When I wait for "Connected organizations" to appear
+		And I follow "Connected organizations"
+		Then I wait for "Connected organizations" to appear
+		When I click the "#checkbox_all_pending" element
+		Then I click the "#accept" element
+		Then I wait for "Are you ready" to appear
+		Then I press "Accept link"
+		Then I should see a table with 3 rows
