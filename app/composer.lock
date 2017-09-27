@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d01b6437c92d8d6904941dd44b61ad73",
-    "content-hash": "d560521bedadea9e5e1529f493200819",
+    "hash": "b87cc3d7e6bd33c4797d1b5ef8f228fb",
+    "content-hash": "264c1d5fc811836b5ac8a1dd22d89970",
     "packages": [
         {
             "name": "components/jquery",
@@ -133,16 +133,16 @@
         },
         {
             "name": "devmachine/form-bundle",
-            "version": "2.1.1",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/dev-machine/DevmachineFormBundle.git",
-                "reference": "7dc12a430e151ccbe22cb263ac455446c5bdefa1"
+                "url": "https://github.com/lakiboy/devmachine-form-bundle.git",
+                "reference": "c1da708d44b829eec95db8e2a3eb68be155cc3b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dev-machine/DevmachineFormBundle/zipball/7dc12a430e151ccbe22cb263ac455446c5bdefa1",
-                "reference": "7dc12a430e151ccbe22cb263ac455446c5bdefa1",
+                "url": "https://api.github.com/repos/lakiboy/devmachine-form-bundle/zipball/c1da708d44b829eec95db8e2a3eb68be155cc3b7",
+                "reference": "c1da708d44b829eec95db8e2a3eb68be155cc3b7",
                 "shasum": ""
             },
             "require": {
@@ -175,17 +175,17 @@
             "authors": [
                 {
                     "name": "Dmitri Lakachauskis",
-                    "email": "dmitri@devmachine.net"
+                    "email": "lakiboy83@gmail.com"
                 }
             ],
             "description": "Set of Symfony form types.",
-            "homepage": "https://github.com/dev-machine/DevmachineFormBundle",
+            "homepage": "https://github.com/lakiboy/devmachine-form-bundle",
             "keywords": [
                 "bootstrap",
                 "form",
                 "typeahead"
             ],
-            "time": "2017-06-02 17:08:14"
+            "time": "2017-09-25 12:22:15"
         },
         {
             "name": "doctrine/annotations",
