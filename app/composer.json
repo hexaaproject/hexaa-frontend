@@ -16,6 +16,19 @@
       "Tests\\": "tests/"
     }
   },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "chromawoods/instaFilta",
+        "version": "1.4.4",
+        "dist": {
+          "url": "https://github.com/chromawoods/instaFilta/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    }
+  ],
   "require": {
     "php": ">=5.5.9",
     "symfony/symfony": "3.2.*",
@@ -39,7 +52,8 @@
     "eightpoints/guzzle-bundle": "^5.3",
     "webfontkit/open-sans": "^1.0",
     "devmachine/form-bundle": "^2.1",
-    "twitter/typeahead.js": "^0.11.1"
+    "twitter/typeahead.js": "^0.11.1",
+    "chromawoods/instaFilta": "^1.4.4"
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",
