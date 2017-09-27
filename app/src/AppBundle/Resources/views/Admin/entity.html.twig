@@ -8,12 +8,21 @@
         <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
     {% endblock %}
+    {% javascripts
+    '@instafilta_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
+    <script>
+        $(document).ready(function () {
+           $('#hexaaSearchFieldEntityIDs').instaFilta();
+        });
+    </script>
     <div class="col-sm-11 col-sm-offset-2">
         <input id="hexaaSearchFieldEntityIDs" type="text" name="filter" class="hexaaSearchField pull-left"
                placeholder="Search entity IDs">
     </div>
     <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
-        {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion }) }}
+        {{ include('::accordions.html.twig', { classToFilter:"admin_entity_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion }) }}
     </div>
 {% endblock %}

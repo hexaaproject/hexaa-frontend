@@ -4,9 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b87cc3d7e6bd33c4797d1b5ef8f228fb",
-    "content-hash": "264c1d5fc811836b5ac8a1dd22d89970",
+    "hash": "c879e9e5966945cc3809c2f581e59ff0",
+    "content-hash": "3d99b8f3855d439d500b4e0531dede74",
     "packages": [
+        {
+            "name": "chromawoods/instaFilta",
+            "version": "1.4.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/chromawoods/instaFilta/archive/master.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
+        },
         {
             "name": "components/jquery",
             "version": "3.2.1",
