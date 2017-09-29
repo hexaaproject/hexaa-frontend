@@ -66,10 +66,19 @@ class ServiceType extends AbstractType
                     "label" => false,
                     'choices' => $entityidsarray['data'],
                     'required' => true,
-                    'placeholder' => 'Which entity id?',
+                    'choices_as_values' => true,
                     'attr' => array(
                         'class' => "col-md-5 col-md-offset-5",
                     ),
+                    'choice_attr' => function ($key, $val, $index) {
+                        if ($val == "Which entity id?") {
+                            $disabled = true;
+                        } else {
+                            $disabled = false;
+                        }
+
+                        return $disabled ? ['disabled' => 'disabled'] : [];
+                    },
                 )
             )
             ->add(

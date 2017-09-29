@@ -95,6 +95,7 @@ class ServiceController extends Controller
     {
 
         $entityidsarray = array();
+        $entityidsarray["Which entity id?"] = "Which entity id?";
         $entityids = $this->get('entity_id')->cget();
         $keys = array_keys($entityids['items']);
         foreach ($keys as $key) {
@@ -190,7 +191,16 @@ class ServiceController extends Controller
             $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
 
 
-            return $this->render('AppBundle:Service:created.html.twig', array('newserv' => $this->get('service')->get($servid, "expanded"), 'token' => $getlink['token'], ));
+            return $this->render(
+                'AppBundle:Service:created.html.twig',
+                array(
+                    'newserv' => $this->get('service')->get($servid, "expanded"),
+                    'token' => $getlink['token'],
+                    'organizations' => $this->getOrganizations(),
+                    'services' => $this->getServices(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    )
+            );
         }
 
         return $this->render(
