@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Model\Entitlement;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -15,6 +16,7 @@ use AppBundle\Form\ServiceAddAttributeSpecificationType;
 use AppBundle\Form\ServiceUserInvitationSendEmailType;
 use AppBundle\Form\ServiceUserInvitationType;
 use AppBundle\Form\ServiceType;
+use AppBundle\Form\ServiceCreatePermissionType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -88,7 +90,7 @@ class ServiceController extends Controller
     /**
      * @Route("/create")
      * @Template()
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      * @param   Request $request request
      */
     public function createAction(Request $request)
@@ -131,6 +133,7 @@ class ServiceController extends Controller
                 $this->getParameter("hexaa_permissionprefix"),
                 $servid,
                 $dataToBackend['entitlement'],
+                null,
                 $this->get('entitlement')
             );
 
@@ -152,6 +155,7 @@ class ServiceController extends Controller
                     $this->getParameter("hexaa_permissionprefix"),
                     $servid,
                     $dataToBackend['entitlementplus1'],
+                    null,
                     $this->get('entitlement')
                 );
 
@@ -166,6 +170,7 @@ class ServiceController extends Controller
                     $this->getParameter("hexaa_permissionprefix"),
                     $servid,
                     $dataToBackend['entitlementplus2'],
+                    null,
                     $this->get('entitlement')
                 );
 
@@ -669,12 +674,31 @@ class ServiceController extends Controller
      * @Route("/permissions/{id}")
      * @Template()
      * @param integer $id
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function permissionsAction($id)
+    public function permissionsAction($id, Request $request)
     {
         $verbose = "expanded";
         $permissions = $this->get('service')->getEntitlements($id, $verbose)['items'];
+
+        $formCreatePermissions = $this->createForm(
+            ServiceCreatePermissionType::class
+        );
+
+        $formCreatePermissions->handleRequest($request);
+
+        if ($formCreatePermissions->isSubmitted() && $formCreatePermissions->isValid()) {
+            $data = $request->request->all();
+            $permisson = array(
+                'name' => $data['service_create_permission']['permissionName'],
+                'uri' => $data['service_create_permission']['permissionURL'],
+                'description' => $data['service_create_permission']['permissionDescription'],
+                );
+            $this->get('service')->createPermission($permisson['uri'], $id, $permisson['name'], $permisson['description'], $this->get('entitlement'));
+
+            return $this->redirect($request->getUri());
+        }
 
         return $this->render(
             'AppBundle:Service:permissions.html.twig',
@@ -684,7 +708,8 @@ class ServiceController extends Controller
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
                 'permissions_accordion' => $this->permissionsToAccordion($permissions),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'admin' => $this->get('principal')->isAdmin()["is_admin"],
+                'formCreatePermission' => $formCreatePermissions->createView(),
             )
         );
     }
