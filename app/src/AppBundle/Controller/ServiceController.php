@@ -67,72 +67,6 @@ class ServiceController extends Controller
     }
 
     /**
-     * @Route("/addStepOne")
-     * @Template()
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    /*  public function addStepOneAction(Request $request)
-      {
-          return $this->render('AppBundle:Service:addStepOne.html.twig', array());
-      }
-
-      /**
-       * @Route("/addStepTwo")
-       * @Template()
-       * @param Request $request
-       * @return \Symfony\Component\HttpFoundation\Response
-       */
-    /*   public function addStepTwoAction(Request $request)
-       {
-           $verbose = "expanded";
-           $attributespecs = $this->get('attribute_spec')->cget($verbose);
-
-           return $this->render(
-               'AppBundle:Service:addStepTwo.html.twig',
-               array(
-                   'attributes' => $attributespecs,
-               )
-           );
-       }
-
-       /**
-        * @Route("/addStepThree")
-        * @Template()
-        * @param Request $request
-        * @return \Symfony\Component\HttpFoundation\Response
-        */
-    /*  public function addStepThreeAction(Request $request)
-      {
-          $verbose = "expanded";
-          $permissionsset = $this->get('entitlement_pack')->getPublic($verbose)['items'];
-
-          return $this->render('AppBundle:Service:addStepThree.html.twig');
-      }
-
-      /**
-       * @Route("/addStepFour")
-       * @Template()
-       * @param Request $request
-       * @return \Symfony\Component\HttpFoundation\Response
-       */
-    /*   public function addStepFourAction(Request $request)
-       {
-           return $this->render('AppBundle:Service:addStepFour.html.twig', array());
-       }
-
-       /**
-        * @Route("/addStepFive")
-        * @Template()
-        * @param Request $request
-        * @return \Symfony\Component\HttpFoundation\Response
-        */
-    /*   public function addStepFiveAction(Request $request)
-       {
-           return $this->render('AppBundle:Service:addStepFive.html.twig', array());
-       }*/
-
-    /**
      * @Route("/show/{id}")
      * @param integer $id
      * @return \Symfony\Component\HttpFoundation\Response
@@ -259,7 +193,15 @@ class ServiceController extends Controller
             return $this->render('AppBundle:Service:created.html.twig', array('newserv' => $this->get('service')->get($servid, "expanded"), 'token' => $getlink['token'], ));
         }
 
-        return $this->render('AppBundle:Service:create.html.twig', array('form' => $form->createView(), ));
+        return $this->render(
+            'AppBundle:Service:create.html.twig',
+            array(
+                'form' => $form->createView(),
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                )
+        );
     }
 
     /**

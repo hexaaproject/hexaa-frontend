@@ -1,5 +1,21 @@
 
-.dropbtn, .servicecl, .adminhref {
+.adminhref {
+    background-color: #2e2d2d;
+    position: relative;
+    padding-left: 8%;
+    font-size: medium;
+    border: #2e2d2d;
+    cursor: pointer;
+    display: inline-block;
+    height: 100%;
+    width: 200px;
+    text-align: center;
+    outline: 0;
+    text-decoration: none;
+    padding-top: 14px;
+}
+
+.dropbtn, .servicecl {
     background-color: #2e2d2d;
     color: white;
     position: relative;
