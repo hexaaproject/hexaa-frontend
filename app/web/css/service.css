@@ -133,7 +133,7 @@ form[name="service_create_permission"] .form-group{
     width: 400px;
 }
 
-.header{
+form[name="service_create_permission"] .header{
     text-align: left;
     color: #61AFC5;
     font-size: large;

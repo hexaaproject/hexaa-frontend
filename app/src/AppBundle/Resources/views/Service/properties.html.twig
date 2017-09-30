@@ -19,30 +19,39 @@
     <script>
 
         function property() {
-
-            $(".propertyblocknoedit")[0].style.display = "none";
-            $(".sendbutton")[0].style.display = "inline";
-            $(".propertyblockedit")[0].style.display = "inline";
-            // $(".propertyblockedit").toggle();
+            $(".propertyblocknoedit").addClass('hidden');
+            $(".sendbutton").removeClass('hidden');
+            $(".propertyblockedit").removeClass('hidden');
         }
 
         function owner() {
-            $(".ownerblocknoedit")[0].style.display = "none";
-            $(".sendownerbutton")[0].style.display = "inline";
-            $(".ownerblockedit")[0].style.display = "inline";
+            $(".ownerblocknoedit").addClass('hidden');
+            $(".sendownerbutton").removeClass('hidden');
+            $(".ownerblockedit").removeClass('hidden');
         }
 
         function privacy() {
-            $(".privacyblocknoedit")[0].style.display = "none";
-            $(".sendprivacybutton")[0].style.display = "inline";
-            $(".privacyblockedit")[0].style.display = "inline";
+            $(".privacyblocknoedit").addClass('hidden');
+            $(".sendprivacybutton").removeClass('hidden');
+            $(".privacyblockedit").removeClass('hidden');
         }
-        function edit() {
-            /*  $(".sendbutton")[0].style.display = "inline";
-             $("#service_properties_serviceName").removeAttr('disabled');
-             $("#service_properties_serviceDescription").removeAttr('disabled');
-             $("#service_properties_serviceURL").removeAttr('disabled');
-             $("#service_properties_serviceSAML").removeAttr('disabled');*/
+
+        function cancelproperty() {
+            $(".propertyblocknoedit").removeClass('hidden');
+            $(".sendbutton").addClass('hidden');
+            $(".propertyblockedit").addClass('hidden');
+        }
+
+        function cancelowner() {
+            $(".ownerblocknoedit").removeClass('hidden');
+            $(".sendownerbutton").addClass('hidden');
+            $(".ownerblockedit").addClass('hidden');
+        }
+
+        function cancelprivacy() {
+            $(".privacyblocknoedit").removeClass('hidden');
+            $(".sendprivacybutton").addClass('hidden');
+            $(".privacyblockedit").addClass('hidden');
         }
 
     </script>
@@ -53,15 +62,14 @@
         {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1"}) }}
     </div>
 
-    <div class="propertyblockedit" style="display:none">
+    <div class="propertyblockedit hidden">
         {{ form_start(propertiesform) }}
         <div class="header" style="padding-top:0.5em">
             Properties
-            <button type="submit" class="sendbutton pull-right" alt="done-1" id="done1" style="display:none"><i
+            <button type="submit" class="sendbutton pull-right" alt="done-1" id="done1"><i
                         class="material-icons" alt="done-1" name="done-1">done</i></button>
-            <button type="button" name="pencil" class="editbutton" alt="pencil" style="display: inline"
-                    onclick="edit()"><i class="material-icons">create</i></button>
-
+            <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelproperty()"><i
+                        class="material-icons">cancel</i></button>
         </div>
         <div>
             {{ form_row(propertiesform.serviceName) }}
@@ -84,14 +92,14 @@
         {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()", pencilid:"2"}) }}
     </div>
 
-    <div class="ownerblockedit" style="display:none">
+    <div class="ownerblockedit hidden">
         {{ form_start(ownerform) }}
         <div class="header" style="padding-top:0.5em">
             Owner details
-            <button type="submit" class="sendownerbutton pull-right" id="done2" style="display:none"><i
+            <button type="submit" class="sendownerbutton pull-right" id="done2"><i
                         class="material-icons">done</i></button>
-            <button type="button" class="editbutton" style="display: inline" onclick="editowner()"><i
-                        class="material-icons">create</i></button>
+            <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelowner()"><i
+                        class="material-icons">cancel</i></button>
         </div>
         <div>
             {{ form_row(ownerform.serviceOwnerName) }}
@@ -113,14 +121,14 @@
         {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy()", pencilid:"3"}) }}
     </div>
 
-    <div class="privacyblockedit" style="display:none">
+    <div class="privacyblockedit hidden">
         {{ form_start(privacyform) }}
         <div class="header" style="padding-top:0.5em">
             Privacy Information
-            <button type="submit" class="sendprivacybutton pull-right" id="done3" style="display:none"><i
+            <button type="submit" class="sendprivacybutton pull-right" id="done3"><i
                         class="material-icons" id="ic1">done</i></button>
-            <button type="button" class="editbutton" style="display: inline" onclick="editprivacy()"><i
-                        class="material-icons">create</i></button>
+            <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelprivacy()"><i
+                        class="material-icons">cancel</i></button>
         </div>
         <div>
             {{ form_row(privacyform.servicePrivacyURL) }}
