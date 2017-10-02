@@ -11,13 +11,73 @@
         {% endstylesheets %}
     {% endblock %}
 
+    {% javascripts
+    '@instafilta_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        $(document).ready(function () {
+            $('#hexaaSearchFieldPermission').instaFilta();
+            if ("{{ action }}" == "create") {
+                showCreateForm();
+            }
+        });
+    </script>
+
+    <script>
+        function showCreateForm() {
+            $("#createPermissionBlock").removeClass('hidden');
+            $('#createButton').addClass('hidden');
+            $('#hexaaSearchFieldPermission').addClass('hidden');
+        }
+
+        function cancel() {
+            $('#createButton').removeClass('hidden');
+            $('#createPermissionBlock').addClass('hidden');
+            $('#hexaaSearchFieldPermission').removeClass('hidden');
+        }
+
+    </script>
+
+    <div class="col-sm-11 col-sm-offset-2">
+        <div class="createPermission hidden" id="createPermissionBlock">
+            {{ form_start(formCreatePermission) }}
+            <div class="header" style="padding-top:0.5em">
+                Create Permission
+                <div class="pull-right">
+                    <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i
+                                class="material-icons">cancel</i></button>
+                    <button type="submit" id="submitbutton" class="actionbutton"><i class="material-icons">done</i>
+                    </button>
+                </div>
+
+            </div>
+            <div>
+                {{ form_row(formCreatePermission.permissionName) }}
+            </div>
+            <div>
+                {{ form_row(formCreatePermission.permissionURL) }}
+            </div>
+            <div>
+                {{ form_row(formCreatePermission.permissionDescription) }}
+            </div>
+
+            {{ form_end(formCreatePermission) }}
+        </div>
+    </div>
     <div class="col-sm-11 col-sm-offset-2">
         <input id="hexaaSearchFieldPermission" type="text" name="filter" class="hexaaSearchField pull-left"
                placeholder="Search permission">
 
-        <button class="btnhexaa btn-red btnhexaa-sm pull-right"><i class="material-icons">add</i> Create</button>
+        <button class="btnhexaa btn-red btnhexaa-sm pull-right" onclick="showCreateForm()" id="createButton"><i
+                    class="material-icons">add</i> Create
+        </button>
     </div>
     <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
-        {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permissions", variant: "dark", items: permissions_accordion }) }}
+        {{ include('::accordions.html.twig', {classToFilter:"admin_entity_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permissions", variant: "dark", items: permissions_accordion }) }}
     </div>
+
+
+
 {% endblock %}

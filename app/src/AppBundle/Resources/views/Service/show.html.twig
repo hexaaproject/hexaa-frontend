@@ -12,7 +12,7 @@
 {% block container %}
     <div id="srvmain">
         <div id="maindivcontents">
-            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/create_permission.svg"/><br/> <p><b>Create permission</b></p></div>
+            <div class="desktopbuttonorg"><a href="{{ path("app_service_permissions", {"id": service.id, "action": "create"}) }}"><img class="desktopbuttonimage" src="/img/create_permission.svg"/><br/> <p><b>Create permission</b></p></a></div>
             
             <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="/img/invite_organization.svg"/><br/><p><b>Invite organization</b></p></div>
             
