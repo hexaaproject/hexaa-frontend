@@ -22,6 +22,16 @@
             if ("{{ action }}" == "create") {
                 showCreateForm();
             }
+            $('#hexaaSearchFieldPermission').keypress(function(){
+                $(".caretbutton").each(function (index) {
+                    if ($(this).text() == 'arrow_drop_up') {
+                        $(this).text('arrow_drop_down');
+                    }
+                });
+                $( ".accordion-panel" ).each(function( index ) {
+                    $( this ).css({ 'display': "none" });
+                });
+            });
         });
     </script>
 
