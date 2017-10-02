@@ -1,0 +1,43 @@
+form[name="admin_attribute_spec"]{
+    border: 2px solid #61AFC5;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+form[name="admin_attribute_spec"] .form-group{
+    padding-right: 60px;
+}
+
+#admin_attribute_spec_attributeSpecName, #admin_attribute_spec_attributeSpecURI, #admin_attribute_spec_attributeSpecDescription{
+    font-size: inherit;
+    color: #61AFC5;
+    background-color: #DFEDEE;
+    border: 1px solid #61AFC5;
+    border-radius: 0px !important;
+    height: 30px;
+    width: 400px;
+}
+
+#admin_attribute_spec_attributeSpecMaintainer, #admin_attribute_spec_attributeSpecSyntax, #admin_attribute_spec_attributeSpecIsMultivalue{
+    height: 30px;
+    width: 100px;
+    float: right !important;
+    margin-right: 300px;
+}
+
+form[name="admin_attribute_spec"] .header{
+    text-align: left;
+    color: #61AFC5;
+    font-size: large;
+    font-weight: bold;
+    padding-bottom: 1.5em;
+    width: 630px;
+}
+
+.actionbutton{
+    cursor: pointer;
+    border: none;
+    background-color: white;
+}

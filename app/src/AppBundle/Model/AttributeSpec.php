@@ -25,4 +25,21 @@ class AttributeSpec extends AbstractBaseResource
             $pageSize
         );
     }
+
+    /**
+     *Create attribute specification
+     *
+     * @param string $admin
+     * @param array  $attributeSpec
+     * @param string $verbose       verbose
+     * @param int    $offset        offset
+     * @param int    $pageSize      pagesize
+     * @return response
+     */
+    public function createAttributeSpec(string $admin, array $attributeSpec, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    {
+        $response = $this->postCallAdmin($this->pathName, $attributeSpec, $admin);
+
+        return $response;
+    }
 }

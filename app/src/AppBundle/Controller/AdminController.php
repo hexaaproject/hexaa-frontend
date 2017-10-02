@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\OrgManagersContactType;
 use AppBundle\Form\ServManagersContactType;
+use AppBundle\Form\AdminAttributeSpecType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -36,12 +37,35 @@ class AdminController extends Controller
     /**
      * @Route("/attributes/{admin}")
      * @Template()
-     * @param bool $admin
-     * @return Response
+     * @param bool    $admin
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function attributesAction($admin)
+    public function attributesAction($admin, Request $request)
     {
         $attributespecifications = $this->get('attribute_spec')->cget();
+
+        $formCreateAttributeSpec = $this->createForm(
+            AdminAttributeSpecType::class
+        );
+
+        $formCreateAttributeSpec->handleRequest($request);
+
+        if ($formCreateAttributeSpec->isSubmitted() && $formCreateAttributeSpec->isValid()) {
+            $data = $request->request->all();
+            $attributeSpec = array(
+                'name' => $data['admin_attribute_spec']['attributeSpecName'],
+                'uri' => $data['admin_attribute_spec']['attributeSpecURI'],
+                'description' => $data['admin_attribute_spec']['attributeSpecDescription'],
+                'maintainer' => $data['admin_attribute_spec']['attributeSpecMaintainer'],
+                'syntax' => $data['admin_attribute_spec']['attributeSpecSyntax'],
+                'is_multivalue' => $data['admin_attribute_spec']['attributeSpecIsMultivalue'],
+            );
+            $this->get('attribute_spec')->createAttributeSpec($admin, $attributeSpec);
+          //  $this->get('service')->createPermission($permisson['uri'], $id, $permisson['name'], $permisson['description'], $this->get('entitlement'));
+
+            return $this->redirect($request->getUri());
+        }
 
         return $this->render(
             'AppBundle:Admin:attributes.html.twig',
@@ -52,6 +76,7 @@ class AdminController extends Controller
                 "submenu" => "true",
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
                 'attributes_accordion' => $this->attributesToAccordion($attributespecifications),
+                'formCreateAttributeSpec' => $formCreateAttributeSpec->createView(),
             )
         );
     }
