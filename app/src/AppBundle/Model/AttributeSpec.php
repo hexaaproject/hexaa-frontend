@@ -38,7 +38,7 @@ class AttributeSpec extends AbstractBaseResource
      */
     public function createAttributeSpec(string $admin, array $attributeSpec, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        $response = $this->postCallAdmin($this->pathName, $admin, $attributeSpec);
+        $response = $this->postCallAdmin($this->pathName, $attributeSpec, $admin);
 
         return $response;
     }
