@@ -16,6 +16,16 @@
     <script>
         $(document).ready(function () {
            $('#hexaaSearchFieldEntityIDs').instaFilta();
+            $('#hexaaSearchFieldEntityIDs').keypress(function(){
+                $(".caretbutton").each(function (index) {
+                    if ($(this).text() == 'arrow_drop_up') {
+                        $(this).text('arrow_drop_down');
+                    }
+                });
+                $( ".accordion-panel" ).each(function( index ) {
+                    $( this ).css({ 'display': "none" });
+                });
+            });
         });
     </script>
     <div class="col-sm-11 col-sm-offset-2">
