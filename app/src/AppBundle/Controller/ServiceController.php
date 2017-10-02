@@ -671,13 +671,14 @@ class ServiceController extends Controller
     }
 
     /**
-     * @Route("/permissions/{id}")
+     * @Route("/permissions/{id}/{action}", defaults={"action" = null})
      * @Template()
-     * @param integer $id
-     * @param Request $request
+     * @param integer     $id
+     * @param Request     $request
+     * @param string|null $action
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function permissionsAction($id, Request $request)
+    public function permissionsAction($id, Request $request, $action = null)
     {
         $verbose = "expanded";
         $permissions = $this->get('service')->getEntitlements($id, $verbose)['items'];
@@ -710,6 +711,7 @@ class ServiceController extends Controller
                 'permissions_accordion' => $this->permissionsToAccordion($permissions),
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
                 'formCreatePermission' => $formCreatePermissions->createView(),
+                'action' => $action,
             )
         );
     }

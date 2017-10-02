@@ -19,6 +19,9 @@
     <script>
         $(document).ready(function () {
             $('#hexaaSearchFieldPermission').instaFilta();
+            if ("{{ action }}" == "create") {
+                showCreateForm();
+            }
         });
     </script>
 
