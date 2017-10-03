@@ -11,13 +11,52 @@
             {% endstylesheets %}
         {% endblock %}
 
+        <script>
 
-        <div class="row">
-            <br>
-            <div class="col-md-6 col-md-offset-3">
-                {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox }) }}
+            function property() {
+                $("#profilPropertiesContainer").addClass('hidden');
+                $(".accountbutton").addClass('hidden');
+                $(".sendbutton").removeClass('hidden');
+                $(".accountbutton-form").removeClass('hidden');
+                $(".profilPropertiesEdit").removeClass('hidden');
+            }
+
+            function cancelprofilproperty() {
+                $("#profilPropertiesContainer").removeClass('hidden');
+                $(".accountbutton").removeClass('hidden');
+                $(".sendbutton").addClass('hidden');
+                $(".accountbutton-form").addClass('hidden');
+                $(".profilPropertiesEdit").addClass('hidden');
+            }
+
+        </script>
+
+        <div class="col-sm-11 col-md-offset-4" id="profilPropertiesContainer">
+            <div class="accountbutton pull-right"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="/img/account_history.svg"/><br/><br/>Account history</a></div>
+            {{ include('::panel.html.twig', {styleOfContainer: "profilProperties", heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1" }) }}
+        </div>
+
+        <div class="col-sm-11 col-md-offset-4 profilPropertiesEdit hidden" id="profilPropertiesContainer">
+            <div class="accountbutton-form pull-right hidden"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="/img/account_history.svg"/><br/><br/>Account history</a></div>
+            {{ form_start(profilePropertiesForm) }}
+            <div class="header">
+                Properties
+                <button type="submit" class="sendbutton pull-right" alt="done-1" id="done1"><i
+                            class="material-icons" alt="done-1" name="done-1">done</i></button>
+                <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelprofilproperty()"><i
+                            class="material-icons">cancel</i></button>
             </div>
-            <div class="accountbutton"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="/img/account_history.svg"/><br/><br/>Account history</a></div>
+            <div>
+                {{ form_row(profilePropertiesForm.principalName) }}
+            </div>
+            <div>
+                {{ form_row(profilePropertiesForm.principalEmail) }}
+            </div>
+            <div>
+                {{ form_row(profilePropertiesForm.principalFedID) }}
+            </div>
+
+            {{ form_end(profilePropertiesForm) }}
         </div>
 
     {% endblock %}

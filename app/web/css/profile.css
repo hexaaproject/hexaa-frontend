@@ -15,11 +15,10 @@ table#profileproperties, #profileattributes {
     padding-top: 10px;
 }
 
-.accountbutton {
-    display: inline-block;
-    margin-left: 100px;
+.accountbutton, .accountbutton-form {
     width: 150px;
     text-align: center;
+    margin-right: 300px;
 }
 
 .accountimage {
@@ -44,14 +43,6 @@ table#profileproperties, #profileattributes {
     font-size: 1.5em;
     float: left;
     font-family: Georgia;
-}
-
-.uniqueprofile {
-
-}
-
-#attributes {
-
 }
 
 .accordionattributes {
@@ -103,4 +94,55 @@ table#profileproperties, #profileattributes {
     width: 100%;
     display: inline-block;
     text-align: left;
+}
+
+#profilPropertiesContainer{
+    padding-top: 1.5em;
+    padding-bottom: 0.5em;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+form[name="profile_properties"]{
+    border: 2px solid #61AFC5;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 550px;
+}
+
+form[name="profile_properties"] .form-group{
+    padding-right: 60px;
+}
+
+form[name="profile_properties"] .form-control{
+    margin-right: 30px;
+}
+
+#profile_properties_principalName, #profile_properties_principalEmail, #profile_properties_principalFedID, #profile_properties_adminFedID{
+    font-size: inherit;
+    color: #61AFC5;
+    background-color: #DFEDEE;
+    border: 1px solid #61AFC5;
+    border-radius: 0px !important;
+    height: 30px;
+    width: 300px;
+}
+
+form[name="profile_properties"] .header{
+    text-align: left;
+    color: #61AFC5;
+    font-size: x-large;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-right: 5px;
+    padding-bottom: 0.5em;
+    width: 530px;
+}
+
+.actionbutton{
+    cursor: pointer;
+    border: none;
+    background-color: white;
 }

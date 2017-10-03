@@ -96,6 +96,29 @@ class Principal extends AbstractBaseResource
         return $response;
     }
 
+    /**
+     * Edit principal properties
+     *
+     * @param string $admin
+     * @param string $pid
+     * @param array  $data
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function editPrincipal(string $admin, string $pid, array $data)
+    {
+        $response = null;
+        $id = (int) ($pid);
+        $path = 'principals/'.$id;
+
+        if ($admin == "1") {
+            $admin = "true";
+            $response = $this->putCallAdmin($path, $data, $admin);
+        } else {
+            $response = $this->putCall($path, $data);
+        }
+
+        return $response;
+    }
 
     /**
      * Principal is admin or not?

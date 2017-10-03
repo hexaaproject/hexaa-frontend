@@ -46,7 +46,7 @@ return $this->render(
     {% endfor %}
 </div>#}
 
-<div id="propertiespanelnoedit">
+<div id={{ styleOfContainer }}>
     <div class="header">
         {{ heading }}
         <button type="button" {% if pencilid is defined %}id="pencil-{{ pencilid }}" {% endif %} class="editbutton" style="display: {{ buttonappear }}" {% if changebutton is defined %} onclick="{{ changebutton }}" {% endif %}><i

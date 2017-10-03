@@ -48,6 +48,7 @@
     font-size: x-large;
     font-weight: bold;
     padding-left: 20px;
+    padding-right: 5px;
     padding-bottom: 0.5em;
 }
 
@@ -105,4 +106,12 @@ form[name="service_privacy"] {
 
 select[multiple] {
     height: 90px;
+}
+
+#profilProperties{
+    width: 550px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border: 2px solid #61AFC5;
+    margin-left: 15px;
 }
