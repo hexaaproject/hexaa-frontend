@@ -266,6 +266,32 @@ abstract class AbstractBaseResource
 
     /**
      * @param string $path
+     * @param array  $data
+     * @param string $admin
+     * @return ResponseInterface
+     */
+    protected function putCallAdmin(string $path, array $data, string $admin = "true"): ResponseInterface
+    {
+        if ($admin == "1") {
+            $admin = "true";
+        }
+
+        $response = $this->client->put(
+            $path,
+            [
+                'json' => $data,
+                'headers' => $this->getHeaders(),
+                'query' => array(
+                    'admin' => $admin,
+                ),
+            ]
+        );
+
+        return $response;
+    }
+
+    /**
+     * @param string $path
      * @param array $data
      * @return ResponseInterface
      */

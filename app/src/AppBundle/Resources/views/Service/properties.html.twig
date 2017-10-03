@@ -59,7 +59,7 @@
 
     <br>
     <div class="propertyblocknoedit" id="row">
-        {{ include('::panel.html.twig', { heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1"}) }}
+        {{ include('::panel.html.twig', { styleOfContainer: "propertiespanelnoedit", heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1"}) }}
     </div>
 
     <div class="propertyblockedit hidden">
@@ -89,7 +89,7 @@
 
     <br>
     <div class="ownerblocknoedit" id="row">
-        {{ include('::panel.html.twig', { heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()", pencilid:"2"}) }}
+        {{ include('::panel.html.twig', {styleOfContainer: "propertiespanelnoedit", heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()", pencilid:"2"}) }}
     </div>
 
     <div class="ownerblockedit hidden">
@@ -118,7 +118,7 @@
 
     <br>
     <div class="privacyblocknoedit" id="row">
-        {{ include('::panel.html.twig', { heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy()", pencilid:"3"}) }}
+        {{ include('::panel.html.twig', {styleOfContainer: "propertiespanelnoedit", heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy()", pencilid:"3"}) }}
     </div>
 
     <div class="privacyblockedit hidden">
