@@ -130,4 +130,17 @@ class Principal extends AbstractBaseResource
     {
         return $this->getSingular($this->pathName.'/isadmin', $verbose);
     }
+
+    /**
+     * Get the history of the principal
+     * @param string $verbose
+     * @param int    $offset
+     * @param int    $pageSize
+     * @return array
+     */
+    public function getHistory(string $verbose = "normal", int $offset = 0, int $pageSize = 500)
+    {
+        //$id = (int) ($pid);
+        return $this->getCollection($this->pathName.'/news', $verbose, $offset, $pageSize);
+    }
 }
