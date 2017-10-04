@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Form\ProfilePropertiesType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -36,7 +37,7 @@ class ProfileController extends Controller
         );
 
         $profilePropertiesForm->add('principalFedID', TextType::class, array(
-            'label' => 'FedID',
+            'label' => 'Federal ID',
             "label_attr" => array('class' => 'formlabel'),
             'data' => $propertiesDatas["principalFedID"],
             'attr' => array(
@@ -59,25 +60,51 @@ class ProfileController extends Controller
             return $this->redirect($request->getUri());
         }
 
-
         return $this->render(
             'AppBundle:Profile:index.html.twig',
             array(
                 'propertiesbox' => $this->getPropertiesBox(),
                 'main' => $user,
                 'profilePropertiesForm' => $profilePropertiesForm->createView(),
-                'organizations' => $this->getOrganizations(),
-                'services' => $this->getServices(),
+                "organizations" => $this->get('organization')->cget(),
+                "services" => $this->get('service')->cget(),
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
     }
 
     /**
+     * Get the history of the principal.
      * @Route("/history")
+     * @Template()
+     * @return array
      */
     public function historyAction()
     {
+
+        return array(
+            "organizations" => $this->get('organization')->cget(),
+            "services" => $this->get('service')->cget(),
+            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+        );
+    }
+
+    /**
+     * @Route("/history/json")
+     * @param integer|null $offset   Offset
+     * @param integer      $pageSize Pagesize
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function historyJSONAction($offset = null, $pageSize = 25)
+    {
+        $data = $this->get('principal')->getHistory();
+        for ($i = 0; $i < $data['item_number']; $i++) {
+            $dateTime = new \DateTime($data['items'][$i]['created_at']);
+            $data['items'][$i]['created_at'] =  "<div style='white-space: nowrap'>".$dateTime->format('Y-m-d H:i')."</div>";
+        }
+        $response = new JsonResponse($data);
+
+        return $response;
     }
 
     /**
@@ -92,25 +119,5 @@ class ProfileController extends Controller
         );
 
         return $propertiesbox;
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getOrganizations()
-    {
-        $organization = $this->get('organization')->cget();
-
-        return $organization;
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getServices()
-    {
-        $services = $this->get('service')->cget();
-
-        return $services;
     }
 }
