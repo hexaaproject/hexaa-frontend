@@ -2,7 +2,8 @@
 image: gitlab/dind
 
 variables:
-  DOCKER_DRIVER: overlay
+  CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5000/hexaa/hexaa-newui:$CI_BUILD_REF_NAME
+  CONTAINER_RELEASE_IMAGE: docker.hbit.sztaki.hu:5000/hexaa/hexaa-newui:latest
 
 services:
 - docker:dind
@@ -35,10 +36,6 @@ before_script:
   # you will overwrite your user's SSH config.
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-
-variables:
-  CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5000/hexaa/hexaa-newui:$CI_BUILD_REF_NAME
-  CONTAINER_RELEASE_IMAGE: docker.hbit.sztaki.hu:5000/hexaa/hexaa-newui:latest
 
 build:
   stage: build
