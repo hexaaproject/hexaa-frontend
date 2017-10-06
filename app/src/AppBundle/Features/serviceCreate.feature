@@ -15,12 +15,12 @@ Feature: When I go to create service
     And a field should contain placeholder "Name of service"
     And a field should contain placeholder "Description of service"
     And a field should contain placeholder "URL of service"
-    And I should see "Which entity id?"
+    And a field should contain placeholder "Start typing entity ID"
 
     # Fill the first step
     When I fill in "Name of service" with "Test service 4"
     And I fill in "Description of service" with "Ez egy teszt szolgáltatás"
-    And I select "https://test.com/ssp" from "service_entityid"
+    And I fill in dropdown "typeahead_service_entityid" with "https://test.com/ss"
     And I press "next-1"
     Then I should see "Create your entitlements of your service"
 

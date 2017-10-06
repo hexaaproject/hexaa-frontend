@@ -19,6 +19,7 @@ use AppBundle\Form\ServiceType;
 use AppBundle\Form\ServiceCreatePermissionType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use WebDriver\Exception;
 
 /**
  * @Route("/service")
@@ -95,9 +96,14 @@ class ServiceController extends Controller
      */
     public function createAction(Request $request)
     {
+        $services = $this->getServices();
+        $servicesNames = array();
+        foreach ($services['items'] as $service) {
+            array_push($servicesNames, $service['name']);
+        }
 
         $entityidsarray = array();
-        $entityidsarray["Which entity id?"] = "Which entity id?";
+       // $entityidsarray["Which entity id?"] = "Which entity id?";
         $entityids = $this->get('entity_id')->cget();
         $keys = array_keys($entityids['items']);
         foreach ($keys as $key) {
@@ -108,104 +114,137 @@ class ServiceController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
 
-            $dataToBackend = $data;
-
-            // create service
-            $service = $this->get('service')->create(
-                $dataToBackend["name"],
-                $dataToBackend["description"],
-                $dataToBackend["url"],
-                $dataToBackend["entityid"]
-            );
-
-            $servid = $service['id'];
-
-            //add manager to the service
-            $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
-            $this->get('service')->putManager($servid, $self['id']);
+                $dataToBackend = $data;
 
 
-            // create permission
-            $permission = $this->get('service')->createPermission(
-                $this->getParameter("hexaa_permissionprefix"),
-                $servid,
-                $dataToBackend['entitlement'],
-                null,
-                $this->get('entitlement')
-            );
-
-            // create permissionset to permission
-            $permissionset = $this->get('service')->createPermissionSet(
-                $servid,
-                'default',
-                $this->get('entitlement_pack')
-            );
-
-            //add permission to permissionset
-            $this->get('entitlement_pack')->addPermissionToPermissionSet(
-                $permissionset['id'],
-                $permission['id']
-            );
-
-            if ($dataToBackend['entitlementplus1'] != null) {
-                $permissionplus1 = $this->get('service')->createPermission(
-                    $this->getParameter("hexaa_permissionprefix"),
-                    $servid,
-                    $dataToBackend['entitlementplus1'],
-                    null,
-                    $this->get('entitlement')
-                );
-
-                $this->get('entitlement_pack')->addPermissionToPermissionSet(
-                    $permissionset['id'],
-                    $permissionplus1['id']
-                );
-            }
-
-            if ($dataToBackend['entitlementplus2'] != null) {
-                $permissionplus2 = $this->get('service')->createPermission(
-                    $this->getParameter("hexaa_permissionprefix"),
-                    $servid,
-                    $dataToBackend['entitlementplus2'],
-                    null,
-                    $this->get('entitlement')
-                );
-
-                $this->get('entitlement_pack')->addPermissionToPermissionSet(
-                    $permissionset['id'],
-                    $permissionplus2['id']
-                );
-            }
-
-            //generate token to permissionset
-            $permissionssets = $this->get('service')->getEntitlementPacks($servid)['items'];
-            $permissionsetid = null;
-            foreach ($permissionssets as $permissionset) {
-                if ($permissionset['name'] == 'default') {
-                    $permissionsetid = $permissionset['id'];
+                foreach ($services['items'] as $service) {
+                    if ($service['name'] == $dataToBackend["name"]) {
+                        throw new \Exception('This name of service already exists!');
+                    }
                 }
-            }
 
-            $postarray = array("service" => $servid, "entitlement_packs" => [$permissionsetid]);
-            $response = $this->get('link')->post($postarray);
-            $headers = $response->getHeader('Location');
-            $headerspartsary = explode("/", $headers[0]);
-            $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
+                if (strlen($dataToBackend['name']) < 3) {
+                    throw new \Exception('This name of service has to be at least three character long!');
+                }
 
 
-            return $this->render(
-                'AppBundle:Service:created.html.twig',
-                array(
-                    'newserv' => $this->get('service')->get($servid, "expanded"),
-                    'token' => $getlink['token'],
-                    'organizations' => $this->getOrganizations(),
-                    'services' => $this->getServices(),
-                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                if ($dataToBackend['entitlementplus1'] != null) {
+                    if ($dataToBackend['entitlement'] == $dataToBackend['entitlementplus1']) {
+                        throw new \Exception('Add different names to entitlements!');
+                    }
+                }
+
+                if ($dataToBackend['entitlementplus2'] != null) {
+                    if ($dataToBackend['entitlement'] == $dataToBackend['entitlementplus2']) {
+                        throw new \Exception('Add different names to entitlements!');
+                    }
+                }
+
+                if ($dataToBackend['entitlementplus1'] != null && $dataToBackend['entitlementplus2'] != null) {
+                    if ($dataToBackend['entitlementplus1'] == $dataToBackend['entitlementplus2']) {
+                        throw new \Exception('Add different names to entitlements!');
+                    }
+                }
+
+                // create service
+                $service = $this->get('service')->create(
+                    $dataToBackend["name"],
+                    $dataToBackend["description"],
+                    $dataToBackend["url"],
+                    $dataToBackend["entityid"]
+                );
+
+                $servid = $service['id'];
+
+                //add manager to the service
+                $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
+                $this->get('service')->putManager($servid, $self['id']);
+
+                // create permission
+                $permission = $this->get('service')->createPermission(
+                    $this->getParameter("hexaa_permissionprefix"),
+                    $servid,
+                    $dataToBackend['entitlement'],
+                    null,
+                    $this->get('entitlement')
+                );
+
+                // create permissionset to permission
+                $permissionset = $this->get('service')->createPermissionSet(
+                    $servid,
+                    'default',
+                    $this->get('entitlement_pack')
+                );
+
+                //add permission to permissionset
+                $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                    $permissionset['id'],
+                    $permission['id']
+                );
+
+                if ($dataToBackend['entitlementplus1'] != null) {
+                    $permissionplus1 = $this->get('service')->createPermission(
+                        $this->getParameter("hexaa_permissionprefix"),
+                        $servid,
+                        $dataToBackend['entitlementplus1'],
+                        null,
+                        $this->get('entitlement')
+                    );
+
+                    $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                        $permissionset['id'],
+                        $permissionplus1['id']
+                    );
+                }
+
+                if ($dataToBackend['entitlementplus2'] != null) {
+                    $permissionplus2 = $this->get('service')->createPermission(
+                        $this->getParameter("hexaa_permissionprefix"),
+                        $servid,
+                        $dataToBackend['entitlementplus2'],
+                        null,
+                        $this->get('entitlement')
+                    );
+
+                    $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                        $permissionset['id'],
+                        $permissionplus2['id']
+                    );
+                }
+
+                //generate token to permissionset
+                $permissionssets = $this->get('service')->getEntitlementPacks($servid)['items'];
+                $permissionsetid = null;
+                foreach ($permissionssets as $permissionset) {
+                    if ($permissionset['name'] == 'default') {
+                        $permissionsetid = $permissionset['id'];
+                    }
+                }
+
+                $postarray = array("service" => $servid, "entitlement_packs" => [$permissionsetid]);
+                $response = $this->get('link')->post($postarray);
+                $headers = $response->getHeader('Location');
+                $headerspartsary = explode("/", $headers[0]);
+                $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
+
+
+                return $this->render(
+                    'AppBundle:Service:created.html.twig',
+                    array(
+                        'newserv' => $this->get('service')->get($servid, "expanded"),
+                        'token' => $getlink['token'],
+                        'organizations' => $this->getOrganizations(),
+                        'services' => $this->getServices(),
+                        "admin" => $this->get('principal')->isAdmin()["is_admin"],
                     )
-            );
+                );
+            }
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
 
         return $this->render(

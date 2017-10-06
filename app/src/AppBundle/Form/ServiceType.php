@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use Devmachine\Bundle\FormBundle\Form\Type\TypeaheadType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -59,28 +60,24 @@ class ServiceType extends AbstractType
                     "constraints" => new Constraints\Url(),
                 )
             )
-            ->add(
-                'entityid',
-                ChoiceType::class,
-                array(
-                    "label" => false,
-                    'choices' => $entityidsarray['data'],
-                    'required' => true,
-                    'choices_as_values' => true,
-                    'attr' => array(
-                        'class' => "col-md-5 col-md-offset-5",
-                    ),
-                    'choice_attr' => function ($key, $val, $index) {
-                        if ($val == "Which entity id?") {
-                            $disabled = true;
-                        } else {
-                            $disabled = false;
-                        }
+           ->add(
+               'entityid',
+               TypeaheadType::class,
+               array(
+                   "label" => false,
+                   'placeholder' => 'Start typing entity ID',
+                   'source_name' => 'entityid',
+                   'min_length' => 1,
+                   'matcher' => 'contains',
+                   'source' => $entityidsarray['data'],
+                   "attr" => array(
+                       "class" => "entityidtypeahead",
+                   ),
+                   'required' => true,
+                   'limit' => 30,
 
-                        return $disabled ? ['disabled' => 'disabled'] : [];
-                    },
-                )
-            )
+               )
+           )
             ->add(
                 'entitlement',
                 TextType::class,

@@ -12,6 +12,18 @@
 
 {% block container %}
 
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
     {{ form_start(form) }}
 
     <div id="first" class="progresswrapper">
@@ -31,14 +43,16 @@
 
         <div class="text-center progressbar-order">Enter your service's main parameters
         </div>
-        <fieldset>
+        <fieldset id="createServiceFormFields">
             {{ form_row(form.name) }}
             <br><br>
             {{ form_row(form.description) }}
             <br><br>
             {{ form_row(form.url) }}
             <br><br>
+            <div id="scrollable-dropdown-menu">
             {{ form_row(form.entityid) }}
+            </div>
         </fieldset>
 
     </div>
@@ -71,6 +85,13 @@
 
     {{ form_end(form) }}
 
+    {% javascripts
+    '@typeahead_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {{ form_javascript(form) }}
+
 {% endblock %}
 
 {% block javascripts %}
@@ -78,3 +99,5 @@
         {{ include('::progressbar.js.twig') }}
     </script>
 {% endblock %}
+
+

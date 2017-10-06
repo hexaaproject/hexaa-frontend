@@ -147,3 +147,14 @@ form[name="service_create_permission"] .header{
     border: none;
     background-color: white;
 }
+
+#createServiceFormFields .twitter-typeahead {
+    margin-left:310px;
+    width: 310px;
+}
+
+#createServiceFormFields .tt-menu {
+    margin:2px 0;
+    width: 310px;
+    border: 1px solid #61AFC5;
+}
