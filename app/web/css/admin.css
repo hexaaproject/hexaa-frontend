@@ -25,6 +25,7 @@ form[name="admin_attribute_spec"] .form-group{
     width: 100px;
     float: right !important;
     margin-right: 300px;
+    display: flex;
 }
 
 form[name="admin_attribute_spec"] .header{
@@ -40,4 +41,21 @@ form[name="admin_attribute_spec"] .header{
     cursor: pointer;
     border: none;
     background-color: white;
+}
+
+#admin_attribute_spec_attributeSpecMaintainer .radio, #admin_attribute_spec_attributeSpecSyntax .radio, #admin_attribute_spec_attributeSpecIsMultivalue .radio{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#admin_attribute_spec_attributeSpecSyntax .formlabel{
+    padding-right: 10px;
+}
+
+#admin_attribute_spec_attributeSpecMaintainer .formlabel{
+    padding-right: 17.1px;
+}
+
+#admin_attribute_spec_attributeSpecIsMultivalue .formlabel {
+    padding-right: 19.2px;
 }

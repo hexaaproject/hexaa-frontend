@@ -47,7 +47,7 @@ class AdminAttributeSpecType extends AbstractType
                 'attributeSpecURI',
                 TextType::class,
                 array(
-                    "label" => "URI",
+                    "label" => "OID",
                     "label_attr" => array('class' => 'formlabel'),
                     'attr' => array('class' => 'pull-right'),
                     'required' => true,
@@ -60,6 +60,8 @@ class AdminAttributeSpecType extends AbstractType
                     "label" => "Maintainer",
                     "label_attr" => array('class' => 'formlabel'),
                     'choices' => array('user' => 'user', 'manager' => 'manager'),
+                    'multiple' => false,
+                    'expanded' => true,
                     'required' => true,
                 )
             )
@@ -70,6 +72,8 @@ class AdminAttributeSpecType extends AbstractType
                     "label" => "Syntax",
                     "label_attr" => array('class' => 'formlabel'),
                     'choices' => array('string' => 'string', 'base64' => 'base64'),
+                    'multiple' => false,
+                    'expanded' => true,
                     'required' => true,
                 )
             )
@@ -80,6 +84,8 @@ class AdminAttributeSpecType extends AbstractType
                     "label" => "Multivalue",
                     "label_attr" => array('class' => 'formlabel'),
                     'choices' => array('true' => true, 'false' => false),
+                    'multiple' => false,
+                    'expanded' => true,
                     'required' => true,
                 )
             );
