@@ -23,10 +23,8 @@ Feature: When I go to a specific service
 	     And I should see "Permissions sets"
 	     And I should see "Connected Organizations"
 	     And I should see "Create permission"
-	     And I should see "Invite organization"
 	     And I should see "Add attribute specification"
 	     And I should see "Invite manager"
-	     And I should see "Contact admin"
 		 And I should see "View history"
 		 And I should see "Delete service"
 
