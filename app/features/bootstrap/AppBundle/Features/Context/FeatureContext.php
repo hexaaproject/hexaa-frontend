@@ -51,6 +51,23 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @When /^I check the "([^"]*)" radio button$/
+     */
+    public function iCheckTheRadioButton($labelText)
+    {
+        $page = $this->getSession()->getPage();
+        $radioButton = $page->find('named', ['radio', $labelText]);
+        if ($radioButton) {
+            $select = $radioButton->getAttribute('name');
+            $option = $radioButton->getAttribute('value');
+            $page->selectFieldOption($select, $option);
+            return;
+        }
+
+        throw new \Exception("Radio button with label {$labelText} not found");
+    }
+
+    /**
      * @Then I fill in full typeahead :arg1 with :arg2
      */
     public function iFillInTypeaheadWith($arg1, $arg2)
