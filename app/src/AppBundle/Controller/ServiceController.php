@@ -98,7 +98,7 @@ class ServiceController extends Controller
     {
         $services = $this->getServices();
         $servicesNames = array();
-        foreach ($services['items'] as $service){
+        foreach ($services['items'] as $service) {
             array_push($servicesNames, $service['name']);
         }
 
@@ -132,20 +132,20 @@ class ServiceController extends Controller
                 }
 
 
-                if($dataToBackend['entitlementplus1'] != null){
-                    if($dataToBackend['entitlement'] == $dataToBackend['entitlementplus1']){
+                if ($dataToBackend['entitlementplus1'] != null) {
+                    if ($dataToBackend['entitlement'] == $dataToBackend['entitlementplus1']) {
                         throw new \Exception('Add different names to entitlements!');
                     }
                 }
 
-                if($dataToBackend['entitlementplus2'] != null){
-                    if($dataToBackend['entitlement'] == $dataToBackend['entitlementplus2']){
+                if ($dataToBackend['entitlementplus2'] != null) {
+                    if ($dataToBackend['entitlement'] == $dataToBackend['entitlementplus2']) {
                         throw new \Exception('Add different names to entitlements!');
                     }
                 }
 
-                if($dataToBackend['entitlementplus1'] != null && $dataToBackend['entitlementplus2'] != null){
-                    if($dataToBackend['entitlementplus1'] == $dataToBackend['entitlementplus2']){
+                if ($dataToBackend['entitlementplus1'] != null && $dataToBackend['entitlementplus2'] != null) {
+                    if ($dataToBackend['entitlementplus1'] == $dataToBackend['entitlementplus2']) {
                         throw new \Exception('Add different names to entitlements!');
                     }
                 }
@@ -243,9 +243,7 @@ class ServiceController extends Controller
                     )
                 );
             }
-        }
-        catch
-        (\Exception $e){
+        } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
 
