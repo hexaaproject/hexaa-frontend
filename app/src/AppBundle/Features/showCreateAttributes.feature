@@ -15,10 +15,10 @@ Feature: When I go to admin's attributes
     When I press "Create"
     Then I should see "Create Attribute Specification"
     And I fill in "Name" with "Size"
-    And I fill in "URI" with "test:attribute:size"
-    And I select "user" from "admin_attribute_spec_attributeSpecMaintainer"
-    And I select "string" from "admin_attribute_spec_attributeSpecSyntax"
-    And I select "true" from "admin_attribute_spec_attributeSpecIsMultivalue"
+    And I fill in "OID" with "test:attribute:size"
+    And I check the "user" radio button
+    And I check the "string" radio button
+    And I check the "true" radio button
     And I press "done"
     Then I should see "Size"
     When I click on accordion "Size"
