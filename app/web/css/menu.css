@@ -31,19 +31,19 @@
     text-decoration: none;
 }
 
-.adminhref:link{
+.adminhref:link, .usernamehref:link{
     color: white;
 }
-.adminhref:visited{
+.adminhref:visited, .usernamehref:visited{
     color: white;
 }
-.adminhref:hover{
+.adminhref:hover, .usernamehref:hover{
     color: white;
 }
-.adminhref:focus{
+.adminhref:focus, .usernamehref:focus{
     color: white;
 }
-.adminhref:active{
+.adminhref:active, .usernamehref:active{
     color: white;
 }
 

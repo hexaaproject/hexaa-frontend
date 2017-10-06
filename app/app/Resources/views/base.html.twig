@@ -90,7 +90,7 @@
             {% endif %}
             <div id="container">
                 {% if app.user != null %}
-                    <div id="loginstatus"><span id="usernamebox">{{ app.user.username }}</span></div>
+                    <div id="loginstatus"> <a href="{{ path("app_profile_index") }}" class="usernamehref" style="text-decoration:none;">{{ app.user.username }}</a></div>
                 {% endif %}
 
                 <div id="logout">
