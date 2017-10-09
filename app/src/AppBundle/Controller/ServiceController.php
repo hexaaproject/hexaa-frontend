@@ -719,6 +719,9 @@ class ServiceController extends Controller
      */
     public function permissionsAction($id, Request $request, $action = null)
     {
+        $apiProperties = $this->get('service')->apget();
+        $uriPrefix = $apiProperties['entitlement_base'];
+
         $verbose = "expanded";
         $permissions = $this->get('service')->getEntitlements($id, $verbose)['items'];
 
@@ -735,7 +738,7 @@ class ServiceController extends Controller
                 'uri' => $data['service_create_permission']['permissionURL'],
                 'description' => $data['service_create_permission']['permissionDescription'],
                 );
-            $this->get('service')->createPermission($permisson['uri'], $id, $permisson['name'], $permisson['description'], $this->get('entitlement'));
+            $this->get('service')->createPermission($uriPrefix, $id, $permisson['uri'], $permisson['name'], $permisson['description'], $this->get('entitlement'));
 
             return $this->redirect($request->getUri());
         }

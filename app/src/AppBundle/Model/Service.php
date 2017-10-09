@@ -246,16 +246,17 @@ class Service extends AbstractBaseResource
      *
      * @param string      $prefix
      * @param string      $id
+     * @param string      $uriPost
      * @param string      $name
      * @param string      $description
      * @param Entitlement $entitlement
      * @return ResponseInterface
      */
-    public function createPermission(string $prefix, string $id, string $name, string $description = null, Entitlement $entitlement)
+    public function createPermission(string $prefix, string $id, string $uriPost, string $name, string $description = null, Entitlement $entitlement)
     {
-        $withoutAccent = $this->removeAccents($name);
+        $withoutAccent = $this->removeAccents($uriPost);
         //$withoutSpace = preg_replace('/\s+/', '', $withoutAccent);
-        $modifiedName = preg_replace("/[^a-zA-Z0-9]+/", "", $withoutAccent);
+        $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
         $response = $this->postCall($this->pathName.'/'.$id.'/entitlements', array("uri" => $prefix.":".$id.":".$modifiedName, "name" => $name, "description" => $description));
         $locations = $response->getHeader('Location');
         $location = $locations[0];

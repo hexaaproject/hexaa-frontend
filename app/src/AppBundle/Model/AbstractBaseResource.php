@@ -62,6 +62,19 @@ abstract class AbstractBaseResource
     }
 
     /**
+     * GET api properties
+     *
+     * @param string $verbose  One of minimal, normal or expanded
+     * @param int    $offset   paging: item to start from
+     * @param int    $pageSize paging: number of items to return
+     * @return array
+     */
+    public function apget(string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
+    {
+        return $this->getCollection("properties", $verbose, $offset, $pageSize);
+    }
+
+    /**
      * GET a single resource in array format
      *
      * @param string $id      ID of resource to GET
