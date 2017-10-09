@@ -110,12 +110,14 @@ class Principal extends AbstractBaseResource
         $id = (int) ($pid);
         $path = 'principals/'.$id;
 
-        if ($admin == "1") {
+       /* if ($admin == "1") {
             $admin = "true";
             $response = $this->putCallAdmin($path, $data, $admin);
         } else {
             $response = $this->putCall($path, $data);
-        }
+        }*/
+
+        $response = $this->patchCall($path, $data);
 
         return $response;
     }
