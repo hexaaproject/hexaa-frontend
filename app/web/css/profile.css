@@ -120,7 +120,7 @@ form[name="profile_properties"] .form-control{
     margin-right: 30px;
 }
 
-#profile_properties_principalName, #profile_properties_principalEmail, #profile_properties_principalFedID, #profile_properties_adminFedID{
+#profile_properties_principalName, #profile_properties_principalEmail, #profile_properties_adminFedID{
     font-size: inherit;
     color: #61AFC5;
     background-color: #DFEDEE;
@@ -128,6 +128,17 @@ form[name="profile_properties"] .form-control{
     border-radius: 0px !important;
     height: 30px;
     width: 300px;
+}
+
+#profile_properties_principalFedID{
+    color: #61AFC5;
+    height: 30px;
+    width: 300px;
+    border: none;
+    background: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 form[name="profile_properties"] .header{

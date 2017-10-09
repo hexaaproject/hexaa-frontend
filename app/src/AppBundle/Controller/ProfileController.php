@@ -42,7 +42,7 @@ class ProfileController extends Controller
             'data' => $propertiesDatas["principalFedID"],
             'attr' => array(
                 'class' => 'pull-right',
-                'readonly' => true,
+                'disabled' => true,
             ),
             'required' => false,
         ));
@@ -53,7 +53,7 @@ class ProfileController extends Controller
             $data = $request->request->all();
             $modified = array('display_name' => $data['profile_properties']['principalName'],
                 'email' => $data['profile_properties']['principalEmail'], );
-            $modified['fedid'] = $data['profile_properties']['principalFedID'];
+           // $modified['fedid'] = $data['profile_properties']['principalFedID'];
 
             $this->get('principal')->editPrincipal($admin, $user['id'], $modified);
 
