@@ -16,12 +16,12 @@ Feature: When I go to service's permissions
     When I press "Create"
     Then I should see "Create permission"
     And I fill in "Name" with "Példa-permission"
-    And I fill in "URI" with "some:entitlement:prefix:hexaa"
+    And I fill in "URI" with "álma:"
     And I press "done"
     Then I should see "Példa-permission"
     When I click on accordion "Példa-permission"
     Then I should see "URI"
-    And I should see "Peldapermission"
+    And I should see "alma:"
 
 
     When I press "Create"
