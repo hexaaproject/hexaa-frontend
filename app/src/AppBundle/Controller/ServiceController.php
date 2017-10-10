@@ -17,6 +17,7 @@ use AppBundle\Form\ServiceUserInvitationSendEmailType;
 use AppBundle\Form\ServiceUserInvitationType;
 use AppBundle\Form\ServiceType;
 use AppBundle\Form\ServiceCreatePermissionType;
+use AppBundle\Form\ServiceCreatePermissionSetType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use WebDriver\Exception;
@@ -783,14 +784,47 @@ class ServiceController extends Controller
     /**
      * @Route("/permissionssets/{id}/{token}/{permissionsetname}")
      * @Template()
+     * @param Request $request
      * @param integer $id
      * @param string  $token
      * @param string  $permissionsetname
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function permissionssetsAction($id, $token = null, $permissionsetname = null)
+    public function permissionssetsAction(Request $request, $id, $token = null, $permissionsetname = null)
     {
-        $permissionsset = $this->get('service')->getEntitlementPacks($id)['items'];
+        $permissionssets = $this->get('service')->getEntitlementPacks($id)['items'];
+
+        $formCreatePermissionsSet = $this->createForm(
+            ServiceCreatePermissionSetType::class
+        );
+
+        $formCreatePermissionsSet->handleRequest($request);
+
+        try {
+            if ($formCreatePermissionsSet->isSubmitted() && $formCreatePermissionsSet->isValid()) {
+                $data = $request->request->all();
+
+                if (strlen($data['service_create_permission_set']['permissionSetName']) < 3) {
+                    throw new \Exception('Name must be at least 3 character long!');
+                }
+                foreach ($permissionssets as $permissionset) {
+                    if ($permissionset['name'] == $data['service_create_permission_set']['permissionSetName']) {
+                        throw new \Exception('Permission Set name must be unique!');
+                    }
+                }
+
+                $permissonSet = array(
+                    'name' => $data['service_create_permission_set']['permissionSetName'],
+                    'type' => $data['service_create_permission_set']['permissionSetType'],
+                    'description' => $data['service_create_permission_set']['permissionSetDescription'],
+                );
+                $this->get('service')->postPermissionSet($id, $permissonSet);
+
+                return $this->redirect($request->getUri());
+            }
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+        }
 
         return $this->render(
             'AppBundle:Service:permissionssets.html.twig',
@@ -799,10 +833,11 @@ class ServiceController extends Controller
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
                 'servsubmenubox' => $this->getServSubmenuPoints(),
-                'permissions_accordion_set' => $this->permissionSetToAccordion($permissionsset),
+                'permissions_accordion_set' => $this->permissionSetToAccordion($permissionssets),
                 'token' => $token,
                 'permissionsetname' => $permissionsetname,
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'admin' => $this->get('principal')->isAdmin()["is_admin"],
+                'formCreatePermissionsSet' => $formCreatePermissionsSet->createView(),
             )
         );
     }

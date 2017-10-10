@@ -111,7 +111,7 @@ table#centertableservicesprop {
     cursor: pointer;
 }
 
-form[name="service_create_permission"]{
+form[name="service_create_permission"], form[name="service_create_permission_set"]{
     border: 2px solid #61AFC5;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
@@ -119,11 +119,28 @@ form[name="service_create_permission"]{
     padding-right: 10px;
 }
 
-form[name="service_create_permission"] .form-group{
+#service_create_permission_set_permissionSetType{
+    height: 30px;
+    width: 100px;
+    float: right !important;
+    margin-right: 300px;
+    display: flex;
+}
+
+form[name="service_create_permission"] .form-group, form[name="service_create_permission_set"] .form-group{
     padding-right: 60px;
 }
 
-#service_create_permission_permissionName, #service_create_permission_permissionDescription, #service_create_permission_permissionURL{
+#service_create_permission_set_permissionSetType .radio{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#service_create_permission_set_permissionSetType .formlabel{
+    padding-right: 10px;
+}
+
+#service_create_permission_permissionName, #service_create_permission_permissionDescription, #service_create_permission_permissionURL, #service_create_permission_set_permissionSetName, #service_create_permission_set_permissionSetDescription{
     font-size: inherit;
     color: #61AFC5;
     background-color: #DFEDEE;
@@ -133,7 +150,7 @@ form[name="service_create_permission"] .form-group{
     width: 400px;
 }
 
-form[name="service_create_permission"] .header{
+form[name="service_create_permission"] .header, form[name="service_create_permission_set"] .header{
     text-align: left;
     color: #61AFC5;
     font-size: large;

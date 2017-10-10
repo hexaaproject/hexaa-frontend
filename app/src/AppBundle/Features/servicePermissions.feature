@@ -1,7 +1,7 @@
 @serv
 @permissions
 Feature: When I go to service's permissions
-  As an authenticaed user
+  As an authenticated user
   I can create service permission
 
   Background:
