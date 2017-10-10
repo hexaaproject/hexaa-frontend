@@ -269,7 +269,7 @@ class Service extends AbstractBaseResource
      * @param string          $id
      * @param string          $name
      * @param EntitlementPack $entitlementpack
-     * @return ResponseInterface
+     * @return array
      */
     public function createPermissionSet(string $id, string $name, EntitlementPack $entitlementpack)
     {
@@ -279,6 +279,17 @@ class Service extends AbstractBaseResource
         $id = preg_replace('#.*/#', '', $location);
 
         return $entitlementpack->get($id, "expanded");
+    }
+
+    /**
+     * Create permission set in service page
+     * @param string $id              of service
+     * @param array  $entitlementPack
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function postPermissionSet(string $id, array $entitlementPack)
+    {
+        return $this->postCall($this->pathName.'/'.$id.'/entitlementpacks', $entitlementPack);
     }
 
     /**

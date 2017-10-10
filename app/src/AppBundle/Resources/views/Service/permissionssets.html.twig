@@ -9,6 +9,18 @@
         {% endstylesheets %}
     {% endblock %}
 
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
     {% javascripts
     '@instafilta_js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -30,12 +42,54 @@
         });
     </script>
 
+    <script>
+        function showCreateForm() {
+            $("#createPermissionsSetBlock").removeClass('hidden');
+            $('#createButton').addClass('hidden');
+            $('#hexaaSearchFieldPermissionSet').addClass('hidden');
+        }
+
+        function cancel() {
+            $('#createButton').removeClass('hidden');
+            $('#createPermissionsSetBlock').addClass('hidden');
+            $('#hexaaSearchFieldPermissionSet').removeClass('hidden');
+        }
+
+    </script>
+
+
+    <div class="col-sm-11 col-sm-offset-2">
+        <div class="createPermissionSet hidden" id="createPermissionsSetBlock">
+            {{ form_start(formCreatePermissionsSet) }}
+            <div class="header" style="padding-top:0.5em">
+                Create Permission Set
+                <div class="pull-right">
+                    <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i
+                                class="material-icons">cancel</i></button>
+                    <button type="submit" id="submitbutton" class="actionbutton"><i class="material-icons">done</i>
+                    </button>
+                </div>
+
+            </div>
+            <div>
+                {{ form_row(formCreatePermissionsSet.permissionSetName) }}
+            </div>
+            <div>
+                {{ form_row(formCreatePermissionsSet.permissionSetType) }}
+            </div>
+            <div>
+                {{ form_row(formCreatePermissionsSet.permissionSetDescription) }}
+            </div>
+
+            {{ form_end(formCreatePermissionsSet) }}
+        </div>
+    </div>
+
     <div class="col-sm-11 col-sm-offset-2">
         <input id="hexaaSearchFieldPermissionSet" type="text" name="filter" class="hexaaSearchField pull-left"
                placeholder="Search permission set">
 
-
-        <button class="btnhexaa btn-red btnhexaa-sm pull-right"><i class="material-icons">add</i> Create</button>
+        <button class="btnhexaa btn-red btnhexaa-sm pull-right" onclick="showCreateForm()" id="createButton"><i class="material-icons">add</i> Create</button>
     </div>
     <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
         {{ include('::accordions.html.twig', {classToFilter:"service_permissionset_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set, token: "true", service_id: service.id, tokenstring: token }) }}
