@@ -1232,6 +1232,7 @@ class ServiceController extends Controller
             }
         }
 
+        $attributespecifications["Which attribute specification?"] = "Which attribute specification?";
         //all attribute specifications
         foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
             $attributespecifications[$attributespecification['name']] = $attributespecification['id'];

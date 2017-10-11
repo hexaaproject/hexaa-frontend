@@ -27,7 +27,16 @@ class ServiceAddAttributeSpecificationType extends AbstractType
                 "label" => false,
                 'choices' => $datas['data']['attributespecifications'],
                 'required' => true,
-                'placeholder' => 'Which attribute specification?',
+                'choices_as_values' => true,
+                'choice_attr' => function ($key, $val, $index) {
+                    if ($val == "Which attribute specification?") {
+                        $disabled = true;
+                    } else {
+                        $disabled = false;
+                    }
+
+                    return $disabled ? ['disabled' => 'disabled'] : [];
+                },
                 )
             )
         ;
