@@ -29,6 +29,12 @@
             })
         }}
         {{ include('AppBundle:Service:addAttributeSpec.html.twig', {}) }}
+    {% elseif attributes is defined %}
+        <button class="btnhexaa btn-red" id="add" style="font-size: 25px; padding: 12px 15px; margin-left: 400px;">
+            <i class="material-icons">add</i>
+                Add
+        </button>
+        {{ include('AppBundle:Service:addAttributeSpec.html.twig', {}) }}
     {% endif %}
 {% endblock %}
 
