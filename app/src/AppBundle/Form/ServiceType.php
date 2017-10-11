@@ -84,7 +84,7 @@ class ServiceType extends AbstractType
                 array(
                     "label" => false,
                     'required' => true,
-                    'data' => 'default',
+                    'data' => 'Default permission',
                     //       'placeholder' => 'Name of default permission',
                     'attr' => array(
                         'class' => "col-md-5 col-md-offset-5",
@@ -99,7 +99,7 @@ class ServiceType extends AbstractType
                     'required' => false,
                     'attr' => array(
                         'class' => "col-md-5 col-md-offset-5",
-                        'placeholder' => 'Name of plus permission',
+                        'placeholder' => 'optional permission name 1',
                     ),
                 )
             )
@@ -111,7 +111,7 @@ class ServiceType extends AbstractType
                     'required' => false,
                     'attr' => array(
                         'class' => "col-md-5 col-md-offset-5",
-                        'placeholder' => 'Name of plus permission',
+                        'placeholder' => 'optional permission name 2',
                     ),
                 )
             );

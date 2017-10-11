@@ -132,22 +132,32 @@ class ServiceController extends Controller
                     throw new \Exception('This name of service has to be at least three character long!');
                 }
 
+                $withoutAccent = $this->removeAccents($dataToBackend['entitlement']);
+                $withoutAccentPlus1 = $this->removeAccents($dataToBackend['entitlementplus1']);
+                $withoutAccentPlus2 = $this->removeAccents($dataToBackend['entitlementplus2']);
+                $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
+                $modifiedNamePlus1 = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccentPlus1);
+                $modifiedNamePlus2 = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccentPlus2);
 
-                if ($dataToBackend['entitlementplus1'] != null) {
-                    if ($dataToBackend['entitlement'] == $dataToBackend['entitlementplus1']) {
-                        throw new \Exception('Add different names to entitlements!');
+                if ($modifiedName == null) {
+                    throw new \Exception('First field must be fill out!');
+                }
+
+                if ($modifiedNamePlus1 != null) {
+                    if (strtolower($modifiedName) == strtolower($modifiedNamePlus1)) {
+                        throw new \Exception('Entitlement names are case-insensitive and letters with accent are transformed into their proper letters without accent! Add different names to entitlements!');
                     }
                 }
 
-                if ($dataToBackend['entitlementplus2'] != null) {
-                    if ($dataToBackend['entitlement'] == $dataToBackend['entitlementplus2']) {
-                        throw new \Exception('Add different names to entitlements!');
+                if ($modifiedNamePlus2 != null) {
+                    if (strtolower($modifiedName) == strtolower($modifiedNamePlus2)) {
+                        throw new \Exception('Entitlement names are case-insensitive and letters with accent are transformed into their proper letters without accent! Add different names to entitlements!');
                     }
                 }
 
-                if ($dataToBackend['entitlementplus1'] != null && $dataToBackend['entitlementplus2'] != null) {
-                    if ($dataToBackend['entitlementplus1'] == $dataToBackend['entitlementplus2']) {
-                        throw new \Exception('Add different names to entitlements!');
+                if ($modifiedNamePlus1 != null && $modifiedNamePlus2 != null) {
+                    if (strtolower($modifiedNamePlus1) == strtolower($modifiedNamePlus2)) {
+                        throw new \Exception('Entitlement names are case-insensitive and letters with accent are transformed into their proper letters without accent! Add different names to entitlements!');
                     }
                 }
 
@@ -165,11 +175,12 @@ class ServiceController extends Controller
                 $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
                 $this->get('service')->putManager($servid, $self['id']);
 
+
                 // create permission
                 $permission = $this->get('service')->createPermission(
                     $this->getParameter("hexaa_permissionprefix"),
                     $servid,
-                    "deafult",
+                    $modifiedName,
                     $dataToBackend['entitlement'],
                     null,
                     $this->get('entitlement')
@@ -192,7 +203,7 @@ class ServiceController extends Controller
                     $permissionplus1 = $this->get('service')->createPermission(
                         $this->getParameter("hexaa_permissionprefix"),
                         $servid,
-                        "deafult1",
+                        $modifiedNamePlus1,
                         $dataToBackend['entitlementplus1'],
                         null,
                         $this->get('entitlement')
@@ -208,7 +219,7 @@ class ServiceController extends Controller
                     $permissionplus2 = $this->get('service')->createPermission(
                         $this->getParameter("hexaa_permissionprefix"),
                         $servid,
-                        "deafult2",
+                        $modifiedNamePlus2,
                         $dataToBackend['entitlementplus2'],
                         null,
                         $this->get('entitlement')
