@@ -176,3 +176,12 @@ td.accordion-hr {
     width: 250px;
     margin-left: 40px;
 }
+
+.accordion_button_row {
+    margin-right: 12px;
+}
+
+.accordion-button {
+    cursor: pointer;
+    font-size: large;
+}

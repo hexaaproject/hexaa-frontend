@@ -25,15 +25,6 @@ Usage:
     })
 }}
 
-{% block stylesheets %}
-    {% stylesheets
-        'css/modal.css'
-        filter='cssrewrite'
-    %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-{% endblock %}
-
 <script>
     $(document).ready(function() {
         $('.any_wrapper_element_actionButtons').on('click', '#buttonId', function(event) {
@@ -41,12 +32,21 @@ Usage:
             var content = $('#modalBoxId').find('.modal-body-content');
             content.empty();
             content.append('New text in modal content');
+            $('#modalBoxId').find('form').attr("action", $(this).data('targeturl'));
             $('#modalBoxId').modal('show');
         });
     });
 </script>
 
 #}
+{% block stylesheets %}
+    {% stylesheets
+    'css/modal.css'
+    filter='cssrewrite'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
 
 <div class="modal fade" id="{{ id }}">
     <div class="modal-dialog">
