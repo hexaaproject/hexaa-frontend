@@ -691,6 +691,22 @@ class OrganizationController extends Controller
     }
 
     /**
+     * @Route("/role/delete/{id}")
+     * @Template()
+     * @return Response
+     * @param int     $id      Role Id
+     * @param Request $request HTTP Request
+     *
+     */
+    public function roleDeleteAction($id, Request $request)
+    {
+        $organizationResource = $this->get('role');
+        $organizationResource->delete($id);
+
+        return $this->redirect($request->getUri());
+    }
+
+    /**
      * Get the history of the requested organization.
      * @Route("/history/{id}")
      * @Template()
@@ -843,9 +859,11 @@ class OrganizationController extends Controller
     private function rolesToAccordion($roles)
     {
         $rolesAccordion = array();
-
+        dump($roles);
         foreach ($roles as $role) {
             $rolesAccordion[$role['id']]['title'] = $role['name'];
+            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('id' => $role['id']));
+
             $members = array();
             $permissions = array();
 

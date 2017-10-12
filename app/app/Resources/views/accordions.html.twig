@@ -1,3 +1,15 @@
+
+{% block stylesheets %}
+    {% stylesheets
+    'css/accordions.css'
+    filter='cssrewrite'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% set admin = true %}
+
 <script>
     function toggleAccordion(e) {
 
@@ -21,6 +33,17 @@
         $(panel).addClass("active");
         $(panel).toggle();
 
+        {% if admin %}
+        $('.accordion_delete_button').on("click", function () {
+            event.preventDefault();
+            var deleteBox = $('#deleteBox');
+            deleteBox.find('form').attr("action", $(this).data('targeturl'));
+            deleteBox.find('.displayname').text($(this).data('displayname'));
+            deleteBox.modal('show');
+
+        });
+        {% endif %}
+
     }
 
 </script>
@@ -28,7 +51,7 @@
 <div class="{% if formaccordion is defined %}accordion-container-{{ formaccordion }}{% endif %} accordion-style-{{ variant }}">
     <div class="accordion-header">{{ heading }}</div>
     <div>
-        {% for item in items %}
+        {% for itemId, item in items %}
          <!--   <div {/% if classToFilter is defined %} class="instafilta-target"{/% endif %}> -->
 
                 <div onclick="toggleAccordion(this);"
@@ -49,9 +72,7 @@
                         {% if item.description is defined %}
                             <div class="accordion-description">{{ item.description }}</div> {% endif %}
                         {% for id, subaccordion in item.subaccordions %}
-                            <div class="accordion-container accordion-style-{{ subaccordion.variant }}"
-                                 data-id="{{ id }}">
-
+                            <div class="accordion-container accordion-style-{{ subaccordion.variant }}" data-id="{{ id }}">
                                 <div class="accordion-header"></div>
                                 <div onclick="toggleAccordion(this);"
                                      class="accordion-title accordion-title-style-{{ subaccordion.variant }}"
@@ -91,6 +112,9 @@
                             </div>
                         {% endfor %}
                     {% else %}
+                        <div class="accordion_button_row pull-right">
+                            <i class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
+                        </div>
                         <table cellspacing="0" class="accordion">
                             {% for content in item.contents %}
                                 <tr class="accordion">
@@ -134,7 +158,28 @@
                         </table>
                     {% endif %}
                 </div>
-
         {% endfor %}
     </div>
 </div>
+
+{{ include('::modal.html.twig',
+{
+    id: 'deleteBox',
+    title: 'Are you sure?',
+    bodycontent: 'If you press the delete button, <strong><span class="displayname"></span></strong> will be deleted.',
+    button:
+    {
+        text: 'Delete',
+        class: 'btn-red',
+        id: 'deleteButton'
+    },
+    leftbutton:
+    {
+        text: 'Cancel',
+        class: 'btn-blue',
+        id: 'id_of_leftbutton',
+        dismiss: true
+    },
+    formaction: ""
+})
+}}

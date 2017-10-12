@@ -3,7 +3,6 @@
 {% block container %}
     {% block stylesheets %}
         {% stylesheets
-            'css/accordions.css'
             'css/grid_panel.css'
         filter='cssrewrite'
         %}
@@ -42,7 +41,7 @@
                 <div class="header">
                     Create role
                     <div class="pull-right">
-                        <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i class="material-icons">cancel</i></button>
+                        <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i class="material-icons">clear</i></button>
                         <button type="submit" id="submitbutton" class="actionbutton" onclick="$('#current_form').submit();" ><i class="material-icons">done</i></button>
                     </div>
                 </div>
