@@ -123,8 +123,8 @@ class ServiceController extends Controller
 
 
                 foreach ($services['items'] as $service) {
-                    if ($service['name'] == $dataToBackend["name"]) {
-                        throw new \Exception('This name of service already exists!');
+                    if (strtolower($service['name']) == strtolower($dataToBackend["name"])) {
+                        throw new \Exception('Service name is case insensitive! This name already exists!');
                     }
                 }
 
@@ -145,19 +145,19 @@ class ServiceController extends Controller
 
                 if ($modifiedNamePlus1 != null) {
                     if (strtolower($modifiedName) == strtolower($modifiedNamePlus1)) {
-                        throw new \Exception('Entitlement names are case-insensitive and letters with accent are transformed into their proper letters without accent! Add different names to entitlements!');
+                        throw new \Exception('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!');
                     }
                 }
 
                 if ($modifiedNamePlus2 != null) {
                     if (strtolower($modifiedName) == strtolower($modifiedNamePlus2)) {
-                        throw new \Exception('Entitlement names are case-insensitive and letters with accent are transformed into their proper letters without accent! Add different names to entitlements!');
+                        throw new \Exception('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!');
                     }
                 }
 
                 if ($modifiedNamePlus1 != null && $modifiedNamePlus2 != null) {
                     if (strtolower($modifiedNamePlus1) == strtolower($modifiedNamePlus2)) {
-                        throw new \Exception('Entitlement names are case-insensitive and letters with accent are transformed into their proper letters without accent! Add different names to entitlements!');
+                        throw new \Exception('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!');
                     }
                 }
 
@@ -304,6 +304,8 @@ class ServiceController extends Controller
         $propertiesDatas['servicePrivacyDescription'] = $service['priv_description'];
         $propertiesDatas['serviceEntityIDs'] = $choicearray;
 
+        $services = $this->get('service')->getAll();
+
         $formproperties = $this->createForm(
             ServicePropertiesType::class,
             array(
@@ -313,14 +315,29 @@ class ServiceController extends Controller
 
         $formproperties->handleRequest($request);
 
-        if ($formproperties->isSubmitted() && $formproperties->isValid()) {
-            $data = $request->request->all();
-            $modified = array('name' => $data['service_properties']['serviceName'],
-                'entityid' => $data['service_properties']['serviceSAML'], 'description' => $data['service_properties']['serviceDescription'],
-                'url' => $data['service_properties']['serviceURL'], );
-            $this->get('service')->patch($id, $modified);
+        try {
+            if ($formproperties->isSubmitted() && $formproperties->isValid()) {
+                $data = $request->request->all();
 
-            return $this->redirect($request->getUri());
+                foreach ($services['items'] as $service) {
+                    if (strtolower($propertiesDatas['serviceName']) == strtolower($data['service_properties']['serviceName'])) {
+                        break;
+                    }
+
+                    if (strtolower($service['name']) == strtolower($data['service_properties']['serviceName'])) {
+                        throw new \Exception("Name is case insensitive! This modified service name already exists! Please, choose different name!");
+                    }
+                }
+
+                $modified = array('name' => $data['service_properties']['serviceName'],
+                    'entityid' => $data['service_properties']['serviceSAML'], 'description' => $data['service_properties']['serviceDescription'],
+                    'url' => $data['service_properties']['serviceURL'], );
+                $this->get('service')->patch($id, $modified);
+
+                return $this->redirect($request->getUri());
+            }
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
 
         $formowner = $this->createForm(
@@ -759,8 +776,8 @@ class ServiceController extends Controller
                     if ($permission['uri'] == $uriPrefix.":".$id.":".$modifiedName) {
                         throw new \Exception('URI must be unique!');
                     }
-                    if ($permission['name'] == $data['service_create_permission']['permissionName']) {
-                        throw new \Exception('Permission name must be unique!');
+                    if (strtolower($permission['name']) == strtolower($data['service_create_permission']['permissionName'])) {
+                        throw new \Exception('Permission name is case insensitive! It must be unique!');
                     }
                 }
 
@@ -819,8 +836,8 @@ class ServiceController extends Controller
                     throw new \Exception('Name must be at least 3 character long!');
                 }
                 foreach ($permissionssets as $permissionset) {
-                    if ($permissionset['name'] == $data['service_create_permission_set']['permissionSetName']) {
-                        throw new \Exception('Permission Set name must be unique!');
+                    if (strtolower($permissionset['name']) == strtolower($data['service_create_permission_set']['permissionSetName'])) {
+                        throw new \Exception('Permission set name is case insensitive! It must be unique!');
                     }
                 }
 
