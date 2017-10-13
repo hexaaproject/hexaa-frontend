@@ -30,6 +30,8 @@
 
     <script>
         $(document).ready(function () {
+            $( "textarea#service_create_permission_permissionDescription" ).parent().css( "display", "inline-flex" );
+
             $('#hexaaSearchFieldPermission').instaFilta();
             if ("{{ action }}" == "create") {
                 showCreateForm();
@@ -79,7 +81,9 @@
                 {{ form_row(formCreatePermission.permissionName) }}
             </div>
             <div>
-                {{ form_row(formCreatePermission.permissionURL) }}
+                {{ form_label(formCreatePermission.permissionURL) }}
+                {{ uriprefix }}:{{ serviceID }}:
+                {{ form_widget(formCreatePermission.permissionURL) }}
             </div>
             <div>
                 {{ form_row(formCreatePermission.permissionDescription) }}

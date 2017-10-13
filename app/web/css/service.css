@@ -131,6 +131,10 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
     padding-right: 60px;
 }
 
+.uniquedescription{
+    display: flex;
+}
+
 #service_create_permission_set_permissionSetType .radio{
     margin-top: 0px;
     margin-bottom: 0px;
@@ -140,7 +144,7 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
     padding-right: 10px;
 }
 
-#service_create_permission_permissionName, #service_create_permission_permissionDescription, #service_create_permission_permissionURL, #service_create_permission_set_permissionSetName, #service_create_permission_set_permissionSetDescription{
+#service_create_permission_permissionName, #service_create_permission_set_permissionSetName, #service_create_permission_set_permissionSetDescription{
     font-size: inherit;
     color: #61AFC5;
     background-color: #DFEDEE;
@@ -148,6 +152,58 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
     border-radius: 0px !important;
     height: 30px;
     width: 400px;
+}
+
+#service_create_permission_permissionDescription{
+    height: 30px;
+    width: 400px;
+    margin-top: 15px;
+}
+
+#service_create_permission_permissionURL{
+    height: 30px;
+    width: 215px;
+    margin-right: 60px;
+}
+
+.formlabel{
+    margin-top: 5px;
+}
+
+.formlabelproperties{
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.uniquelabel2{
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    padding-right: 145px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.uniquelabel1{
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    margin-top: 20px;
+    padding-right: 105px;
+}
+
+.entitylabel{
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    margin-top: 0px;
+    padding-left: 20px
 }
 
 form[name="service_create_permission"] .header, form[name="service_create_permission_set"] .header{
