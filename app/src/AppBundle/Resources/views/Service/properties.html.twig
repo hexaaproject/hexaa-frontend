@@ -10,6 +10,18 @@
         {% endstylesheets %}
     {% endblock %}
 
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
     {% javascripts
     '@typeahead_js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>

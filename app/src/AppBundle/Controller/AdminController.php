@@ -51,20 +51,35 @@ class AdminController extends Controller
 
         $formCreateAttributeSpec->handleRequest($request);
 
-        if ($formCreateAttributeSpec->isSubmitted() && $formCreateAttributeSpec->isValid()) {
-            $data = $request->request->all();
-            $attributeSpec = array(
-                'name' => $data['admin_attribute_spec']['attributeSpecName'],
-                'uri' => $data['admin_attribute_spec']['attributeSpecURI'],
-                'description' => $data['admin_attribute_spec']['attributeSpecDescription'],
-                'maintainer' => $data['admin_attribute_spec']['attributeSpecMaintainer'],
-                'syntax' => $data['admin_attribute_spec']['attributeSpecSyntax'],
-                'is_multivalue' => $data['admin_attribute_spec']['attributeSpecIsMultivalue'],
-            );
-            $this->get('attribute_spec')->createAttributeSpec($admin, $attributeSpec);
-          //  $this->get('service')->createPermission($permisson['uri'], $id, $permisson['name'], $permisson['description'], $this->get('entitlement'));
+        try {
+            if ($formCreateAttributeSpec->isSubmitted() && $formCreateAttributeSpec->isValid()) {
+                $data = $request->request->all();
 
-            return $this->redirect($request->getUri());
+                foreach ($attributespecifications['items'] as $attributespecification) {
+                    if (strtolower($attributespecification['name']) == strtolower($data['admin_attribute_spec']['attributeSpecName'])) {
+                        throw new \Exception('Name is case insensitive! Attribute specification name already exists! Please, choose different name!');
+                    }
+                }
+
+                if (strlen($data['admin_attribute_spec']['attributeSpecName']) < 3) {
+                    throw new \Exception('Name must be at least three character long!');
+                }
+
+                $attributeSpec = array(
+                    'name' => $data['admin_attribute_spec']['attributeSpecName'],
+                    'uri' => $data['admin_attribute_spec']['attributeSpecURI'],
+                    'description' => $data['admin_attribute_spec']['attributeSpecDescription'],
+                    'maintainer' => $data['admin_attribute_spec']['attributeSpecMaintainer'],
+                    'syntax' => $data['admin_attribute_spec']['attributeSpecSyntax'],
+                    'is_multivalue' => $data['admin_attribute_spec']['attributeSpecIsMultivalue'],
+                );
+                $this->get('attribute_spec')->createAttributeSpec($admin, $attributeSpec);
+                //  $this->get('service')->createPermission($permisson['uri'], $id, $permisson['name'], $permisson['description'], $this->get('entitlement'));
+
+                return $this->redirect($request->getUri());
+            }
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
 
         return $this->render(

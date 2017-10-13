@@ -58,6 +58,7 @@ class AdminAttributeSpecType extends AbstractType
                 ChoiceType::class,
                 array(
                     "label" => "Maintainer",
+                    "data" => "user",
                     "label_attr" => array('class' => 'formlabel'),
                     'choices' => array('user' => 'user', 'manager' => 'manager'),
                     'multiple' => false,
@@ -70,6 +71,7 @@ class AdminAttributeSpecType extends AbstractType
                 ChoiceType::class,
                 array(
                     "label" => "Syntax",
+                    "data" => "string",
                     "label_attr" => array('class' => 'formlabel'),
                     'choices' => array('string' => 'string', 'base64' => 'base64'),
                     'multiple' => false,
@@ -82,6 +84,7 @@ class AdminAttributeSpecType extends AbstractType
                 ChoiceType::class,
                 array(
                     "label" => "Multivalue",
+                    "data" => true,
                     "label_attr" => array('class' => 'formlabel'),
                     'choices' => array('true' => true, 'false' => false),
                     'multiple' => false,
