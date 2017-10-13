@@ -30,7 +30,7 @@ class ServicePropertiesType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Name",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'formlabelproperties'),
                     'data' => $datas['data']['properties']['serviceName'],
                     'attr' => array('class' => 'pull-right'),
                     'required' => true,
@@ -41,7 +41,7 @@ class ServicePropertiesType extends AbstractType
                 TextareaType::class,
                 array(
                     "label" => "Description",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'formlabelproperties'),
                     'data' => $datas['data']['properties']['serviceDescription'],
                     'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
                     'required' => false,
@@ -52,7 +52,7 @@ class ServicePropertiesType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Home page",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'formlabelproperties'),
                     'data' => $datas['data']['properties']['serviceURL'],
                     'attr' => array('class' => 'pull-right'),
                     'required' => false,
@@ -64,7 +64,7 @@ class ServicePropertiesType extends AbstractType
                 array(
                     'label' => 'SAML SP Entity ID',
                     'data' => $datas['data']['properties']['serviceSAML'],
-                    'label_attr' => array('class' => 'formlabel'),
+                    'label_attr' => array('class' => 'entitylabel'),
                     'source_name' => 'saml',
                     'min_length' => 1,
                     'placeholder' => 'Start typing',

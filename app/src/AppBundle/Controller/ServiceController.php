@@ -329,6 +329,10 @@ class ServiceController extends Controller
                     }
                 }
 
+                if (strlen($data['service_properties']['serviceName']) < 3) {
+                    throw new \Exception("Service name must be at least three character long!");
+                }
+
                 $modified = array('name' => $data['service_properties']['serviceName'],
                     'entityid' => $data['service_properties']['serviceSAML'], 'description' => $data['service_properties']['serviceDescription'],
                     'url' => $data['service_properties']['serviceURL'], );
@@ -805,6 +809,8 @@ class ServiceController extends Controller
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
                 'formCreatePermission' => $formCreatePermissions->createView(),
                 'action' => $action,
+                'uriprefix' => $uriPrefix,
+                'serviceID' => $id,
             )
         );
     }
