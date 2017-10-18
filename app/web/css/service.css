@@ -231,3 +231,12 @@ form[name="service_create_permission"] .header, form[name="service_create_permis
     width: 310px;
     border: 1px solid #61AFC5;
 }
+
+.contacts{
+    padding-left: 370px;
+}
+
+.success{
+    font-size: x-large;
+    color: #61AFC5;
+}

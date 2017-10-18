@@ -32,6 +32,9 @@ usage in twig example:
         {% if done is defined and done =='finish' %}
             <input class="btnhexaa {{ next_button_class }}" type="submit" role="button" value="Finish"></input>
         {% endif %}
+        {% if done is defined and done =='next' %}
+            <input class="btnhexaa {{ next_button_class }}" id="next" type="submit" role="button" value="Next"></input>
+        {% endif %}
     </span>
 </div>
 <div class="row" style="margin-top: 12px;">
