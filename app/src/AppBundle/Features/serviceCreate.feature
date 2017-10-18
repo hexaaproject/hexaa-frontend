@@ -27,6 +27,8 @@ Feature: When I go to create service
     # Fill the second step
     When I fill in "service_entitlement" with "permission4"
     And I fill in "service_entitlementplus1" with "permission5"
+    And I press "next"
+    Then I should see "Select which type of SP contact would you like to send email"
     And I press "Finish"
     Then I should see "Your service is done."
     And I should see "Generated token"

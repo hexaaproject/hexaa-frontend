@@ -303,6 +303,25 @@ class Service extends AbstractBaseResource
     }
 
     /**
+     * @param string $id
+     * @param array  $contacts
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function notifySP(string $id, array $contacts)
+    {
+        return $this->putCall($this->pathName.'/'.$id.'/notifysp', array("contacts" => $contacts ));
+    }
+
+    /**
+     * @param string $token
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function enableService(string $token)
+    {
+        return $this->putCall($this->pathName.'/'.$token.'/enable', []);
+    }
+
+    /**
      * Get the history of the service
      * @param string      $id
      * @param string      $verbose

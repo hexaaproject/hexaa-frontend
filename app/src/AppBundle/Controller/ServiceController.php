@@ -18,6 +18,7 @@ use AppBundle\Form\ServiceUserInvitationType;
 use AppBundle\Form\ServiceType;
 use AppBundle\Form\ServiceCreatePermissionType;
 use AppBundle\Form\ServiceCreatePermissionSetType;
+use AppBundle\Form\ServiceCreateEmailType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use WebDriver\Exception;
@@ -77,6 +78,7 @@ class ServiceController extends Controller
      */
     public function showAction($id)
     {
+
         return $this->render(
             'AppBundle:Service:show.html.twig',
             array(
@@ -84,6 +86,76 @@ class ServiceController extends Controller
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
                 'servsubmenubox' => $this->getServSubmenuPoints(),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+            )
+        );
+    }
+
+    /**
+     * @Route("/enable/{token}")
+     * @param string  $token
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function enableAction($token, Request $request)
+    {
+        $tokenString = $request->getQueryString();
+        $prefix = 'token=';
+        $token = null;
+
+        if (substr($tokenString, 0, strlen($prefix)) == $prefix) {
+            $token = substr($tokenString, strlen($prefix));
+        }
+
+        try {
+            $this->get('service')->enableService($token);
+
+            $this->get('session')->getFlashBag()->add('success', 'Managed to enable the service!');
+
+           /* $allService = $this->get('service')->getAll();
+            $serviceIDs = array();
+            foreach ($allService['items'] as $oneService) {
+                array_push($serviceIDs, $oneService['id']);
+            }
+
+            $managersEmails = array();
+            foreach ($serviceIDs as $serviceID) {
+                $managers = $this->get('service')->getManagers($serviceID);
+                foreach ($managers['items'] as $manager) {
+                    if ( !in_array($manager['email'], $managersEmails)) {
+                        array_push($managersEmails, $manager['email']);
+                    }
+                }
+            }
+
+            $config = $this->getParameter('invitation_config');
+            $mailer = $this->get('mailer');
+            $message = $mailer->createMessage()
+                ->setSubject('The service is allowed')
+                ->setFrom($config['from'])
+                ->setCc($managersEmails)
+                ->setReplyTo($config['reply-to'])
+                ->setBody(
+                    $this->render(
+                        'AppBundle:Service:enabledServiceEmail.txt.twig',
+                        array(
+                            'footer' => $config['footer']
+                        )
+                    ),
+                    'text/plain'
+                );
+
+            $mailer->send($message);
+            $this->get('session')->getFlashBag()->add('success', 'The notification sends to service managers!');*/
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', 'Failed to enable the service! <br>'.$e->getMessage());
+        }
+
+        return $this->render(
+            'AppBundle:Service:enable.html.twig',
+            array(
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
@@ -104,7 +176,6 @@ class ServiceController extends Controller
         }
 
         $entityidsarray = array();
-       // $entityidsarray["Which entity id?"] = "Which entity id?";
         $entityids = $this->get('entity_id')->cget();
         $keys = array_keys($entityids['items']);
         foreach ($keys as $key) {
@@ -114,6 +185,8 @@ class ServiceController extends Controller
         $form = $this->createForm(ServiceType::class, $entityidsarray);
 
         $form->handleRequest($request);
+
+        $emailForm = null;
 
         try {
             if ($form->isSubmitted() && $form->isValid()) {
@@ -246,17 +319,10 @@ class ServiceController extends Controller
                 $headerspartsary = explode("/", $headers[0]);
                 $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
 
-
-                return $this->render(
-                    'AppBundle:Service:created.html.twig',
-                    array(
-                        'newserv' => $this->get('service')->get($servid, "expanded"),
-                        'token' => $getlink['token'],
-                        'organizations' => $this->getOrganizations(),
-                        'services' => $this->getServices(),
-                        "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                    )
-                );
+                return $this->redirect($this->generateUrl(
+                    'app_service_createemail',
+                    array('servid' => $servid, 'token' => $getlink['token'], 'entity' =>  $dataToBackend["entityid"])
+                ));
             }
         } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
@@ -271,6 +337,81 @@ class ServiceController extends Controller
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 )
         );
+    }
+
+    /**
+     * @Route("/createEmail/{servid}/{token}")
+     * @Template()
+     * @return Response
+     * @param   string  $servid  Service ID
+     * @param   string  $token   generatedtoken
+     * @param   Request $request request
+     */
+    public function createEmailAction($servid, $token, Request $request)
+    {
+        $service = $this->getService($servid);
+        $entityids = $this->get('entity_id')->cget();
+        //type, email, surName
+        $contacts = array();
+        foreach ($entityids['items'] as $key => $value) {
+            if ($key == $service['entityid']) {
+                if (sizeof($value) >= 1) {
+                    foreach ($value as $val) {
+                        $contacts[$val['type'].' ('.$val['email'].')'] = $val['type'];
+                    }
+                }
+            }
+        }
+
+        $form = $this->createForm(ServiceCreateEmailType::class, array('contacts' => $contacts));
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $types = $data['contactType'];
+            $contactsSelected = array();
+            $contactOne = array();
+            foreach ($entityids['items'] as $key => $value) {
+                if ($key == $service['entityid']) {
+                    if (sizeof($value) >= 1) {
+                        foreach ($value as $val) {
+                            foreach ($types as $type) {
+                                if ($val['type'] == $type) {
+                                    $contactOne['surName'] = $val['surName'];
+                                    $contactOne['email'] = $val['email'];
+                                    $contactOne['type'] = $val['type'];
+                                    array_push($contactsSelected, $contactOne);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            $this->get('service')->notifySP($servid, $contactsSelected);
+
+            return $this->render(
+                'AppBundle:Service:created.html.twig',
+                array(
+                    'newserv' => $this->get('service')->get($servid, "expanded"),
+                    'token' => $token,
+                    'organizations' => $this->getOrganizations(),
+                    'services' => $this->getServices(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                )
+            );
+        }
+
+
+          return $this->render(
+              'AppBundle:Service:createEmail.html.twig',
+              array(
+                  'emailForm' => $form->createView(),
+                  'organizations' => $this->getOrganizations(),
+                  'services' => $this->getServices(),
+                  "admin" => $this->get('principal')->isAdmin()["is_admin"],
+              )
+          );
     }
 
     /**
