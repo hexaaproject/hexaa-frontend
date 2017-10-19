@@ -215,6 +215,16 @@ class OrganizationController extends Controller
 
         $managers = $this->getManagers($organization);
         $members = $this->getMembers($organization);
+
+        foreach ($members as $member) {
+            foreach ($managers as $manager) {
+                if ($member['id'] == $manager['id']) {
+                    $key = array_search($member, $members);
+                    unset($members[$key]);
+                }
+            }
+        }
+
         $managersButtons = array(
             "changerole" => array(
                 "class" => "btn-blue",
@@ -545,12 +555,20 @@ class OrganizationController extends Controller
      */
     public function proposeAction($id, Request $request)
     {
-        try {
-            // do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($e);
+        $pids = $request->get('userId');
+        $errors = array();
+        $errormessages = array();
+        foreach ($pids as $pid) {
+            try {
+                $this->get('organization')->addManager($id, $pid);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add('error', implode(', ', $errormessages));
+            $this->get('logger')->error('Set member to manager failed!');
         }
 
         return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
@@ -565,12 +583,20 @@ class OrganizationController extends Controller
      */
     public function revokeAction($id, Request $request)
     {
-        try {
-            // do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($e);
+        $pids = $request->get('userId');
+        $errors = array();
+        $errormessages = array();
+        foreach ($pids as $pid) {
+            try {
+                $this->get('organization')->deleteManager($id, $pid);
+            } catch (\Exception $e) {
+                $errors[] = $e;
+                $errormessages[] = $e->getMessage();
+            }
+        }
+        if (count($errors)) {
+            $this->get('session')->getFlashBag()->add('error', implode(', ', $errormessages));
+            $this->get('logger')->error('Set manager to member failed!');
         }
 
         return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
