@@ -62,6 +62,27 @@ class Organization extends AbstractBaseResource
         return $response;
     }
 
+    /**
+     * DELETE manager of Organization
+     *
+     * @param string $id  ID of organization
+     * @param string $pid Principal ID
+     * @return ResponseInterface
+     */
+    public function deleteManager(string $id, string $pid)
+    {
+        $path = $this->pathName.'/'.$id.'/managers/'.$pid;
+
+        $response = $this->client->delete(
+            $path,
+            [
+                'headers' => $this->getHeaders(),
+            ]
+        );
+
+        return $response;
+    }
+
 
     /**
      * GET roles of Organization
@@ -146,6 +167,19 @@ class Organization extends AbstractBaseResource
 
         return $role->get($id, "expanded");
     }
+
+    /**
+     * Add manager to the organization
+     *
+     * @param string $id  of organization
+     * @param string $pid of principal
+     * @return ResponseInterface
+     */
+    public function addManager(string $id, string $pid)
+    {
+        return $this->putCall($this->pathName.'/'.$id.'/managers'.'/'.$pid, []);
+    }
+
 
     /**
      * Get the history of the organization
