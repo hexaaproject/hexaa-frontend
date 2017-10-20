@@ -48,15 +48,16 @@
         {{ include('::modal.html.twig',
             {
                 id: 'managersMessage',
-                title: 'Send message',
-                bodyhead: 'Send message to selected users',
-                bodycontent: 'Itt lesz a textarea és a user lista TODO',
+                title: 'Send message to selected users',
                 button:
-                    {
-                        text: 'Send',
-                        class: 'btn-red'
-                    },
-                formaction: path('app_organization_message', {id: organization.id })
+                {
+                    text: 'Send',
+                    class: 'btn-red'
+                },
+                bodycontent: form_start(sendEmailForm)
+                ~ form_row(sendEmailForm.subject)
+                ~ form_row(sendEmailForm.message)
+                ~ form_end(sendEmailForm),
             })
         }}
 
@@ -127,15 +128,16 @@
         {{ include('::modal.html.twig',
             {
                 id: 'membersMessage',
-                title: 'Send message',
-                bodyhead: 'Send message to selected users',
-                bodycontent: 'Itt lesz a textarea és a user lista TODO',
+                title: 'Send message to selected users',
+                bodycontent: form_start(sendMemberEmailForm)
+                ~ form_row(sendMemberEmailForm.subject)
+                ~ form_row(sendMemberEmailForm.message)
+                ~ form_end(sendMemberEmailForm),
                 button:
                     {
                         text: 'Send',
                         class: 'btn-red'
-                    },
-                formaction: path('app_organization_message', {id: organization.id })
+                    }
             })
         }}
 
@@ -195,12 +197,24 @@
                 ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
             }
 
+            function populateList2(ul, el) {
+                var row = $(el).closest('tr');
+                var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
+                var objectId = row.attr('id');
+                ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
+            }
+
             {% if members is defined and members|length %}
                 var membersTableActionButtons = $('.members_table_actionButtons');
                 var membersRemove = $('#membersRemove');
                 var membersMessage = $('#membersMessage');
                 var membersProposal = $('#membersProposal');
                 var membersChangeRole = $('#membersChangeRole');
+
+                $(document).on('click', '.modal#membersMessage button[type=submit]', function (event) {
+                    event.preventDefault();
+                    $('form[name=organization_user_message]').submit();
+                });
 
                 membersTableActionButtons.on('click', '#remove', function(event) {
                     event.preventDefault();
@@ -217,11 +231,11 @@
                 membersTableActionButtons.on('click', '#message', function(event) {
                     event.preventDefault();
                     var content = membersMessage.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
+                    var form = content.find('form');
+                    form.append('<ul></ul>');
                     var ul = membersMessage.find('ul');
                     $('#members_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
+                        populateList2(ul, el);
                     });
                     membersMessage.modal('show');
                 });
@@ -258,6 +272,11 @@
                 var managersRevoke = $('#managersRevoke');
                 var managersChangeRole = $('#managersChangeRole');
 
+               $(document).on('click', '.modal#managersMessage button[type=submit]', function (event) {
+                    event.preventDefault();
+                    $('form[name=organization_user_message_manager]').submit();
+               });
+
                 managersTableActionButtons.on('click', '#remove', function(event) {
                     event.preventDefault();
                     var content = managersRemove.find('.modal-body-content');
@@ -273,11 +292,11 @@
                 managersTableActionButtons.on('click', '#message', function(event) {
                     event.preventDefault();
                     var content = managersMessage.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
+                    var form = content.find('form');
+                    form.append('<ul></ul>');
                     var ul = managersMessage.find('ul');
                     $('#managers_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
+                        populateList2(ul, el);
                     });
                     managersMessage.modal('show');
                 });

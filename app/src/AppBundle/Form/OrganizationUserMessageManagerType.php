@@ -7,13 +7,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints;
 
 /**
- * Class OrganizationUserInvitationSendEmailType
+ * Class OrganizationUserMessageManagerType
  * @package AppBundle\Form
  */
-class OrganizationUserInvitationSendEmailType extends AbstractType
+class OrganizationUserMessageManagerType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -23,20 +24,14 @@ class OrganizationUserInvitationSendEmailType extends AbstractType
     {
         $builder
             ->add(
-                'link',
-                UrlType::class,
+                'subject',
+                TextType::class,
                 array(
                     "label" => false,
-                    "constraints" => new Constraints\Url(),
                     "attr" => array(
-                        "class" => "col-md-10",
-                        "readonly" => true,
+                        "placeholder" => "Subject",
                     ),
                 )
-            )
-            ->add(
-                'role_id',
-                HiddenType::class
             )
             ->add(
                 'message',
@@ -45,17 +40,6 @@ class OrganizationUserInvitationSendEmailType extends AbstractType
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Message",
-                    ),
-                )
-            )
-            ->add(
-                'emails',
-                TextareaType::class,
-                array(
-                    "label" => "Send invitation by email",
-                    "label_attr" => array('class' => 'emailsLabel'),
-                    "attr" => array(
-                        "placeholder" => "Comma separated list of email addresses",
                     ),
                 )
             );
