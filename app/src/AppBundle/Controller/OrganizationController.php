@@ -607,6 +607,7 @@ class OrganizationController extends Controller
     {
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
+        dump($roles);
         $rolesAccordion = $this->rolesToAccordion($roles);
 
         $form = $this->createForm(
@@ -859,7 +860,6 @@ class OrganizationController extends Controller
     private function rolesToAccordion($roles)
     {
         $rolesAccordion = array();
-        dump($roles);
         foreach ($roles as $role) {
             $rolesAccordion[$role['id']]['title'] = $role['name'];
             $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('id' => $role['id']));

@@ -35,7 +35,6 @@
 
         {% if admin %}
         $('.accordion_delete_button').on("click", function () {
-            event.preventDefault();
             var deleteBox = $('#deleteBox');
             deleteBox.find('form').attr("action", $(this).data('targeturl'));
             deleteBox.find('.displayname').text($(this).data('displayname'));
@@ -113,7 +112,7 @@
                         {% endfor %}
                     {% else %}
                         <div class="accordion_button_row pull-right">
-                            <i class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
+                            <i title="delete role" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
                         </div>
                         <table cellspacing="0" class="accordion">
                             {% for content in item.contents %}

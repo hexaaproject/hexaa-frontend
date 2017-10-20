@@ -19,7 +19,7 @@ telepítve, így ajánlott a [telepítési útmutatót](https://getcomposer.org/
 shibless fogat:
 `docker-compose -f docker/docker-compose-fakeshib.yml up`
 
-5. buildeljük le a symfony-t (dependenciák, assetek.)
+5. buildeljük le az appot (dependenciák, assetek.)
 Ehhez be kell lépni a docker konténerbe, és ott buildelni (ott van php környezet)
 `docker exec -ti project.local bash`
 `cd /var/www/project`
