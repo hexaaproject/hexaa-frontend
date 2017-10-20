@@ -7,6 +7,8 @@ use AppBundle\Form\OrganizationRoleType;
 use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
 use AppBundle\Form\OrganizationType;
+use AppBundle\Form\OrganizationUserMessageManagerType;
+use AppBundle\Form\OrganizationUserMessageType;
 use AppBundle\Model\Organization;
 use GuzzleHttp\Exception\ClientException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -283,6 +285,24 @@ class OrganizationController extends Controller
             )
         );
 
+        $sendEmailForm = $this->createForm(
+            OrganizationUserMessageManagerType::class,
+            array(),
+            array(
+                "action" => $this->generateUrl("app_organization_message", array("id" => $id)),
+                "method" => "POST",
+            )
+        );
+
+        $sendMemberEmailForm = $this->createForm(
+            OrganizationUserMessageType::class,
+            array(),
+            array(
+                "action" => $this->generateUrl("app_organization_message", array("id" => $id)),
+                "method" => "POST",
+            )
+        );
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -317,6 +337,8 @@ class OrganizationController extends Controller
                     "invite_link" => $inviteLink,
                     "inviteForm" => $form->createView(),
                     "sendInEmailForm" => $sendInEmailForm->createView(),
+                    "sendEmailForm" => $sendEmailForm->createView(),
+                    "sendMemberEmailForm" => $sendMemberEmailForm->createView(),
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 )
             );
@@ -334,6 +356,8 @@ class OrganizationController extends Controller
                 "members_buttons" => $membersButtons,
                 "inviteForm" => $form->createView(),
                 "sendInEmailForm" => $sendInEmailForm->createView(),
+                "sendEmailForm" => $sendEmailForm->createView(),
+                "sendMemberEmailForm" => $sendMemberEmailForm->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
@@ -528,6 +552,7 @@ class OrganizationController extends Controller
 
     /**
      * @Route("/message/{id}")
+     * @Method("POST")
      * @Template()
      * @return Response
      * @param   int     $id      Organization ID
@@ -535,15 +560,52 @@ class OrganizationController extends Controller
      */
     public function messageAction($id, Request $request)
     {
-        try {
-            // do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
-            $this->get('logger')->error($e);
+        $form1 = $this->createForm(OrganizationUserMessageType::class);
+        $form2 = $this->createForm(OrganizationUserMessageManagerType::class);
+        $pids = $request->get('userId');
+        $emails = array();
+        foreach ($pids as $pid) {
+            $principal = $this->get('principals')->getById($pid);
+            array_push($emails, $principal['email']);
         }
+        $currentPrincipal = $this->get('principal')->getSelf();
 
-        return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+        $form1->handleRequest($request);
+        $form2->handleRequest($request);
+        if ($form1->isValid() || $form2->isValid()) {
+            if ($form1->isValid()) {
+                $data = $form1->getData();
+            }
+            if ($form2->isValid()) {
+                $data = $form2->getData();
+            }
+            $config = $this->getParameter('invitation_config');
+            $mailer = $this->get('mailer');
+            try {
+                $message = $mailer->createMessage()
+                    ->setSubject($data['subject'])
+                    ->setFrom($currentPrincipal['email'])
+                    ->setCc($emails)
+                    ->setReplyTo($config['reply-to'])
+                    ->setBody(
+                        $this->render(
+                            'AppBundle:Organization:sendEmail.txt.twig',
+                            array(
+                                'footer' => $config['footer'],
+                                'message' => $data['message'],
+                            )
+                        ),
+                        'text/plain'
+                    );
+
+                $mailer->send($message);
+                $this->get('session')->getFlashBag()->add('success', 'Message sent succesfully.');
+            } catch (\Exception $e) {
+                $this->get('session')->getFlashBag()->add('error', 'Message sending failure. <br>'.$e->getMessage());
+            }
+
+            return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+        }
     }
 
     /**

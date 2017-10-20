@@ -56,13 +56,11 @@ Feature: When I go to organizations
      And I wait for "Your invitation is done" to appear
     When I fill in the following:
       | Send invitation by email | alice@example.com   |
-      | Message                  | Gyere hozzám tagnak |
      And I press "Done"
      And I wait for "Invitations sent succesfully." to appear
     Then there is a mail to "alice@example.com"
     Then there is 1 mail
     Then there is a mail from "no_reply@hexaa.eduid.hu"
-    Then there is a mail that contains "Gyere hozzám tagnak"
 
   Scenario: Invalid email addresses
     When I select "Test role 1" from "organization_user_invitation_role"
