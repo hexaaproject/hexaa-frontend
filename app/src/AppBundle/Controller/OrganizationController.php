@@ -607,7 +607,6 @@ class OrganizationController extends Controller
     {
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
-        dump($roles);
         $rolesAccordion = $this->rolesToAccordion($roles);
 
         $form = $this->createForm(

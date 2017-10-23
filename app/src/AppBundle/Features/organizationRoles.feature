@@ -29,7 +29,7 @@ Feature: When I go to organization's roles
 
     When I press "New role"
     And I fill in "Name" with "Third brand new role"
-    And I press "cancel"
+    And I press "clear"
     Then I should not see "Create role"
 
   Scenario: Delete role
