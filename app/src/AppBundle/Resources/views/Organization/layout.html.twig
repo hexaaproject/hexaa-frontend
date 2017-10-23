@@ -23,6 +23,19 @@
         {{ include('::navbar.html.twig') }}
     {% endif %}
     <div class="container">
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="flash-error flash">
+                <h4>There was some failure!</h4>
+                {{ flashMessage|raw }}
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="flash-success flash">
+                <h4>Success!</h4>
+                {{ flashMessage|raw }}
+            </div>
+        {% endfor %}
+
         {% block container %}{% endblock %}
     </div>
 {% endblock %}

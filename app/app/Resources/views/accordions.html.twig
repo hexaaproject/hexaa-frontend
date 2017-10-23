@@ -8,7 +8,7 @@
     {% endstylesheets %}
 {% endblock %}
 
-{% set admin = true %}
+{% set manager = true %}
 
 <script>
     function toggleAccordion(e) {
@@ -33,16 +33,21 @@
         $(panel).addClass("active");
         $(panel).toggle();
 
-        {% if admin %}
-        $('.accordion_delete_button').on("click", function () {
-            var deleteBox = $('#deleteBox');
-            deleteBox.find('form').attr("action", $(this).data('targeturl'));
-            deleteBox.find('.displayname').text($(this).data('displayname'));
-            deleteBox.modal('show');
+        /*
+        var deletebutton = $(panel).find(".accordion_delete_button");
+        $(".accordion_delete_button").removeAttr("id");
+        deletebutton.attr("id", "active_delete_button");
+        */
 
-        });
+        {% if manager %}
+            $('.accordion_delete_button').on("click", function () {
+                var deleteBox = $('#deleteBox');
+                console.log(deleteBox);
+                deleteBox.find('form').attr("action", $(this).data('targeturl'));
+                deleteBox.find('.displayname').text($(this).data('displayname'));
+                deleteBox.modal('show');
+            });
         {% endif %}
-
     }
 
 </script>
@@ -111,9 +116,11 @@
                             </div>
                         {% endfor %}
                     {% else %}
+                        {% if manager %}
                         <div class="accordion_button_row pull-right">
                             <i title="delete role" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
                         </div>
+                        {% endif %}
                         <table cellspacing="0" class="accordion">
                             {% for content in item.contents %}
                                 <tr class="accordion">

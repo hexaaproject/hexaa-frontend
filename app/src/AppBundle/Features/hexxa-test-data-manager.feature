@@ -8,6 +8,7 @@ Feature: Behat hexaa data manager tesztek
     When I send the request
     Then I should receive a 204 response
 
+  @setup
   @smartStep
   Scenario: setup the basic hexaa test data
     Given I prepare a GET request on "/setup"
