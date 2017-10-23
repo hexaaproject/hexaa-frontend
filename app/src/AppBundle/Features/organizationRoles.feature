@@ -1,8 +1,9 @@
 @org
 @roles
+
 Feature: When I go to organization's roles
   As an authenticaed user
-  I can magage the organization roles
+  I can manage the organization roles
 
   Background:
     Given I am on "/"
@@ -28,5 +29,16 @@ Feature: When I go to organization's roles
 
     When I press "New role"
     And I fill in "Name" with "Third brand new role"
-    And I press "cancel"
+    And I press "clear"
     Then I should not see "Create role"
+
+  Scenario: Delete role
+    Given I should see "Second brand new role"
+    When I click on accordion "Second brand new role"
+    Then I should see "Permissions"
+#    And I click the "i[data-id=6]" element
+#    Then I should see "Are you sure?"
+#    When I press "Delete"
+#    Then I should see "Success"
+#    And I should not see "Second brand new role"
+

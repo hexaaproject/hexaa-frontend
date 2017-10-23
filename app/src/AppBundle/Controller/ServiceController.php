@@ -1436,6 +1436,10 @@ class ServiceController extends Controller
         $permissionsAccordion = array();
         foreach ($permissions as $permission) {
             $permissionsAccordion[$permission['id']]['title'] = $permission['name'];
+
+            // FIXME @annamari, nem találok permission delete url-t.
+            $permissionsAccordion[$permission['id']]['deleteUrl'] = $this->generateUrl("app_service_permissions", array('id' => $permission['id'], 'action' => "delete"));
+
             $description = array();
             $uri = array();
             array_push($description, $permission['description']);

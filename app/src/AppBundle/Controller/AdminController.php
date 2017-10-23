@@ -135,7 +135,6 @@ class AdminController extends Controller
     public function removeprincipalsAction(Request $request)
     {
         $pids = $request->get('userId');
-        dump($pids);
         $errors = array();
         $errormessages = array();
         foreach ($pids as $pid) {
