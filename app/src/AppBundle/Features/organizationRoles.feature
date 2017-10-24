@@ -32,7 +32,6 @@ Feature: When I go to organization's roles
     And I press "clear"
     Then I should not see "Create role"
 
-  @wip
   Scenario: Delete role
     Given I should see "Second brand new role"
     When I click on accordion "Second brand new role"
