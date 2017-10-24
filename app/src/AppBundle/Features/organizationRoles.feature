@@ -38,7 +38,7 @@ Feature: When I go to organization's roles
     When I click on accordion "Second brand new role"
     Then I should see "Permissions"
     # nem tudom rendesen megcélozni
-    And I click the "i[data-id=5]" element
+    And I click the "i[data-id=6]" element
     Then I should see "Are you sure?"
     When I press "Delete"
     Then I should see "Success"

@@ -787,9 +787,8 @@ class OrganizationController extends Controller
      * @Route("/{orgId}/role/{id}/delete")
      * @Template()
      * @return Response
-     * @param int     $orgId   Organization id
-     * @param int     $id      Role Id
-     * @param Request $request HTTP Request
+     * @param int $orgId Organization id
+     * @param int $id    Role Id
      *
      */
     public function roleDeleteAction($orgId, $id)
@@ -797,7 +796,8 @@ class OrganizationController extends Controller
         $organizationResource = $this->get('role');
         $organizationResource->delete($id);
         $this->get('session')->getFlashBag()->add('success', 'The role has been deleted.');
-        return $this->redirectToRoute("app_organization_roles", array("id"=>$orgId));
+
+        return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
     }
 
     /**
@@ -955,7 +955,7 @@ class OrganizationController extends Controller
         $rolesAccordion = array();
         foreach ($roles as $role) {
             $rolesAccordion[$role['id']]['title'] = $role['name'];
-            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId'=>$orgId, 'id' => $role['id']));
+            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
 
             $members = array();
             $permissions = array();
