@@ -128,7 +128,7 @@ form[name="service_create_permission"], form[name="service_create_permission_set
 }
 
 form[name="service_create_permission"] .form-group, form[name="service_create_permission_set"] .form-group{
-    padding-right: 60px;
+    padding-right: 55px;
 }
 
 .uniquedescription{
@@ -151,19 +151,19 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
     border: 1px solid #61AFC5;
     border-radius: 0px !important;
     height: 30px;
-    width: 400px;
+    width: 405px;
 }
 
 #service_create_permission_permissionDescription{
     height: 30px;
-    width: 400px;
+    width: 406px;
     margin-top: 15px;
 }
 
 #service_create_permission_permissionURL{
     height: 30px;
     width: 215px;
-    margin-right: 60px;
+    margin-right: 55px;
 }
 
 .formlabel{

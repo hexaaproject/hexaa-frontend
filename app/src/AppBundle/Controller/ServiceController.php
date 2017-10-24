@@ -946,7 +946,7 @@ class ServiceController extends Controller
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
-                'permissions_accordion' => $this->permissionsToAccordion($permissions),
+                'permissions_accordion' => $this->permissionsToAccordion($permissions, $id),
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
                 'formCreatePermission' => $formCreatePermissions->createView(),
                 'action' => $action,
@@ -1008,7 +1008,7 @@ class ServiceController extends Controller
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
                 'servsubmenubox' => $this->getServSubmenuPoints(),
-                'permissions_accordion_set' => $this->permissionSetToAccordion($permissionssets),
+                'permissions_accordion_set' => $this->permissionSetToAccordion($permissionssets, $id),
                 'token' => $token,
                 'permissionsetname' => $permissionsetname,
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
@@ -1253,6 +1253,38 @@ class ServiceController extends Controller
     }
 
     /**
+     * @Route("/{servId}/permission/{id}/delete")
+     * @Template()
+     * @return Response
+     * @param int $servId Service id
+     * @param int $id     Permission Id
+     *
+     */
+    public function permissionDeleteAction($servId, $id)
+    {
+        $this->get('entitlement')->deletePermission($id);
+        $this->get('session')->getFlashBag()->add('success', 'The permission has been deleted.');
+
+        return $this->redirectToRoute("app_service_permissions", array("id" => $servId));
+    }
+
+    /**
+     * @Route("/{servId}/permissionset/{id}/delete")
+     * @Template()
+     * @return Response
+     * @param int $servId Service id
+     * @param int $id     PermissionSet Id
+     *
+     */
+    public function permissionsetDeleteAction($servId, $id)
+    {
+        $this->get('entitlement_pack')->deletePermissionSet($id);
+        $this->get('session')->getFlashBag()->add('success', 'The permission set has been deleted.');
+
+        return $this->redirectToRoute("app_service_permissionssets", array("id" => $servId));
+    }
+
+    /**
      * Replace accents
      *
      * @param string  $string
@@ -1429,16 +1461,17 @@ class ServiceController extends Controller
 
     /**
      * @param $permissions
+     * @param $servId
      * @return array
      */
-    private function permissionsToAccordion($permissions)
+    private function permissionsToAccordion($permissions, $servId)
     {
         $permissionsAccordion = array();
         foreach ($permissions as $permission) {
             $permissionsAccordion[$permission['id']]['title'] = $permission['name'];
 
             // FIXME @annamari, nem találok permission delete url-t.
-            $permissionsAccordion[$permission['id']]['deleteUrl'] = $this->generateUrl("app_service_permissions", array('id' => $permission['id'], 'action' => "delete"));
+            $permissionsAccordion[$permission['id']]['deleteUrl'] = $this->generateUrl("app_service_permissiondelete", array('servId' => $servId, 'id' => $permission['id'], 'action' => "delete"));
 
             $description = array();
             $uri = array();
@@ -1461,13 +1494,16 @@ class ServiceController extends Controller
 
     /**
      * @param $permissionSets
+     * @param $servId
      * @return array
      */
-    private function permissionSetToAccordion($permissionSets)
+    private function permissionSetToAccordion($permissionSets, $servId)
     {
         $permissionsAccordionSet = array();
         foreach ($permissionSets as $permissionSet) {
             $permissionsAccordionSet[$permissionSet['id']]['title'] = $permissionSet['name'];
+            $permissionsAccordionSet[$permissionSet['id']]['deleteUrl'] = $this->generateUrl("app_service_permissionsetdelete", array('servId' => $servId, 'id' => $permissionSet['id'], 'action' => "delete"));
+
             $description = array();
             $type = array();
             $permissions = array();
