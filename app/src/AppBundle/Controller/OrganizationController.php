@@ -102,7 +102,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/show/{id}")
+     * @Route("/{id}/show")
      * @return Response
      * @param   int $id Organization ID
      */
@@ -122,7 +122,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/properties/{id}/{action}", defaults={"action" = null})
+     * @Route("/{id}/properties/{action}", defaults={"action" = null})
      * @Template()
      * @return Response
      * @param   Request     $request request
@@ -194,7 +194,7 @@ class OrganizationController extends Controller
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
 
-                "roles" => $this->rolesToAccordion($roles),
+                "roles" => $this->rolesToAccordion($roles, $id),
 
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -204,7 +204,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/users/{id}")
+     * @Route("/{id}/users")
      * @Template()
      * @return Response
      * @param   int     $id      Organization ID
@@ -364,7 +364,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/createInvitation/{id}")
+     * @Route("/{id}/createInvitation")
      * @Method("POST")
      * @Template()
      * @return Response
@@ -430,7 +430,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/sendInvitation/{id}")
+     * @Route("/{id}/sendInvitation")
      * @Method("POST")
      * @Template()
      * @return Response
@@ -488,7 +488,7 @@ class OrganizationController extends Controller
 
 
     /**
-     * @Route("/resolveInvitationToken/{token}/{organizationid}/{landing_url}", defaults={"landing_url" = null})
+     * @Route("/{organizationid}/resolveInvitationToken/{token}/{landing_url}", defaults={"landing_url" = null})
      * @Template()
      * @return Response
      * @param   string $token          Invitation token
@@ -522,7 +522,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/removeusers/{id}")
+     * @Route("/{id}/removeusers")
      * @Template()
      * @return Response
      * @param   int     $id      Organization ID
@@ -551,8 +551,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/message/{id}")
-     * @Method("POST")
+     * @Route("/{id}/message")
      * @Template()
      * @return Response
      * @param   int     $id      Organization ID
@@ -609,7 +608,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/propose/{id}")
+     * @Route("/{id}/propose")
      * @Template()
      * @return Response
      * @param   int     $id      Organization ID
@@ -637,7 +636,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/revoke/{id}")
+     * @Route("/{id}/revoke")
      * @Template()
      * @return Response
      * @param   int     $id      Organization ID
@@ -665,7 +664,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/changerole/{id}")
+     * @Route("/{id}/changerole")
      * @Template()
      * @return Response
      * @param   int     $id      Organization ID
@@ -685,17 +684,22 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/roles/{id}")
+     * @Route("/{id}/roles/{action}", defaults={"action": false})
      * @Template()
      * @return Response
      * @param int     $id      Organization ID
+     * @param string  $action  More action ex. create show create form
      * @param Request $request Request
      */
-    public function rolesAction($id, Request $request)
+    public function rolesAction($id, $action, Request $request)
     {
+        if (! in_array($action, array("false", "create"))) {
+            $this->createNotFoundException("Invalid action in url: ".$action);
+        }
+
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
-        $rolesAccordion = $this->rolesToAccordion($roles);
+        $rolesAccordion = $this->rolesToAccordion($roles, $id);
 
         $form = $this->createForm(
             OrganizationRoleType::class,
@@ -729,6 +733,7 @@ class OrganizationController extends Controller
                 "organization" => $organization,
                 "roles" => $roles,
                 "roles_accordion" => $rolesAccordion,
+                "action" => $action,
 
                 "form" => $form->createView(),
 
@@ -740,7 +745,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/connectedservices/{id}")
+     * @Route("/{id}/connectedservices")
      * @Template()
      * @return Response
      * @param int $id Organization Id
@@ -764,7 +769,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}")
+     * @Route("/{id}/delete")
      * @Template()
      * @return Response
      * @param int $id Organization Id
@@ -779,24 +784,25 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/role/delete/{id}")
+     * @Route("/{orgId}/role/{id}/delete")
      * @Template()
      * @return Response
-     * @param int     $id      Role Id
-     * @param Request $request HTTP Request
+     * @param int $orgId Organization id
+     * @param int $id    Role Id
      *
      */
-    public function roleDeleteAction($id, Request $request)
+    public function roleDeleteAction($orgId, $id)
     {
         $organizationResource = $this->get('role');
         $organizationResource->delete($id);
+        $this->get('session')->getFlashBag()->add('success', 'The role has been deleted.');
 
-        return $this->redirect($request->getUri());
+        return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
     }
 
     /**
      * Get the history of the requested organization.
-     * @Route("/history/{id}")
+     * @Route("/{id}/history")
      * @Template()
      * @return array
      * @param int $id Organization Id
@@ -816,7 +822,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/history/json/{id}")
+     * @Route("/{id}/history/json")
      * @param string       $id       Organization id
      * @param integer|null $offset   Offset
      * @param integer      $pageSize Pagesize
@@ -944,12 +950,12 @@ class OrganizationController extends Controller
      * @param $roles
      * @return array
      */
-    private function rolesToAccordion($roles)
+    private function rolesToAccordion($roles, $orgId)
     {
         $rolesAccordion = array();
         foreach ($roles as $role) {
             $rolesAccordion[$role['id']]['title'] = $role['name'];
-            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('id' => $role['id']));
+            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
 
             $members = array();
             $permissions = array();
