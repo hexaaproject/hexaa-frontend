@@ -28,4 +28,24 @@ class Entitlement extends AbstractBaseResource
             $pageSize
         );
     }
+
+    /**
+     *DELETE permission
+     *
+     * @param  string $id ID of permission
+     * @return response
+     */
+    public function deletePermission(string $id)
+    {
+        $path = $this->pathName.'/'.$id;
+
+        $response = $this->client->delete(
+            $path,
+            [
+                'headers' => $this->getHeaders(),
+            ]
+        );
+
+        return $response;
+    }
 }

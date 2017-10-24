@@ -76,4 +76,24 @@ class EntitlementPack extends AbstractBaseResource
     {
         return $this->putCall($this->pathName.'/'.$id.'/entitlements'.'/'.$permid, []);
     }
+
+    /**
+     *DELETE permission set
+     *
+     * @param  string $id ID of permission
+     * @return response
+     */
+    public function deletePermissionSet(string $id)
+    {
+        $path = $this->pathName.'/'.$id;
+
+        $response = $this->client->delete(
+            $path,
+            [
+                'headers' => $this->getHeaders(),
+            ]
+        );
+
+        return $response;
+    }
 }
