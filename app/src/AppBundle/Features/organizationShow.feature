@@ -112,7 +112,6 @@ Feature: When I go to a specific organization
     When I wait for "Connected services" to appear
     Then I should see "Connected services" in the ".accordion-header" element
     And I should see "testService1"
-    And I should see "testService2"
 
     When I click on accordion "testService1"
     Then I should see "Permission sets"
