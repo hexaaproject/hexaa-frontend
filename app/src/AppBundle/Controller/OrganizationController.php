@@ -780,12 +780,20 @@ class OrganizationController extends Controller
         }
 
         $services = array();
+        $linkIDs = array();
         $links = $this->get('organization')->getLinks($id);
         foreach ($links['items'] as $link) {
             $service = $this->get('service')->get($link['service_id']);
             array_push($services, $service);
+            array_push($linkIDs, $link['id']);
         }
-        $servicesAccordion = $this->servicesToAccordion($services);
+
+        $entitlementpacks = array();
+        foreach ($linkIDs as $linkID) {
+            array_push($entitlementpacks, $this->get('link')->getEntitlementPacks($linkID));
+        }
+
+        $servicesAccordion = $this->servicesToAccordion($services, $entitlementpacks);
 
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
@@ -1017,9 +1025,10 @@ class OrganizationController extends Controller
 
     /**
      * @param $services
+     * @param $entitlementPacks
      * @return array
      */
-    private function servicesToAccordion($services)
+    private function servicesToAccordion($services, $entitlementPacks)
     {
         $servicesAccordion = array();
         foreach ($services as $service) {
@@ -1032,19 +1041,23 @@ class OrganizationController extends Controller
             }
             $servicesAccordion[$service['id']]['titlemiddle'] = 'Service manager '.$managersstring;
 
-            foreach ($this->getEntitlementPack($service) as $entitlementPack) {
-                $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['title'] = $entitlementPack['name'];
-                $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['variant'] = 'light';
-                $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Details", "values" => array($entitlementPack['description']));
-                $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
+            foreach ($entitlementPacks as $entitlementPacksub) {
+                foreach ($entitlementPacksub['items'] as $entitlementPack) {
+                    if ($entitlementPack['service_id'] == $service['id']) {
+                        $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['title'] = $entitlementPack['name'];
+                        $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['variant'] = 'light';
+                        $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Details", "values" => array($entitlementPack['description']));
+                        $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
 
-                $entitlementnames = array();
-                foreach ($entitlementPack['entitlement_ids'] as $entitlementId) {
-                    $entitlement = $this->get('entitlement')->get($entitlementId);
-                    $entitlementnames[] = $entitlement['name'];
+                        $entitlementnames = array();
+                        foreach ($entitlementPack['entitlement_ids'] as $entitlementId) {
+                            $entitlement = $this->get('entitlement')->get($entitlementId);
+                            $entitlementnames[] = $entitlement['name'];
+                        }
+
+                        $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Permissions", "values" => $entitlementnames);
+                    }
                 }
-
-                $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Permissions", "values" => $entitlementnames);
             }
         }
 
