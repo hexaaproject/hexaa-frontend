@@ -753,7 +753,12 @@ class OrganizationController extends Controller
      */
     public function connectedservicesAction($id)
     {
-        $services = $this->get('service')->cget();
+        $services = array();
+        $links = $this->get('organization')->getLinks($id);
+        foreach ($links['items'] as $link) {
+            $service = $this->get('service')->get($link['service_id']);
+            array_push($services, $service);
+        }
         $servicesAccordion = $this->servicesToAccordion($services);
 
         return $this->render(
@@ -761,7 +766,7 @@ class OrganizationController extends Controller
             array(
                 "organization" => $this->getOrganization($id),
                 "organizations" => $this->get('organization')->cget(),
-                "services" => $services,
+                "services" => $this->get('service')->cget(),
                 "services_accordion" => $servicesAccordion,
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
@@ -989,8 +994,8 @@ class OrganizationController extends Controller
     private function servicesToAccordion($services)
     {
         $servicesAccordion = array();
-
-        foreach ($services['items'] as $service) {
+        
+        foreach ($services as $service) {
             $servicesAccordion[$service['id']]['title'] = $service['name'];
             $servicesAccordion[$service['id']]['description'] = 'Permission sets';
             $managers = $this->get('service')->getManagers($service['id'])['items'];
