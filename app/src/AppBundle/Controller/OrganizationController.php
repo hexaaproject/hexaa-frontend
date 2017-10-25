@@ -994,7 +994,6 @@ class OrganizationController extends Controller
     private function servicesToAccordion($services)
     {
         $servicesAccordion = array();
-        
         foreach ($services as $service) {
             $servicesAccordion[$service['id']]['title'] = $service['name'];
             $servicesAccordion[$service['id']]['description'] = 'Permission sets';
