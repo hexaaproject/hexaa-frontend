@@ -1,6 +1,7 @@
 .grid_panel {
     border: 2px solid #61AFC5;
-    padding-bottom: 12px;
+    padding-bottom: 12px;;
+    padding-right: 5px;
     padding-top: 12px;
     margin-bottom: 12px;
 }

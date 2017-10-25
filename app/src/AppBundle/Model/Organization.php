@@ -195,6 +195,18 @@ class Organization extends AbstractBaseResource
         return $this->putCall($this->pathName.'/'.$id.'/managers'.'/'.$pid, []);
     }
 
+    /**
+     * Link service to the organization
+     *
+     * @param string $id    of organization
+     * @param string $token to link
+     * @return ResponseInterface
+     */
+    public function connectService(string $id, string $token)
+    {
+        return $this->putCall($this->pathName.'/'.$id.'/links'.'/'.$token.'/token', []);
+    }
+
 
     /**
      * Get the history of the organization

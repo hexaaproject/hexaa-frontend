@@ -9,6 +9,7 @@ use AppBundle\Form\OrganizationUserInvitationType;
 use AppBundle\Form\OrganizationType;
 use AppBundle\Form\OrganizationUserMessageManagerType;
 use AppBundle\Form\OrganizationUserMessageType;
+use AppBundle\Form\ConnectServiceType;
 use AppBundle\Model\Organization;
 use GuzzleHttp\Exception\ClientException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use WebDriver\Exception;
 
 /**
  * @Route("/organization")
@@ -745,14 +747,39 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/{id}/connectedservices")
+     * @Route("/{id}/connectedservices/{action}", defaults={"action": false})
      * @Template()
      * @return Response
-     * @param int $id Organization Id
-     *
+     * @param int     $id      Organization Id
+     * @param string  $action
+     * @param Request $request
      */
-    public function connectedservicesAction($id)
+    public function connectedservicesAction($id, $action, Request $request)
     {
+        if (! in_array($action, array("false", "create"))) {
+            $this->createNotFoundException("Invalid action in url: ".$action);
+        }
+
+        $form = $this->createForm(
+            ConnectServiceType::class,
+            array()
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $data = $form->getData();
+            $token = $data["token"];
+            try {
+                $this->get('organization')->connectService($id, $token);
+            } catch(\Exception $e) {
+                $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+            }
+
+            return $this->redirect($request->getUri());
+        }
+
         $services = array();
         $links = $this->get('organization')->getLinks($id);
         foreach ($links['items'] as $link) {
@@ -768,6 +795,8 @@ class OrganizationController extends Controller
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "services_accordion" => $servicesAccordion,
+                "action" => $action,
+                "form" => $form->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
