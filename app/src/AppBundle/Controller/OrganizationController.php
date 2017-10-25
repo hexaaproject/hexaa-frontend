@@ -768,12 +768,11 @@ class OrganizationController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $data = $form->getData();
             $token = $data["token"];
             try {
                 $this->get('organization')->connectService($id, $token);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $this->get('session')->getFlashBag()->add('error', $e->getMessage());
             }
 
