@@ -116,7 +116,7 @@
                             </div>
                         {% endfor %}
                     {% else %}
-                        {% if manager %}
+                        {% if heading != "Entity IDs" and manager %}
                         <div class="accordion_button_row pull-right">
                             <i title="delete role" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
                         </div>
