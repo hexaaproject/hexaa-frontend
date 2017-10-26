@@ -134,6 +134,17 @@ abstract class AbstractBaseResource
     }
 
     /**
+     * DELETE resource
+     *
+     * @param string $id ID of resource to GET
+     * @return array
+     */
+    public function deleteAdmin(string $id)
+    {
+        return $this->deleteCallAdmin($this->pathName.'/'.$id);
+    }
+
+    /**
      * @return array
      * @throws \Exception
      */
@@ -357,6 +368,27 @@ abstract class AbstractBaseResource
             $path,
             [
                 'headers' => $this->getHeaders(),
+            ]
+        );
+
+        return $response;
+    }
+
+    /**
+     * @param string $path
+     * @param array $data
+     * @return ResponseInterface
+     */
+    protected function deleteCallAdmin(string $path): ResponseInterface
+    {
+        $response = $this->client->delete(
+            $path,
+            [
+                'headers' => $this->getHeaders(),
+                'query' => array(
+                    'admin' => "true",
+                ),
+
             ]
         );
 

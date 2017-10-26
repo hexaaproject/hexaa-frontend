@@ -35,13 +35,14 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/attributes/{admin}")
+     * @Route("/attributes/{admin}/{action]", defaults={"action" = null})
      * @Template()
      * @param bool    $admin
+     * @param string  $action
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function attributesAction($admin, Request $request)
+    public function attributesAction($admin, $action, Request $request)
     {
         $attributespecifications = $this->get('attribute_spec')->cget();
 
@@ -92,6 +93,7 @@ class AdminController extends Controller
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
                 'attributes_accordion' => $this->attributesToAccordion($attributespecifications),
                 'formCreateAttributeSpec' => $formCreateAttributeSpec->createView(),
+                'action' => $action,
             )
         );
     }
@@ -356,6 +358,22 @@ class AdminController extends Controller
     }
 
     /**
+     * @Route("/attributespecification/{id}/delete")
+     * @Template()
+     * @return Response
+     * @param int $id Attributespecification Id
+     *
+     */
+    public function attributespecificationDeleteAction($id)
+    {
+        $this->get('attribute_spec')->deleteAdmin($id);
+        $this->get('session')->getFlashBag()->add('success', 'The attribute specification has been deleted.');
+
+        return $this->redirectToRoute("app_admin_attributes", array("admin" => $this->get('principal')->isAdmin()["is_admin"]));
+    }
+
+
+    /**
      * @return array
      */
     private function getAdminSubmenuPoints()
@@ -379,6 +397,7 @@ class AdminController extends Controller
         $attributesAccordion = array();
         foreach ($attributespecifications['items'] as $attributespecification) {
             $attributesAccordion[$attributespecification['id']]['title'] = $attributespecification['name'];
+            $attributesAccordion[$attributespecification['id']]['deleteUrl'] = $this->generateUrl("app_admin_attributespecificationdelete", array('id' => $attributespecification['id']));
             $description = array();
             $uri = array();
             $syntax = array();
@@ -427,7 +446,7 @@ class AdminController extends Controller
         $keys = array_keys($entityIDs['items']);
         foreach ($keys as $key) {
             $entityIDsAccordion[$key]['title'] = $key;
-
+           // $entityIDsAccordion[$key]['deleteUrl'] = $this->generateUrl("app_admin_entityiddelete", array('id' => $key));
             $entityarray = $entityIDs['items'][$key];
             $type = array();
             $email = array();
