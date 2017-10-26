@@ -1151,19 +1151,22 @@ class ServiceController extends Controller
         $errormessages = array();
         foreach ($linkIds as $linkId) {
             try {
-                $requests = $this->get('service')->getLinkRequests($id);
-                foreach ($requests['items'] as $request) {
-                    $data = array();
-                    $data['service'] = $request['service_id'];
-                    $data['organization'] = $request['organization_id'];
-                    $entitlementpacksIds = array();
-                    $entitlementpacks = $this->get('link')->getEntitlementPacks($request['id']);
-                    foreach ($entitlementpacks['items'] as $entitlementpack) {
-                        array_push($entitlementpacksIds, $entitlementpack['id']);
-                    }
-                    $data['status'] = "accepted";
-                    $this->get('link')->editLink($request['id'], $data);
+                //get all organization link
+               // $requests = $this->get('service')->getLinkRequests($id);
+                $request =  $this->get('link')->get($linkId);
+             //   foreach ($requests['items'] as $request) {
+                $data = array();
+                $data['service'] = $request['service_id'];
+                $data['organization'] = $request['organization_id'];
+                $entitlementpacksIds = array();
+                $entitlementpacks = $this->get('link')->getEntitlementPacks($request['id']);
+                foreach ($entitlementpacks['items'] as $entitlementpack) {
+                    array_push($entitlementpacksIds, $entitlementpack['id']);
                 }
+                $data['entitlement_packs'] = $entitlementpacksIds;
+                $data['status'] = "accepted";
+                $this->get('link')->editLink($request['id'], $data);
+              //  }
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
