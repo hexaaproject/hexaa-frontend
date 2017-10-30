@@ -218,6 +218,18 @@
                     connectedOrgDelete.modal('show');
                 });
                 {% endif %}
+
+                $('#connectNewOrgButton').on('click', function(event) {
+                    event.preventDefault();
+                    var content = $('#connectNewOrg').find('.modal-body-content');
+                    $('#connectNewOrg').modal('show');
+                });
+
+                $(document).on('click', '.modal#connectNewOrg button[type=submit]', function (event) {
+                    event.preventDefault();
+                    $('form[name=connect_org]').submit();
+                });
+
             });
         </script>
 
@@ -235,6 +247,27 @@
             {{ flashMessage|raw }}
         </div>
     {% endfor %}
+
+    <button class="btnhexaa btn-red dependent hidden-xs" id="connectNewOrgButton"><i class="material-icons">add</i>New org connect</button>
+
+    {{ include('::modal.html.twig',
+    {
+        id: 'connectNewOrg',
+        title: 'Connect new organization',
+        form: connectNewOrgForm,
+        button:
+        {
+            text: 'Create',
+            class: 'btn-red'
+        },
+        bodycontent: form_start(connectNewOrgForm)
+        ~ form_row(connectNewOrgForm.entitlementpacks)
+        ~ form_row(connectNewOrgForm.entitlements)
+        ~ '<div id= "scrollable-dropdown-menu">' ~ form_row(connectNewOrgForm.organizations) ~ '</div>'
+        ~ form_end(connectNewOrgForm),
+    })
+    }}
+
 
     {% if pending == true %}
         <div class="connected_org_pending_actionButtons" id="tablewithcheckbox"
@@ -287,7 +320,7 @@
             formaction: path('app_service_removeconnectedorganizations', {id: service.id })
         }) }}
 
-        <h2 style="color: #61AFC5">Pending</h2>
+        <h2 style="color: #61AFC5">Pending from Serv manager</h2>
 
         <table class="datatable datatable-blue" id="connected_org_pending">
             <thead>
@@ -356,7 +389,7 @@
             <th></th>
             <th>Organization</th>
             <th>Permission sets</th>
-
+            <th>Permissions</th>
         </tr>
         </thead>
         <tbody>
@@ -367,6 +400,11 @@
                     <td>{{ one_data.name }}</td>
                     {% for one_content in one_data.contents %}
                         {% if one_content.key == "entitlementpacks" %}
+                            <td> {{ one_content.values }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    {% for one_content in one_data.contents %}
+                        {% if one_content.key == "entitlements" %}
                             <td> {{ one_content.values }}</td>
                         {% endif %}
                     {% endfor %}

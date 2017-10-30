@@ -32,6 +32,17 @@ namespace AppBundle\Model {
         }
 
         /**
+         * Get entitlements of the link
+         *
+         * @param string $id ID of link
+         * @return array
+         */
+        public function getEntitlements(string $id): array
+        {
+            return $this->getCollection($this->pathName.'/'.$id.'/entitlements');
+        }
+
+        /**
          * Delete link
          *
          * @param string $id ID of link

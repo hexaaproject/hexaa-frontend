@@ -35,7 +35,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/attributes/{admin}/{action]", defaults={"action" = null})
+     * @Route("/attributes/{admin}/{action}", defaults={"action" : false})
      * @Template()
      * @param bool    $admin
      * @param string  $action

@@ -76,3 +76,12 @@ Usage:
         </div>
     </div>
 </div>
+
+{% javascripts
+'@typeahead_js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% if form is defined %}
+    {{ form_javascript(form) }}
+{% endif %}
