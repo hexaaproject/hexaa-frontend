@@ -43,6 +43,17 @@ namespace AppBundle\Model {
         }
 
         /**
+         * Get unused tokens of the link
+         *
+         * @param string $id ID of link
+         * @return array
+         */
+        public function getTokens(string $id): array
+        {
+            return $this->getCollection($this->pathName.'/'.$id.'/tokens');
+        }
+
+        /**
          * Delete link
          *
          * @param string $id ID of link

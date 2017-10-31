@@ -34,6 +34,13 @@
                 }],
                 'aaSorting': [[1, 'asc']]
             });
+            $('#connected_org_pendingfromorg').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false
+                }],
+                'aaSorting': [[1, 'asc']]
+            });
 
         </script>
 
@@ -165,6 +172,71 @@
 
                 });
                 {% endif %}
+
+                {% if pendinglinkIDs != null %}
+                {# hide pagination if one page #}
+                if (($('#connected_org_pendingfromorg').DataTable().page.info().pages == 1) | ($('#connected_org_pendingfromorg').DataTable().page.info().pages == 0)) {
+                    $('#connected_org_pendingfromorg_info').hide();
+                    $('#connected_org_pendingfromorg_paginate').hide();
+                    $('#connected_org_pendingfromorg_length').hide();
+                }
+
+                {# hide filter label (text: Search:) #}
+                $('#connected_org_pendingfromorg_filter').children('label').contents().first().remove();
+                $('#connected_org_pendingfromorg_filter input').addClass('hexaaSearchField');
+
+                $('#connected_org_pendingfromorg_hexaaSearchField').on('keyup', function () {
+                    $('#connected_org_pendingfromorg').DataTable().search(this.value).draw();
+                });
+
+                {# toggle disabled action buttons #}
+                $('#connected_org_pendingfromorg').on('change', 'input[type=checkbox]', function () {
+                    var checked = false;
+                    $('#connected_org_pendingfromorg input[type=checkbox]').each(function (index,
+                                                                                    el) {
+
+                        if ($(this).prop('checked')) {
+                            checked = true;
+                            $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
+                                                                                                      val) {
+                                $(this).prop('disabled', false);
+                            });
+
+                            {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
+                            $('#checkbox_all_pendingfromorg').prop('checked', false);
+                        }
+                    });
+
+                    if (!checked) {
+                        $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
+                                                                                                  val) {
+                            $(this).prop('disabled', 'disabled');
+                        });
+                    }
+                });
+                $('#checkbox_all_pendingfromorg').click(function () {
+                    var checkedStatus = this.checked;
+                    $('#connected_org_pendingfromorg tbody tr').find('td:first :checkbox').each(function () {
+                        $(this).prop('checked', checkedStatus);
+
+                    });
+                    if ($(this).prop('checked')) {
+                        $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
+                                                                                                  val) {
+                            $(this).prop('disabled', false);
+                        });
+                    }
+                    if (!$(this).prop('checked')) {
+                        $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
+                                                                                                  val) {
+                            $(this).prop('disabled', 'disabled');
+                        });
+                    }
+
+                });
+                {% endif %}
+
+
                 function populateList(ul,
                                       el) {
                     var row = $(el).closest('tr');
@@ -216,6 +288,23 @@
                         populateList(ul, el);
                     });
                     connectedOrgDelete.modal('show');
+                });
+                {% endif %}
+
+                {% if pendinglinkIDs != null %}
+                var pendingFromOrgTableActionButtons = $('.connected_org_pendingfromorg_actionButtons');
+                var pendingFromOrgDelete = $('#connectedlinksRemovePending');
+                pendingFromOrgTableActionButtons.on('click', '#deletePendingFromOrg', function (event) {
+                    event.preventDefault();
+                    var content = pendingFromOrgDelete.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = pendingFromOrgDelete.find('ul');
+                    $('#connected_org_pendingfromorg input:checked').each(function (index,
+                                                                             el) {
+                        populateList(ul, el);
+                    });
+                    pendingFromOrgDelete.modal('show');
                 });
                 {% endif %}
 
@@ -350,6 +439,80 @@
             </tbody>
         </table>
     {% endif %}
+
+
+    {% if pendinglinkIDs != null %}
+        <div class="connected_org_pendingfromorg_actionButtons" id="tablewithcheckbox"
+             style="margin-top: 12px; padding-top: 30px">
+
+            <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all_pendingfromorg" type="checkbox" value=""
+                   name="selectAll">
+            <input id="connected_org_pendingfromorg_hexaaSearchField" type="text" name="filter"
+                   class="hexaaSearchField pull-left"
+                   placeholder="Search pending links">
+
+            <button class="btnhexaa btnhexaa-sm btn-red dependent" disabled="disabled"
+                    id="deletePendingFromOrg"> Delete
+            </button>
+
+            <div class="visible-xs" style="margin-top: 12px;">
+                <input class="hexaaCheckBox" type="checkbox" value="">
+            </div>
+
+        </div>
+
+        {{ include('::modal.html.twig',
+        {
+            id: 'connectedlinksRemovePending',
+            title: 'Remove pending links',
+            bodyhead: 'Are you ready to delete these pending links?',
+            bodycontent: 'Optional',
+            button:
+            {
+                text: 'Remove',
+                class: 'btn-red'
+            },
+            formaction: path('app_service_removeconnectedorganizations', {id: service.id })
+        }) }}
+
+        <h2 style="color: #61AFC5">Waiting to org manager</h2>
+
+        <table class="datatable datatable-blue" id="connected_org_pendingfromorg">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Permission sets</th>
+                <th>Permissions</th>
+                <th>Tokens</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for one_data in allpending_data %}
+                <tr id="{{ one_data.link_id }}">
+                    <td><input type="checkbox" name="checkbox"></td>
+                    {% for one_content in one_data.contents %}
+                        {% if one_content.key == "entitlementpacks" %}
+                            <td> {{ one_content.values }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    {% for one_content in one_data.contents %}
+                        {% if one_content.key == "entitlements" %}
+                            <td> {{ one_content.values }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    {% for one_content in one_data.contents %}
+                        {% if one_content.key == "tokens" %}
+                            <td> {{ one_content.values }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+
+
 
     <div class="connected_org_actionButtons" id="tablewithcheckbox" style="padding-top: 30px">
 
