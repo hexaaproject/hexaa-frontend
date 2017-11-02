@@ -30,10 +30,22 @@
             $('#current_form').find('input:first').focus();
         }
 
+    /*    function showCreateRequest(){
+            $('#newConnectionRequest').removeClass('hidden');
+            $('#actionButtons').addClass('hidden');
+            $('#panel_container').find('form').attr("id", "current_form");
+            $('#current_form').find('input:first').focus();
+        }*/
+
         function cancel(){
             $('#actionButtons').removeClass('hidden');
             $('#newConnectionForm').addClass('hidden');
         }
+
+       /* function cancelrequest(){
+            $('#actionButtons').removeClass('hidden');
+            $('#newConnectionRequest').addClass('hidden');
+        }*/
 
         {% if action == "create" %}
         $(document).ready(function () {
@@ -45,8 +57,10 @@
 
     <div class="col-sm-11 col-sm-offset-2" id="actionButtons">
         <input type="" class="hexaaSearchField" name="" placeholder="Service, permission, permission set">
-        <button class="btnhexaa btn-red pull-right" onclick="showCreateForm()"><i class="material-icons" aria-hidden="true">add</i> New connection</button>
+        <button class="btnhexaa btn-red pull-right" onclick="showCreateForm()"><i class="material-icons" aria-hidden="true">add</i> Connect serv by token</button>
+        <button id= "request" class="btnhexaa btn-red pull-right" onclick="showCreateRequest()"><i class="material-icons" aria-hidden="true">add</i> New serv connect request</button>
     </div>
+
 
     <div id="newConnectionForm" class="col-md-9 col-md-offset-3 hidden">
         <div class="grid_panel">
@@ -74,8 +88,42 @@
         </div>
     </div>
 
-        <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
-            {{ include('::accordions.html.twig', { heading: "Connected services", variant: "light", items: services_accordion }) }}
-        </div>
+    {{ include('AppBundle:Organization:createrequest.html.twig', {}) }}
 
+    <div id="newConnectionRequest" class="col-md-9 col-md-offset-3 hidden">
+       <!-- <div class="grid_panel">
+            <div class="header">
+                Create new service connect request
+                <div class="pull-right">
+                    <button type="button" id="cancelbutton" class="actionbutton" onclick="cancelrequest()"><i class="material-icons">clear</i></button>
+                    <button type="submit" id="submitbutton" class="actionbutton" onclick="$('#current_form').submit();" ><i class="material-icons">done</i></button>
+                </div>
+            </div>
+            <div id="panel_container">
+                {/{ form_start(formrequest) }}
+                {/% for key, field in formrequest  %}
+                    <div class="row {/% if ("_token" == key) %} hidden {/% endif %}" style="padding-top: 12px;">
+                        <div class="col-sm-3 propname">{/{ form_label(field) }}</div>
+                        <div class="col-sm-11"> {/{ form_widget(field) }}</div>
+                        {/% if field.vars.errors|length %}
+                            <div class="col-sm-offset-3 col-sm-11 has-error">{/{ field.vars.errors|length }}</div>
+                        {/% endif %}
+                    </div>
+                {/% endfor %}
+
+                {/{ form_end(formrequest) }}
+            </div>
+        </div>-->
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-7" style="margin-top: 20px">
+            {{ include('::accordions.html.twig', { heading: "Connected entitlement packs", variant: "light", items: services_accordion }) }}
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-7" style="margin-top: 20px">
+            {{ include('::accordions.html.twig', { heading: "Connected entitlements", variant: "light", items: entitlements_accordion }) }}
+        </div>
+    </div>
 {% endblock %}

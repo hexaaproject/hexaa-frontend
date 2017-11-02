@@ -8,9 +8,9 @@ use Devmachine\Bundle\FormBundle\Form\Type\TypeaheadType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
- * Class ConnectOrgType
+ * Class ConnectServiceRequest2Type
  */
-class ConnectOrgType extends AbstractType
+class ConnectServiceRequest2Type extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -18,18 +18,17 @@ class ConnectOrgType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
-      // dump($datas);exit;
         $builder
             ->add(
                 'entitlementpacks',
                 ChoiceType::class,
                 array(
                     'label' => "Entitlement packs",
-                    'choices' => $datas['data']['datas']['entitlementpacksToForm'],
+               //     'choices' => $datas['data']['datas']['entitlementsToForm'],
                     "attr" => array(
                         "class" => "checkstolink",
                     ),
-                    'required' => true,
+                    'required' => false,
                     'multiple' => true,
                     'expanded' => true,
                 )
@@ -38,8 +37,8 @@ class ConnectOrgType extends AbstractType
                 'entitlements',
                 ChoiceType::class,
                 array(
-                    'label' => "Entitlements (optional)",
-                    'choices' => $datas['data']['datas']['entitlementsToForm'],
+                    'label' => "Entitlements",
+              //      'choices' => $datas['data']['datas']['entitlementsToForm'],
                     "attr" => array(
                         "class" => "checkstolink",
                     ),
@@ -48,20 +47,6 @@ class ConnectOrgType extends AbstractType
                     'expanded' => true,
                 )
             );
-           /* ->add(
-                'organizations',
-                TypeaheadType::class,
-                array(
-                    'label' => "Organization (optional)",
-                    'source_name' => 'organizations',
-                    'min_length' => 1,
-                    'placeholder' => 'Start typing',
-                    'matcher' => 'contains', // ends_with, contains
-                    'source' => $datas['data']['datas']['organizationsToForm'],
-                    'required' => 'false',
-                    'limit' => 30,
-                )
-            );*/
     }
 
     /**

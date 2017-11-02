@@ -428,3 +428,14 @@ div.panelservice p {
     padding-right: 70px;
     margin-top: 10px;
 }
+#scrollable-dropdown-menu .twitter-typeahead{
+    margin-left:50px;
+    width: 310px;
+}
+
+#scrollable-dropdown-menu .tt-menu{
+    margin:2px 0;
+    width: 310px;
+    border: 1px solid #61AFC5;
+    color: black;
+}

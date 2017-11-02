@@ -1178,6 +1178,7 @@ class ServiceController extends Controller
                 "method" => "POST",
             )
         );
+        dump($organizationsToForm);exit;
         if ($organizationsToForm != null) {
             $connectNewOrgForm->add(
                 'organizations',
