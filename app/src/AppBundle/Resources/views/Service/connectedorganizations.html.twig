@@ -23,7 +23,12 @@
                 "columnDefs": [{
                     "targets": 0,
                     "orderable": false
-                }],
+                },
+                    {
+                        "targets": 4,
+                        "orderable":false
+                    }
+                ],
                 'aaSorting': [[1, 'asc']]
             });
 
@@ -322,6 +327,22 @@
             });
         </script>
 
+        <script>
+            function editlink(linkid) {
+                console.log(linkid);
+
+                var content = $('#'+linkid).find('.modal-body-content');
+                $('#'+linkid).modal('show');
+            }
+
+            {% for link in datasToLinkId %}
+            $(document).on('click', '.modal#' + {{ link }} + ' button[type=submit]', function (event) {
+                event.preventDefault();
+                $('form[name='+ {{ link }}+']').submit();
+            });
+            {% endfor %}
+
+        </script>
     {% endblock %}
 
     <!--<div class="loader"></div>-->
@@ -338,6 +359,26 @@
     {% endfor %}
 
     <button class="btnhexaa btn-red dependent hidden-xs" id="connectNewOrgButton"><i class="material-icons">add</i>New org connect</button>
+    
+    {% set i = 0 %}
+    {% for form in forms %}
+        {{ include('::modal.html.twig',
+        {
+            id: datasToLinkId[i],
+            title: 'Modify connected organizations',
+            form: form,
+            bodycontent: form_start(form, {'name' : datasToLinkId[i]})
+            ~ form_row(form.entitlementpacks)
+            ~ form_row(form.entitlements)
+            ~ form_end(form),
+            button:
+            {
+                text: 'Modify',
+                class: 'btn-red'
+            },
+        }) }}
+        {% set i = i + 1 %}
+    {% endfor %}
 
     {{ include('::modal.html.twig',
     {
@@ -352,7 +393,7 @@
         bodycontent: form_start(connectNewOrgForm)
         ~ form_row(connectNewOrgForm.entitlementpacks)
         ~ form_row(connectNewOrgForm.entitlements)
-        ~ '<div id= "scrollable-dropdown-menu">' ~ form_row(connectNewOrgForm.organizations) ~ '</div>'
+        ~ '<div id= "scrollable-dropdown-menu" class= "neworg">' ~ form_row(connectNewOrgForm.organizations) ~ '</div>'
         ~ form_end(connectNewOrgForm),
     })
     }}
@@ -431,7 +472,7 @@
                                 <td> {{ one_content.values }}</td>
                             {% endif %}
                         {% endfor %}
-                        <!--  <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="/img/red_rubbishbin.svg" onclick="deletelink()"/></td>
+                        <!-- <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="/img/red_rubbishbin.svg" onclick="deletelink()"/></td>
                           <td><button type="button" class="btnhexaa btnhexaa-sm btn-red" onclick="acceptlink()">Accept</button></td>-->
                     </tr>
                 {% endif %}
@@ -553,6 +594,7 @@
             <th>Organization</th>
             <th>Permission sets</th>
             <th>Permissions</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -571,8 +613,8 @@
                             <td> {{ one_content.values }}</td>
                         {% endif %}
                     {% endfor %}
-                    <!--  <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="/img/red_rubbishbin.svg" onclick="deletelink()"/></td>
-                      <td><button type="button" class="btnhexaa btnhexaa-sm btn-red" onclick="acceptlink()">Accept</button></td>-->
+                     <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="/img/gray_pencil.svg" onclick="editlink({{ one_data.link_id }})"/></td>
+                     <!-- <td><button type="button" class="btnhexaa btnhexaa-sm btn-red" onclick="acceptlink()">Accept</button></td>-->
                 </tr>
             {% endif %}
         {% endfor %}

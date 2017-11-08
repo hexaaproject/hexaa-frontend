@@ -242,6 +242,10 @@ form[name="service_create_permission"] .header, form[name="service_create_permis
 }
 
 #scrollable-dropdown-menu .twitter-typeahead{
+    width: 310px;
+}
+
+.neworg .twitter-typeahead{
     margin-left:50px;
     width: 310px;
 }

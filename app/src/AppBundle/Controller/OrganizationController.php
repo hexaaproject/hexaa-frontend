@@ -1054,6 +1054,58 @@ class OrganizationController extends Controller
      * @param $id
      * @return \Symfony\Component\Form\Form
      */
+    private function createRequest($id)
+    {
+        $services = $this->get('service')->getAll();
+        $requests = $this->get('organization')->getLinks($id);
+        //  dump($requests);exit;
+        $servicesToForm = array();
+        $servicesNotToForm = array();
+        $servicesAllForm = array();
+        foreach ($services['items'] as $service){
+            foreach ($requests['items'] as $request){
+                if ($request['service_id'] == $service['id']) {
+                    $servicesNotToForm[$service['id']] = $service['name'];
+                    break;
+                }
+            }
+            $servicesAllForm[$service['id']] = $service['name'];
+        }
+        //  dump($servicesNotToForm);exit;
+        $servicesToForm = array_diff($servicesAllForm, $servicesNotToForm);
+        //  dump($servicesToForm);exit;
+        $form = $this->createForm(
+            ConnectServiceRequest1Type::class,
+            array(
+                "datas" => $servicesToForm,
+            ),
+            array(
+                "action" => $this->generateUrl("app_organization_createrequest", array("id" => $id)),
+                "method" => "POST",
+            )
+        );
+        $form->add(
+            'service',
+            TypeaheadType::class,
+            array(
+                'label' => 'Service',
+                'source_name' => 'services',
+                'min_length' => 1,
+                'placeholder' => 'Start typing',
+                'matcher' => 'contains', // ends_with, contains
+                'source' => $servicesToForm,
+                'required' => 'true',
+                'limit' => 30,
+            )
+        );
+
+        return $form;
+    }
+
+    /**
+     * @param $id
+     * @return \Symfony\Component\Form\Form
+     */
     private function createCreateRequestForm($id)
     {
         $services = $this->get('service')->getAll();
