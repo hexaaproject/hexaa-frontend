@@ -185,3 +185,7 @@ td.accordion-hr {
     cursor: pointer;
     font-size: large;
 }
+
+.accordion-editform > form {
+    padding: 12px;
+}

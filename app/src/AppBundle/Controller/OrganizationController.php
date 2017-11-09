@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\OrganizationPropertiesType;
 use AppBundle\Form\OrganizationRoleType;
+use AppBundle\Form\OrganizationRoleUpdateType;
 use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
 use AppBundle\Form\OrganizationType;
@@ -17,6 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -825,6 +827,25 @@ class OrganizationController extends Controller
     }
 
     /**
+     * @Route("/{orgId}/role/{id}/update")
+     * @Template()
+     * @return Response
+     * @param int     $orgId   Organization id
+     * @param int     $id      Role Id
+     * @param Request $request Request
+     *
+     */
+    public function roleUpdateAction($orgId, $id, Request $request)
+    {
+        $organizationResource = $this->get('role');
+
+        //        $organizationResource->delete($id);
+                $this->get('session')->getFlashBag()->add('error', 'TODO');
+
+        return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
+    }
+
+    /**
      * @Route("/{orgId}/role/{id}/delete")
      * @Template()
      * @return Response
@@ -840,6 +861,8 @@ class OrganizationController extends Controller
 
         return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
     }
+
+
 
     /**
      * Get the history of the requested organization.
@@ -997,6 +1020,14 @@ class OrganizationController extends Controller
         foreach ($roles as $role) {
             $rolesAccordion[$role['id']]['title'] = $role['name'];
             $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
+            $rolesAccordion[$role['id']]['form'] = $this->createForm(
+                OrganizationRoleUpdateType::class,
+                $role,
+                array(
+                    "action" => $this->generateUrl("app_organization_roleupdate", array("orgId" => $orgId, "id" => $role['id'])),
+                    )
+            )
+            ->createView();
 
             $members = array();
             $permissions = array();
