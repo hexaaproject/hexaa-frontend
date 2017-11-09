@@ -144,7 +144,7 @@
                         {% if heading != "Entity IDs" and manager %}
                         <div class="accordion_button_row pull-right">
                             {% if item.form is defined %}
-                                <i title="update role" class="material-icons accordion-button accordion_edit_button" data-id="{{ itemId }}" data-displayname="{{ item.title }}">create</i>
+                                <i title="update role" class="material-icons accordion-button accordion_edit_button">create</i>
                             {% endif %}
                             <i title="delete role" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
                         </div>
