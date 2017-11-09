@@ -838,9 +838,9 @@ class OrganizationController extends Controller
     public function roleUpdateAction($orgId, $id, Request $request)
     {
         $organizationResource = $this->get('role');
-        dump($request);exit;
+
         //        $organizationResource->delete($id);
-        //        $this->get('session')->getFlashBag()->add('success', 'The role has been deleted.');
+                $this->get('session')->getFlashBag()->add('error', 'TODO');
 
         return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
     }
@@ -1026,8 +1026,8 @@ class OrganizationController extends Controller
                 array(
                     "action" => $this->generateUrl("app_organization_roleupdate", array("orgId" => $orgId, "id" => $role['id'])),
                     )
-                )
-                ->createView();
+            )
+            ->createView();
 
             $members = array();
             $permissions = array();
