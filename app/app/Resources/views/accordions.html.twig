@@ -42,11 +42,36 @@
         {% if manager %}
             $('.accordion_delete_button').on("click", function () {
                 var deleteBox = $('#deleteBox');
-                console.log(deleteBox);
                 deleteBox.find('form').attr("action", $(this).data('targeturl'));
                 deleteBox.find('.displayname').text($(this).data('displayname'));
                 deleteBox.modal('show');
             });
+
+        {# **********  ediform ********* #}
+        $('.accordion_edit_button').on("click", function () {
+            var panel = $(this).closest('.accordion-panel');
+            panel.find('.accordion-editform').removeClass('hidden');
+            panel.find('table.accordion').addClass('hidden');
+            panel.find('.accordion_edit_button').addClass('hidden');
+        });
+        $('.accordion_edit_button').on("click", function () {
+            var panel = $(this).closest('.accordion-panel');
+            panel.find('.accordion-editform').removeClass('hidden');
+            panel.find('table.accordion').addClass('hidden');
+            panel.find('.accordion_edit_button').addClass('hidden');
+        });
+        $('.accordion_edit_cancel_button').on("click", function () {
+            var panel = $(this).closest('.accordion-panel');
+            panel.find('.accordion-editform').addClass('hidden');
+            panel.find('table.accordion').removeClass('hidden');
+            panel.find('.accordion_edit_button').removeClass('hidden');
+        });
+        $('.accordion_edit_submit_button').on("click", function () {
+            var panel = $(this).closest('.accordion-panel');
+            panel.find('form').submit();
+        });
+
+
         {% endif %}
     }
 
@@ -118,10 +143,23 @@
                     {% else %}
                         {% if heading != "Entity IDs" and manager %}
                         <div class="accordion_button_row pull-right">
+                            {% if item.form is defined %}
+                                <i title="update role" class="material-icons accordion-button accordion_edit_button" data-id="{{ itemId }}" data-displayname="{{ item.title }}">create</i>
+                            {% endif %}
                             <i title="delete role" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
                         </div>
                         {% endif %}
+                        {% if item.form is defined %}
+                            <div class="hidden accordion-editform">
+                                <div class="pull-right">
+                                    <i class="material-icons accordion-button accordion_edit_cancel_button">clear</i>
+                                    <i class="material-icons accordion-button accordion_edit_submit_button">done</i>
+                                </div>
+                                {{ form(item.form) }}
+                            </div>
+                        {% endif %}
                         <table cellspacing="0" class="accordion">
+
                             {% for content in item.contents %}
                                 <tr class="accordion">
                                     <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion accordion-key">{{ content.key }}</td>
