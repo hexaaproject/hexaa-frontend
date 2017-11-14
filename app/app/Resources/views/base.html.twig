@@ -20,6 +20,7 @@
     'css/mobile.css'
     'css/buttons.css'
     'css/navbarwidget.css'
+    'css/mainnavbar.css'
     filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
@@ -39,7 +40,62 @@
 
 </head>
 <body>
-<div id="topdiv">
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+       <div class="navbar-header">
+            <a class="navbar-brand" href="{{ path('homepage') }}">
+                <img id="cornerlogo" src="/img/hexaa-logo-blue.png" alt="hexaa logo"/>
+            </a>
+        </div>
+        <ul class="nav navbar-nav">
+           {#<li class="active"><a href="#">Home</a></li>#}
+            {% if organizations is defined %}
+                <li class="dropdown" id="org">
+                    <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Organizations <i class="material-icons">arrow_drop_down</i>
+                        {# <span class="caret"> </span>#}</a>
+                    {% if organizations.items != null %}
+                        <ul class="dropdown-menu">
+                            {% for organization in organizations.items %}
+                                <li><a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endif %}
+            {% if services is defined and services.item_number > 0 %}
+                <li class="dropdown" id="serv">
+                    <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Services <i class="material-icons">arrow_drop_down</i>
+                        {# <span class="caret"> </span>#}</a>
+                    {% if services.items != null %}
+                        <ul class="dropdown-menu">
+                            {% for service in services.items %}
+                                <li><a href="{{ path("app_service_show", { id: service.id }) }}">{{ service.name|e }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endif %}
+            {% if admin is defined and (admin == "true" or admin == "1") %}
+                <li id="admin"><a id="fullfill" href="{{ path("app_admin_attributes", { admin: admin }) }}">Admin</a></li>
+            {% endif %}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ path("app_profile_index") }}">{{ app.user.username }}</a></li>
+            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li><a href="{{ path('app_default_login') }}" id="login_button" role="button">
+                        <img id="logpng" src="/img/logout.png">
+                    </a></li>
+            {% else %}
+                <li><a href="{{ logout_path('default') }}" id="logout_button" role="button">
+                        <img id="logpng" src="/img/logout.png">
+                    </a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+{#<div id="topdiv">
     <div id="topdivcontent">
         <div id="cornerlogobox">
             <a href="{{ path('homepage') }}">
@@ -109,7 +165,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>#}
 {% if app.request.get('_route')=="homepage" %}
     {{ include('::navbar.html.twig', {names:null}) }}
 {% endif %}
@@ -125,7 +181,7 @@
 {% endblock %}
 
 <script>
-    function orgClick() {
+   /* function orgClick() {
         $("#orgSelect")[0].classList.toggle("show");
     }
     function servClick() {

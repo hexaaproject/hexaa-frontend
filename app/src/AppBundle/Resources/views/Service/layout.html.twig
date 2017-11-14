@@ -20,22 +20,9 @@
 
 {% block javascripts %}
     <script>
-        /*
-         $("#orgaccordion").remove();
-         var b = $(".servicecl");
-         for (i = 0; i < b.length; i++) {
-         b[i].style.backgroundColor = "#61AFC5";
-         a = b[i].getElementsByTagName("a");
-         for (j = 0; j < a.length; j++) {
-         if (a[j].innerHTML == "Tesztelő szolgáltatás") {
-         a[j].style.backgroundColor = "#61AFC5";
-         }
-         }
-         }
-         var b2 = $(".dropbtn");
-         for (i = 0; i < b2.length; i++) {
-         b2[i].style.backgroundColor = "#2e2d2d";
-         }
-         */
+         var serv = $("#serv");
+         serv.css('background-color', "#61AFC5");
+         var org = $("#org");
+         org.css('background-color', "#333333");
     </script>
 {% endblock %}
