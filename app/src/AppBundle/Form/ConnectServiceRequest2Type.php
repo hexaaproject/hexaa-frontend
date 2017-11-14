@@ -14,7 +14,7 @@ class ConnectServiceRequest2Type extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array                $datas
      */
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
@@ -24,7 +24,7 @@ class ConnectServiceRequest2Type extends AbstractType
                 ChoiceType::class,
                 array(
                     'label' => "Entitlement packs",
-               //     'choices' => $datas['data']['datas']['entitlementsToForm'],
+                  //'choices' => $datas['data']['datas']['entitlementsToForm'],
                     "attr" => array(
                         "class" => "checkstolink",
                     ),
@@ -38,7 +38,7 @@ class ConnectServiceRequest2Type extends AbstractType
                 ChoiceType::class,
                 array(
                     'label' => "Entitlements",
-              //      'choices' => $datas['data']['datas']['entitlementsToForm'],
+                  //'choices' => $datas['data']['datas']['entitlementsToForm'],
                     "attr" => array(
                         "class" => "checkstolink",
                     ),

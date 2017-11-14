@@ -1057,6 +1057,7 @@ class ServiceController extends Controller
      * @Route("/connectedorganizations/{id}/{token}", defaults = {"token" = null})
      * @Template()
      * @param integer $id
+     * @param string  $token
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -1089,9 +1090,9 @@ class ServiceController extends Controller
             $entitlements = $this->get('link')->getEntitlements($requestlink['id']);
             $duplicate = array();
 
-            foreach ($entitlementpacks['items'] as $entitlementpack){
-                foreach ($entitlementpack['entitlement_ids'] as $entitlement_id) {
-                    array_push($entitlements['items'], $this->get('entitlement')->get($entitlement_id));
+            foreach ($entitlementpacks['items'] as $entitlementpack) {
+                foreach ($entitlementpack['entitlement_ids'] as $entitlementid) {
+                    array_push($entitlements['items'], $this->get('entitlement')->get($entitlementid));
                 }
             }
 
@@ -1117,9 +1118,8 @@ class ServiceController extends Controller
                 array(
                     'key' => 'entitlements',
                     'values' => $entitlementNames,
-                )
+                ),
             );
-
         }
 
         $pending = false;
@@ -1138,8 +1138,8 @@ class ServiceController extends Controller
         $organizationsToForm = array();
         $organizationsNotToForm = array();
         $organizationsAllForm = array();
-        foreach ($organizations['items'] as $organization){
-            foreach ($requestslinks['items'] as $requestlink){
+        foreach ($organizations['items'] as $organization) {
+            foreach ($requestslinks['items'] as $requestlink) {
                 if ($requestlink['organization_id'] == $organization['id']) {
                     $organizationsNotToForm[$organization['id']] = $organization['name'];
                     break;
@@ -1150,13 +1150,13 @@ class ServiceController extends Controller
         $organizationsToForm = array_diff($organizationsAllForm, $organizationsNotToForm);
 
         $entitlementpacksToForm = array();
-        foreach ($entitlementpacks['items'] as $entitlementpack){
+        foreach ($entitlementpacks['items'] as $entitlementpack) {
             $entitlementpacksToForm[$entitlementpack['name']] = $entitlementpack['id'];
         }
         $datasToForm['entitlementpacksToForm'] = $entitlementpacksToForm;
 
         $entitlementsToForm = array();
-        foreach ($entitlements['items'] as $entitlement){
+        foreach ($entitlements['items'] as $entitlement) {
             $entitlementsToForm[$entitlement['name']] = $entitlement['id'];
         }
         $datasToForm['entitlementsToForm'] = $entitlementsToForm;
@@ -1195,15 +1195,15 @@ class ServiceController extends Controller
 
         $links = $this->get('service')->getLinksOfService($id);
         $pendinglinkIDs = array();
-        foreach ($links['items'] as $link){
-            if(($link['organization_id'] == null) && $link['status'] == "pending"){
+        foreach ($links['items'] as $link) {
+            if (($link['organization_id'] == null) && $link['status'] == "pending") {
                 array_push($pendinglinkIDs, $link['id']);
             }
         }
 
-        $allpending_data = array();
+        $allpendingdata = array();
         foreach ($pendinglinkIDs as $pendinglinkID) {
-            $allpending_data[$pendinglinkID]['link_id'] = $pendinglinkID;
+            $allpendingdata[$pendinglinkID]['link_id'] = $pendinglinkID;
             $linkEntitlementpacks = $this->get('link')->getEntitlementPacks($pendinglinkID);
             $linkEntitlementpacksNames = null;
             $i = 0;
@@ -1219,9 +1219,9 @@ class ServiceController extends Controller
 
             $linkentitlements = $this->get('link')->getEntitlements($pendinglinkID);
 
-            foreach ($linkEntitlementpacks['items'] as $linkEntitlementpack){
-                foreach ($linkEntitlementpack['entitlement_ids'] as $entitlement_id) {
-                    array_push($linkentitlements['items'], $this->get('entitlement')->get($entitlement_id));
+            foreach ($linkEntitlementpacks['items'] as $linkEntitlementpack) {
+                foreach ($linkEntitlementpack['entitlement_ids'] as $entitlementid) {
+                    array_push($linkentitlements['items'], $this->get('entitlement')->get($entitlementid));
                 }
             }
 
@@ -1251,7 +1251,7 @@ class ServiceController extends Controller
                 $i++;
             }
 
-            $allpending_data[$pendinglinkID]['contents'] = array(
+            $allpendingdata[$pendinglinkID]['contents'] = array(
                 array(
                     'key' => 'entitlementpacks',
                     'values' => $linkEntitlementpacksNames,
@@ -1263,7 +1263,7 @@ class ServiceController extends Controller
                 array(
                     'key' => 'tokens',
                     'values' => $linktokens,
-                )
+                ),
             );
         }
 
@@ -1282,12 +1282,11 @@ class ServiceController extends Controller
                     if ($onecontent['key'] == 'entitlementpacks') {
                         $names = explode(', ', $onecontent['values']);
                         foreach ($names as $name) {
-                            foreach ($entitlementpacks['items'] as $entitlementpack){
+                            foreach ($entitlementpacks['items'] as $entitlementpack) {
                                 if ($entitlementpack['name'] == trim($name)) {
                                     $epackNames[trim($name)] = $entitlementpack['id'];
                                 }
                             }
-
                         }
                     }
                     if ($onecontent['key'] == 'entitlements') {
@@ -1314,8 +1313,7 @@ class ServiceController extends Controller
             }
         }
 
-        foreach($forms as $form) {
-
+        foreach ($forms as $form) {
             $form->handleRequest($request);
 
             if ($form->isSubmitted()) {
@@ -1331,6 +1329,7 @@ class ServiceController extends Controller
                 $modified['entitlement_packs'] = $entitlementpackIds;
                 $modified['entitlements'] = $entitlementsIds;
                 $this->get('link')->editlink($data['linkid'], $modified);
+
                 return $this->redirect($request->getUri());
             }
         }
@@ -1349,7 +1348,7 @@ class ServiceController extends Controller
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'all_data' => $allData,
-                'allpending_data' => $allpending_data,
+                'allpending_data' => $allpendingdata,
                 'datasToLinkId' => $datasToLinkId,
                 'pending'  => $pending,
                 'connectNewOrgForm' => $connectNewOrgForm->createView(),
@@ -1380,8 +1379,8 @@ class ServiceController extends Controller
         $organizationsToForm = array();
         $organizationsNotToForm = array();
         $organizationsAllForm = array();
-        foreach ($organizations['items'] as $organization){
-            foreach ($orglinks['items'] as $orglink){
+        foreach ($organizations['items'] as $organization) {
+            foreach ($orglinks['items'] as $orglink) {
                 if ($orglink['organization_id'] == $organization['id']) {
                     $organizationsNotToForm[$organization['id']] = $organization['name'];
                     break;
@@ -1392,13 +1391,13 @@ class ServiceController extends Controller
         $organizationsToForm = array_diff($organizationsAllForm, $organizationsNotToForm);
 
         $entitlementpacksToForm = array();
-        foreach ($entitlementpacks['items'] as $entitlementpack){
+        foreach ($entitlementpacks['items'] as $entitlementpack) {
             $entitlementpacksToForm[$entitlementpack['name']] = $entitlementpack['id'];
         }
         $datasToForm['entitlementpacksToForm'] = $entitlementpacksToForm;
 
         $entitlementsToForm = array();
-        foreach ($entitlements['items'] as $entitlement){
+        foreach ($entitlements['items'] as $entitlement) {
             $entitlementsToForm[$entitlement['name']] = $entitlement['id'];
         }
         $datasToForm['entitlementsToForm'] = $entitlementsToForm;
@@ -1458,14 +1457,14 @@ class ServiceController extends Controller
                 }
                 $response = $this->get('link')->post($postarray);
 
-                if($orgID == null) {
+                if ($orgID == null) {
                     $headers = $response->getHeader('Location');
                     $headerspartsary = explode("/", $headers[0]);
                     $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
                 }
                 $this->get('session')->getFlashBag()->add('success', 'Link succesfully generated.');
             } catch (\Exception $e) {
-                $this->get('session')->getFlashBag()->add('error', 'Message sending failure. <br>' . $e->getMessage());
+                $this->get('session')->getFlashBag()->add('error', 'Message sending failure.<br>'.$e->getMessage());
             }
 
             return $this->redirect($this->generateUrl('app_service_connectedorganizations', array('id' => $id, 'token' => $getlink['token'])));

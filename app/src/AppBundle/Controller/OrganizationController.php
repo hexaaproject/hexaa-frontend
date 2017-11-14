@@ -453,8 +453,8 @@ class OrganizationController extends Controller
         $servicesToForm = array();
         $servicesNotToForm = array();
         $servicesAllForm = array();
-        foreach ($services['items'] as $service){
-            foreach ($requests['items'] as $request){
+        foreach ($services['items'] as $service) {
+            foreach ($requests['items'] as $request) {
                 if ($request['service_id'] == $service['id']) {
                     $servicesNotToForm[$service['id']] = $service['name'];
                     break;
@@ -864,7 +864,7 @@ class OrganizationController extends Controller
             array_push($entitlementpacks, $this->get('link')->getEntitlementPacks($linkID));
         }
         $entitlementids = array();
-        foreach ($entitlementpacks as $entitlementpackitems){
+        foreach ($entitlementpacks as $entitlementpackitems) {
             foreach ($entitlementpackitems['items'] as $entitlementpackitem) {
                 foreach ($entitlementpackitem['entitlement_ids'] as $oneid) {
                     array_push($entitlementids, $oneid);
@@ -872,7 +872,7 @@ class OrganizationController extends Controller
             }
         }
        // dump($entitlementids);exit;
-        $entitlementsunique = array_unique($entitlementids, $sort_flags = SORT_REGULAR);
+        $entitlementsunique = array_unique($entitlementids, $sortflags = SORT_REGULAR);
        // dump($entitlementsunique);exit;
 
         $entitlements = array();
@@ -888,7 +888,7 @@ class OrganizationController extends Controller
         }
        // dump($entitlements);exit;
 
-        foreach ($entitlementsunique as $entitlementunique){
+        foreach ($entitlementsunique as $entitlementunique) {
             $entitlement = $this->get('entitlement')->get($entitlementunique);
             if (!in_array($entitlement, $entitlements)) {
                 array_push($entitlements, $entitlement);
@@ -1062,8 +1062,8 @@ class OrganizationController extends Controller
         $servicesToForm = array();
         $servicesNotToForm = array();
         $servicesAllForm = array();
-        foreach ($services['items'] as $service){
-            foreach ($requests['items'] as $request){
+        foreach ($services['items'] as $service) {
+            foreach ($requests['items'] as $request) {
                 if ($request['service_id'] == $service['id']) {
                     $servicesNotToForm[$service['id']] = $service['name'];
                     break;
@@ -1114,8 +1114,8 @@ class OrganizationController extends Controller
         $servicesToForm = array();
         $servicesNotToForm = array();
         $servicesAllForm = array();
-        foreach ($services['items'] as $service){
-            foreach ($requests['items'] as $request){
+        foreach ($services['items'] as $service) {
+            foreach ($requests['items'] as $request) {
                 if ($request['service_id'] == $service['id']) {
                     $servicesNotToForm[$service['id']] = $service['name'];
                     break;
@@ -1137,18 +1137,18 @@ class OrganizationController extends Controller
             )
         );
         $form->add(
-                'service',
-                TypeaheadType::class,
-                array(
-                    'label' => 'Service',
-                    'source_name' => 'services',
-                    'min_length' => 1,
-                    'placeholder' => 'Start typing',
-                    'matcher' => 'contains', // ends_with, contains
-                    'source' => $servicesToForm,
-                    'required' => 'true',
-                    'limit' => 30,
-                )
+            'service',
+            TypeaheadType::class,
+            array(
+                'label' => 'Service',
+                'source_name' => 'services',
+                'min_length' => 1,
+                'placeholder' => 'Start typing',
+                'matcher' => 'contains', // ends_with, contains
+                'source' => $servicesToForm,
+                'required' => 'true',
+                'limit' => 30,
+            )
         );
 
         return $form;
@@ -1302,14 +1302,14 @@ class OrganizationController extends Controller
                 $managersstring .= $manager['display_name']." (".$manager['email'].") ";
             }
             $entitlementsAccordion[$service['id']]['titlemiddle'] = 'Service manager '.$managersstring;
-           foreach ($entitlements as $entitlement) {
-               if ($entitlement['service_id'] == $service['id']) {
-                   $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['title'] = $entitlement['name'];
-                   $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['variant'] = 'light';
-                   $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['contents'][] = array("key" => "Details", "values" => array($entitlement['description']));
-                   $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['buttons']['deleteEntitlement'] = array("icon" => "delete");
+            foreach ($entitlements as $entitlement) {
+                if ($entitlement['service_id'] == $service['id']) {
+                    $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['title'] = $entitlement['name'];
+                    $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['variant'] = 'light';
+                    $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['contents'][] = array("key" => "Details", "values" => array($entitlement['description']));
+                    $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['buttons']['deleteEntitlement'] = array("icon" => "delete");
                    //  $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Permissions", "values" => $entitlementnames);
-               }
+                }
             }
         }
 

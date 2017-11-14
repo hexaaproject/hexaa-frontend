@@ -110,7 +110,7 @@ Feature: When I go to a specific organization
     When I wait for "Connected services" to appear
     And I follow "Connected services"
     When I wait for "Connected services" to appear
-    Then I should see "Connected services" in the ".accordion-header" element
+    Then I should see "Connected entitlement packs" in the ".accordion-header" element
     And I should see "testService1"
 
     When I click on accordion "testService1"

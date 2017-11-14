@@ -10,7 +10,7 @@ Feature: When I go to create service
 
   Scenario: Navigate to create service first step page
     Given I am on "/"
-    Then I follow "Add service"
+    Then I follow "Claim service"
     And I wait for "Enter your service's main parameters" to appear
     And a field should contain placeholder "Name of service"
     And a field should contain placeholder "Description of service"

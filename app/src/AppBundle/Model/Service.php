@@ -241,15 +241,15 @@ class Service extends AbstractBaseResource
      * @param string      $entityid
      * @return array expanded organization
      */
-    public function create(string $name, string $description = null, string $uri = null, string $entityid)
+    public function create(string $name, string $description = null, string $url = null, string $entityid)
     {
         $serviceData = array();
         $serviceData['name'] = $name;
         if ($description) {
             $serviceData['description'] = $description;
         }
-        if ($uri) {
-            $serviceData['uri'] = $uri;
+        if ($url) {
+            $serviceData['url'] = $url;
         }
         $serviceData['entityid'] = $entityid;
         $response = $this->post($serviceData);

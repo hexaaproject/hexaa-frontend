@@ -241,9 +241,13 @@ form[name="service_create_permission"] .header, form[name="service_create_permis
     color: #61AFC5;
 }
 
-#scrollable-dropdown-menu .twitter-typeahead{
+/*#scrollable-dropdown-menu .twitter-typeahead{
     width: 310px;
-}
+}*/
+
+/*.propertyblockedit .twitter-typeahead{
+    width: 0px;
+}*/
 
 .neworg .twitter-typeahead{
     margin-left:50px;
