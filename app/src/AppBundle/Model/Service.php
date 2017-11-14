@@ -237,7 +237,7 @@ class Service extends AbstractBaseResource
      *
      * @param string      $name
      * @param string|null $description
-     * @param string|null $uri
+     * @param string|null $url
      * @param string      $entityid
      * @return array expanded organization
      */
