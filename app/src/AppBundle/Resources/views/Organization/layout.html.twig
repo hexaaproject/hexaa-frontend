@@ -39,3 +39,12 @@
         {% block container %}{% endblock %}
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        var serv = $("#serv");
+        serv.css('background-color', "#333333");
+        var org = $("#org");
+        org.css('background-color', "#61AFC5");
+    </script>
+{% endblock %}
