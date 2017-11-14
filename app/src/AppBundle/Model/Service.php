@@ -147,6 +147,25 @@ class Service extends AbstractBaseResource
         );
     }
 
+    /**
+     * GET link requests to Service
+     *
+     * @param string $id       ID of service
+     * @param string $verbose  One of minimal, normal or expanded
+     * @param int    $offset   paging: item to start from
+     * @param int    $pageSize paging: number of items to return
+     * @return array
+     */
+    public function getLinksOfService(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    {
+        return $this->getCollection(
+            $this->pathName.'/'.$id.'/link',
+            $verbose,
+            $offset,
+            $pageSize
+        );
+    }
+
 
     /**
      *DELETE managers of Service
@@ -218,19 +237,19 @@ class Service extends AbstractBaseResource
      *
      * @param string      $name
      * @param string|null $description
-     * @param string|null $uri
+     * @param string|null $url
      * @param string      $entityid
      * @return array expanded organization
      */
-    public function create(string $name, string $description = null, string $uri = null, string $entityid)
+    public function create(string $name, string $description = null, string $url = null, string $entityid)
     {
         $serviceData = array();
         $serviceData['name'] = $name;
         if ($description) {
             $serviceData['description'] = $description;
         }
-        if ($uri) {
-            $serviceData['uri'] = $uri;
+        if ($url) {
+            $serviceData['url'] = $url;
         }
         $serviceData['entityid'] = $entityid;
         $response = $this->post($serviceData);

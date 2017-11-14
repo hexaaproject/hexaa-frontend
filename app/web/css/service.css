@@ -240,3 +240,27 @@ form[name="service_create_permission"] .header, form[name="service_create_permis
     font-size: x-large;
     color: #61AFC5;
 }
+
+/*#scrollable-dropdown-menu .twitter-typeahead{
+    width: 310px;
+}*/
+
+/*.propertyblockedit .twitter-typeahead{
+    width: 0px;
+}*/
+
+.neworg .twitter-typeahead{
+    margin-left:50px;
+    width: 310px;
+}
+
+#scrollable-dropdown-menu .tt-menu{
+    margin:2px 0;
+    width: 310px;
+    border: 1px solid #61AFC5;
+    color: black;
+}
+
+.checkstolink{
+    margin-left:50px;
+}
