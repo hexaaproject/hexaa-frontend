@@ -828,12 +828,12 @@ class OrganizationController extends Controller
 
         $servicesAccordion = null;
         if ($entitlementpacks[0]['items'] != null) {
-          $servicesAccordion = $this->servicesToAccordion($services, $entitlementpacks);
+            $servicesAccordion = $this->servicesToAccordion($services, $entitlementpacks);
         }
 
         $entitlementsAccordion = null;
         if ($entitlements != null) {
-          $entitlementsAccordion = $this->entitlementsToAccordion($services, $entitlements);
+            $entitlementsAccordion = $this->entitlementsToAccordion($services, $entitlements);
         }
 
         return $this->render(
