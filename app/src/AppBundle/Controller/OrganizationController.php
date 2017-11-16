@@ -437,74 +437,6 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @Route("/{id}/createRequest")
-     * @Method("POST")
-     * @Template()
-     * @return Response
-     * @param   int     $id      Organization ID
-     * @param   Request $request request
-     */
-    public function createRequestAction($id, Request $request)
-    {
-        if (!$request->isXmlHttpRequest()) {
-            return new JsonResponse(array('message' => 'You can access this only using Ajax!'), 400);
-        }
-        $organization = $this->getOrganization($id);
-        $services = $this->get('service')->getAll();
-        $requests = $this->get('organization')->getLinks($id);
-        $servicesToForm = array();
-        $servicesNotToForm = array();
-        $servicesAllForm = array();
-        foreach ($services['items'] as $service) {
-            foreach ($requests['items'] as $request) {
-                if ($request['service_id'] == $service['id']) {
-                    $servicesNotToForm[$service['id']] = $service['name'];
-                    break;
-                }
-            }
-            $servicesAllForm[$service['id']] = $service['name'];
-        }
-        $servicesToForm = array_diff($servicesAllForm, $servicesNotToForm);
-       // dump($servicesToForm);exit;
-        $form = $this->createForm(
-            ConnectServiceRequest1Type::class,
-            array(
-                "datas" => $servicesToForm,
-            ),
-            array(
-                "action" => $this->generateUrl("app_organization_createrequest", array("id" => $id)),
-                "method" => "POST",
-            )
-        );
-        $form->add(
-            'service',
-            TypeaheadType::class,
-            array(
-                'label' => 'Service',
-                'source_name' => 'services',
-                'min_length' => 1,
-                'placeholder' => 'Start typing',
-                'matcher' => 'contains', // ends_with, contains
-                'source' => $servicesToForm,
-                'required' => 'true',
-                'limit' => 30,
-            )
-        );
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            $dataToBackend = $data;
-
-
-
-         //   return new JsonResponse(array('link' => $inviteLink), 200);
-        }
-    }
-
-    /**
      * @Route("/{id}/sendInvitation")
      * @Method("POST")
      * @Template()
@@ -873,12 +805,11 @@ class OrganizationController extends Controller
                 }
             }
         }
-       // dump($entitlementids);exit;
+
         $entitlementsunique = array_unique($entitlementids, $sortflags = SORT_REGULAR);
-       // dump($entitlementsunique);exit;
 
         $entitlements = array();
-      //  dump($linkIDs);exit;
+
         foreach ($linkIDs as $linkID) {
             $linksentitlements = $this->get('link')->getEntitlements($linkID);
             foreach ($linksentitlements['items'] as $linksentitlement) {
@@ -886,9 +817,7 @@ class OrganizationController extends Controller
                     array_push($entitlements, $linksentitlement);
                 }
             }
-        //    array_push($entitlements, $this->get('link')->getEntitlements($linkID));
         }
-       // dump($entitlements);exit;
 
         foreach ($entitlementsunique as $entitlementunique) {
             $entitlement = $this->get('entitlement')->get($entitlementunique);
@@ -896,20 +825,16 @@ class OrganizationController extends Controller
                 array_push($entitlements, $entitlement);
             }
         }
-       // dump($entitlements);exit;
 
-        $servicesAccordion = $this->servicesToAccordion($services, $entitlementpacks);
-        $entitlementsAccordion = $this->entitlementsToAccordion($services, $entitlements);
+        $servicesAccordion = null;
+        if ($entitlementpacks[0]['items'] != null) {
+            $servicesAccordion = $this->servicesToAccordion($services, $entitlementpacks);
+        }
 
-        $formrequest1 = $this->createCreateRequestForm($id);
-       /* $formrequest2 = $this->createForm(
-            ConnectServiceRequest2Type::class,
-            array(),
-            array(
-                "action" => $this->generateUrl("app_organization_createrequest", array("id" => $id)),
-                "method" => "POST",
-            )
-        );*/
+        $entitlementsAccordion = null;
+        if ($entitlements != null) {
+            $entitlementsAccordion = $this->entitlementsToAccordion($services, $entitlements);
+        }
 
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
@@ -922,8 +847,6 @@ class OrganizationController extends Controller
                 "action" => $action,
                 "form" => $form->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                "formrequest1" => $formrequest1->createView(),
-              /*  "formrequest2" => $formrequest2->createView(),*/
             )
         );
     }
@@ -1075,110 +998,6 @@ class OrganizationController extends Controller
 
     /**
      * @param $id
-     * @return \Symfony\Component\Form\Form
-     */
-    private function createRequest($id)
-    {
-        $services = $this->get('service')->getAll();
-        $requests = $this->get('organization')->getLinks($id);
-        //  dump($requests);exit;
-        $servicesToForm = array();
-        $servicesNotToForm = array();
-        $servicesAllForm = array();
-        foreach ($services['items'] as $service) {
-            foreach ($requests['items'] as $request) {
-                if ($request['service_id'] == $service['id']) {
-                    $servicesNotToForm[$service['id']] = $service['name'];
-                    break;
-                }
-            }
-            $servicesAllForm[$service['id']] = $service['name'];
-        }
-        //  dump($servicesNotToForm);exit;
-        $servicesToForm = array_diff($servicesAllForm, $servicesNotToForm);
-        //  dump($servicesToForm);exit;
-        $form = $this->createForm(
-            ConnectServiceRequest1Type::class,
-            array(
-                "datas" => $servicesToForm,
-            ),
-            array(
-                "action" => $this->generateUrl("app_organization_createrequest", array("id" => $id)),
-                "method" => "POST",
-            )
-        );
-        $form->add(
-            'service',
-            TypeaheadType::class,
-            array(
-                'label' => 'Service',
-                'source_name' => 'services',
-                'min_length' => 1,
-                'placeholder' => 'Start typing',
-                'matcher' => 'contains', // ends_with, contains
-                'source' => $servicesToForm,
-                'required' => 'true',
-                'limit' => 30,
-            )
-        );
-
-        return $form;
-    }
-
-    /**
-     * @param $id
-     * @return \Symfony\Component\Form\Form
-     */
-    private function createCreateRequestForm($id)
-    {
-        $services = $this->get('service')->getAll();
-        $requests = $this->get('organization')->getLinks($id);
-      //  dump($requests);exit;
-        $servicesToForm = array();
-        $servicesNotToForm = array();
-        $servicesAllForm = array();
-        foreach ($services['items'] as $service) {
-            foreach ($requests['items'] as $request) {
-                if ($request['service_id'] == $service['id']) {
-                    $servicesNotToForm[$service['id']] = $service['name'];
-                    break;
-                }
-            }
-            $servicesAllForm[$service['id']] = $service['name'];
-        }
-      //  dump($servicesNotToForm);exit;
-        $servicesToForm = array_diff($servicesAllForm, $servicesNotToForm);
-      //  dump($servicesToForm);exit;
-        $form = $this->createForm(
-            ConnectServiceRequest1Type::class,
-            array(
-                "datas" => $servicesToForm,
-            ),
-            array(
-                "action" => $this->generateUrl("app_organization_createrequest", array("id" => $id)),
-                "method" => "POST",
-            )
-        );
-        $form->add(
-            'service',
-            TypeaheadType::class,
-            array(
-                'label' => 'Service',
-                'source_name' => 'services',
-                'min_length' => 1,
-                'placeholder' => 'Start typing',
-                'matcher' => 'contains', // ends_with, contains
-                'source' => $servicesToForm,
-                'required' => 'true',
-                'limit' => 30,
-            )
-        );
-
-        return $form;
-    }
-
-    /**
-     * @param $id
      * @return mixed
      */
     private function getOrganization($id)
@@ -1299,7 +1118,7 @@ class OrganizationController extends Controller
                         $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['title'] = $entitlementPack['name'];
                         $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['variant'] = 'light';
                         $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Details", "values" => array($entitlementPack['description']));
-                        $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
+                       // $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
 
                         $entitlementnames = array();
                         foreach ($entitlementPack['entitlement_ids'] as $entitlementId) {
@@ -1338,7 +1157,7 @@ class OrganizationController extends Controller
                     $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['title'] = $entitlement['name'];
                     $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['variant'] = 'light';
                     $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['contents'][] = array("key" => "Details", "values" => array($entitlement['description']));
-                    $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['buttons']['deleteEntitlement'] = array("icon" => "delete");
+                   // $entitlementsAccordion[$service['id']]['subaccordions'][$entitlement['id']]['buttons']['deleteEntitlement'] = array("icon" => "delete");
                    //  $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Permissions", "values" => $entitlementnames);
                 }
             }
