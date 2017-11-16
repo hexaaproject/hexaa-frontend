@@ -8,6 +8,14 @@
     filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
+
+    <script>
+        var serv = $("#serv");
+        serv.css('background-color', "#61AFC5");
+        var org = $("#org");
+        org.css('background-color', "#333333");
+    </script>
+
     {% if service is defined %}
         {{ include('::navbar.html.twig', {service: service, names:servsubmenubox}) }}
     {% else %}
@@ -16,13 +24,4 @@
     <div class="container">
         {% block container %}{% endblock %}
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    <script>
-         var serv = $("#serv");
-         serv.css('background-color', "#61AFC5");
-         var org = $("#org");
-         org.css('background-color', "#333333");
-    </script>
 {% endblock %}

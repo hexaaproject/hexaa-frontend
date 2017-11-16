@@ -181,24 +181,6 @@
                                     </td>
                                 </tr>
                             {% endfor %}
-                            {% if token is defined %}
-                                <tr class="accordion">
-                                    <td>
-                                        <a class="button"
-                                           href="{{ path('app_service_generatetoken', {'id': service_id, 'permissionsetname': item.title}) }}">Generate
-                                            token</a>
-                                    </td>
-                                    {% if permissionsetname == item.title %}
-                                        <td>
-                                            <input type="text" id="generatedtoken" readonly value="{{ tokenstring }}">
-                                        </td>
-                                    {% else %}
-                                        <td>
-                                            <input type="text" id="generatedtoken" readonly>
-                                        </td>
-                                    {% endif %}
-                                </tr>
-                            {% endif %}
                         </table>
                     {% endif %}
                 </div>

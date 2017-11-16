@@ -10,6 +10,13 @@
         <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
+    <script>
+        var serv = $("#serv");
+        serv.css('background-color', "#333333");
+        var org = $("#org");
+        org.css('background-color', "#61AFC5");
+    </script>
+
     {% set names = {
             app_organization_properties: "Properties",
             app_organization_users: "Users",
@@ -38,13 +45,4 @@
 
         {% block container %}{% endblock %}
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    <script>
-        var serv = $("#serv");
-        serv.css('background-color', "#333333");
-        var org = $("#org");
-        org.css('background-color', "#61AFC5");
-    </script>
 {% endblock %}

@@ -1026,34 +1026,6 @@ class ServiceController extends Controller
     }
 
     /**
-     * @Route("/generatetoken/{id}/{permissionsetname}")
-     * @param integer $id
-     * @param string  $permissionsetname
-     * @Template()
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function generatetokenAction($id, $permissionsetname)
-    {
-        $links = $this->get('service')->getLinksOfService($id);
-        $permissionssets = $this->get('service')->getEntitlementPacks($id)['items'];
-        $permissionsetid = null;
-        foreach ($permissionssets as $permissionset) {
-            if ($permissionset['name'] == $permissionsetname) {
-                $permissionsetid = $permissionset['id'];
-                break;
-            }
-        }
-
-        $postarray = array("service" => $id, "entitlement_packs" => [$permissionsetid]);
-        $response = $this->get('link')->post($postarray);
-        $headers = $response->getHeader('Location');
-        $headerspartsary = explode("/", $headers[0]);
-        $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
-
-        return $this->redirect($this->generateUrl('app_service_permissionssets', array('id' => $id, 'token' => $getlink['token'], 'permissionsetname' => $permissionsetname)));
-    }
-
-    /**
      * @Route("/connectedorganizations/{id}/{token}", defaults = {"token" = null})
      * @Template()
      * @param integer $id
