@@ -25,7 +25,7 @@
 
 
     {% if managers is defined and managers|length %}
-        <div class="row" style="margin-top: 48px;">
+        <div class="row">
             <div class="col-md-15">
                 {{ include('::tables.html.twig', {variant: 'red', checkbox_all: 'Servmanagers', tdcolor:'base', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table', buttons: managers_buttons, search_placeholder: 'Search manager' }) }}
             </div>

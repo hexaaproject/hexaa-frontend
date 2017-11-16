@@ -20,7 +20,7 @@
         {% endstylesheets %}
     {% endblock %}
 
-    <div class="row" style="margin-top: 48px;">
+    <div class="row">
         <div class="col-md-15">
             {{ include('::tables.html.twig', {variant: 'blue', checkbox_all: 'Principals', tdcolor:'base', caption: 'Principals', checkbox: true, users: principals, table_id: 'principals_table', buttons: principals_buttons, search_placeholder: 'Search principal' }) }}
         </div>
