@@ -141,7 +141,7 @@
                             </div>
                         {% endfor %}
                     {% else %}
-                        {% if heading != "Entity IDs" and manager %}
+                        {% if heading != "Entity IDs" and heading != "Connected entitlements" and heading != "Connected entitlement packs" and manager %}
                         <div class="accordion_button_row pull-right">
                             {% if item.form is defined %}
                                 <i title="update role" class="material-icons accordion-button accordion_edit_button">create</i>
@@ -160,6 +160,7 @@
                         {% endif %}
                         <table cellspacing="0" class="accordion">
 
+                            {% if item.contents is defined %}
                             {% for content in item.contents %}
                                 <tr class="accordion">
                                     <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion accordion-key">{{ content.key }}</td>
@@ -181,6 +182,7 @@
                                     </td>
                                 </tr>
                             {% endfor %}
+                            {% endif %}
                         </table>
                     {% endif %}
                 </div>

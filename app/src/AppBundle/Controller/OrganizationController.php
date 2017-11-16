@@ -826,9 +826,15 @@ class OrganizationController extends Controller
             }
         }
 
-        $servicesAccordion = $this->servicesToAccordion($services, $entitlementpacks);
-        $entitlementsAccordion = $this->entitlementsToAccordion($services, $entitlements);
+        $servicesAccordion = null;
+        if ($entitlementpacks[0]['items'] != null) {
+          $servicesAccordion = $this->servicesToAccordion($services, $entitlementpacks);
+        }
 
+        $entitlementsAccordion = null;
+        if ($entitlements != null) {
+          $entitlementsAccordion = $this->entitlementsToAccordion($services, $entitlements);
+        }
 
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
