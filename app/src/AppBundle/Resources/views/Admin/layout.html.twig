@@ -9,17 +9,16 @@
     %}
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
-    {{ include('::navbar.html.twig', {admin: admin, names:adminsubmenubox}) }}
-    <div class="container">
-        {% block container %}{% endblock %}
-    </div>
-{% endblock %}
 
-{% block javascripts %}
     <script>
         var admin = $("#admin");
         admin.css('background-color', "#EA7E73");
     </script>
+
+    {{ include('::navbar.html.twig', {admin: admin, names:adminsubmenubox}) }}
+    <div class="container">
+        {% block container %}{% endblock %}
+    </div>
 {% endblock %}
 
 

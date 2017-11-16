@@ -1,6 +1,157 @@
 {% extends "AppBundle:Organization:layout.html.twig" %}
 
 {% block container %}
+    {% block stylesheets %}
+        {% stylesheets
+        'css/tables.css'
+        'css/modal.css'
+        filter='cssrewrite'
+        %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+
+    <script>
+        $(document).ready(function() {
+
+            function populateList(ul, el) {
+                var row = $(el).closest('tr');
+                var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
+                var objectId = row.attr('id');
+                ul.append('<li>' + displayString + '</li>');
+                ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
+            }
+
+            function populateList2(ul, el) {
+                var row = $(el).closest('tr');
+                var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
+                var objectId = row.attr('id');
+                ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
+            }
+
+            {% if members is defined and members|length %}
+                var membersTableActionButtons = $('.members_table_actionButtons');
+                var membersRemove = $('#membersRemove');
+                var membersMessage = $('#membersMessage');
+                var membersProposal = $('#membersProposal');
+                var membersChangeRole = $('#membersChangeRole');
+
+                $(document).on('click', '.modal#membersMessage button[type=submit]', function (event) {
+                    event.preventDefault();
+                    $('form[name=organization_user_message]').submit();
+                });
+
+                membersTableActionButtons.on('click', '#remove', function(event) {
+                    event.preventDefault();
+                    var content = membersRemove.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = membersRemove.find('ul');
+                    $('#members_table input:checked').each(function(index, el) {
+                        populateList(ul, el);
+                    });
+                    membersRemove.modal('show');
+                });
+
+                membersTableActionButtons.on('click', '#message', function(event) {
+                    event.preventDefault();
+                    var content = membersMessage.find('.modal-body-content');
+                    var form = content.find('form');
+                    form.append('<ul></ul>');
+                    var ul = membersMessage.find('ul');
+                    $('#members_table input:checked').each(function(index, el) {
+                        populateList2(ul, el);
+                    });
+                    membersMessage.modal('show');
+                });
+
+                membersTableActionButtons.on('click', '#proposal', function(event) {
+                    event.preventDefault();
+                    var content = membersProposal.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = membersProposal.find('ul');
+                    $('#members_table input:checked').each(function(index, el) {
+                        populateList(ul, el);
+                    });
+                    membersProposal.modal('show');
+                });
+
+                membersTableActionButtons.on('click', '#changerole', function(event) {
+                    event.preventDefault();
+                    var content = membersChangeRole.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = membersChangeRole.find('ul');
+                    $('#members_table input:checked').each(function(index, el) {
+                        populateList(ul, el);
+                    });
+                    membersChangeRole.modal('show');
+                });
+            {% endif %}
+
+            {% if managers is defined and managers|length %}
+                var managersTableActionButtons = $('.managers_table_actionButtons');
+                var managersRemove = $('#managersRemove');
+                var managersMessage = $('#managersMessage');
+                var managersRevoke = $('#managersRevoke');
+                var managersChangeRole = $('#managersChangeRole');
+
+                $(document).on('click', '.modal#managersMessage button[type=submit]', function (event) {
+                    event.preventDefault();
+                    $('form[name=organization_user_message_manager]').submit();
+                });
+
+                managersTableActionButtons.on('click', '#remove', function(event) {
+                    event.preventDefault();
+                    var content = managersRemove.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = managersRemove.find('ul');
+                    $('#managers_table input:checked').each(function(index, el) {
+                        populateList(ul, el);
+                    });
+                    managersRemove.modal('show');
+                });
+
+                managersTableActionButtons.on('click', '#message', function(event) {
+                    event.preventDefault();
+                    var content = managersMessage.find('.modal-body-content');
+                    var form = content.find('form');
+                    form.append('<ul></ul>');
+                    var ul = managersMessage.find('ul');
+                    $('#managers_table input:checked').each(function(index, el) {
+                        populateList2(ul, el);
+                    });
+                    managersMessage.modal('show');
+                });
+
+                managersTableActionButtons.on('click', '#revoke', function(event) {
+                    event.preventDefault();
+                    var content = managersRevoke.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = managersRevoke.find('ul');
+                    $('#managers_table input:checked').each(function(index, el) {
+                        populateList(ul, el);
+                    });
+                    managersRevoke.modal('show');
+                });
+
+                managersTableActionButtons.on('click', '#changerole', function(event) {
+                    event.preventDefault();
+                    var content = managersChangeRole.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = managersChangeRole.find('ul');
+                    $('#managers_table input:checked').each(function(index, el) {
+                        populateList(ul, el);
+                    });
+                    managersChangeRole.modal('show');
+                });
+            {% endif %}
+        });
+    </script>
 
     {% for flashMessage in app.session.flashbag.get('error') %}
         <div class="flash-error flash">
@@ -181,161 +332,9 @@
 
 {% block javascripts %}
     {% javascripts
-        '@datatables_js'
-        'js/clipboard.js'
+      '@datatables_js'
+      'js/clipboard.js'
     %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+    <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <script>
-        $(document).ready(function() {
-
-            function populateList(ul, el) {
-                var row = $(el).closest('tr');
-                var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
-                var objectId = row.attr('id');
-                ul.append('<li>' + displayString + '</li>');
-                ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
-            }
-
-            function populateList2(ul, el) {
-                var row = $(el).closest('tr');
-                var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
-                var objectId = row.attr('id');
-                ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
-            }
-
-            {% if members is defined and members|length %}
-                var membersTableActionButtons = $('.members_table_actionButtons');
-                var membersRemove = $('#membersRemove');
-                var membersMessage = $('#membersMessage');
-                var membersProposal = $('#membersProposal');
-                var membersChangeRole = $('#membersChangeRole');
-
-                $(document).on('click', '.modal#membersMessage button[type=submit]', function (event) {
-                    event.preventDefault();
-                    $('form[name=organization_user_message]').submit();
-                });
-
-                membersTableActionButtons.on('click', '#remove', function(event) {
-                    event.preventDefault();
-                    var content = membersRemove.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = membersRemove.find('ul');
-                    $('#members_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
-                    });
-                    membersRemove.modal('show');
-                });
-
-                membersTableActionButtons.on('click', '#message', function(event) {
-                    event.preventDefault();
-                    var content = membersMessage.find('.modal-body-content');
-                    var form = content.find('form');
-                    form.append('<ul></ul>');
-                    var ul = membersMessage.find('ul');
-                    $('#members_table input:checked').each(function(index, el) {
-                        populateList2(ul, el);
-                    });
-                    membersMessage.modal('show');
-                });
-
-                membersTableActionButtons.on('click', '#proposal', function(event) {
-                    event.preventDefault();
-                    var content = membersProposal.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = membersProposal.find('ul');
-                    $('#members_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
-                    });
-                    membersProposal.modal('show');
-                });
-
-                membersTableActionButtons.on('click', '#changerole', function(event) {
-                    event.preventDefault();
-                    var content = membersChangeRole.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = membersChangeRole.find('ul');
-                    $('#members_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
-                    });
-                    membersChangeRole.modal('show');
-                });
-            {% endif %}
-
-            {% if managers is defined and managers|length %}
-                var managersTableActionButtons = $('.managers_table_actionButtons');
-                var managersRemove = $('#managersRemove');
-                var managersMessage = $('#managersMessage');
-                var managersRevoke = $('#managersRevoke');
-                var managersChangeRole = $('#managersChangeRole');
-
-               $(document).on('click', '.modal#managersMessage button[type=submit]', function (event) {
-                    event.preventDefault();
-                    $('form[name=organization_user_message_manager]').submit();
-               });
-
-                managersTableActionButtons.on('click', '#remove', function(event) {
-                    event.preventDefault();
-                    var content = managersRemove.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = managersRemove.find('ul');
-                    $('#managers_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
-                    });
-                    managersRemove.modal('show');
-                });
-
-                managersTableActionButtons.on('click', '#message', function(event) {
-                    event.preventDefault();
-                    var content = managersMessage.find('.modal-body-content');
-                    var form = content.find('form');
-                    form.append('<ul></ul>');
-                    var ul = managersMessage.find('ul');
-                    $('#managers_table input:checked').each(function(index, el) {
-                        populateList2(ul, el);
-                    });
-                    managersMessage.modal('show');
-                });
-
-                managersTableActionButtons.on('click', '#revoke', function(event) {
-                    event.preventDefault();
-                    var content = managersRevoke.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = managersRevoke.find('ul');
-                    $('#managers_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
-                    });
-                    managersRevoke.modal('show');
-                });
-
-                managersTableActionButtons.on('click', '#changerole', function(event) {
-                    event.preventDefault();
-                    var content = managersChangeRole.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = managersChangeRole.find('ul');
-                    $('#managers_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
-                    });
-                    managersChangeRole.modal('show');
-                });
-            {% endif %}
-        });
-    </script>
-{% endblock %}
-
-
-{% block stylesheets %}
-    {% stylesheets
-        'css/tables.css'
-        'css/modal.css'
-        filter='cssrewrite'
-    %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
 {% endblock %}

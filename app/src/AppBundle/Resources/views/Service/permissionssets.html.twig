@@ -92,6 +92,6 @@
         <button class="btnhexaa btn-red btnhexaa-sm pull-right" onclick="showCreateForm()" id="createButton"><i class="material-icons">add</i> Create</button>
     </div>
     <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
-        {{ include('::accordions.html.twig', {classToFilter:"service_permissionset_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set, token: "true", service_id: service.id, tokenstring: token }) }}
+        {{ include('::accordions.html.twig', {classToFilter:"service_permissionset_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set, service_id: service.id}) }}
     </div>
 {% endblock %}
