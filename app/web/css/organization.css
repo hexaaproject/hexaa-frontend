@@ -1,3 +1,13 @@
+.desktopbuttonorg p{
+    padding-top: 20px;
+    font-size: 20px;
+}
+
+.desktopbuttonimage {
+    width: 10vw;
+    cursor: pointer;
+}
+
 #maindivcontroller {
     display: box;
     text-align: center;

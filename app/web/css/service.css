@@ -103,11 +103,16 @@ table#centertableservicesprop {
 
 .desktopbuttonorg {
     display: inline-block;
-    padding: 4%;
+    padding: 5%;
+}
+
+.desktopbuttonorg p{
+    padding-top: 20px;
+    font-size: 20px;
 }
 
 .desktopbuttonimage {
-    width: 12vw;
+    width: 9.5vw;
     cursor: pointer;
 }
 
