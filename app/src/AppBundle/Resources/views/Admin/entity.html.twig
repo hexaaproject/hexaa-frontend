@@ -8,10 +8,14 @@
         <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
     {% endblock %}
+
     {% javascripts
-    '@instafilta_js' %}
+    '@instafilta_js'
+    '@jquery_bootpag_js'
+    %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
 
     <script>
         $(document).ready(function () {
@@ -26,13 +30,52 @@
                     $( this ).css({ 'display': "none" });
                 });
             });
+
+            $('.show_paginator').bootpag({
+                total: {{ total_pages }},
+                page: 1,
+                maxVisible: 5,
+                leaps: true,
+                firstLastUse: true,
+                first: '←',
+                last: '→',
+                wrapClass: 'pagination',
+                activeClass: 'active',
+                disabledClass: 'disabled',
+                nextClass: 'next',
+                prevClass: 'prev',
+                lastClass: 'last',
+                firstClass: 'first'
+
+            }).on('page', function(event, num)
+            {
+                console.log(num);
+                {% for i in (1..total_pages-1) %}
+                    $("#"+{{ i }}).addClass("hidden");
+                {% endfor %}
+                $("#"+num).removeClass("hidden"); // or some ajax content loading...
+            });
+
         });
+
     </script>
+
     <div class="col-sm-11 col-sm-offset-2">
         <input id="hexaaSearchFieldEntityIDs" type="text" name="filter" class="hexaaSearchField pull-left"
                placeholder="Search entity IDs">
+        <br><br>
+        <div class="show_paginator"></div>
     </div>
-    <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
-        {{ include('::accordions.html.twig', { classToFilter:"admin_entity_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion }) }}
+    <div class="col-sm-11 col-sm-offset-2" style="margin-top: 5px">
+        <div id="1">
+            {{ include('::accordions.html.twig', { classToFilter:"admin_entity_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[0] }) }}
+        </div>
+        {% for i in (2..total_pages-1) %}
+            <div class="hidden" id="{{ i }}">
+                {{ include('::accordions.html.twig', { classToFilter:"admin_entity_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[i] }) }}
+            </div>
+        {% endfor %}
+        <div class="show_paginator"></div>
     </div>
+
 {% endblock %}

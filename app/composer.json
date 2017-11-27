@@ -27,6 +27,17 @@
           "type": "zip"
         }
       }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "botmonster/jquery-bootpag",
+        "version": "1.0.7",
+        "dist": {
+          "url": "https://github.com/botmonster/jquery-bootpag/archive/master.zip",
+          "type": "zip"
+        }
+      }
     }
   ],
   "require": {
@@ -53,7 +64,8 @@
     "webfontkit/open-sans": "^1.0",
     "devmachine/form-bundle": "^2.1",
     "twitter/typeahead.js": "^0.11.1",
-    "chromawoods/instaFilta": "^1.4.4"
+    "chromawoods/instaFilta": "^1.4.4",
+    "botmonster/jquery-bootpag": "^1.0.7"
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",

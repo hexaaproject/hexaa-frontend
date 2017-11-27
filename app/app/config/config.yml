@@ -63,6 +63,9 @@ assetic:
         instafilta_js:
             inputs:
                 - "%kernel.root_dir%/../vendor/chromawoods/instaFilta/instafilta.js"
+        jquery_bootpag_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/botmonster/jquery-bootpag/lib/jquery.bootpag.js"
         bootstrap_css:
             inputs:
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.css"

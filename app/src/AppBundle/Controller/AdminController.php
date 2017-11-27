@@ -169,6 +169,18 @@ class AdminController extends Controller
     public function entityAction($admin)
     {
         $entityids = $this->get('entity_id')->cget();
+        $totalnumber = $entityids['item_number'];
+        $totalpages = ceil($totalnumber / 25);
+        $offset = 25;
+        $pagesize = 25;
+        $verbose = "normal";
+        $entitysperpage = array();
+        array_push($entitysperpage, $entityids['items']);
+        for ($i = 1; $i < $totalpages; $i++) {
+            $entityperpage = $this->get('entity_id')->cget($verbose, $offset, $pagesize);
+            array_push($entitysperpage, $entityperpage['items']);
+            $offset = $offset +25;
+        }
 
         return $this->render(
             'AppBundle:Admin:entity.html.twig',
@@ -178,7 +190,8 @@ class AdminController extends Controller
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 "submenu" => "true",
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
-                'entityids_accordion' => $this->entityIDsToAccordion($entityids),
+                'entityids_accordion' => $this->entityIDsToAccordion($entitysperpage),
+                'total_pages' => $totalpages,
             )
         );
     }
@@ -443,29 +456,37 @@ class AdminController extends Controller
     private function entityIDsToAccordion($entityIDs)
     {
         $entityIDsAccordion = array();
-        $keys = array_keys($entityIDs['items']);
+        $keys = array_keys($entityIDs);
         foreach ($keys as $key) {
-            $entityIDsAccordion[$key]['title'] = $key;
-           // $entityIDsAccordion[$key]['deleteUrl'] = $this->generateUrl("app_admin_entityiddelete", array('id' => $key));
-            $entityarray = $entityIDs['items'][$key];
-            $type = array();
-            $email = array();
-            foreach ($entityarray as $entityfeature) {
-                array_push($type, $entityfeature['type']);
-                array_push($email, $entityfeature['email']);
+            $entityarray = $entityIDs[$key];
+            $keysinter = array_keys($entityarray);
+            foreach ($keysinter as $keyinter) {
+                $entityIDsAccordion[$keyinter]['title'] = $keyinter;
+                $type = array();
+                $email = array();
+                foreach ($entityarray as $entityfeature) {
+                    foreach ($entityfeature as $oneentityfeature) {
+                        array_push($type, $oneentityfeature['type']);
+                        array_push($email, $oneentityfeature['email']);
+                    }
+                    $entityIDsAccordion[$keyinter]['contents'] = array(
+                       array(
+                         'key' => 'Type',
+                         'values' => $type,
+                       ),
+                       array(
+                         'key' => 'Email',
+                         'values' => $email,
+                       ),
+                    );
+                    break;
+                }
             }
-            $entityIDsAccordion[$key]['contents'] = array(
-                array(
-                    'key' => 'Type',
-                    'values' => $type,
-                ),
-                array(
-                    'key' => 'Email',
-                    'values' => $email,
-                ),
-            );
         }
 
-        return $entityIDsAccordion;
+        $size = 25;
+        $smallarray = array_chunk($entityIDsAccordion, $size);
+
+        return $smallarray;
     }
 }
