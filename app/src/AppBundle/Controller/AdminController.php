@@ -169,7 +169,6 @@ class AdminController extends Controller
     public function entityAction($admin)
     {
         $entityids = $this->get('entity_id')->cget();
-        dump($entityids);
         $totalnumber = $entityids['item_number'];
         $totalpages = ceil($totalnumber / 25);
         $offset = 25;
