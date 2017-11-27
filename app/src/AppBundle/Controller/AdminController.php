@@ -169,7 +169,20 @@ class AdminController extends Controller
     public function entityAction($admin)
     {
         $entityids = $this->get('entity_id')->cget();
-
+        dump($entityids);
+        $total_number = $entityids['item_number'];
+        $total_pages = ceil($total_number / 25);
+        $offset = 25;
+        $pagesize = 25;
+        $verbose = "normal";
+        $entitysperpage = array();
+        array_push($entitysperpage, $entityids['items']);
+        for ($i = 1; $i < $total_pages; $i++) {
+          $entityperpage = $this->get('entity_id')->cget($verbose, $offset, $pagesize);
+          array_push($entitysperpage, $entityperpage['items']);
+          $offset = $offset +25;
+        }
+      //  dump($entitysperpage);exit;
         return $this->render(
             'AppBundle:Admin:entity.html.twig',
             array(
@@ -178,7 +191,8 @@ class AdminController extends Controller
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 "submenu" => "true",
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
-                'entityids_accordion' => $this->entityIDsToAccordion($entityids),
+                'entityids_accordion' => $this->entityIDsToAccordion($entitysperpage),
+                'total_pages' => $total_pages,
             )
         );
     }
@@ -443,29 +457,52 @@ class AdminController extends Controller
     private function entityIDsToAccordion($entityIDs)
     {
         $entityIDsAccordion = array();
-        $keys = array_keys($entityIDs['items']);
+       // dump($entityIDs);exit;
+        $keys = array_keys($entityIDs);
         foreach ($keys as $key) {
-            $entityIDsAccordion[$key]['title'] = $key;
+          //dump($keys);exit;
+           // $entityIDsAccordion[$key]['title'] = $key;
            // $entityIDsAccordion[$key]['deleteUrl'] = $this->generateUrl("app_admin_entityiddelete", array('id' => $key));
-            $entityarray = $entityIDs['items'][$key];
-            $type = array();
-            $email = array();
-            foreach ($entityarray as $entityfeature) {
-                array_push($type, $entityfeature['type']);
-                array_push($email, $entityfeature['email']);
-            }
-            $entityIDsAccordion[$key]['contents'] = array(
-                array(
+            $entityarray = $entityIDs[$key];
+            //dump($entityarray);exit;
+            $keysinter = array_keys($entityarray);
+            //dump($keysinter);exit;
+            foreach ($keysinter as $keyinter){
+             // dump($keyinter);exit;
+              $entityIDsAccordion[$keyinter]['title'] = $keyinter;
+              //dump($entityIDsAccordion);exit;
+              $type = array();
+              $email = array();
+              foreach ($entityarray as $entityfeature) {
+                //dump($entityfeature);exit;
+                foreach ($entityfeature as $oneentityfeature){
+                 // dump($oneentityfeature);exit;
+                  array_push($type, $oneentityfeature['type']);
+                  array_push($email, $oneentityfeature['email']);
+                }
+               // dump($type);exit;
+                $entityIDsAccordion[$keyinter]['contents'] = array(
+                  array(
                     'key' => 'Type',
                     'values' => $type,
-                ),
-                array(
+                  ),
+                  array(
                     'key' => 'Email',
                     'values' => $email,
-                ),
-            );
+                  ),
+                );
+                break;
+               // dump($entityIDsAccordion);exit;
+              }
+
+
+            //  dump($entityIDsAccordion);exit;
+            }
         }
 
-        return $entityIDsAccordion;
+      $size = 25;
+      $smallarray = array_chunk($entityIDsAccordion, $size);
+      //dump($smallarray);exit;
+        return $smallarray;
     }
 }
