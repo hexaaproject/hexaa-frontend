@@ -2,7 +2,7 @@
 
 {% block title %}HEXAA Organizations{% endblock %}
 
-{% block body %}	
+{% block body %}
     {% stylesheets
         'css/organization.css'
         filter='cssrewrite'
@@ -29,20 +29,22 @@
     {% else %}
         {{ include('::navbar.html.twig') }}
     {% endif %}
-    <div class="container">
-        {% for flashMessage in app.session.flashbag.get('error') %}
-            <div class="flash-error flash">
-                <h4>There was some failure!</h4>
-                {{ flashMessage|raw }}
-            </div>
-        {% endfor %}
-        {% for flashMessage in app.session.flashbag.get('success') %}
-            <div class="flash-success flash">
-                <h4>Success!</h4>
-                {{ flashMessage|raw }}
-            </div>
-        {% endfor %}
+    <div class="entity-container">
+        <div class="container">
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="flash-error flash">
+                    <h4>There was some failure!</h4>
+                    {{ flashMessage|raw }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="flash-success flash">
+                    <h4>Success!</h4>
+                    {{ flashMessage|raw }}
+                </div>
+            {% endfor %}
 
-        {% block container %}{% endblock %}
+            {% block container %}{% endblock %}
+        </div>
     </div>
 {% endblock %}
