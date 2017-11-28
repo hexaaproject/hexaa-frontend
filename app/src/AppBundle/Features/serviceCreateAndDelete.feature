@@ -36,7 +36,7 @@ Feature: When I go to create service
 
     # Follow link
     When I follow "Get your new service"
-    Then I should see "Test service 4"
+    Then I should see "Test ser..."
     And I should see "Permissions"
     And I should see "Permissions sets"
     When I follow "Permissions"
@@ -56,7 +56,7 @@ Feature: When I go to create service
   Scenario: Delete service
     Given I am on "/"
     Then I follow "Test service 4"
-    And I wait for "Test service 4" to appear
+    And I wait for "Test ser..." to appear
     When I click the "#deleteService" element
     Then I wait for "Are you sure?" to appear
     When I press "Delete service"
