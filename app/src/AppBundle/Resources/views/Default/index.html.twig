@@ -33,17 +33,25 @@
             </div>
     {% endif %}
     <div class="clearfix"></div>
-    <div class="hr"><hr/></div>
-        <div id="maintables container">
+        <div class="maintables container">
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class=" col-sm-14">
+                    <div class="hr">
+                    <hr/>
+                </div>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
             <div class="row">
                 {% if hasServices %}
                     <div class="col-sm-3"></div>
                 {% else %}
                     <div class="col-sm-6"></div>
                 {% endif %}
-                <div class="col-sm-4">
+                <div class="col-sm-4 tablemain">
                     <div id="orgtablemain">
-                        <div id="orgtableheader"><b>ORGANIZATIONS</b></div>
+                        <div id="orgtableheader" class="tableheader"><b>ORGANIZATIONS</b></div>
                         {% if organizations.items == null %}
                             <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
                         {% endif %}
@@ -55,9 +63,9 @@
 
                 {% if hasServices %}
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 tablemain">
                         <div id="servtablemain">
-                            <div id="servtableheader"><b>SERVICES</b></div>
+                            <div id="servtableheader" class="tableheader"><b>SERVICES</b></div>
                             {% for service in services.items %}
                                 <div id="servtablecontent"><a href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|e }}</a></div>
                                 {% endfor %}

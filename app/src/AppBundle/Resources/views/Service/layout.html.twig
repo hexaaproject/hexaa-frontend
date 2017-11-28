@@ -21,7 +21,9 @@
     {% else %}
         {{ include('::navbar.html.twig') }}
     {% endif %}
-    <div class="container">
-        {% block container %}{% endblock %}
+    <div class="entity-container">
+        <div class="container">
+            {% block container %}{% endblock %}
+        </div>
     </div>
 {% endblock %}

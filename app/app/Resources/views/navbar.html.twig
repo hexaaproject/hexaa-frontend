@@ -75,73 +75,45 @@
 
 {% if organization is defined and names %}
     <div class="desktopcontainer">
-        <div class="desktoplinkdivstyle">
-            <span class="mainname">
-                <a class="mainnamelink"
-                   href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name }}</a>
-            </span>
-            {% for key,value in names %}
-                {% set route = app.request.get('_route') %}
-                {% if loop.first %}
-                    <span id="navbarmenupoints">
-                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
-                       href="{{ path(key, {id: organization.id}) }}">{{ value }}</a>
-                {% elseif loop.last %}
-                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
-                       href="{{ path(key, {id: organization.id}) }}">{{ value }}</a>
-                    </span>
-                {% else %}
-                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
-                       href="{{ path(key, {id: organization.id}) }}">{{ value }}</a>
-                {% endif %}
-            {% endfor %}
+        <div class="mainname">
+            <a class="mainnamelink"
+               href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name }}</a>
+        </div>
+        <div id="navbarmenupoints">
+        {% for key,value in names %}
+            {% set route = app.request.get('_route') %}
+            <a class="navbarlink{% if route == key %} navbarlinkactive navbarlinkactive-organization{% endif %}"
+               href="{{ path(key, {id: organization.id}) }}">{{ value }}</a>
+        {% endfor %}
         </div>
     </div>
 {% endif %}
 
 {% if service is defined and names %}
     <div class="desktopcontainer">
-        <div class="desktoplinkdivstyle">
-            <span class="mainname">
-                <a class="mainnamelink" href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name }}</a>
-            </span>
-            {% for key,value in names %}
-                {% set route = app.request.get('_route') %}
-                {% if loop.first %}
-                    <span id="navbarmenupoints">
-                    <a class="navbarlink{% if route == key %} navbarlinkactive {% endif %}"
-                       href="{{ path(key, {id: service.id}) }}">{{ value }}</a>
-                {% elseif loop.last %}
-                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
-                       href="{{ path(key, {id: service.id}) }}">{{ value }}</a>
-                    </span>
-                {% else %}
-                    <a class="navbarlink{% if route == key %} navbarlinkactive{% endif %}"
-                       href="{{ path(key, {id: service.id}) }}">{{ value }}</a>
-                {% endif %}
-            {% endfor %}
+        <div class="mainname">
+            <a class="mainnamelink" href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name }}</a>
+        </div>
+        <div id="navbarmenupoints">
+        {% for key,value in names %}
+            {% set route = app.request.get('_route') %}
+                <a class="navbarlink{% if route == key %} navbarlinkactive navbarlinkactive-service{% endif %}"
+                   href="{{ path(key, {id: service.id}) }}">{{ value }}</a>
+        {% endfor %}
         </div>
     </div>
 {% endif %}
 
 {% if submenu is defined and names %}
     <div class="desktopcontainer" style="background-color: #EA7E73">
-        <div class="desktoplinkdivstyle">
-            {% for key,value in names %}
-                {% set route = app.request.get('_route') %}
-                {% if loop.first %}
-                    <span id="navbarmenupoints">
-                    <a class="navbarlink{% if route == key %} navbarlinkadminactive {% endif %}"
-                       href="{{ path(key, {admin: admin}) }}">{{ value }}</a>
-                {% elseif loop.last %}
-                    <a class="navbarlink{% if route == key %} navbarlinkadminactive {% endif %}"
-                       href="{{ path(key, {admin: admin}) }}">{{ value }}</a>
-                    </span>
-                {% else %}
-                    <a class="navbarlink{% if route == key %} navbarlinkadminactive {% endif %}"
-                       href="{{ path(key, {admin: admin}) }}">{{ value }}</a>
-                {% endif %}
-            {% endfor %}
+        <div class="mainname"> &nbsp;
+        </div>
+        <div id="navbarmenupoints">
+        {% for key,value in names %}
+            {% set route = app.request.get('_route') %}
+                <a class="navbarlink{% if route == key %} navbarlinkactive navbarlinkactive-admin{% endif %}"
+                   href="{{ path(key, {admin: admin}) }}">{{ value }}</a>
+        {% endfor %}
         </div>
     </div>
 {% endif %}

@@ -1,15 +1,4 @@
 
-.mainname {
-    font-size: 23px;
-    font-family: Roboto Condensed;
-    font-weight: bold;
-}
-
-.mainnamelink {
-    color: #ffffff;
-    text-decoration: none;
-    margin-left: 1.8vh;
-}
 
 .hamburgercontainer {
     display: none;
@@ -22,41 +11,59 @@
     cursor: pointer;
 }
 
+
+.desktopcontainer {
+    padding-top: 1.3vh;
+    padding-bottom: 5.3vh;
+    background-color: #61AFC5;
+    font-size: medium;
+    position: relative;
+}
+
+.mainname {
+    font-size: 23px;
+    font-weight: bold;
+    margin-left: 1.8vh;
+    float: left;
+    min-width: 120px;
+}
+
+.mainnamelink {
+    color: #ffffff;
+    text-decoration: none;
+}
+
 #navbarmenupoints {
-    margin-left: 5vh;
-    font-family: Open Sans;
+    margin-left: 19vh;
+    position: absolute;
+    bottom: 1.3vh;
 }
 
 .navbarlink {
     color: #ffffff;
     text-decoration: none;
-    margin-left: 1.3vh;
-    margin-right: 10px;
+    margin-right: 5vh;
+}
+.navbarlink:hover {
+    text-decoration: none;
 }
 
 .navbarlinkactive {
-    padding-bottom: 0.3vh;
-    border-bottom: 0.5vh solid #2E818E;
+    border-bottom: 0.4vh solid;
 }
 
-.navbarlinkadminactive {
-    border-bottom: 0.5vh solid #61AFC5;
+.navbarlinkactive-organization {
+    border-bottom-color: #2e818e;
 }
 
-.desktoplinkdivstyle {
-    font-size: medium;
+.navbarlinkactive-service {
+    border-bottom-color: #2e818e;
 }
 
-.desktopcontainer {
-    color: #ffffff;
-    padding-top: 1.3vh;
-    padding-bottom: 1.3vh;
-    padding-left: 0%;
-    padding-right: 1%;
-    background-color: #61AFC5;
-    min-height: 5vh;
-    position: relative;
+.navbarlinkactive-admin {
+    border-bottom-color: #A94442;
 }
+
 
 @media only screen and (max-width: 480px) {
     #hamburgerSelect {

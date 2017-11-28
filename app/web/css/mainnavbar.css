@@ -31,6 +31,8 @@
 
 .dropdown-menu{
     background-color: #333333;
+    border: none;
+    border-radius: 0px;
 }
 
 .dropdown-menu > li > a {
