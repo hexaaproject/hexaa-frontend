@@ -14,7 +14,7 @@ Feature: When I go to a specific service
 	   Given I am on "/"
 		Then I wait for "testService1" to appear
 	    Then I follow "testService1"
-		And I wait for "testService1" to appear
+		And I wait for "testServ..." to appear
 	    Then I should see "testService1"
 	     And I should see "Properties"
 	     And I should see "Managers"
