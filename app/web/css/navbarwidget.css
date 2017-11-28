@@ -12,6 +12,14 @@
 }
 
 
+.desktopcontainer {
+    padding-top: 1.3vh;
+    padding-bottom: 5.3vh;
+    background-color: #61AFC5;
+    font-size: medium;
+    position: relative;
+}
+
 .mainname {
     font-size: 23px;
     font-weight: bold;
@@ -26,7 +34,9 @@
 }
 
 #navbarmenupoints {
-    /*margin-left: 4vh;*/
+    margin-left: 19vh;
+    position: absolute;
+    bottom: 1.3vh;
 }
 
 .navbarlink {
@@ -54,13 +64,6 @@
     border-bottom-color: #A94442;
 }
 
-.desktopcontainer {
-    padding-top: 1.3vh;
-    padding-bottom: 1.3vh;
-    background-color: #61AFC5;
-    font-size: medium;
-    /*position: relative;*/
-}
 
 @media only screen and (max-width: 480px) {
     #hamburgerSelect {
