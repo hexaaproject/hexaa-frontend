@@ -53,7 +53,8 @@
     "webfontkit/open-sans": "^1.0",
     "devmachine/form-bundle": "^2.1",
     "twitter/typeahead.js": "^0.11.1",
-    "chromawoods/instaFilta": "^1.4.4"
+    "chromawoods/instaFilta": "^1.4.4",
+    "twig/extensions": "^1.5"
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",
