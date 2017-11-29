@@ -1169,9 +1169,11 @@ class ServiceController extends Controller
 
         $links = $this->get('service')->getLinksOfService($id);
         $pendinglinkIDs = array();
-        foreach ($links['items'] as $link) {
-            if (($link['organization_id'] == null) && $link['status'] == "pending") {
-                array_push($pendinglinkIDs, $link['id']);
+        if ($links != null) {
+            foreach ($links['items'] as $link) {
+                if (($link['organization_id'] == null) && $link['status'] == "pending") {
+                    array_push($pendinglinkIDs, $link['id']);
+                }
             }
         }
 
