@@ -1171,7 +1171,7 @@ class ServiceController extends Controller
         $pendinglinkIDs = array();
         if ($links != null) {
             foreach ($links['items'] as $link) {
-                if (($link['organization_id'] == NULL) && $link['status'] == "pending") {
+                if (($link['organization_id'] == null) && $link['status'] == "pending") {
                     array_push($pendinglinkIDs, $link['id']);
                 }
             }
