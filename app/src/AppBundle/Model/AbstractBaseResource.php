@@ -182,9 +182,9 @@ abstract class AbstractBaseResource
      * @param int $offset
      * @param int $pageSize
      * @param string $tags
-     * @return array
+     * @return array|null
      */
-    protected function getCollection(string $path, string $verbose = "normal", int $offset = 0, int $pageSize = 25, string $tags = null): array
+    protected function getCollection(string $path, string $verbose = "normal", int $offset = 0, int $pageSize = 25, string $tags = null)
     {
         $response = $this->client->get(
             $path,
