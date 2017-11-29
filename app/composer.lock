@@ -4,8 +4,19 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1865685abd4ad999e8f0a566ff84901",
+    "content-hash": "c49d7eb276414c8acc38c852b3782a41",
     "packages": [
+        {
+            "name": "botmonster/jquery-bootpag",
+            "version": "1.0.7",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/botmonster/jquery-bootpag/archive/master.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
+        },
         {
             "name": "chromawoods/instaFilta",
             "version": "1.4.4",
