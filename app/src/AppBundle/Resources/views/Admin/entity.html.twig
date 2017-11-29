@@ -70,8 +70,8 @@
         <div id="1">
             {{ include('::accordions.html.twig', { classToFilter:"admin_entity_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[0] }) }}
         </div>
-        {% for i in (2..total_pages-1) %}
-            <div class="hidden" id="{{ i }}">
+        {% for i in (1..total_pages-1) %}
+            <div class="hidden" id="{{ i+1 }}">
                 {{ include('::accordions.html.twig', { classToFilter:"admin_entity_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[i] }) }}
             </div>
         {% endfor %}

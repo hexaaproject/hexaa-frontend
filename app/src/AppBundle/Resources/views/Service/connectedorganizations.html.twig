@@ -76,7 +76,7 @@
                     $('#connected_org input[type=checkbox]').each(function (index,
                                                                             el) {
 
-                        if ($(this).prop('checked')) {
+                        if ($(this).prop('checked') && manager) {
                             checked = true;
                             $('.connected_org_actionButtons button.dependent').each(function (index,
                                                                                               val) {
@@ -358,7 +358,7 @@
         </div>
     {% endfor %}
 
-    <button class="btnhexaa btn-red dependent hidden-xs" id="connectNewOrgButton"><i class="material-icons">add</i>New org connect</button>
+    <button class="btnhexaa btn-red dependent hidden-xs" id="connectNewOrgButton" {% if manager == false %} disabled {% endif %}><i class="material-icons">add</i>New org connect</button>
 
     {% set i = 0 %}
     {% for form in forms %}

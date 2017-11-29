@@ -1036,6 +1036,8 @@ class ServiceController extends Controller
     public function connectedOrganizationsAction($id, $token, Request $request)
     {
 
+        $manager = $this->isManager($id);
+
         $requestslinks = $this->get('service')->getLinkRequests($id);
 
         $allData = array();
@@ -1328,6 +1330,7 @@ class ServiceController extends Controller
                 'pendinglinkIDs' => $pendinglinkIDs,
                 'acceptedNumber' => $acceptedNumber,
                 'forms' => $formviews,
+                'manager' => $manager,
             )
         );
     }
@@ -1901,6 +1904,24 @@ class ServiceController extends Controller
         }
 
         return $attributestonames;
+    }
+
+    /**
+    * @param $id
+    * @return bool
+    */
+    private function isManager($id)
+    {
+        $manager = false;
+        $services = $this->get('principal')->servsWhereUserIsManager();
+        foreach ($services as $oneserv) {
+            if ($oneserv['id'] == $id) {
+                $manager = true;
+                break;
+            }
+        }
+
+        return $manager;
     }
 
     /**

@@ -761,6 +761,8 @@ class OrganizationController extends Controller
      */
     public function connectedservicesAction($id, $action, Request $request)
     {
+        $manager = $this->isManager($id);
+
         if (! in_array($action, array("false", "create"))) {
             $this->createNotFoundException("Invalid action in url: ".$action);
         }
@@ -786,11 +788,14 @@ class OrganizationController extends Controller
 
         $services = array();
         $linkIDs = array();
-        $links = $this->get('organization')->getLinks($id);
-        foreach ($links['items'] as $link) {
-            $service = $this->get('service')->get($link['service_id']);
-            array_push($services, $service);
-            array_push($linkIDs, $link['id']);
+        $links = null;
+        if ($manager) {
+            $links = $this->get('organization')->getLinks($id);
+            foreach ($links['items'] as $link) {
+                $service = $this->get('service')->get($link['service_id']);
+                array_push($services, $service);
+                array_push($linkIDs, $link['id']);
+            }
         }
 
         $entitlementpacks = array();
@@ -827,7 +832,7 @@ class OrganizationController extends Controller
         }
 
         $servicesAccordion = null;
-        if ($entitlementpacks[0]['items'] != null) {
+        if ($entitlementpacks != null && $entitlementpacks[0]['items'] != null) {
             $servicesAccordion = $this->servicesToAccordion($services, $entitlementpacks);
         }
 
@@ -847,6 +852,7 @@ class OrganizationController extends Controller
                 "action" => $action,
                 "form" => $form->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "manager" => $manager,
             )
         );
     }
@@ -1003,6 +1009,24 @@ class OrganizationController extends Controller
     private function getOrganization($id)
     {
         return $this->get('organization')->get($id);
+    }
+
+    /**
+    * @param $id
+    * @return bool
+    */
+    private function isManager($id)
+    {
+        $manager = false;
+        $organizations = $this->get('principal')->orgsWhereUserIsManager();
+        foreach ($organizations as $oneorg) {
+            if ($oneorg['id'] == $id) {
+                $manager = true;
+                break;
+            }
+        }
+
+        return $manager;
     }
 
     /**
