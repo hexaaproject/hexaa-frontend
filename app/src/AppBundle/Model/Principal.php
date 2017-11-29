@@ -145,4 +145,26 @@ class Principal extends AbstractBaseResource
         //$id = (int) ($pid);
         return $this->getCollection($this->pathName.'/news', $verbose, $offset, $pageSize);
     }
+
+    /**
+    * List organizations where user is manager
+    *
+    * @param string $verbose One of minimal, normal or expanded
+    * @return bool
+    */
+    public function orgsWhereUserIsManager(string $verbose = "normal")
+    {
+        return $this->getSingular('manager/organizations', $verbose);
+    }
+
+    /**
+    * List organizations where user is manager
+    *
+    * @param string $verbose One of minimal, normal or expanded
+    * @return bool
+    */
+    public function servsWhereUserIsManager(string $verbose = "normal")
+    {
+        return $this->getSingular('manager/services', $verbose);
+    }
 }
