@@ -52,8 +52,8 @@
            {#<li class="active"><a href="#">Home</a></li>#}
             {% if organizations is defined %}
                 <li class="dropdown" id="org">
-                    <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Organizations <i class="material-icons">arrow_drop_down</i>
-                        {# <span class="caret"> </span>#}</a>
+                    <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Organizations
+                         <span class="caret"> </span></a>
                     {% if organizations.items != null %}
                         <ul class="dropdown-menu">
                             {% for organization in organizations.items %}
@@ -65,8 +65,8 @@
             {% endif %}
             {% if services is defined and services.item_number > 0 %}
                 <li class="dropdown" id="serv">
-                    <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Services <i class="material-icons">arrow_drop_down</i>
-                        {# <span class="caret"> </span>#}</a>
+                    <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Services
+                        <span class="caret"> </span></a>
                     {% if services.items != null %}
                         <ul class="dropdown-menu">
                             {% for service in services.items %}
