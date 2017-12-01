@@ -8,14 +8,12 @@ Feature: When I go to a specific service
         Given I am on "/"
         And I should see "employee@project.local"
         And I should see "testService1"
+		Then I follow "testService1"
 
 
 	Scenario: Navigate to service show page
-	   Given I am on "/"
-		Then I wait for "testService1" to appear
-	    Then I follow "testService1"
-		And I wait for "testService1" to appear
-	    Then I should see "testService1"
+		And I wait for "testServ..." to appear
+	    Then I should see "testServ..."
 	     And I should see "Properties"
 	     And I should see "Managers"
 	     And I should see "Attributes"
@@ -29,9 +27,6 @@ Feature: When I go to a specific service
 		 And I should see "Delete service"
 
 	Scenario: Navigate to service properties
-	   Given I am on "/"
-		 And I wait for "testService1" to appear
-	    Then I follow "testService1"
 		 And I wait for "Properties" to appear
 	     And I follow "Properties"
 	    Then I should see "Properties"
@@ -40,9 +35,6 @@ Feature: When I go to a specific service
 	     And I should see "Privacy Information"
 
         Scenario: Edit service properties
-	   Given I am on "/"
-		 And I wait for "testService1" to appear
-	    Then I follow "testService1"
 		 And I wait for "Properties" to appear
 	     And I follow "Properties"
 	    Then I should see "Properties"
@@ -53,9 +45,6 @@ Feature: When I go to a specific service
 
 
 	Scenario: Navigate to service managers
-	   Given I am on "/"
-	    When I wait for "testService1" to appear
-	    Then I follow "testService1"
 	     And I wait for "Managers" to appear
 	     And I follow "Managers"
 	    Then I should see "Remove"
@@ -63,9 +52,6 @@ Feature: When I go to a specific service
 	     And I should see "Managers"
 
         Scenario: Navigate to service attributes
-	   Given I am on "/"
-	    When I wait for "testService1" to appear
-	    Then I follow "testService1"
 	     And I wait for "Attributes" to appear
 	     And I follow "Attributes"
 	    Then I should see "Remove"
@@ -73,9 +59,6 @@ Feature: When I go to a specific service
 	     And I should see "Used attribute specification"
 
 	Scenario: Service managers tables
-	   Given I am on "/"
-	    When I wait for "testService1" to appear
-	    Then I follow "testService1"
 	    When I wait for "Managers" to appear
 	     And I follow "Managers"
 	    Then I wait for "Managers" to appear
@@ -88,9 +71,6 @@ Feature: When I go to a specific service
 
 
 	Scenario: Navigate to service permissions
-	   Given I am on "/"
-	    When I wait for "testService1" to appear
-	    Then I follow "testService1"
 	    When I wait for "Permissions" to appear
 	     And I follow "Permissions"
 	    When I wait for "Permissions" to appear
@@ -103,9 +83,6 @@ Feature: When I go to a specific service
 		 And I should see "URI"
 
 	Scenario: Connected organizations tables
-		Given I am on "/"
-		When I wait for "testService1" to appear
-		Then I follow "testService1"
 		When I wait for "Connected organizations" to appear
 		And I follow "Connected organizations"
 		Then I wait for "Connected organizations" to appear
@@ -118,9 +95,6 @@ Feature: When I go to a specific service
 			| No matching records found |
 
 	Scenario: Delete connected organization
-		Given I am on "/"
-		When I wait for "testService1" to appear
-		Then I follow "testService1"
 		When I wait for "Connected organizations" to appear
 		And I follow "Connected organizations"
 		Then I wait for "Connected organizations" to appear

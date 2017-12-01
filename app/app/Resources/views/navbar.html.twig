@@ -77,7 +77,7 @@
     <div class="desktopcontainer">
         <div class="mainname">
             <a class="mainnamelink"
-               href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name }}</a>
+               href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name|truncate(8)  }}</a>
         </div>
         <div id="navbarmenupoints">
         {% for key,value in names %}
@@ -92,7 +92,7 @@
 {% if service is defined and names %}
     <div class="desktopcontainer">
         <div class="mainname">
-            <a class="mainnamelink" href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name }}</a>
+            <a class="mainnamelink" href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|truncate(8) }}</a>
         </div>
         <div id="navbarmenupoints">
         {% for key,value in names %}

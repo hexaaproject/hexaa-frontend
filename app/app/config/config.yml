@@ -42,7 +42,11 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
         - 'form/fields.html.twig'
-
+services:
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
 assetic:
     bundles:
         - AppBundle
