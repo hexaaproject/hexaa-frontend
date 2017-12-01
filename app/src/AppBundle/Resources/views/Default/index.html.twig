@@ -43,34 +43,35 @@
                 </div>
                 <div class="col-sm-1"></div>
             </div>
-            <div class="row">
+            <div class="row" {% if hasServices %} style="display: flex; {% endif %}">
                 {% if hasServices %}
-                    <div class="col-sm-3"></div>
+                    <div class="col-sm-2"></div>
                 {% else %}
-                    <div class="col-sm-6"></div>
+                    <div class="col-sm-5"></div>
                 {% endif %}
-                <div class="col-sm-4 tablemain">
+                <div {% if hasServices %} class="col tablemain" style="border: 1px solid #61AFC5;" {% else %} class="col-sm-5 tablemain" style=" padding: 1em; border: 1px solid #61AFC5;" {% endif %}>
                     <div id="orgtablemain">
                         <div id="orgtableheader" class="tableheader"><b>ORGANIZATIONS</b></div>
                         {% if organizations.items == null %}
                             <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
                         {% endif %}
                         {% for organization in organizations.items %}
-                            <div id="orgtablecontent"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name|e }}</a></div>
+                            <div id="orgtablecontent"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name|truncate(35) }}</a></div>
                             {% endfor %}
                     </div>
                 </div>
 
                 {% if hasServices %}
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-4 tablemain">
+                    <div class="col-sm-2"></div>
+                    <div class="col tablemain" style="border: 1px solid #FA8072;">
                         <div id="servtablemain">
                             <div id="servtableheader" class="tableheader"><b>SERVICES</b></div>
                             {% for service in services.items %}
-                                <div id="servtablecontent"><a href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|e }}</a></div>
+                                <div id="servtablecontent"><a href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|truncate(35) }}</a></div>
                                 {% endfor %}
                         </div>
                     </div>
+                    <div class="col-sm-2"></div>
                 {% else %}
                     <div class="clearfix"></div>
                     <div class="col-sm-2"></div>

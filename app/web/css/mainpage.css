@@ -124,18 +124,8 @@ div.hr {
 }
 
 .tablemain > div {
-    min-height: 100%;
-    border: 1px solid;
-    width: auto;
     padding-left: 30px;
     padding-right: 30px;
-    padding-bottom: 12px;
-
-}
-
-#orgtablemain {
-    border-color: #61AFC5;
-
 }
 
 #orgtablecontent, #servtablecontent {
@@ -144,19 +134,21 @@ div.hr {
 
 .tableheader {
     text-align: center;
-    padding-top: 12px;
-    padding-bottom: 20px;
+    padding-bottom: 12px;
 }
+
 #orgtableheader {
     color: #61AFC5;
 }
 
-#servtableheader {
-    color: #FA8072;
+
+.row .col{
+    flex: 1;
+    padding: 1em;
 }
 
-#servtablemain {
-    border-color: #FA8072;
+#servtableheader {
+    color: #FA8072;
 }
 
 #servtablecontent {
