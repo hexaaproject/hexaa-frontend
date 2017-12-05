@@ -32,6 +32,9 @@
     color: #ffffff;
     text-decoration: none;
 }
+.mainnamelink:hover {
+    text-decoration: none;
+}
 
 #navbarmenupoints {
     margin-left: 19vh;

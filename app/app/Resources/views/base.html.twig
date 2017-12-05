@@ -182,11 +182,19 @@
 </div>
 
 <script>
-    /* jquery.validate defaults */
-    $.validator.setDefaults({
-        errorClass: "help-block has-error",
-        errorElement: "p"
-    });
+    $(document).ready(function () {
+
+        /* jquery.validate defaults */
+        $.validator.setDefaults({
+            errorClass: "help-block has-error",
+            errorElement: "p"
+        });
+
+        // tooltip init
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    })
 
     function alert(message) {
         $('#alert').text(message);
