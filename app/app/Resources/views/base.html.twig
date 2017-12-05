@@ -182,52 +182,6 @@
 </div>
 
 <script>
-   /* function orgClick() {
-        $("#orgSelect")[0].classList.toggle("show");
-    }
-    function servClick() {
-        $("#servSelect")[0].classList.toggle("show");
-    }
-
-    window.onclick = function (event) {
-        if (!event.target.matches('.dropbtn') && (!event.target.matches('.servicecl'))) {
-            var dropdowns1 = $(".dropdown-content1");
-            var dropdowns2 = $(".dropdown-content2");
-            var dropdowns3 = $(".hamburgerclass");
-            var i;
-            for (i = 0; i < dropdowns1.length; i++) {
-                var openDropdown = dropdowns1[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-            for (i = 0; i < dropdowns2.length; i++) {
-                var openDropdown = dropdowns2[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-            for (i = 0; i < dropdowns3.length; i++) {
-                var openDropdown = dropdowns3[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
-        if (event.target.matches('.servicecl')) {
-            var dropdownorg = $("#orgSelect")[0];
-            if (dropdownorg.classList.contains('show')) {
-                dropdownorg.classList.remove('show');
-            }
-        }
-        if (event.target.matches('.dropbtn')) {
-            var dropdownorg = $("#servSelect")[0];
-            if (dropdownorg.classList.contains('show')) {
-                dropdownorg.classList.remove('show');
-            }
-        }
-    }
-
     /* jquery.validate defaults */
     $.validator.setDefaults({
         errorClass: "help-block has-error",
