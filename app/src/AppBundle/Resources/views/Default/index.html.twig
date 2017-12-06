@@ -57,7 +57,7 @@
                         {% endif %}
                         {% for organization in organizations.items %}
                             <div id="orgtablecontent"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
-                            {% endfor %}
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@
                     <div class="col-sm-2"></div>
                 {% else %}
                     <div class="clearfix"></div>
-                    <div class="col-sm-2"></div>
+                    <div class="col-sm-5"></div>
                     <div class="col-sm-11">
                         <div id="footertext">
                             Are you an expert hexaa user? <a href="{{ path('app_service_create') }}">Create your own service.</a>

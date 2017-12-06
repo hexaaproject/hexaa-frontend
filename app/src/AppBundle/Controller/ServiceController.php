@@ -185,7 +185,7 @@ class ServiceController extends Controller
         foreach ($keys as $key) {
             $entityidsarray[$key] = $key;
         }
-        //dump($entityidsarray);exit;
+
         $form = $this->createForm(ServiceType::class, $entityidsarray);
 
         $form->handleRequest($request);
@@ -908,7 +908,20 @@ class ServiceController extends Controller
         $uriPrefix = $apiProperties['entitlement_base'];
 
         $verbose = "expanded";
-        $permissions = $this->get('service')->getEntitlements($id, $verbose)['items'];
+        $allpermission = $this->get('service')->getEntitlements($id, $verbose);
+        $totalnumber = $allpermission['item_number'];
+        $permissions = $allpermission['items'];
+        $totalpages = ceil($totalnumber / 25);
+        $offset = 25;
+        $pagesize = 25;
+        $verbose = "normal";
+        $permissionsperpage = array();
+        array_push($permissionsperpage, $permissions);
+        for ($i = 1; $i < $totalpages; $i++) {
+            $permissionperpage = $this->get('service')->getEntitlements($id, $verbose, $offset, $pagesize);
+            array_push($permissionsperpage, $permissionperpage['items']);
+            $offset = $offset +25;
+        }
 
         $formCreatePermissions = $this->createForm(
             ServiceCreatePermissionType::class
@@ -954,7 +967,8 @@ class ServiceController extends Controller
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
-                'permissions_accordion' => $this->permissionsToAccordion($permissions, $id),
+                'permissions_accordion' => $this->permissionsToAccordion($permissionsperpage, $id),
+                'total_pages' => $totalpages,
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
                 'formCreatePermission' => $formCreatePermissions->createView(),
                 'action' => $action,
@@ -975,8 +989,20 @@ class ServiceController extends Controller
      */
     public function permissionssetsAction(Request $request, $id, $token = null, $permissionsetname = null)
     {
-        $permissionssets = $this->get('service')->getEntitlementPacks($id)['items'];
-
+        $allpermissionset = $this->get('service')->getEntitlementPacks($id);
+        $permissionssets = $allpermissionset['items'];
+        $totalnumber = $allpermissionset['item_number'];
+        $totalpages = ceil($totalnumber / 25);
+        $offset = 25;
+        $pagesize = 25;
+        $verbose = "normal";
+        $permissionsetsperpage = array();
+        array_push($permissionsetsperpage, $permissionssets);
+        for ($i = 1; $i < $totalpages; $i++) {
+            $permissionsetsperpage = $this->get('service')->getEntitlementPacks($id, $verbose, $offset, $pagesize);
+            array_push($permissionsetsperpage, $permissionsetsperpage['items']);
+            $offset = $offset +25;
+        }
         $formCreatePermissionsSet = $this->createForm(
             ServiceCreatePermissionSetType::class
         );
@@ -1016,7 +1042,8 @@ class ServiceController extends Controller
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
                 'servsubmenubox' => $this->getServSubmenuPoints(),
-                'permissions_accordion_set' => $this->permissionSetToAccordion($permissionssets, $id),
+                'permissions_accordion_set' => $this->permissionSetToAccordion($permissionsetsperpage, $id),
+                'total_pages' => $totalpages,
                 'token' => $token,
                 'permissionsetname' => $permissionsetname,
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
@@ -1814,29 +1841,40 @@ class ServiceController extends Controller
     private function permissionsToAccordion($permissions, $servId)
     {
         $permissionsAccordion = array();
-        foreach ($permissions as $permission) {
-            $permissionsAccordion[$permission['id']]['title'] = $permission['name'];
+        $i = 0;
+        foreach ($permissions as $onepermissiongroup) {
+            foreach ($onepermissiongroup as $permission) {
+                $permissionsAccordion[$i]['title'] = $permission['name'];
 
-            // FIXME @annamari, nem találok permission delete url-t.
-            $permissionsAccordion[$permission['id']]['deleteUrl'] = $this->generateUrl("app_service_permissiondelete", array('servId' => $servId, 'id' => $permission['id'], 'action' => "delete"));
+                // FIXME @annamari, nem találok permission delete url-t.
+                $permissionsAccordion[$i]['deleteUrl'] = $this->generateUrl("app_service_permissiondelete", [
+                    'servId' => $servId,
+                    'id' => $permission['id'],
+                    'action' => "delete",
+                ]);
 
-            $description = array();
-            $uri = array();
-            array_push($description, $permission['description']);
-            array_push($uri, $permission['uri']);
-            $permissionsAccordion[$permission['id']]['contents'] = array(
-                array(
+                $description = [];
+                $uri = [];
+                array_push($description, $permission['description']);
+                array_push($uri, $permission['uri']);
+                $permissionsAccordion[$i]['contents'] = [
+                [
                     'key' => 'Description',
                     'values' => $description,
-                ),
-                array(
+                ],
+                [
                     'key' => 'URI',
                     'values' => $uri,
-                ),
-            );
+                ],
+                ];
+                $i++;
+            }
         }
 
-        return $permissionsAccordion;
+        $size = 25;
+        $smallarray = array_chunk($permissionsAccordion, $size);
+
+        return $smallarray;
     }
 
     /**
@@ -1847,36 +1885,46 @@ class ServiceController extends Controller
     private function permissionSetToAccordion($permissionSets, $servId)
     {
         $permissionsAccordionSet = array();
-        foreach ($permissionSets as $permissionSet) {
-            $permissionsAccordionSet[$permissionSet['id']]['title'] = $permissionSet['name'];
-            $permissionsAccordionSet[$permissionSet['id']]['deleteUrl'] = $this->generateUrl("app_service_permissionsetdelete", array('servId' => $servId, 'id' => $permissionSet['id'], 'action' => "delete"));
+        foreach ($permissionSets as $onePermissionSetGroup) {
+            foreach ($onePermissionSetGroup as $permissionSet) {
+                $permissionsAccordionSet[$permissionSet['id']]['title'] = $permissionSet['name'];
+                $permissionsAccordionSet[$permissionSet['id']]['deleteUrl'] = $this->generateUrl("app_service_permissionsetdelete", [
+                    'servId' => $servId,
+                    'id' => $permissionSet['id'],
+                    'action' => "delete",
+                ]);
 
-            $description = array();
-            $type = array();
-            $permissions = array();
-            array_push($description, $permissionSet['description']);
-            array_push($type, $permissionSet['type']);
-            foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
-                $entitlement = $this->get('entitlement')->getEntitlement($entitlementid);
-                array_push($permissions, $entitlement['name']);
-            }
-            $permissionsAccordionSet[$permissionSet['id']]['contents'] = array(
-                array(
+                $description = [];
+                $type = [];
+                $permissions = [];
+                array_push($description, $permissionSet['description']);
+                array_push($type, $permissionSet['type']);
+                foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
+                    $entitlement = $this->get('entitlement')
+                    ->getEntitlement($entitlementid);
+                    array_push($permissions, $entitlement['name']);
+                }
+                $permissionsAccordionSet[$permissionSet['id']]['contents'] = [
+                [
                     'key' => 'Description',
                     'values' => $description,
-                ),
-                array(
+                ],
+                [
                     'key' => 'Type',
                     'values' => $type,
-                ),
-                array(
+                ],
+                [
                     'key' => 'Permissions',
                     'values' => $permissions,
-                ),
-            );
+                ],
+                ];
+            }
         }
 
-        return $permissionsAccordionSet;
+        $size = 25;
+        $smallarray = array_chunk($permissionsAccordionSet, $size);
+
+        return $smallarray;
     }
 
     /**

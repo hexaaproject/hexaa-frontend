@@ -22,7 +22,9 @@
     {% endfor %}
 
     {% javascripts
-    '@instafilta_js' %}
+    '@instafilta_js'
+    '@jquery_bootpag_js'
+    %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -38,6 +40,30 @@
                 $( ".accordion-panel" ).each(function( index ) {
                     $( this ).css({ 'display': "none" });
                 });
+            });
+            $('.show_paginator').bootpag({
+                total: {{ total_pages }},
+                page: 1,
+                maxVisible: 5,
+                leaps: true,
+                firstLastUse: true,
+                first: '←',
+                last: '→',
+                wrapClass: 'pagination',
+                activeClass: 'active',
+                disabledClass: 'disabled',
+                nextClass: 'next',
+                prevClass: 'prev',
+                lastClass: 'last',
+                firstClass: 'first'
+
+            }).on('page', function(event, num)
+            {
+                console.log(num);
+                {% for i in (1..total_pages) %}
+                $("#"+{{ i }}).addClass("hidden");
+                {% endfor %}
+                $("#"+num).removeClass("hidden"); // or some ajax content loading...
             });
         });
     </script>
@@ -90,8 +116,22 @@
                placeholder="Search permission set">
 
         <button class="btnhexaa btn-red btnhexaa-sm pull-right" onclick="showCreateForm()" id="createButton"><i class="material-icons">add</i> Create</button>
+        {% if total_pages != 1 %}
+            <br><br>
+            <div class="show_paginator"></div>
+        {% endif %}
     </div>
-    <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
-        {{ include('::accordions.html.twig', {classToFilter:"service_permissionset_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set, service_id: service.id}) }}
+    <div class="col-sm-11 col-sm-offset-2" {% if total_pages != 1 %} style="margin-top: 5px" {% else %} style="margin-top: 12px" {% endif %}>
+        <div id="1">
+            {{ include('::accordions.html.twig', {classToFilter:"service_permissionset_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[0], service_id: service.id}) }}
+        </div>
+        {% if total_pages != 1 %}
+            {% for i in (1..total_pages-1) %}
+                <div class="hidden" id="{{ i+1 }}">
+                    {{ include('::accordions.html.twig', {classToFilter:"service_permissionset_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[i], service_id: service.id}) }}
+                </div>
+            {% endfor %}
+            <div class="show_paginator"></div>
+        {% endif %}
     </div>
 {% endblock %}
