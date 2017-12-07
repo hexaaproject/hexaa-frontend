@@ -1,4 +1,5 @@
-@org @invitation
+@organization
+@invitation
 Feature: When I go to organizations
   As an authenticated user
   I want to invite user to my organization

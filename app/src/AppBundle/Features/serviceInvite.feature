@@ -1,4 +1,5 @@
-@serviceinvitation
+@service
+@invitation
 Feature: When I go to services
   As an authenticated user
   I want to invite manager to my service

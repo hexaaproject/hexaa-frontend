@@ -1,4 +1,4 @@
-@org
+@organization
 @history
 Feature: When I go to an organization history
   As an authenticaed user

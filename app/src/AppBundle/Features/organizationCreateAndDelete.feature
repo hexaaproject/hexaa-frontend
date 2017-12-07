@@ -1,4 +1,4 @@
-@org
+@organizaton
 @create
 Feature: When I go to create organization
   As an authenticaed user

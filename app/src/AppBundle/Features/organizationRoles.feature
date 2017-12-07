@@ -1,4 +1,4 @@
-@org
+@organization
 @roles
 
 Feature: When I go to organization's roles

@@ -1,4 +1,4 @@
-@serv
+@service
 @servshow
 
 Feature: When I go to a specific service

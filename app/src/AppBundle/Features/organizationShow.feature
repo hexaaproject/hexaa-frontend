@@ -1,4 +1,4 @@
-@org
+@organization
 @show
 Feature: When I go to a specific organization
   As the owner of organization

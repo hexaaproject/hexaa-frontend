@@ -1,4 +1,4 @@
-@serv
+@service
 @create
 Feature: When I go to create service
   As an authenticaed user
