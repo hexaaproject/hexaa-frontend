@@ -8,11 +8,11 @@ variables:
 services:
 - docker:dind
 
-#stages:
-#- build
-#- test
-#- release
-#- deploy
+stages:
+#- build  #default
+#- test   #default
+- release
+#- deploy #default
 
 before_script:
   - docker info
