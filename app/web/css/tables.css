@@ -7,7 +7,7 @@
 .base {
     padding: 5px;
     text-align: left;
-    font-size: 15px;
+    font-size: medium;
 }
 
 .form {
@@ -21,9 +21,13 @@
     display: table-caption;
     text-align: left;
     font-weight: bold;
-    font-size: 25px;
+    font-size: x-large;
     margin-bottom: 0.5em;
     margin-top: 1em;
+}
+
+.dataTable tbody {
+    font-size: medium;
 }
 
 .datatable checkbox {
@@ -229,7 +233,7 @@ table.dataTable.no-footer {
     display: inline-block;
     padding: 6px 12px;
     margin: 0px 4px;
-    font-size: 14px;
+    font-size: medium;
     font-weight: normal;
     line-height: 1.42857143;
     text-align: center;

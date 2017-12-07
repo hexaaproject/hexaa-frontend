@@ -3,7 +3,7 @@
     display: inline-block;
     padding: 6px 12px;
     margin: 0px 4px;
-    font-size: 14px;
+    font-size: medium;
     font-weight: normal;
     line-height: 1.42857143;
     text-align: center;
@@ -42,17 +42,17 @@
 }
 
 .btnhexaa-lg {
-    font-size: 25px;
+    font-size: x-large;
     padding: 12px 15px;
 }
 
 .btnhexaa-md {
-    font-size: 16px;
+    font-size: medium;
     padding: 9px 14px;
 }
 
 .btnhexaa-sm {
-    font-size: 14px;
+    font-size: medium;
     padding: 6px 9px;
 }
 

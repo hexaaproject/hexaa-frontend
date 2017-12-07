@@ -800,7 +800,10 @@ class OrganizationController extends Controller
 
         $entitlementpacks = array();
         foreach ($linkIDs as $linkID) {
-            array_push($entitlementpacks, $this->get('link')->getEntitlementPacks($linkID));
+            $eps = $this->get('link')->getEntitlementPacks($linkID);
+            if ($eps['item_number'] != 0) {
+                array_push($entitlementpacks, $eps);
+            }
         }
         $entitlementids = array();
         foreach ($entitlementpacks as $entitlementpackitems) {
@@ -824,8 +827,12 @@ class OrganizationController extends Controller
             }
         }
 
+        $principalentitlements = $this->get('principal')->getEntitlements();
         foreach ($entitlementsunique as $entitlementunique) {
             $entitlement = $this->get('entitlement')->get($entitlementunique);
+            if (empty($entitlements)) {
+            }
+            //dump($entitlements);exit;
             if (!in_array($entitlement, $entitlements)) {
                 array_push($entitlements, $entitlement);
             }
@@ -1127,14 +1134,20 @@ class OrganizationController extends Controller
     {
         $servicesAccordion = array();
         foreach ($services as $service) {
-            $servicesAccordion[$service['id']]['title'] = $service['name'];
-            $servicesAccordion[$service['id']]['description'] = 'Permission sets';
-            $managers = $this->get('service')->getManagers($service['id'])['items'];
-            $managersstring = "";
-            foreach ($managers as $manager) {
-                $managersstring .= $manager['display_name']." (".$manager['email'].") ";
+            foreach ($entitlementPacks as $entitlementPacksub) {
+                foreach ($entitlementPacksub['items'] as $entitlementPack) {
+                    if ($entitlementPack['service_id'] == $service['id']) {
+                        $servicesAccordion[$service['id']]['title'] = $service['name'];
+                        $servicesAccordion[$service['id']]['description'] = 'Permission sets';
+                        $managers = $this->get('service')->getManagers($service['id'])['items'];
+                        $managersstring = "";
+                        foreach ($managers as $manager) {
+                            $managersstring .= $manager['display_name']." (".$manager['email'].") ";
+                        }
+                        $servicesAccordion[$service['id']]['titlemiddle'] = 'Service manager '.$managersstring;
+                    }
+                }
             }
-            $servicesAccordion[$service['id']]['titlemiddle'] = 'Service manager '.$managersstring;
 
             foreach ($entitlementPacks as $entitlementPacksub) {
                 foreach ($entitlementPacksub['items'] as $entitlementPack) {

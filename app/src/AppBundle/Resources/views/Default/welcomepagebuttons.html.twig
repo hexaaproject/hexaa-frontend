@@ -1,7 +1,7 @@
 {# empty Twig template #}
 <div class="col-sm-3"></div>
 <div class="col-sm-3">
-    <div class="desktopbutton">
+    <div {% if desktopbuttonimageafterlogin == "desktopbuttonimageafterloginlarge" %} class="desktopbutton" {% else %} class="desktopbuttonsmall" {% endif %} >
         <a href="{{ path('app_organization_create') }}">
             <img class="{{ desktopbuttonimageafterlogin }}" alt="Add organization" src="/img/add_organization.svg"/>
             <br/>
@@ -12,7 +12,7 @@
 </div>
 <div class="col-sm-3">
     {% if hasService is defined %}
-        <div class="desktopbutton">
+        <div class="desktopbuttonsmall">
             <a href="{{ path('app_service_create') }}">
                 <img class="{{ desktopbuttonimageafterlogin }}" alt="Claim service" src="/img/add service.svg"/>
                 <br/>
@@ -23,7 +23,7 @@
     {% endif %}
 </div>
 <div class="col-sm-3">
-    <div class="desktopbutton">
+    <div {% if desktopbuttonimageafterlogin == "desktopbuttonimageafterloginlarge" %} class="desktopbutton" {% else %} class="desktopbuttonsmall" {% endif %}>
         <a href="{{ path('app_profile_index') }}">
             <img class="{{ desktopbuttonimageafterlogin }}" alt="Edit profile" src="/img/edit_profile.svg"/>
             <br/>
