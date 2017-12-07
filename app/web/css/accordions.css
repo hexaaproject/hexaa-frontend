@@ -20,7 +20,7 @@ limitations under the License.
 
 div.accordion-header {
     font-weight: bold;
-    font-size: larger;
+    font-size: x-large;
     margin-bottom: 12px
 }
 
@@ -49,7 +49,7 @@ div.accordion-title {
     cursor: pointer;
     padding: 5px 15px;
     font-weight: bold;
-    font-size: medium;
+    font-size: large;
     margin-top: 4px;
     margin-bottom: 0px;
     width: 100%;
@@ -119,12 +119,14 @@ td.accordion-key {
 div.accordion-panel-style-dark {
     background-color: white;
     color: #68b3c7;
+    font-size: medium;
 }
 
 div.accordion-panel-style-light {
     background-color: white;
     color: #68b3c7;
     border: 1px solid;
+    font-size: medium;
 }
 
 td.accordion-key {
@@ -159,15 +161,20 @@ td.accordion-hr {
 .accordion-title-right {
 }
 
+#othersize {
+    font-size: medium;
+}
+
 .accordion-title-middle {
     font-style: italic;
     font-weight: lighter;
     margin-left: 12px;
+    font-size: medium;
 }
 
 .accordion-description {
     font-weight: bold;
-    font-size: larger;
+    font-size: x-large;
     margin-top: 12px;
     margin-left: 16px;
 }

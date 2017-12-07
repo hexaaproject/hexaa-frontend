@@ -18,10 +18,6 @@ limitations under the License.
     Author     : Mihály Héder <mihaly.heder@sztaki.mta.hu>
 */
 
-.container {
-    
-}
-
 .uniquebuttons {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -108,7 +104,7 @@ table#centertableservicesprop {
 
 .desktopbuttonorg p{
     padding-top: 20px;
-    font-size: 20px;
+    font-size: x-large;
 }
 
 .desktopbuttonimage {
@@ -262,6 +258,13 @@ form[name="service_create_permission"] .header, form[name="service_create_permis
 #scrollable-dropdown-menu .tt-menu{
     margin:2px 0;
     width: 310px;
+    border: 1px solid #61AFC5;
+    color: black;
+}
+
+.propertyblockedit #scrollable-dropdown-menu .tt-menu{
+    margin:2px 0;
+    width: 500px;
     border: 1px solid #61AFC5;
     color: black;
 }

@@ -167,4 +167,14 @@ class Principal extends AbstractBaseResource
     {
         return $this->getSingular('manager/services', $verbose);
     }
+
+    /**
+    * Get the history of the principal
+    * @param string $verbose
+    * @return array
+    */
+    public function getEntitlements(string $verbose = "normal")
+    {
+        return $this->getCollection($this->pathName.'/entitlements', $verbose);
+    }
 }

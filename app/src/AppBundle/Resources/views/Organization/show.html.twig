@@ -48,7 +48,6 @@
             formaction: path('app_organization_delete', {id: organization.id })
         })
      }}
-
     <script>
         $(document).ready(function() {
             $('#maindivcontents').on('click', '#deleteDiv', function(event) {
@@ -56,5 +55,6 @@
                 $('#deleteBox').modal('show');
             });
         });
+        $( "#srvmain" ).parent().css("max-width", "none");
     </script>
 {% endblock %}
