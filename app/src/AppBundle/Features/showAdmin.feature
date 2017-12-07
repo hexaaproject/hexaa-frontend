@@ -44,4 +44,3 @@ Feature: When I am an admin
 		And I should see "https://test.com/ssp"
         When I click on accordion "https://example.com/ssp"
           Then I should see "Type"
-          And I should see "Email"
