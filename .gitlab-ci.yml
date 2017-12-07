@@ -125,20 +125,20 @@ test-admin:
   tags:
     - dind
 
-#release:
-#  stage: release
-#  script:
-#    - docker pull $CONTAINER_TEST_IMAGE
-#    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-#    - docker push $CONTAINER_RELEASE_IMAGE
-#  only:
-#    - master
-#  tags:
-#    - dind
-#
-#deploy_to_sztaki:
-#  stage: deploy
-#  script:
-#    - ssh -A gitlab@$DEPLOY_SZTAKI_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000; docker pull $CONTAINER_TEST_IMAGE; docker stop $DEPLOY_TARGET; docker rm $DEPLOY_TARGET; docker run -d --name $DEPLOY_TARGET --network=docker_default -e PROJECT_HOSTNAME=$DEPLOY_TARGET -v "/etc/pki:/etc/pki:ro" -p 80:80 -p 443:443 $CONTAINER_TEST_IMAGE;"
-#  tags:
-#    - dind
+release:
+  stage: release
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
+  only:
+    - master
+  tags:
+    - dind
+
+deploy_to_sztaki:
+  stage: deploy
+  script:
+    - ssh -A gitlab@$DEPLOY_SZTAKI_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000; docker pull $CONTAINER_TEST_IMAGE; docker stop $DEPLOY_TARGET; docker rm $DEPLOY_TARGET; docker run -d --name $DEPLOY_TARGET --network=docker_default -e PROJECT_HOSTNAME=$DEPLOY_TARGET -v "/etc/pki:/etc/pki:ro" -p 80:80 -p 443:443 $CONTAINER_TEST_IMAGE;"
+  tags:
+    - dind
