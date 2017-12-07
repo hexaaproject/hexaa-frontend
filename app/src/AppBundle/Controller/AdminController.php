@@ -463,20 +463,14 @@ class AdminController extends Controller
             foreach ($keysinter as $keyinter) {
                 $entityIDsAccordion[$keyinter]['title'] = $keyinter;
                 $type = array();
-                $email = array();
                 foreach ($entityarray as $entityfeature) {
                     foreach ($entityfeature as $oneentityfeature) {
-                        array_push($type, $oneentityfeature['type']);
-                        array_push($email, $oneentityfeature['email']);
+                        array_push($type, ($oneentityfeature['type'].' ('.$oneentityfeature['email'].')'));
                     }
                     $entityIDsAccordion[$keyinter]['contents'] = array(
                        array(
                          'key' => 'Type',
                          'values' => $type,
-                       ),
-                       array(
-                         'key' => 'Email',
-                         'values' => $email,
                        ),
                     );
                     break;
