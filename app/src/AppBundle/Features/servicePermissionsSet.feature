@@ -1,4 +1,4 @@
-@serv
+@service
 @permissionsset
 Feature: When I go to service's permissions set
   As an authenticated user

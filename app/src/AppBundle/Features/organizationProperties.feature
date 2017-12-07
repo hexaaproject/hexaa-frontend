@@ -1,4 +1,4 @@
-@org
+@organization
 @properties
 Feature: When I go to organization's properties
   As an authenticaed user

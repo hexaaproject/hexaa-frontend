@@ -1,4 +1,4 @@
-@showadmin
+@admin
 @sendmails
 
 Feature: When I am an admin

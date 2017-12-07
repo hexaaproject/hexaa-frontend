@@ -1,4 +1,6 @@
+@admin
 @showadmin
+@show
 
 Feature: When I am an admin
 		I want to see admin features
