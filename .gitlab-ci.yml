@@ -9,10 +9,10 @@ services:
 - docker:dind
 
 stages:
-#- build  #default
-#- test   #default
+- build
+- test
 - release
-#- deploy #default
+- deploy
 
 before_script:
   - docker info
