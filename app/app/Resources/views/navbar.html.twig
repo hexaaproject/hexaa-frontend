@@ -79,7 +79,7 @@
             <a class="mainnamelink"
                href="{{ path('app_organization_show', {id: organization.id}) }}"
                title="{{ organization.name }}" data-toggle="tooltip" data-placement="bottom"
-            >{{ organization.name|truncate(12)  }}</a>
+            >{{ organization.name|truncate(8)  }}</a>
         </div>
         <div id="navbarmenupoints">
         {% for key,value in names %}
@@ -96,7 +96,7 @@
         <div class="mainname">
             <a class="mainnamelink" href="{{ path('app_service_show', {id: service.id}) }}"
                title="{{ service.name }}" data-toggle="tooltip" data-placement="bottom"
-            >{{ service.name|truncate(12) }}</a>
+            >{{ service.name|truncate(8 ) }}</a>
         </div>
         <div id="navbarmenupoints">
         {% for key,value in names %}
