@@ -1,14 +1,30 @@
 {% extends "AppBundle:Organization:layout.html.twig" %}
 
-{% block container %}
-    {% block stylesheets %}
-        {% stylesheets
-            'css/grid_panel.css'
-        filter='cssrewrite'
+{% block stylesheets %}
+    {% stylesheets
+    'css/grid_panel.css'
+    '@bootstrap_tagsinput_css'
+    filter='cssrewrite'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+    {% block javascripts %}
+        {{ parent() }}
+        {% javascripts
+        '@bootstrap_tagsinput_js'
         %}
-            <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script>
+            $(document).ready(function () {
+                $('').tagsinput();
+            });
+        </script>
     {% endblock %}
+
+{% block container %}
+
 
     <script>
         function showCreateForm(){

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c49d7eb276414c8acc38c852b3782a41",
+    "content-hash": "285ed6b3a217283136ce915cf7048bf0",
     "packages": [
         {
             "name": "botmonster/jquery-bootpag",
@@ -1621,6 +1621,30 @@
             "time": "2017-03-20T17:10:46+00:00"
         },
         {
+            "name": "huynguyen/bootstrap-tagsinput",
+            "version": "0.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/loi-chuanoi/bootstrap-tagsinput.git",
+                "reference": "d43c1479cd0d7885320c8fca3f838c2f4fa10d38"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/loi-chuanoi/bootstrap-tagsinput/zipball/d43c1479cd0d7885320c8fca3f838c2f4fa10d38",
+                "reference": "d43c1479cd0d7885320c8fca3f838c2f4fa10d38",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Huy Nguyễn",
+                    "email": "huynguyen1059@gmail.com"
+                }
+            ],
+            "time": "2015-01-01T07:00:57+00:00"
+        },
+        {
             "name": "incenteev/composer-parameter-handler",
             "version": "v2.1.2",
             "source": {
@@ -2142,6 +2166,17 @@
                 "psr-3"
             ],
             "time": "2016-10-10T12:19:37+00:00"
+        },
+        {
+            "name": "rabihkodeih/bootstrap-transfer",
+            "version": "1.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/rabihkodeih/bootstrap-transfer/archive/master.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
         },
         {
             "name": "sensio/distribution-bundle",

@@ -106,6 +106,13 @@ assetic:
         typeahead_js:
             inputs:
                 - "%kernel.root_dir%/../vendor/twitter/typeahead.js/dist/typeahead.jquery.js"
+        bootstrap_tagsinput_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/huynguyen/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"
+        bootstrap_tagsinput_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/huynguyen/bootstrap-tagsinput/dist/bootstrap-tagsinput.css"
+            filters: [cssrewrite]
 
 
 # Doctrine Configuration

@@ -54,7 +54,7 @@ class OrganizationRoleUpdateType extends AbstractType
                 array(
                     "label" => "Permissions",
                     "label_attr" => array('class' => 'formlabel'),
-                    'attr' => array(),
+                    'attr' => array('data-role' => 'tagsinput'),
                     'required' => true,
                     "choices" => $permissionChoices,
                     "multiple" => true,
@@ -66,7 +66,7 @@ class OrganizationRoleUpdateType extends AbstractType
                 array(
                     "label" => "Members",
                     "label_attr" => array('class' => 'formlabel'),
-                    'attr' => array(),
+                    'attr' => array('data-role' => 'tagsinput'),
                     'required' => true,
                     "choices" => $membersChoices,
                     "multiple" => true,
