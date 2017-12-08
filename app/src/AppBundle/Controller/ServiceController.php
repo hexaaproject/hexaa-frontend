@@ -1133,6 +1133,18 @@ class ServiceController extends Controller
 
         $entitlementpacks = $this->get('service')->getEntitlementPacks($id);
         $entitlements = $this->get('service')->getEntitlements($id);
+        $totalnumber = $entitlements['item_number'];
+        $totalpages = ceil($totalnumber / 25);
+        $offset = 25;
+        $pagesize = 25;
+        $verbose = "normal";
+        for ($i = 1; $i < $totalpages; $i++) {
+            $entitlementmore = $this->get('service')->getEntitlements($id, $verbose, $offset, $pagesize);
+            foreach ($entitlementmore['items'] as $oneentitlementmore) {
+                array_push($entitlements['items'], $oneentitlementmore);
+            }
+            $offset = $offset +25;
+        }
         $organizations = $this->get('organization')->getAll();
 
         $datasToForm = array();
@@ -1161,7 +1173,6 @@ class ServiceController extends Controller
             $entitlementsToForm[$entitlement['name']] = $entitlement['id'];
         }
         $datasToForm['entitlementsToForm'] = $entitlementsToForm;
-
 
         $connectNewOrgForm = $this->createForm(
             ConnectOrgType::class,
@@ -1376,7 +1387,20 @@ class ServiceController extends Controller
         $orglinks = $this->get('service')->getLinkRequests($id);
 
         $entitlementpacks = $this->get('service')->getEntitlementPacks($id);
+
         $entitlements = $this->get('service')->getEntitlements($id);
+        $totalnumber = $entitlements['item_number'];
+        $totalpages = ceil($totalnumber / 25);
+        $offset = 25;
+        $pagesize = 25;
+        $verbose = "normal";
+        for ($i = 1; $i < $totalpages; $i++) {
+            $entitlementmore = $this->get('service')->getEntitlements($id, $verbose, $offset, $pagesize);
+            foreach ($entitlementmore['items'] as $oneentitlementmore) {
+                array_push($entitlements['items'], $oneentitlementmore);
+            }
+            $offset = $offset +25;
+        }
         $organizations = $this->get('organization')->getAll();
 
         $datasToForm = array();
