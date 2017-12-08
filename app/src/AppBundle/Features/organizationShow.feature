@@ -101,7 +101,6 @@ Feature: When I go to a specific organization
     When I wait for "Roles" to appear
     And I follow "Roles"
     Then I should see "New role"
-    And I should see "Add role to user"
 
   Scenario: Navigate to organization connected services
     Given I am on "/"
