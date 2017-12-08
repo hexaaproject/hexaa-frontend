@@ -27,7 +27,7 @@ class OrganizationRoleUpdateType extends AbstractType
     {
         $membersChoices = array();
         foreach ($datas['data']['principals'] as $principal) {
-            $membersChoices[$principal['principal']['display_name'].' <'. $principal['principal']['fedid'].'>'] = $principal['principal']['fedid'];
+            $membersChoices[$principal['principal']['display_name'].' <'.$principal['principal']['fedid'].'>'] = $principal['principal']['fedid'];
         }
 
         $permissionChoices =  array(
