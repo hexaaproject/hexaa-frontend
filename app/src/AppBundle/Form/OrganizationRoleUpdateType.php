@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -24,6 +25,18 @@ class OrganizationRoleUpdateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
+        $membersChoices = array();
+        foreach ($datas['data']['principals'] as $principal) {
+            $membersChoices[$principal['principal']['display_name'] . ' <' . $principal['principal']['fedid'] . '>'] = $principal['principal']['fedid'];
+        }
+
+        $permissionChoices =  array(
+            "test" => "Test",
+            "test1" => "Test2",
+            "test2" => "Test3",
+        );
+
+
         $builder
             ->add(
                 'name',
@@ -37,22 +50,26 @@ class OrganizationRoleUpdateType extends AbstractType
             )
             ->add(
                 'permissions',
-                TextType::class,
+                ChoiceType::class,
                 array(
                     "label" => "Permissions",
                     "label_attr" => array('class' => 'formlabel'),
                     'attr' => array(),
                     'required' => true,
+                    "choices" => $permissionChoices,
+                    "multiple" => true,
                 )
             )
             ->add(
                 'members',
-                TextType::class,
+                ChoiceType::class,
                 array(
                     "label" => "Members",
                     "label_attr" => array('class' => 'formlabel'),
                     'attr' => array(),
                     'required' => true,
+                    "choices" => $membersChoices,
+                    "multiple" => true,
                 )
             );
     }
