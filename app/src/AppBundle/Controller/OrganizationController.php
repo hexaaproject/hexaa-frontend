@@ -243,6 +243,10 @@ class OrganizationController extends Controller
                 "class" => "btn-blue",
                 "text" => "Revoke",
             ),
+            "proposal" => array(
+                "class" => "btn-blue",
+                "text" => "Proposal",
+            ),
             "message" => array(
                 "class" => "btn-blue",
                 "text" => "Message",
@@ -257,7 +261,7 @@ class OrganizationController extends Controller
                 "text" => '<i class="material-icons">add</i> Invite',
             ),
         );
-        $membersButtons = array(
+       /* $membersButtons = array(
             "changerole" => array(
                 "class" => "btn-blue",
                 "text" => "Change roles",
@@ -279,7 +283,7 @@ class OrganizationController extends Controller
                 "last" => true,
                 "text" => '<i class="material-icons">add</i> Invite',
             ),
-        );
+        );*/
 
 
         $form = $this->createCreateInvitationForm($organization);
@@ -301,14 +305,14 @@ class OrganizationController extends Controller
             )
         );
 
-        $sendMemberEmailForm = $this->createForm(
+       /* $sendMemberEmailForm = $this->createForm(
             OrganizationUserMessageType::class,
             array(),
             array(
                 "action" => $this->generateUrl("app_organization_message", array("id" => $id)),
                 "method" => "POST",
             )
-        );
+        );*/
 
         $form->handleRequest($request);
 
@@ -340,12 +344,12 @@ class OrganizationController extends Controller
                     "organizations" => $this->get('organization')->cget(),
                     "services" => $this->get('service')->cget(),
                     "managers_buttons" => $managersButtons,
-                    "members_buttons" => $membersButtons,
+                    /*"members_buttons" => $membersButtons,*/
                     "invite_link" => $inviteLink,
                     "inviteForm" => $form->createView(),
                     "sendInEmailForm" => $sendInEmailForm->createView(),
                     "sendEmailForm" => $sendEmailForm->createView(),
-                    "sendMemberEmailForm" => $sendMemberEmailForm->createView(),
+                    /*"sendMemberEmailForm" => $sendMemberEmailForm->createView(),*/
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 )
             );
@@ -360,11 +364,11 @@ class OrganizationController extends Controller
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "managers_buttons" => $managersButtons,
-                "members_buttons" => $membersButtons,
+                /*"members_buttons" => $membersButtons,*/
                 "inviteForm" => $form->createView(),
                 "sendInEmailForm" => $sendInEmailForm->createView(),
                 "sendEmailForm" => $sendEmailForm->createView(),
-                "sendMemberEmailForm" => $sendMemberEmailForm->createView(),
+               /* "sendMemberEmailForm" => $sendMemberEmailForm->createView(),*/
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
@@ -569,6 +573,7 @@ class OrganizationController extends Controller
         $form1 = $this->createForm(OrganizationUserMessageType::class);
         $form2 = $this->createForm(OrganizationUserMessageManagerType::class);
         $pids = $request->get('userId');
+       // dump($pids);exit;
         $emails = array();
         foreach ($pids as $pid) {
             $principal = $this->get('principals')->getById($pid);

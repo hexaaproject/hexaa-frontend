@@ -45,6 +45,10 @@ buttons array:
 
         $('#{{ table_id }}_hexaaSearchField').on('keyup', function () {
             $('#{{ table_id }}').DataTable().search(this.value).draw();
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if ($('#members_table')) {
+                $('#members_table').DataTable().search(this.value).draw();
+            }
         });
 
         {# toggle disabled action buttons #}
@@ -55,33 +59,146 @@ buttons array:
 
                 if ($(this).prop('checked')) {
                     checked = true;
-                    $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
-                                                                                       val) {
-                        $(this).prop('disabled', false);
-                    });
-                    
+
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    if($('#members_table')) {
+                        var checkedrows = $('tbody input[type="checkbox"]:checked', $('#members_table'));
+                        if (checkedrows.length === 0) {
+
+                            $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
+                                                                                               val) {
+                                $(this).prop('disabled', false);
+                                $('#proposal').prop('disabled', 'disabled');
+                            });
+                        }
+                        else {
+                            $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
+                                                                                               val) {
+                                $(this).prop('disabled', false);
+                                $('#revoke').prop('disabled', 'disabled');
+                                $('#proposal').prop('disabled', 'disabled');
+                            });
+                        }
+                    }
+                    else {
+                        $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
+                                                                                           val) {
+                            $(this).prop('disabled', false);
+                            $('#proposal').prop('disabled', 'disabled');
+                        });
+                    }
     {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
                     $('#{{checkbox_all}}').prop('checked', false);
                 }
             });
 
+
             if (!checked) {
                 $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
                                                                                    val) {
-                    $(this).prop('disabled', 'disabled');
+                    if ($('#members_table')) {
+                        var checkedrows = $('tbody input[type="checkbox"]:checked', $('#managers_table'));
+                        var checkedrows2 = $('tbody input[type="checkbox"]:checked', $('#members_table'));
+                        if (checkedrows.length === 0 && checkedrows2.length != 0) {
+                            $('#revoke').prop('disabled', 'disabled');
+                            $('#proposal').prop('disabled', false);
+                        }
+                        if (checkedrows.length === 0 && checkedrows2.length === 0) {
+                            $(this).prop('disabled', 'disabled');
+                        }
+                    }
+                    else {
+                        $(this).prop('disabled', 'disabled');
+                    }
                 });
             }
         });
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if ($('#members_table')) {
+            $('#members_table').on('change', 'input[type=checkbox]', function () {
+                var checked = false;
+
+                    $('#members_table input[type=checkbox]').each(function (index, el) {
+
+                        if ($(this).prop('checked')) {
+                            checked = true;
+
+
+                            var checkedrows = $('tbody input[type="checkbox"]:checked', $('#managers_table'));
+                            if (checkedrows.length === 0) {
+
+                                $('.managers_table_actionButtons button.dependent').each(function (index,
+                                                                                                   val) {
+                                    $(this).prop('disabled', false);
+                                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                    $('#revoke').prop('disabled', 'disabled');
+                                });
+                            }
+                            else {
+
+                                $('.managers_table_actionButtons button.dependent').each(function (index,
+                                                                                                   val) {
+                                    $(this).prop('disabled', false);
+                                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                    $('#revoke').prop('disabled', 'disabled');
+                                    $('#proposal').prop('disabled', 'disabled');
+                                });
+                            }
+                            {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
+                            $('#{{ checkbox_all }}').prop('checked', false);
+                        }
+                    });
+
+                if (!checked) {
+                    $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
+                                                                                       val) {
+                        var checkedrows = $('tbody input[type="checkbox"]:checked', $('#members_table'));
+                        var checkedrows2 = $('tbody input[type="checkbox"]:checked', $('#managers_table'));
+                        if (checkedrows.length === 0 && checkedrows2.length != 0) {
+                            $('#revoke').prop('disabled', false);
+                        }
+                        $('#proposal').prop('disabled', 'disabled');
+
+                        if (checkedrows.length === 0 && checkedrows2.length === 0) {
+                            $(this).prop('disabled', 'disabled');
+                        }
+                    });
+                }
+            });
+        }
+
+
         $('#{{checkbox_all}}').click(function() {
             var checkedStatus = this.checked;
             $('#{{ table_id }} tbody tr').find('td:first :checkbox').each(function() {
                 $(this).prop('checked', checkedStatus);
                 
             });
+
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if ($('#members_table')) {
+                $('#members_table tbody tr').find('td:first :checkbox').each(function () {
+                    $(this).prop('checked', checkedStatus);
+                });
+            }
+
             if ($(this).prop('checked')) {
                 $('.{{ table_id }}_actionButtons button.dependent').each(function (index,
                                                                                        val) {
                     $(this).prop('disabled', false);
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    if ($('#members_table')) {
+                        var checkedrows = $('tbody input[type="checkbox"]:checked', $('#members_table'));
+                        console.log(checkedrows);
+                        if (checkedrows.length === 0) {
+                            $('#revoke').prop('disabled', false);
+                        }
+                        else {
+                            $('#revoke').prop('disabled', 'disabled');
+                        }
+                    }
+                    $('#proposal').prop('disabled', 'disabled');
                 });
             }
             if (!$(this).prop('checked')) {
@@ -133,7 +250,7 @@ buttons array:
 </div>
 
 <table class="datatable datatable-{{ variant }}" id="{{ table_id }}">
-    {% if form is not defined %}
+    {% if form is not defined or form == 'false' %}
         <caption>{{ caption }}</caption>
     {% endif %}
     <thead>
