@@ -81,12 +81,9 @@ Feature: When I go to a specific organization
     Then I wait for "Managers" to appear
     And I should see a table with 2 row
     And I should see a table with 4 rows
-    When I fill in "Search member" with "nolocal"
-    Then I should see a table with 2 rows
-    When I fill in "Search manager" with "Harry Potter"
-    Then I should see the following table portion
-      | No matching records found |
-    When I fill in "Search member" with ""
+    When I fill in "Search users" with "nolocal"
+    Then I should see a table with  2 rows
+    When I fill in "Search users" with ""
     And I check "Orgusers"
     And I press "proposal"
     Then I wait for "Propose members status" to appear
