@@ -28,6 +28,20 @@ class Role extends AbstractBaseResource
     }
 
     /**
+     * GET principals of Role
+     *
+     * @param string $id       ID of role
+     * @param string $verbose  One of minimal, normal or expanded
+     * @param int    $offset   paging: item to start from
+     * @param int    $pageSize paging: number of items to return
+     * @return array
+     */
+    public function getPrincipals(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    {
+        return $this->getCollection($this->pathName.'/'.$id.'/principals', $verbose, $offset, $pageSize);
+    }
+
+    /**
      * @param string $id
      * @param string $entitlementId
      * @return \Psr\Http\Message\ResponseInterface

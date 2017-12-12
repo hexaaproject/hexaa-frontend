@@ -26,16 +26,18 @@ class OrganizationRoleUpdateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
         $membersChoices = array();
-        foreach ($datas['data']['principals'] as $principal) {
-            $membersChoices[$principal['principal']['display_name'].' <'.$principal['principal']['fedid'].'>'] = $principal['principal']['fedid'];
+        if (array_key_exists('principals', $datas['data'])) {
+            foreach ($datas['data']['principals'] as $principal) {
+                $membersChoices[$principal['principal']['display_name'] . ' <' . $principal['principal']['fedid'] . '>'] = $principal['principal']['fedid'];
+            }
         }
 
-        $permissionChoices =  array(
-            "test" => "Test",
-            "test1" => "Test2",
-            "test2" => "Test3",
-        );
-
+        $entitlementChoices =  array();
+        if (array_key_exists('entitlements', $datas['data'])) {
+            foreach ($datas['data']['entitlements'] as $entitlement) {
+                $entitlementChoices[$entitlement]['name'] = $entitlement['id'];
+            }
+        }
 
         $builder
             ->add(
@@ -49,14 +51,14 @@ class OrganizationRoleUpdateType extends AbstractType
                 )
             )
             ->add(
-                'permissions',
+                'entitlements',
                 ChoiceType::class,
                 array(
                     "label" => "Permissions",
                     "label_attr" => array('class' => 'formlabel'),
                     'attr' => array('data-role' => 'tagsinput'),
                     'required' => true,
-                    "choices" => $permissionChoices,
+                    "choices" => $entitlementChoices,
                     "multiple" => true,
                 )
             )

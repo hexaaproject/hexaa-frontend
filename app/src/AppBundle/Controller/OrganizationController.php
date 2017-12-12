@@ -18,7 +18,6 @@ use GuzzleHttp\Exception\ClientException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
@@ -33,7 +32,7 @@ use WebDriver\Exception;
 /**
  * @Route("/organization")
  */
-class OrganizationController extends Controller
+class OrganizationController extends BaseController
 {
 
     /**
@@ -1074,6 +1073,9 @@ class OrganizationController extends Controller
         $rolesAccordion = array();
         foreach ($roles as $role) {
 
+            if (! array_key_exists('principals', $role)) {
+                $role['principals'] = array();
+            }
             $form =  $this->createForm(
                 OrganizationRoleUpdateType::class,
                 $role,
@@ -1081,17 +1083,14 @@ class OrganizationController extends Controller
                     "action" => $this->generateUrl("app_organization_roles", array("id" => $orgId)),
                 )
             );
-            $form->handleRequest($request);
-            if($form->isValid() and $form->isSubmitted()) {
-                $form['name']->addError(new FormError("macska"));
-            }
+
 
             $rolesAccordion[$role['id']]['title'] = $role['name'];
             $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
-            $rolesAccordion[$role['id']]['form'] = $form->createView();
 
             $members = array();
             $permissions = array();
+
 
             foreach ($role['principals'] as $principal) {
                 $members[] = $principal['principal']['display_name'];
@@ -1102,14 +1101,35 @@ class OrganizationController extends Controller
 
             $rolesAccordion[$role['id']]['contents'] = array(
                 array(
-                    'key' => 'Permissions',
+                    'key'    => 'Permissions',
                     'values' => $permissions,
                 ),
                 array(
-                    'key' => 'Members',
+                    'key'    => 'Members',
                     'values' => $members,
                 ),
             );
+
+
+            $form->handleRequest($request);
+            if($form->isValid() and $form->isSubmitted()) {
+                $data = $form->getData();
+
+                $roleResource = $this->get('role');
+
+                try {
+
+                    $role = $roleResource->get($data['id']);
+                    $this->amIManagerOfThis($role); //TODO
+                    $role["name"] = $data["name"];
+
+                    // persist role
+                    $roleResource->patch($role['id'], $role);
+                } catch (\AppBundle\Exception $exception) {
+                    $form->addError(new FormError($exception->getMessage()));
+                }
+            }
+            $rolesAccordion[$role['id']]['form'] = $form->createView();
         }
 
         return $rolesAccordion;

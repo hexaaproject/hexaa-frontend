@@ -163,12 +163,12 @@
                         {% if item.form is defined %}
                             {% set hasErrors = false %}
 
-                            {% if  item.form.vars.errors|length %}
+                            {% if item.form.vars.errors|length %}
                                 {% set hasErrors = true %}
                             {% endif %}
 
                             {% for field in item.form %}
-                                {% if  field.vars.errors|length %}
+                                {% if field.vars.errors|length %}
                                     {% set hasErrors = true %}
                                 {% endif %}
                             {% endfor %}
