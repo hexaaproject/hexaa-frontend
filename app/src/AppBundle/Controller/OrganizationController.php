@@ -706,7 +706,7 @@ class OrganizationController extends Controller
 
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
-        $rolesAccordion = $this->rolesToAccordion($roles, $id);
+        $rolesAccordion = $this->rolesToAccordion($roles, $id, $request);
 
         $form = $this->createForm(
             OrganizationRoleType::class,
@@ -877,25 +877,6 @@ class OrganizationController extends Controller
         $organizationResource->delete($id);
 
         return $this->redirectToRoute("homepage");
-    }
-
-    /**
-     * @Route("/{orgId}/role/{id}/update")
-     * @Template()
-     * @return Response
-     * @param int     $orgId   Organization id
-     * @param int     $id      Role Id
-     * @param Request $request Request
-     *
-     */
-    public function roleUpdateAction($orgId, $id, Request $request)
-    {
-        $organizationResource = $this->get('role');
-
-        //        $organizationResource->delete($id);
-                $this->get('session')->getFlashBag()->add('error', 'TODO');
-
-        return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
     }
 
     /**
@@ -1082,23 +1063,32 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @param $roles
+     * @param array   $roles
+     * @param int     $orgId
+     * @param Request $request
+     *
      * @return array
      */
-    private function rolesToAccordion($roles, $orgId)
+    private function rolesToAccordion($roles, $orgId, Request $request)
     {
         $rolesAccordion = array();
         foreach ($roles as $role) {
-            $rolesAccordion[$role['id']]['title'] = $role['name'];
-            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
-            $rolesAccordion[$role['id']]['form'] = $this->createForm(
+
+            $form =  $this->createForm(
                 OrganizationRoleUpdateType::class,
                 $role,
                 array(
-                    "action" => $this->generateUrl("app_organization_roleupdate", array("orgId" => $orgId, "id" => $role['id'])),
-                    )
-            )
-            ->createView();
+                    "action" => $this->generateUrl("app_organization_roles", array("id" => $orgId)),
+                )
+            );
+            $form->handleRequest($request);
+            if($form->isValid() and $form->isSubmitted()) {
+                $form['name']->addError(new FormError("macska"));
+            }
+
+            $rolesAccordion[$role['id']]['title'] = $role['name'];
+            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
+            $rolesAccordion[$role['id']]['form'] = $form->createView();
 
             $members = array();
             $permissions = array();

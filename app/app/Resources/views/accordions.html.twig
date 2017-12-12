@@ -12,7 +12,6 @@
 
 <script>
     function toggleAccordion(e) {
-
         var caretbutton = $(e).find('.caretbutton');
         if (caretbutton.text() == 'arrow_drop_down') {
             caretbutton.text('arrow_drop_up');
@@ -32,6 +31,7 @@
         }
         $(panel).addClass("active");
         $(panel).toggle();
+    }
 
         /*
         var deletebutton = $(panel).find(".accordion_delete_button");
@@ -39,7 +39,28 @@
         deletebutton.attr("id", "active_delete_button");
         */
 
+    function showForm(containerWithErrors) {
+        var panel = containerWithErrors.closest('.accordion-panel');
+        panel.find('.accordion-editform').removeClass('hidden');
+        panel.find('table.accordion').addClass('hidden');
+        panel.find('.accordion_edit_button').addClass('hidden');
+    }
+
+    function showErrors(containerWithErrors) {
+        if (containerWithErrors[0] !== undefined) {
+            showForm(containerWithErrors);
+            var accordionContainer = containerWithErrors.closest('.accordion-container');
+            var accordionTitle = accordionContainer.find('.accordion-title');
+            toggleAccordion(accordionTitle[0]); // dom element
+        }
+    }
+
+    $(document).ready(function () {
+
         {% if manager %}
+
+            showErrors($(".hasErrors"));
+
             $('.accordion_delete_button').on("click", function () {
                 var deleteBox = $('#deleteBox');
                 deleteBox.find('form').attr("action", $(this).data('targeturl'));
@@ -47,33 +68,23 @@
                 deleteBox.modal('show');
             });
 
-        {# **********  ediform ********* #}
-        $('.accordion_edit_button').on("click", function () {
-            var panel = $(this).closest('.accordion-panel');
-            panel.find('.accordion-editform').removeClass('hidden');
-            panel.find('table.accordion').addClass('hidden');
-            panel.find('.accordion_edit_button').addClass('hidden');
-        });
-        $('.accordion_edit_button').on("click", function () {
-            var panel = $(this).closest('.accordion-panel');
-            panel.find('.accordion-editform').removeClass('hidden');
-            panel.find('table.accordion').addClass('hidden');
-            panel.find('.accordion_edit_button').addClass('hidden');
-        });
-        $('.accordion_edit_cancel_button').on("click", function () {
-            var panel = $(this).closest('.accordion-panel');
-            panel.find('.accordion-editform').addClass('hidden');
-            panel.find('table.accordion').removeClass('hidden');
-            panel.find('.accordion_edit_button').removeClass('hidden');
-        });
-        $('.accordion_edit_submit_button').on("click", function () {
-            var panel = $(this).closest('.accordion-panel');
-            panel.find('form').submit();
-        });
+            {# **********  ediform ********* #}
+            $('.accordion_edit_button').on("click", function () {
+                showForm($(this));
+            });
 
-
+            $('.accordion_edit_cancel_button').on("click", function () {
+                var panel = $(this).closest('.accordion-panel');
+                panel.find('.accordion-editform').addClass('hidden');
+                panel.find('table.accordion').removeClass('hidden');
+                panel.find('.accordion_edit_button').removeClass('hidden');
+            });
+            $('.accordion_edit_submit_button').on("click", function () {
+                var panel = $(this).closest('.accordion-panel');
+                panel.find('form').submit();
+            });
         {% endif %}
-    }
+    })
 
 </script>
 
@@ -82,7 +93,7 @@
     <div>
         {% for itemId, item in items %}
          <!--   <div {/% if classToFilter is defined %} class="instafilta-target"{/% endif %}> -->
-
+            <div class="accordion-container">
                 <div onclick="toggleAccordion(this);"
                      class="accordion-title {% if formtitle is defined %}accordion-title-style-{{ variant }}-{{ formtitle }}{% else %}accordion-title-style-{{ variant }}{% endif %} {% if classToFilter is defined %} instafilta-target {% endif %}"
                      data-name="{{ item.title }}">
@@ -150,7 +161,19 @@
                         </div>
                         {% endif %}
                         {% if item.form is defined %}
-                            <div class="hidden accordion-editform">
+                            {% set hasErrors = false %}
+
+                            {% if  item.form.vars.errors|length %}
+                                {% set hasErrors = true %}
+                            {% endif %}
+
+                            {% for field in item.form %}
+                                {% if  field.vars.errors|length %}
+                                    {% set hasErrors = true %}
+                                {% endif %}
+                            {% endfor %}
+
+                            <div class="{{ hasErrors?"hasErrors":"" }} hidden accordion-editform">
                                 <div class="pull-right">
                                     <i class="material-icons accordion-button accordion_edit_cancel_button">clear</i>
                                     <i class="material-icons accordion-button accordion_edit_submit_button">done</i>
@@ -186,6 +209,7 @@
                         </table>
                     {% endif %}
                 </div>
+            </div>
         {% endfor %}
     </div>
 </div>
