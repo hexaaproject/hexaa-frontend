@@ -1072,7 +1072,6 @@ class OrganizationController extends BaseController
     {
         $rolesAccordion = array();
         foreach ($roles as $role) {
-
             if (! array_key_exists('principals', $role)) {
                 $role['principals'] = array();
             }
@@ -1112,13 +1111,10 @@ class OrganizationController extends BaseController
 
 
             $form->handleRequest($request);
-            if($form->isValid() and $form->isSubmitted()) {
+            if ($form->isValid() and $form->isSubmitted()) {
                 $data = $form->getData();
-
                 $roleResource = $this->get('role');
-
                 try {
-
                     $role = $roleResource->get($data['id']);
                     $this->amIManagerOfThis($role); //TODO
                     $role["name"] = $data["name"];

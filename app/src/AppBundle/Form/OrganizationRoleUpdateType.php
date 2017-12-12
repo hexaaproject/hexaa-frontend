@@ -28,7 +28,7 @@ class OrganizationRoleUpdateType extends AbstractType
         $membersChoices = array();
         if (array_key_exists('principals', $datas['data'])) {
             foreach ($datas['data']['principals'] as $principal) {
-                $membersChoices[$principal['principal']['display_name'] . ' <' . $principal['principal']['fedid'] . '>'] = $principal['principal']['fedid'];
+                $membersChoices[$principal['principal']['display_name'].' <'.$principal['principal']['fedid'].'>'] = $principal['principal']['fedid'];
             }
         }
 

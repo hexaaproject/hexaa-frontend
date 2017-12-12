@@ -8,10 +8,14 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * Class BaseController
+ *
+ * @package AppBundle\Controller
+ */
 class BaseController extends Controller
 {
     /**
@@ -22,10 +26,12 @@ class BaseController extends Controller
      *
      *  TODO
      */
-    protected function amIManagerOfThis($entity) {
+    protected function amIManagerOfThis($entity)
+    {
         if (!$entity) {
             throw new Exception("TODO");
         }
+
         return true;
     }
 }
