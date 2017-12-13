@@ -41,12 +41,14 @@
 
     <div class="row">
         <div class="col-sm-offset-2 col-sm-11" style="padding-top: 12px;">
-            {{ include('::accordions.html.twig', {
-                heading: "Roles",
-                variant: "dark",
-                items: roles
-                })
-            }}
+            <div class="accordion-container-notform accordion-style-dark">
+                {{ include('::accordions.html.twig', {
+                    heading: "Roles",
+                    variant: "dark",
+                    items: roles
+                    })
+                }}
+            </div>
         </div>
     </div>
 

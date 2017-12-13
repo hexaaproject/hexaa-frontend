@@ -361,3 +361,9 @@ div.hr {
 .sorting{
     background : none;
 }
+
+/* bootstrap overrides */
+.alert {
+    margin-top: 20px;
+    border-radius: 0px;
+}

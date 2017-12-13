@@ -1,8 +1,9 @@
 <?php
 namespace AppBundle\Model;
 
-use Behat\Mink\Exception\Exception;
+use AppBundle\Exception\BackendException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -256,16 +257,22 @@ abstract class AbstractBaseResource
      * @param string $path
      * @param array $data
      * @return ResponseInterface
+     *
+     * @throws BackendException
      */
     protected function patchCall(string $path, array $data): ResponseInterface
     {
-        $response = $this->client->patch(
-            $path,
-            [
-                'json' => $data,
-                'headers' => $this->getHeaders(),
-            ]
-        );
+        try {
+            $response = $this->client->patch(
+                $path,
+                [
+                    'json'    => $data,
+                    'headers' => $this->getHeaders(),
+                ]
+            );
+        } catch (RequestException $exception) {
+            throw new BackendException($exception->getMessage());
+        }
 
         return $response;
     }

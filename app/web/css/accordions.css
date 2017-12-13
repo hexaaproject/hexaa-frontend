@@ -94,6 +94,10 @@ div.accordion-title-style-light-notform.active, div.accordion-title-light-notfor
     color: white;
 }
 
+.accordion-panel {
+    padding-top: 8px;
+}
+
 div.accordion-panel-notform, div.accordion-panel-form {
     margin-top: 0px;
     margin-bottom: 2px;
@@ -195,4 +199,15 @@ td.accordion-hr {
 
 .accordion-editform > form {
     padding: 12px;
+}
+
+
+/* tagsinput */
+
+.bootstrap-tagsinput {
+    border-radius: none;
+}
+
+.label {
+    border-radius: none;
 }

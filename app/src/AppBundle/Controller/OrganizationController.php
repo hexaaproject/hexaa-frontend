@@ -18,7 +18,6 @@ use GuzzleHttp\Exception\ClientException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
@@ -33,7 +32,7 @@ use WebDriver\Exception;
 /**
  * @Route("/organization")
  */
-class OrganizationController extends Controller
+class OrganizationController extends BaseController
 {
 
     /**
@@ -201,7 +200,7 @@ class OrganizationController extends Controller
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
 
-                "roles" => $this->rolesToAccordion($roles, $id),
+                "roles" => $this->rolesToAccordion($roles, $id, $request),
 
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -706,7 +705,7 @@ class OrganizationController extends Controller
 
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
-        $rolesAccordion = $this->rolesToAccordion($roles, $id);
+        $rolesAccordion = $this->rolesToAccordion($roles, $id, $request);
 
         $form = $this->createForm(
             OrganizationRoleType::class,
@@ -877,25 +876,6 @@ class OrganizationController extends Controller
         $organizationResource->delete($id);
 
         return $this->redirectToRoute("homepage");
-    }
-
-    /**
-     * @Route("/{orgId}/role/{id}/update")
-     * @Template()
-     * @return Response
-     * @param int     $orgId   Organization id
-     * @param int     $id      Role Id
-     * @param Request $request Request
-     *
-     */
-    public function roleUpdateAction($orgId, $id, Request $request)
-    {
-        $organizationResource = $this->get('role');
-
-        //        $organizationResource->delete($id);
-                $this->get('session')->getFlashBag()->add('error', 'TODO');
-
-        return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
     }
 
     /**
@@ -1082,26 +1062,34 @@ class OrganizationController extends Controller
     }
 
     /**
-     * @param $roles
+     * @param array   $roles
+     * @param int     $orgId
+     * @param Request $request
+     *
      * @return array
      */
-    private function rolesToAccordion($roles, $orgId)
+    private function rolesToAccordion($roles, $orgId, Request $request)
     {
         $rolesAccordion = array();
         foreach ($roles as $role) {
-            $rolesAccordion[$role['id']]['title'] = $role['name'];
-            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
-            $rolesAccordion[$role['id']]['form'] = $this->createForm(
+            if (! array_key_exists('principals', $role)) {
+                $role['principals'] = array();
+            }
+            $form =  $this->createForm(
                 OrganizationRoleUpdateType::class,
                 $role,
                 array(
-                    "action" => $this->generateUrl("app_organization_roleupdate", array("orgId" => $orgId, "id" => $role['id'])),
-                    )
-            )
-            ->createView();
+                    "action" => $this->generateUrl("app_organization_roles", array("id" => $orgId)),
+                )
+            );
+
+
+            $rolesAccordion[$role['id']]['title'] = $role['name'];
+            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
 
             $members = array();
             $permissions = array();
+
 
             foreach ($role['principals'] as $principal) {
                 $members[] = $principal['principal']['display_name'];
@@ -1112,14 +1100,32 @@ class OrganizationController extends Controller
 
             $rolesAccordion[$role['id']]['contents'] = array(
                 array(
-                    'key' => 'Permissions',
+                    'key'    => 'Permissions',
                     'values' => $permissions,
                 ),
                 array(
-                    'key' => 'Members',
+                    'key'    => 'Members',
                     'values' => $members,
                 ),
             );
+
+
+            $form->handleRequest($request);
+            if ($form->isValid() and $form->isSubmitted()) {
+                $data = $form->getData();
+                $roleResource = $this->get('role');
+                try {
+                    $role = $roleResource->get($data['id']);
+                    $this->amIManagerOfThis($role); //TODO
+                    $role["name"] = $data["name"];
+
+                    // persist role
+                    $roleResource->patch($role['id'], $role);
+                } catch (\AppBundle\Exception $exception) {
+                    $form->addError(new FormError($exception->getMessage()));
+                }
+            }
+            $rolesAccordion[$role['id']]['form'] = $form->createView();
         }
 
         return $rolesAccordion;
