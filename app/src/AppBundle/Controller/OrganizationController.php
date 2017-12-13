@@ -200,7 +200,7 @@ class OrganizationController extends BaseController
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
 
-                "roles" => $this->rolesToAccordion($roles, $id),
+                "roles" => $this->rolesToAccordion($roles, $id, $request),
 
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
