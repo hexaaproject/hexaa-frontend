@@ -37,7 +37,16 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->render('AppBundle:Default:index.html.twig', array('organizations' => $organizations, 'services' => $services, 'orgsubmenubox' => $this->getOrgSubmenuPoints(), 'servsubmenubox' => $this->getServSubmenuPoints(), 'admin' => $admin, 'adminsubmenubox' => $this->getAdminSubmenuPoints()));
+        return $this->render('AppBundle:Default:index.html.twig',
+            array(
+                'organizations' => $organizations,
+                'services' => $services,
+                'orgsubmenubox' => $this->getOrgSubmenuPoints(),
+                'servsubmenubox' => $this->getServSubmenuPoints(),
+                'admin' => $admin,
+                'adminsubmenubox' => $this->getAdminSubmenuPoints()
+            )
+        );
     }
 
     /**
