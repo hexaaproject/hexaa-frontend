@@ -72,24 +72,49 @@
     </div>
 </div>
 
+{% if entity is defined and names %}
+    <nav class="navbar navbar-subnavbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand"
+                       href="{{ entity_show_path }}"
+                       title="{{ entity.name }}" data-toggle="tooltip" data-placement="bottom"
+                    >{{ entity.name }}
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    {% for key,value in names %}
+                        {% set route = app.request.get('_route') %}
+                        <li>
+                        <a class="navbarlink {{  route == key ? "navbarlinkactive navbarlinkactive-" ~ theme :"" }}"
+                           href="{{ path(key, {id: entity.id}) }}">{{ value }}</a>
+                        </li>
+                    {% endfor %}
 
-{% if organization is defined and names %}
-    <div class="desktopcontainer">
-        <div class="mainname">
-            <a class="mainnamelink"
-               href="{{ path('app_organization_show', {id: organization.id}) }}"
-               title="{{ organization.name }}" data-toggle="tooltip" data-placement="bottom"
-            >{{ organization.name|truncate(8)  }}</a>
+                </ul>
+            </div>
         </div>
-        <div id="navbarmenupoints">
-        {% for key,value in names %}
-            {% set route = app.request.get('_route') %}
-            <a class="navbarlink{% if route == key %} navbarlinkactive navbarlinkactive-organization{% endif %}"
-               href="{{ path(key, {id: organization.id}) }}">{{ value }}</a>
-        {% endfor %}
-        </div>
-    </div>
+    </nav>
 {% endif %}
+
+{#{% if organization is defined and names %}#}
+    {#<div class="desktopcontainer">#}
+        {#<div class="mainname">#}
+            {#<a class="mainnamelink"#}
+               {#href="{{ path('app_organization_show', {id: organization.id}) }}"#}
+               {#title="{{ organization.name }}" data-toggle="tooltip" data-placement="bottom"#}
+            {#>{{ organization.name|truncate(8)  }}</a>#}
+        {#</div>#}
+        {#<div id="navbarmenupoints">#}
+        {#{% for key,value in names %}#}
+            {#{% set route = app.request.get('_route') %}#}
+            {#<a class="navbarlink{% if route == key %} navbarlinkactive navbarlinkactive-organization{% endif %}"#}
+               {#href="{{ path(key, {id: organization.id}) }}">{{ value }}</a>#}
+        {#{% endfor %}#}
+        {#</div>#}
+    {#</div>#}
+{#{% endif %}#}
 
 {% if service is defined and names %}
     <div class="desktopcontainer">

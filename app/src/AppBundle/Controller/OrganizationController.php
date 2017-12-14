@@ -119,7 +119,9 @@ class OrganizationController extends BaseController
         return $this->render(
             'AppBundle:Organization:show.html.twig',
             array(
-                'organization' => $organization,
+                'entity_show_path' => $this->getEntityShowPath($organization),
+                'theme' => 'blue',
+                'entity' => $organization,
                 'organizations' => $this->get('organization')->cget(),
                 'services' => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
@@ -195,7 +197,9 @@ class OrganizationController extends BaseController
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
-                "organization" => $organization,
+                'entity_show_path' => $this->getEntityShowPath($organization),
+                'theme' => 'blue',
+                "entity" => $organization,
                 "propertiesbox" => $propertiesbox,
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
@@ -333,9 +337,13 @@ class OrganizationController extends BaseController
             return $this->render(
                 'AppBundle:Organization:users.html.twig',
                 array(
+                    'entity_show_path' => $this->getEntityShowPath($organization),
+                    'theme' => 'blue',
+                    'entity' => $organization,
+
                     "managers" => $managers,
                     "members" => $members,
-                    "organization" => $organization,
+
                     "organizations" => $this->get('organization')->cget(),
                     "services" => $this->get('service')->cget(),
                     "managers_buttons" => $managersButtons,
@@ -353,9 +361,13 @@ class OrganizationController extends BaseController
         return $this->render(
             'AppBundle:Organization:users.html.twig',
             array(
+                'entity_show_path' => $this->getEntityShowPath($organization),
+                'theme' => 'blue',
+                'entity' => $organization,
+
                 "managers" => $managers,
                 "members" => $members,
-                "organization" => $organization,
+
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "managers_buttons" => $managersButtons,
@@ -736,7 +748,10 @@ class OrganizationController extends BaseController
         return $this->render(
             'AppBundle:Organization:roles.html.twig',
             array(
-                "organization" => $organization,
+                'entity_show_path' => $this->getEntityShowPath($organization),
+                'theme' => 'blue',
+                'entity' => $organization,
+
                 "roles" => $roles,
                 "roles_accordion" => $rolesAccordion,
                 "action" => $action,
@@ -847,10 +862,15 @@ class OrganizationController extends BaseController
             $entitlementsAccordion = $this->entitlementsToAccordion($services, $entitlements);
         }
 
+        $organization = $this->get('organization')->get($id);
+
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
             array(
-                "organization" => $this->getOrganization($id),
+                'entity_show_path' => $this->getEntityShowPath($organization),
+                'theme' => 'blue',
+                'entity' => $organization,
+
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "services_accordion" => $servicesAccordion,
@@ -910,7 +930,9 @@ class OrganizationController extends BaseController
         $organization = $organizationResource->get($id);
 
         return array(
-            "organization" => $organization,
+            'entity_show_path' => $this->getEntityShowPath($organization),
+            'theme' => 'blue',
+            'entity' => $organization,
 
             "organizations" => $this->get('organization')->cget(),
             "services" => $this->get('service')->cget(),

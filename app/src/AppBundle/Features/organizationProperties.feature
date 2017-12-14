@@ -23,7 +23,7 @@ Feature: When I go to organization's properties
     When I follow "Properties"
     And I press "create"
     And I fill in "Home page" with "www.example.com"
-    And I press "cancel"
+    And I press "clear"
     Then I should not see "www.example.com"
 
   Scenario: Submit the form
