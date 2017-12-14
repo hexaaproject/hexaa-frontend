@@ -120,7 +120,6 @@ class OrganizationController extends BaseController
             'AppBundle:Organization:show.html.twig',
             array(
                 'entity_show_path' => $this->getEntityShowPath($organization),
-                'theme' => 'blue',
                 'entity' => $organization,
                 'organizations' => $this->get('organization')->cget(),
                 'services' => $this->get('service')->cget(),
@@ -198,7 +197,6 @@ class OrganizationController extends BaseController
             'AppBundle:Organization:properties.html.twig',
             array(
                 'entity_show_path' => $this->getEntityShowPath($organization),
-                'theme' => 'blue',
                 "entity" => $organization,
                 "propertiesbox" => $propertiesbox,
                 "propertiesform" => $formProperties->createView(),
@@ -338,7 +336,6 @@ class OrganizationController extends BaseController
                 'AppBundle:Organization:users.html.twig',
                 array(
                     'entity_show_path' => $this->getEntityShowPath($organization),
-                    'theme' => 'blue',
                     'entity' => $organization,
 
                     "managers" => $managers,
@@ -362,7 +359,6 @@ class OrganizationController extends BaseController
             'AppBundle:Organization:users.html.twig',
             array(
                 'entity_show_path' => $this->getEntityShowPath($organization),
-                'theme' => 'blue',
                 'entity' => $organization,
 
                 "managers" => $managers,
@@ -749,7 +745,6 @@ class OrganizationController extends BaseController
             'AppBundle:Organization:roles.html.twig',
             array(
                 'entity_show_path' => $this->getEntityShowPath($organization),
-                'theme' => 'blue',
                 'entity' => $organization,
 
                 "roles" => $roles,
@@ -868,7 +863,6 @@ class OrganizationController extends BaseController
             'AppBundle:Organization:connectedservices.html.twig',
             array(
                 'entity_show_path' => $this->getEntityShowPath($organization),
-                'theme' => 'blue',
                 'entity' => $organization,
 
                 "organizations" => $this->get('organization')->cget(),
@@ -931,7 +925,6 @@ class OrganizationController extends BaseController
 
         return array(
             'entity_show_path' => $this->getEntityShowPath($organization),
-            'theme' => 'blue',
             'entity' => $organization,
 
             "organizations" => $this->get('organization')->cget(),
