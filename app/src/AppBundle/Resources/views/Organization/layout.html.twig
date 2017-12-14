@@ -10,13 +10,6 @@
         <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
-    <script>
-        var serv = $("#serv");
-        serv.css('background-color', "#333333");
-        var org = $("#org");
-        org.css('background-color', "#61AFC5");
-    </script>
-
     {% set names = {
             app_organization_properties: "Properties",
             app_organization_users: "Users",
@@ -24,11 +17,9 @@
             app_organization_connectedservices: "Connected services"
             }
      %}
-    {% if organization is defined %}
-        {{ include('::navbar.html.twig', { organization: organization, names: names}) }}
-    {% else %}
-        {{ include('::navbar.html.twig') }}
-    {% endif %}
+
+    {{ include('::navbar.html.twig') }}
+
     <div class="entity-container">
         <div class="container">
             {% for flashMessage in app.session.flashbag.get('error') %}

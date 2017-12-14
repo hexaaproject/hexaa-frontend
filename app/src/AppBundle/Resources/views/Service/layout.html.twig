@@ -17,7 +17,7 @@
     </script>
 
     {% if service is defined %}
-        {{ include('::navbar.html.twig', {service: service, names:servsubmenubox}) }}
+        {{ include('::navbar.html.twig', {entity: service, names: servsubmenubox, entity_show_path: path('app_service_show', {id: service.id})}) }}
     {% else %}
         {{ include('::navbar.html.twig') }}
     {% endif %}

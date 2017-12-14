@@ -34,4 +34,13 @@ class BaseController extends Controller
 
         return true;
     }
+
+    protected function getEntityShowPath($entity)
+    {
+        if ($this instanceof OrganizationController) {
+            return $this->generateUrl("app_organization_show", array("id" => $entity["id"]));
+        }
+
+        return "#";
+    }
 }
