@@ -6,6 +6,15 @@ form[name="admin_attribute_spec"]{
     padding-right: 10px;
 }
 
+.loader span {
+    color: #61AFC5;
+    font-size: 35px;
+    animation-name: blink;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
 form[name="admin_attribute_spec"] .form-group{
     padding-right: 60px;
 }
