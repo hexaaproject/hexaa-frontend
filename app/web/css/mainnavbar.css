@@ -59,3 +59,7 @@
     font-size: large;
 }
 
+.navbar-default .navbar-nav > #admin.active > a, .navbar-default .navbar-nav > #admin.active > a:hover, .navbar-default .navbar-nav > #admin.active > a:focus {
+    background-color: #EA7E73;
+    color: #fff;
+}

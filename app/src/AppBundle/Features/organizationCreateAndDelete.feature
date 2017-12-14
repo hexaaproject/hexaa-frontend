@@ -45,7 +45,7 @@ Feature: When I go to create organization
   Scenario: Delete organization
     Given I am on "/"
     Then I follow "Teszt szervezet"
-    And I wait for "Teszt sz..." to appear
+    And I wait for "Teszt szervezet" to appear
     When I click the "#deleteDiv" element
     Then I wait for "Are you sure?" to appear
     When I press "Delete organization"

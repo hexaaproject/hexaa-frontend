@@ -37,7 +37,7 @@ class BaseController extends Controller
 
     protected function getEntityShowPath($entity)
     {
-        if ($this instanceof OrganizationController ) {
+        if ($this instanceof OrganizationController) {
             return $this->generateUrl("app_organization_show", array("id" => $entity["id"]));
         }
 

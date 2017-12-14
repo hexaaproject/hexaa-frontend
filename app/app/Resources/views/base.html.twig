@@ -77,7 +77,7 @@
                 </li>
             {% endif %}
             {% if admin is defined and (admin == "true" or admin == "1") %}
-                <li id="admin"><a id="fullfill" href="{{ path("app_admin_attributes", { admin: admin }) }}">Admin</a></li>
+                <li id="admin" {% if app.request.get('_route') starts with "app_admin" %} class="active" {% endif %}><a id="fullfill" href="{{ path("app_admin_attributes", { admin: admin }) }}">Admin</a></li>
             {% endif %}
         </ul>
         <ul class="nav navbar-nav navbar-right">

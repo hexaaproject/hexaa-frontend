@@ -141,8 +141,15 @@
 /** subnavbar **/
 
 .navbar-subnavbar {
-    background-color: #61AFC5;
     font-size: medium;
+}
+
+.navbar-subnavbar-blue {
+    background-color: #61AFC5;
+}
+
+.navbar-subnavbar-red {
+    background-color: #EA7E73;
 }
 
 .navbar-subnavbar .navbar-brand {
@@ -161,16 +168,23 @@
     padding-bottom: 10px;
 }
 
-.navbar-subnavbar .navbarlinkactive-blue {
+.navbar-subnavbar-blue .navbarlinkactive {
     border-bottom-color: #2e818e;
 }
 
-.navbar-subnavbar .navbarlinkactive-red {
+.navbar-subnavbar-red .navbarlinkactive {
     border-bottom-color: #A94442;
 }
 
 .navbar-subnavbar .navbarlink:hover {
     text-decoration: none;
     color: white;
+}
+
+.navbar-subnavbar-blue .navbarlink:hover {
     background-color: #2e818e;
+}
+
+.navbar-subnavbar-red .navbarlink:hover {
+    background-color: #A94442;
 }

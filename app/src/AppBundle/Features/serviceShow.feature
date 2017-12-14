@@ -12,8 +12,8 @@ Feature: When I go to a specific service
 
 
 	Scenario: Navigate to service show page
-		And I wait for "testServ..." to appear
-	    Then I should see "testServ..."
+		And I wait for "testService1" to appear
+	    Then I should see "testServervice1"
 	     And I should see "Properties"
 	     And I should see "Managers"
 	     And I should see "Attributes"

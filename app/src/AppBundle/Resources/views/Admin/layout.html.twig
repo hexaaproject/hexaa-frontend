@@ -14,12 +14,7 @@
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
-    <script>
-        var admin = $("#admin");
-        admin.css('background-color', "#EA7E73");
-    </script>
-
-    {{ include('::navbar.html.twig', {admin: admin, names:adminsubmenubox}) }}
+    {{ include('::navbar.html.twig', {admin: admin, names: adminsubmenubox, theme: "red"}) }}
     <div class="entity-container">
         <div class="container">
             {% block container %}{% endblock %}

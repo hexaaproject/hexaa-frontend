@@ -76,23 +76,34 @@
     </div>
 </div>
 
-{% if entity is defined and names %}
-    <nav class="navbar navbar-subnavbar">
+{% if names is defined %}
+    <nav class="navbar navbar-subnavbar navbar-subnavbar-{{ theme }}">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand"
-                       href="{{ entity_show_path }}"
-                       title="{{ entity.name }}" data-toggle="tooltip" data-placement="bottom"
-                    >{{ entity.name }}
-                </a>
+                {% if entity is defined %}
+                    <a class="navbar-brand"
+                           href="{{ entity_show_path }}"
+                           title="{{ entity.name }}"
+                        >{{ entity.name }}
+                    </a>
+                {% else %}
+                    <a class="navbar-brand" href="#"></a>
+                {% endif %}
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     {% for key,value in names %}
                         {% set route = app.request.get('_route') %}
                         <li>
-                        <a class="navbarlink {{  route == key ? "navbarlinkactive navbarlinkactive-" ~ theme :"" }}"
-                           href="{{ path(key, {id: entity.id}) }}">{{ value }}</a>
+                        <a class="navbarlink {{  route == key ? "navbarlinkactive":"" }}"
+                            {% if entity is defined %}
+                                href="{{ path(key, {id: entity.id}) }}"
+                            {% elseif admin is defined %}
+                                href="{{ path(key, {admin: admin}) }}"
+                            {% endif %}
+                        >
+                            {{ value }}
+                        </a>
                         </li>
                     {% endfor %}
 
@@ -100,20 +111,6 @@
             </div>
         </div>
     </nav>
-{% endif %}
-
-{% if submenu is defined and names %}
-    <div class="desktopcontainer" style="background-color: #EA7E73">
-        <div class="mainname"> &nbsp;
-        </div>
-        <div id="navbarmenupoints">
-        {% for key,value in names %}
-            {% set route = app.request.get('_route') %}
-                <a class="navbarlink{% if route == key %} navbarlinkactive navbarlinkactive-admin{% endif %}"
-                   href="{{ path(key, {admin: admin}) }}">{{ value }}</a>
-        {% endfor %}
-        </div>
-    </div>
 {% endif %}
 
 <script type="text/javascript">
