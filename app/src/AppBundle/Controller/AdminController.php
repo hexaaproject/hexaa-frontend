@@ -175,13 +175,17 @@ class AdminController extends Controller
         $pagesize = 25;
         $verbose = "normal";
         $entitysperpage = array();
+        $allentity = array();
         array_push($entitysperpage, $entityids['items']);
         for ($i = 1; $i < $totalpages; $i++) {
             $entityperpage = $this->get('entity_id')->cget($verbose, $offset, $pagesize);
             array_push($entitysperpage, $entityperpage['items']);
             $offset = $offset +25;
         }
-
+        $allentitypart = $this->get('entity_id')->cget($verbose, 0, 100000);
+     // array_push($allentity, $allentitypart);
+     //   dump($allentity);
+      // dump($this->allEntityIDsToAccordion($allentitypart));exit;
         return $this->render(
             'AppBundle:Admin:entity.html.twig',
             array(
@@ -191,6 +195,8 @@ class AdminController extends Controller
                 "submenu" => "true",
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
                 'entityids_accordion' => $this->entityIDsToAccordion($entitysperpage),
+                'all_entityid' => $this->allEntityIDsToAccordion($allentitypart),
+                'total_number' => $totalnumber,
                 'total_pages' => $totalpages,
             )
         );
@@ -482,5 +488,33 @@ class AdminController extends Controller
         $smallarray = array_chunk($entityIDsAccordion, $size);
 
         return $smallarray;
+    }
+
+    /**
+     * @param $entityIDs
+     * @return array
+    */
+    private function allEntityIDsToAccordion($entityIDs)
+    {
+       // dump($entityIDs);exit;
+        $entityIDsAccordion = array();
+        $keys = array_keys($entityIDs['items']);
+        foreach ($keys as $key) {
+            $entityIDsAccordion[$key]['title'] = $key;
+
+            $entityarray = $entityIDs['items'][$key];
+            $type = array();
+            foreach ($entityarray as $entityfeature) {
+                array_push($type, ($entityfeature['type'].' ('.$entityfeature['email'].')'));
+            }
+            $entityIDsAccordion[$key]['contents'] = array(
+                array(
+                    'key' => 'Type',
+                    'values' => $type,
+                ),
+            );
+        }
+
+        return $entityIDsAccordion;
     }
 }

@@ -12,15 +12,78 @@
     {% javascripts
     '@instafilta_js'
     '@jquery_bootpag_js'
+    'js/loader.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
+    <style>
+/*
+       @keyframes blink {
+           0% {
+               opacity: .2;
+           }
+           20% {
+               opacity: 1;
+           }
+           100% {
+               opacity: .2;
+           }
+       }
+
+       .loader span {
+           color: #61AFC5;
+           font-size: 30px;
+           animation-name: blink;
+           animation-duration: 1.5s;
+           animation-iteration-count: infinite;
+           animation-fill-mode: both;
+       }
+
+       .loader span:nth-child(2) {
+           animation-delay: .4s;
+           height: 10px;
+       }
+
+       .loader span:nth-child(3) {
+           animation-delay: .8s;
+           height: 10px;
+       }
+*/
+    </style>
 
     <script>
         $(document).ready(function () {
-           $('#hexaaSearchFieldEntityIDs').instaFilta();
-            $('#hexaaSearchFieldEntityIDs').keypress(function(){
+            $('#hexaaSearchFieldEntityIDs').instaFilta({
+                onFilterComplete: function(matchedItems) {
+                    var allnum = {{ total_number|json_encode }}
+                    if (allnum != matchedItems.length) {
+                        $('#1').addClass('hidden');
+                        {% if total_pages != 1 %}
+                            {% for i in (1..total_pages) %}
+                                $("#" +{{ i }}).addClass("hidden");
+                            {% endfor %}
+                        {% endif %}
+
+                        $('#toSearch').removeClass('hidden');
+                        $('.show_paginator').addClass('hidden');
+                        loader('stop');
+                    }
+                    if (allnum == matchedItems.length) {
+                        if(!($('#toSearch').hasClass('hidden'))){
+                            $('#toSearch').addClass('hidden');
+                            $('#1').removeClass('hidden');
+                            $('.show_paginator').removeClass('hidden');
+                           // stop();
+                            loader('stop');
+                        }
+                    }
+                    loader('stop');
+                }
+            });
+
+            $('#hexaaSearchFieldEntityIDs').keyup(function(){
+                loader();
                 $(".caretbutton").each(function (index) {
                     if ($(this).text() == 'arrow_drop_up') {
                         $(this).text('arrow_drop_down');
@@ -49,10 +112,11 @@
 
             }).on('page', function(event, num)
             {
-                console.log(num);
-                {% for i in (1..total_pages) %}
-                    $("#"+{{ i }}).addClass("hidden");
-                {% endfor %}
+                {% if total_pages != 1 %}
+                    {% for i in (1..total_pages) %}
+                        $("#"+{{ i }}).addClass("hidden");
+                    {% endfor %}
+                {% endif %}
                 $("#"+num).removeClass("hidden"); // or some ajax content loading...
             });
 
@@ -60,24 +124,30 @@
 
     </script>
 
-    <div class="col-sm-11 col-sm-offset-2">
-        <input id="hexaaSearchFieldEntityIDs" type="text" name="filter" class="hexaaSearchField pull-left"
+    <div class="col-sm-11 col-sm-offset-2" id="animate-bottom">
+        <div class="row" style="padding-left: 15px;">
+            <input id="hexaaSearchFieldEntityIDs" type="text" name="filter" class="hexaaSearchField pull-left"
                placeholder="Search entity IDs">
+            <div class="loader"></div>
+        </div>
+
         {% if total_pages != 1 %}
-            <br><br>
             <div class="show_paginator"></div>
         {% endif %}
     </div>
-    <div class="col-sm-11 col-sm-offset-2" {% if total_pages != 1 %} style="margin-top: 5px" {% else %} style="margin-top: 12px" {% endif %}>
+    <div class="col-sm-11 col-sm-offset-2" id="mainaccordionplace" {% if total_pages != 1 %} style="margin-top: 5px" {% else %} style="margin-top: 12px" {% endif %}>
         <div id="1">
-            {{ include('::accordions.html.twig', { classToFilter:"admin_entity_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[0] }) }}
+            {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[0] }) }}
         </div>
         {% if total_pages != 1 %}
             {% for i in (1..total_pages-1) %}
                 <div class="hidden" id="{{ i+1 }}">
-                    {{ include('::accordions.html.twig', { classToFilter:"admin_entity_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[i] }) }}
+                    {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[i] }) }}
                 </div>
             {% endfor %}
+            <div class="hidden" id="toSearch">
+                {{ include('::accordions.html.twig', { classToFilter:'admin_entity_search', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: 'Entity IDs', variant: 'dark', items: all_entityid }) }}
+            </div>
             <div class="show_paginator"></div>
         {% endif %}
     </div>
