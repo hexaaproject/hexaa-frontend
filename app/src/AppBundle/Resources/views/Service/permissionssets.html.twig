@@ -30,8 +30,36 @@
 
     <script>
         $(document).ready(function () {
-            $('#hexaaSearchFieldPermissionSet').instaFilta();
-            $('#hexaaSearchFieldPermissionSet').keypress(function(){
+            $('#hexaaSearchFieldPermissionSet').instaFilta({
+                onFilterComplete: function(matchedItems) {
+                    var allnum = {{ total_number|json_encode }}
+                    if (allnum != matchedItems.length) {
+                        $('#1').addClass('hidden');
+                        {% if total_pages != 1 %}
+                            {% for i in (1..total_pages) %}
+                                $("#" +{{ i }}).addClass("hidden");
+                            {% endfor %}
+                        {% endif %}
+
+                        $('#toSearch').removeClass('hidden');
+                        $('.show_paginator').addClass('hidden');
+                        loader('stop');
+                    }
+                    if (allnum == matchedItems.length) {
+                        if(!($('#toSearch').hasClass('hidden'))){
+                            $('#toSearch').addClass('hidden');
+                            $('#1').removeClass('hidden');
+                                {% if total_pages != 1 %}
+                                    $('.show_paginator').removeClass('hidden');
+                                {% endif %}
+                            loader('stop');
+                        }
+                    }
+                    loader('stop');
+                }
+            });
+            $('#hexaaSearchFieldPermissionSet').keyup(function(){
+                loader();
                 $(".caretbutton").each(function (index) {
                     if ($(this).text() == 'arrow_drop_up') {
                         $(this).text('arrow_drop_down');
@@ -112,26 +140,30 @@
     </div>
 
     <div class="col-sm-11 col-sm-offset-2">
-        <input id="hexaaSearchFieldPermissionSet" type="text" name="filter" class="hexaaSearchField pull-left"
+        <div class="row" style="padding-left: 15px;">
+            <input id="hexaaSearchFieldPermissionSet" type="text" name="filter" class="hexaaSearchField pull-left"
                placeholder="Search permission set">
-
-        <button class="btnhexaa btn-red btnhexaa-sm pull-right" onclick="showCreateForm()" id="createButton"><i class="material-icons">add</i> Create</button>
+            <div class="loader"></div>
+            <button class="btnhexaa btn-red btnhexaa-sm pull-right" onclick="showCreateForm()" id="createButton"><i class="material-icons">add</i> Create</button>
+        </div>
         {% if total_pages != 1 %}
-            <br><br>
             <div class="show_paginator"></div>
         {% endif %}
     </div>
     <div class="col-sm-11 col-sm-offset-2" {% if total_pages != 1 %} style="margin-top: 5px" {% else %} style="margin-top: 12px" {% endif %}>
         <div id="1">
-            {{ include('::accordions.html.twig', {classToFilter:"service_permissionset_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[0], service_id: service.id}) }}
+            {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[0], service_id: service.id}) }}
         </div>
         {% if total_pages != 1 %}
             {% for i in (1..total_pages-1) %}
                 <div class="hidden" id="{{ i+1 }}">
-                    {{ include('::accordions.html.twig', {classToFilter:"service_permissionset_search", formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[i], service_id: service.id}) }}
+                    {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[i], service_id: service.id}) }}
                 </div>
             {% endfor %}
             <div class="show_paginator"></div>
         {% endif %}
+        <div class="hidden" id="toSearch">
+            {{ include('::accordions.html.twig', { classToFilter:'service_permissionset_search', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: 'Permission sets', variant: 'dark', items: allpermissions_accordion_set }) }}
+        </div>
     </div>
 {% endblock %}

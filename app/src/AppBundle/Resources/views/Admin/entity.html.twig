@@ -17,41 +17,6 @@
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    <style>
-/*
-       @keyframes blink {
-           0% {
-               opacity: .2;
-           }
-           20% {
-               opacity: 1;
-           }
-           100% {
-               opacity: .2;
-           }
-       }
-
-       .loader span {
-           color: #61AFC5;
-           font-size: 30px;
-           animation-name: blink;
-           animation-duration: 1.5s;
-           animation-iteration-count: infinite;
-           animation-fill-mode: both;
-       }
-
-       .loader span:nth-child(2) {
-           animation-delay: .4s;
-           height: 10px;
-       }
-
-       .loader span:nth-child(3) {
-           animation-delay: .8s;
-           height: 10px;
-       }
-*/
-    </style>
-
     <script>
         $(document).ready(function () {
             $('#hexaaSearchFieldEntityIDs').instaFilta({
@@ -145,11 +110,11 @@
                     {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[i] }) }}
                 </div>
             {% endfor %}
-            <div class="hidden" id="toSearch">
-                {{ include('::accordions.html.twig', { classToFilter:'admin_entity_search', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: 'Entity IDs', variant: 'dark', items: all_entityid }) }}
-            </div>
             <div class="show_paginator"></div>
         {% endif %}
+        <div class="hidden" id="toSearch">
+            {{ include('::accordions.html.twig', { classToFilter:'admin_entity_search', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: 'Entity IDs', variant: 'dark', items: all_entityid }) }}
+        </div>
     </div>
 
 {% endblock %}
