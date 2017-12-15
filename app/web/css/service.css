@@ -242,6 +242,24 @@ form[name="service_create_permission"] .header, form[name="service_create_permis
     color: #61AFC5;
 }
 
+.loader{
+    float: left;
+}
+
+.loader span {
+    color: #61AFC5;
+    font-size: 35px;
+    animation-name: blink;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
+#createButton {
+    margin-right: 15px;
+    margin-top: 5px;
+}
+
 /*#scrollable-dropdown-menu .twitter-typeahead{
     width: 310px;
 }*/

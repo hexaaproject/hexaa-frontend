@@ -909,6 +909,7 @@ class ServiceController extends Controller
 
         $verbose = "expanded";
         $allpermission = $this->get('service')->getEntitlements($id, $verbose);
+        $allallpermission = $this->get('service')->getEntitlements($id, $verbose, 0, 100000);
         $totalnumber = $allpermission['item_number'];
         $permissions = $allpermission['items'];
         $totalpages = ceil($totalnumber / 25);
@@ -922,6 +923,8 @@ class ServiceController extends Controller
             array_push($permissionsperpage, $permissionperpage['items']);
             $offset = $offset +25;
         }
+
+      //dump($this->allpermissionsToAccordion($allallpermission, $id));exit;
 
         $formCreatePermissions = $this->createForm(
             ServiceCreatePermissionType::class
@@ -968,6 +971,8 @@ class ServiceController extends Controller
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
                 'permissions_accordion' => $this->permissionsToAccordion($permissionsperpage, $id),
+                'allpermissions_accordion' => $this->allpermissionsToAccordion($allallpermission, $id),
+                'total_number' => $totalnumber,
                 'total_pages' => $totalpages,
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
                 'formCreatePermission' => $formCreatePermissions->createView(),
@@ -997,6 +1002,7 @@ class ServiceController extends Controller
         $pagesize = 25;
         $verbose = "normal";
         $permissionsetsperpage = array();
+        $allallpermissionset = $this->get('service')->getEntitlementPacks($id, $verbose, 0, 100000);
         array_push($permissionsetsperpage, $permissionssets);
         for ($i = 1; $i < $totalpages; $i++) {
             $permissionsetsperpage = $this->get('service')->getEntitlementPacks($id, $verbose, $offset, $pagesize);
@@ -1035,6 +1041,8 @@ class ServiceController extends Controller
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
 
+        //dump($this->allpermissionSetToAccordion($allallpermissionset, $id));exit;
+
         return $this->render(
             'AppBundle:Service:permissionssets.html.twig',
             array(
@@ -1043,7 +1051,9 @@ class ServiceController extends Controller
                 'service' => $this->getService($id),
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'permissions_accordion_set' => $this->permissionSetToAccordion($permissionsetsperpage, $id),
+                'allpermissions_accordion_set' => $this->allpermissionSetToAccordion($allallpermissionset, $id),
                 'total_pages' => $totalpages,
+                'total_number' => $totalnumber,
                 'token' => $token,
                 'permissionsetname' => $permissionsetname,
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
@@ -1902,6 +1912,43 @@ class ServiceController extends Controller
     }
 
     /**
+    * @param $permissions
+    * @param $servId
+    * @return array
+    */
+    private function allpermissionsToAccordion($permissions, $servId)
+    {
+        $permissionsAccordion = array();
+        foreach ($permissions['items'] as $permission) {
+            $permissionsAccordion[$permission['id']]['title'] = $permission['name'];
+
+            // FIXME @annamari, nem találok permission delete url-t.
+            $permissionsAccordion[$permission['id']]['deleteUrl'] = $this->generateUrl("app_service_permissiondelete", [
+                'servId' => $servId,
+                'id' => $permission['id'],
+                'action' => "delete",
+            ]);
+
+            $description = [];
+            $uri = [];
+            array_push($description, $permission['description']);
+            array_push($uri, $permission['uri']);
+            $permissionsAccordion[$permission['id']]['contents'] = [
+            [
+                'key' => 'Description',
+                'values' => $description,
+            ],
+            [
+                'key' => 'URI',
+                'values' => $uri,
+            ],
+            ];
+        }
+
+        return $permissionsAccordion;
+    }
+
+    /**
      * @param $permissionSets
      * @param $servId
      * @return array
@@ -1949,6 +1996,51 @@ class ServiceController extends Controller
         $smallarray = array_chunk($permissionsAccordionSet, $size);
 
         return $smallarray;
+    }
+
+    /**
+    * @param $permissionSets
+    * @param $servId
+    * @return array
+    */
+    private function allpermissionSetToAccordion($permissionSets, $servId)
+    {
+        $permissionsAccordionSet = array();
+        foreach ($permissionSets['items'] as $permissionSet) {
+            $permissionsAccordionSet[$permissionSet['id']]['title'] = $permissionSet['name'];
+            $permissionsAccordionSet[$permissionSet['id']]['deleteUrl'] = $this->generateUrl("app_service_permissionsetdelete", [
+                'servId' => $servId,
+                'id' => $permissionSet['id'],
+                'action' => "delete",
+            ]);
+
+            $description = [];
+            $type = [];
+            $permissions = [];
+            array_push($description, $permissionSet['description']);
+            array_push($type, $permissionSet['type']);
+            foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
+                $entitlement = $this->get('entitlement')
+                ->getEntitlement($entitlementid);
+                array_push($permissions, $entitlement['name']);
+            }
+            $permissionsAccordionSet[$permissionSet['id']]['contents'] = [
+               [
+                  'key' => 'Description',
+                  'values' => $description,
+               ],
+               [
+                  'key' => 'Type',
+                  'values' => $type,
+               ],
+               [
+                  'key' => 'Permissions',
+                  'values' => $permissions,
+               ],
+            ];
+        }
+
+        return $permissionsAccordionSet;
     }
 
     /**
