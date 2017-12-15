@@ -924,8 +924,6 @@ class ServiceController extends Controller
             $offset = $offset +25;
         }
 
-      //dump($this->allpermissionsToAccordion($allallpermission, $id));exit;
-
         $formCreatePermissions = $this->createForm(
             ServiceCreatePermissionType::class
         );
@@ -1005,8 +1003,8 @@ class ServiceController extends Controller
         $allallpermissionset = $this->get('service')->getEntitlementPacks($id, $verbose, 0, 100000);
         array_push($permissionsetsperpage, $permissionssets);
         for ($i = 1; $i < $totalpages; $i++) {
-            $permissionsetsperpage = $this->get('service')->getEntitlementPacks($id, $verbose, $offset, $pagesize);
-            array_push($permissionsetsperpage, $permissionsetsperpage['items']);
+            $permissionsetperpage = $this->get('service')->getEntitlementPacks($id, $verbose, $offset, $pagesize);
+            array_push($permissionsetsperpage, $permissionsetperpage['items']);
             $offset = $offset +25;
         }
         $formCreatePermissionsSet = $this->createForm(
@@ -1040,8 +1038,6 @@ class ServiceController extends Controller
         } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
-
-        //dump($this->allpermissionSetToAccordion($allallpermissionset, $id));exit;
 
         return $this->render(
             'AppBundle:Service:permissionssets.html.twig',
