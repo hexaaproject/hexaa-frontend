@@ -26,5 +26,5 @@ Feature: When I go to service's permissions set
 
     When I press "Create"
     And I fill in "Name" with "default5"
-    And I press "cancel"
+    And I press "clear"
     Then I should not see "default5"
