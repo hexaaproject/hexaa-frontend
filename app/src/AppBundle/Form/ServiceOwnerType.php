@@ -27,7 +27,7 @@ class ServiceOwnerType extends AbstractType
                     "label" => "Name",
                     "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerName'],
-                    'attr' => array('class' => 'col-sm-11 pull-right'),
+                    'attr' => array('class' => 'col-sm-11'),
                     'required' => false,
                 )
             )
@@ -38,7 +38,7 @@ class ServiceOwnerType extends AbstractType
                     "label" => "Short name",
                     "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerShortName'],
-                    'attr' => array('class' => 'col-sm-11 pull-right'),
+                    'attr' => array('class' => 'col-sm-11'),
                     'required' => false,
                 )
             )
@@ -49,7 +49,7 @@ class ServiceOwnerType extends AbstractType
                     "label" => "Description",
                     "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerDescription'],
-                    'attr' => array('class' => 'col-sm-11 pull-right', 'cols' => '30', 'rows' => '1'),
+                    'attr' => array('class' => 'col-sm-11', 'cols' => '30', 'rows' => '1'),
                     'required' => false,
                 )
             )
@@ -60,7 +60,7 @@ class ServiceOwnerType extends AbstractType
                     "label" => "Home page",
                     "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerURL'],
-                    'attr' => array('class' => 'col-sm-11 pull-right'),
+                    'attr' => array('class' => 'col-sm-11'),
                     'required' => false,
                 )
             );

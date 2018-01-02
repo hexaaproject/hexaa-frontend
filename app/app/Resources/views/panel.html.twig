@@ -46,7 +46,7 @@ return $this->render(
     {% endfor %}
 </div>#}
 
-<div id={{ styleOfContainer }}>
+<div id={{ styleOfContainer }} {% if profile is defined %} class="col-sm-16" {% endif %}>
     <div class="header">
         {{ heading }}
         <button type="button" {% if pencilid is defined %}id="pencil-{{ pencilid }}" {% endif %} class="editbutton" style="display: {{ buttonappear }}" {% if changebutton is defined %} onclick="{{ changebutton }}" {% endif %}><i
@@ -54,22 +54,29 @@ return $this->render(
     </div>
     {% for key, value in items %}
         {% if main[value] %}
-            <div class="row" style="padding-top: 12px;">
+            <div class="row">
                 {% if value == 'description' %}
                     <div class="col-sm-2 areaname">{{ key }}</div>
                     <textarea {% if changeedit is defined %}class="col-sm-11 {{ changeedit }}"{% else %}class="col-sm-11" {% endif %} id="areadescription" cols="60" rows="1" style="border:none"
                               readonly="true"> {{ main[value] }} </textarea>
+                {% elseif profile is defined %}
+                    <div class="col-sm-4 profileformlabel">{{ key }}</div>
+                    <div {% if changeedit is defined %}class="{{ changeedit }}"{% else %} class="col-sm-11"{% endif %} id="propdescription"> {{ main[value] }} </div>
                 {% else %}
                     <div class="col-sm-3 propname">{{ key }}</div>
-                    <div {% if changeedit is defined %}class="{{ changeedit }}"{% endif %} id="propdescription" class="col-sm-11"> {{ main[value] }} </div>
+                    <div {% if changeedit is defined %}class="{{ changeedit }}"{% else %} class="col-sm-11"{% endif %} id="propdescription"> {{ main[value] }} </div>
                 {% endif %}
             </div>
         {% else %}
-            <div class="row" style="padding-top: 12px;">
+            <div class="row">
                 {% if key == 'Organization description' %}
                     <div class="areaname">{{ key }}</div>
                     <textarea class="{{ changeedit }}" id="areadescription" cols="80" rows="1" style="border:none"
                               readonly="true"> </textarea>
+                {% elseif profile is defined %}
+                    <div class="col-sm-4 profileformlabel">{{ key }}</div>
+                    <br>
+                    <div {% if changeedit is defined %}class="col-sm-11 {{ changeedit }}"{% else %} class="col-sm-11" {% endif %} id="propdescription"></div>
                 {% else %}
                     <div class="col-sm-3 propname">{{ key }}</div>
                     <br>

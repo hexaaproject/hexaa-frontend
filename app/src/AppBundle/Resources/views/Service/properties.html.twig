@@ -81,16 +81,16 @@
             <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelproperty()"><i
                         class="material-icons">clear</i></button>
         </div>
-        <div class="row" style="padding-top: 12px;">
+        <div class="row">
             {{ form_row(propertiesform.serviceName) }}
         </div>
-        <div class="row" style="padding-top: 12px;">
+        <div class="row">
             {{ form_row(propertiesform.serviceDescription) }}
         </div>
-        <div class="row" style="padding-top: 12px;">
+        <div class="row">
             {{ form_row(propertiesform.serviceURL) }}
         </div>
-        <div id="scrollable-dropdown-menu" class="row" style="padding-top: 12px;">
+        <div id="scrollable-dropdown-menu" class="row">
             {{ form_row(propertiesform.serviceSAML) }}
         </div>
 
@@ -111,16 +111,16 @@
             <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelowner()"><i
                         class="material-icons">clear</i></button>
         </div>
-        <div class="row" style="padding-top: 12px;">
+        <div class="row">
             {{ form_row(ownerform.serviceOwnerName) }}
         </div>
-        <div class="row" style="padding-top: 12px;">
+        <div class="row">
             {{ form_row(ownerform.serviceOwnerShortName) }}
         </div>
-        <div class="row" style="padding-top: 12px;">
+        <div class="row">
             {{ form_row(ownerform.serviceOwnerDescription) }}
         </div>
-        <div class="row" style="padding-top: 12px;">
+        <div class="row">
             {{ form_row(ownerform.serviceOwnerURL) }}
         </div>
         {{ form_end(ownerform) }}
@@ -140,10 +140,10 @@
             <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelprivacy()"><i
                         class="material-icons">clear</i></button>
         </div>
-        <div class="row" style="padding-top: 12px;">
+        <div class="row">
             {{ form_row(privacyform.servicePrivacyURL) }}
         </div>
-        <div class="row" style="padding-top: 12px;">
+        <div class="row">
             {{ form_row(privacyform.servicePrivacyDescription) }}
         </div>
         {{ form_end(privacyform) }}

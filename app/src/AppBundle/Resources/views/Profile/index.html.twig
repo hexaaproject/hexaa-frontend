@@ -27,7 +27,7 @@
 
         <div class="noedit" style="padding-top: 12px;">
             <div class="col-sm-11 col-md-offset-4" id="profilPropertiesContainer">
-                {{ include('::panel.html.twig', {styleOfContainer: "profilProperties", heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1" }) }}
+                {{ include('::panel.html.twig', {profile: "true", styleOfContainer: "profilProperties", heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1" }) }}
             </div>
             <div class="col-sm-1"></div>
             <div class="accountbutton pull-right"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="/img/account_history.svg"/><br/><br/>Account history</a></div>
@@ -43,13 +43,13 @@
                 <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelprofilproperty()"><i
                             class="material-icons">clear</i></button>
             </div>
-            <div class="row" style="padding-top: 12px;">
+            <div class="row">
                 {{ form_row(profilePropertiesForm.principalName) }}
             </div>
-            <div class="row" style="padding-top: 12px;">
+            <div class="row">
                 {{ form_row(profilePropertiesForm.principalEmail) }}
             </div>
-            <div class="row" style="padding-top: 12px;">
+            <div class="row">
                 {{ form_row(profilePropertiesForm.principalFedID) }}
             </div>
 

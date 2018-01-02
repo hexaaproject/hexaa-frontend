@@ -139,3 +139,14 @@ form[name="profile_properties"] .header{
     border: none;
     background-color: white;
 }
+
+.profileformlabel {
+    display: inline;
+    font-weight: bold;
+    font-size: medium;
+    margin-top: 7px;
+}
+
+#profilProperties .header, #profilPropertiesContainer .header {
+    padding-left: 6px;
+}
