@@ -54,26 +54,26 @@ return $this->render(
     </div>
     {% for key, value in items %}
         {% if main[value] %}
-            <div>
+            <div class="row" style="padding-top: 12px;">
                 {% if value == 'description' %}
-                    <div class="areaname">{{ key }}</div>
-                    <textarea {% if changeedit is defined %}class="{{ changeedit }}"{% endif %} id="areadescription" cols="80" rows="1" style="border:none"
+                    <div class="col-sm-2 areaname">{{ key }}</div>
+                    <textarea {% if changeedit is defined %}class="col-sm-11 {{ changeedit }}"{% else %}class="col-sm-11" {% endif %} id="areadescription" cols="60" rows="1" style="border:none"
                               readonly="true"> {{ main[value] }} </textarea>
                 {% else %}
-                    <div class="propname">{{ key }}</div>
-                    <div {% if changeedit is defined %}class="{{ changeedit }}"{% endif %} id="propdescription"> {{ main[value] }} </div>
+                    <div class="col-sm-3 propname">{{ key }}</div>
+                    <div {% if changeedit is defined %}class="{{ changeedit }}"{% endif %} id="propdescription" class="col-sm-11"> {{ main[value] }} </div>
                 {% endif %}
             </div>
         {% else %}
-            <div>
+            <div class="row" style="padding-top: 12px;">
                 {% if key == 'Organization description' %}
                     <div class="areaname">{{ key }}</div>
                     <textarea class="{{ changeedit }}" id="areadescription" cols="80" rows="1" style="border:none"
                               readonly="true"> </textarea>
                 {% else %}
-                    <div class="propname">{{ key }}</div>
+                    <div class="col-sm-3 propname">{{ key }}</div>
                     <br>
-                    <div {% if changeedit is defined %}class="{{ changeedit }}"{% endif %} id="propdescription"></div>
+                    <div {% if changeedit is defined %}class="col-sm-11 {{ changeedit }}"{% else %} class="col-sm-11" {% endif %} id="propdescription"></div>
                 {% endif %}
             </div>
         {% endif %}

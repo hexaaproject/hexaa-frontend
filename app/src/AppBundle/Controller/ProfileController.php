@@ -38,10 +38,10 @@ class ProfileController extends Controller
 
         $profilePropertiesForm->add('principalFedID', TextType::class, array(
             'label' => 'Federal ID',
-            "label_attr" => array('class' => 'formlabel'),
+            "label_attr" => array('class' => 'col-sm-4 formlabel'),
             'data' => $propertiesDatas["principalFedID"],
             'attr' => array(
-                'class' => 'pull-right',
+                'class' => ' pull-right',
                 'disabled' => true,
             ),
             'required' => false,

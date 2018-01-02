@@ -30,9 +30,9 @@ class ServicePropertiesType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Name",
-                    "label_attr" => array('class' => 'formlabelproperties'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabelproperties'),
                     'data' => $datas['data']['properties']['serviceName'],
-                    'attr' => array('class' => 'pull-right'),
+                    'attr' => array('class' => 'col-sm-11 pull-right'),
                     'required' => true,
                 )
             )
@@ -41,9 +41,9 @@ class ServicePropertiesType extends AbstractType
                 TextareaType::class,
                 array(
                     "label" => "Description",
-                    "label_attr" => array('class' => 'formlabelproperties'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabelproperties'),
                     'data' => $datas['data']['properties']['serviceDescription'],
-                    'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
+                    'attr' => array('class' => 'col-sm-11 pull-right', 'cols' => '30', 'rows' => '1'),
                     'required' => false,
                 )
             )
@@ -52,9 +52,9 @@ class ServicePropertiesType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Home page",
-                    "label_attr" => array('class' => 'formlabelproperties'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabelproperties'),
                     'data' => $datas['data']['properties']['serviceURL'],
-                    'attr' => array('class' => 'pull-right'),
+                    'attr' => array('class' => 'col-sm-11 pull-right'),
                     'required' => false,
                 )
             )
@@ -64,14 +64,14 @@ class ServicePropertiesType extends AbstractType
                 array(
                     'label' => 'SAML SP Entity ID',
                     'data' => $datas['data']['properties']['serviceSAML'],
-                    'label_attr' => array('class' => 'entitylabel'),
+                    'label_attr' => array('class' => 'col-sm-4 formlabelproperties'),
                     'source_name' => 'saml',
                     'min_length' => 1,
                     'placeholder' => 'Start typing',
                     'matcher' => 'contains', // ends_with, contains
                     'source' => $datas['data']['properties']['serviceEntityIDs'],
                     'required' => 'true',
-                    'attr' => array('class' => 'modified_twitter pull-right'),
+                    'attr' => array('class' => 'col-sm-11 modified_twitter pull-right'),
                     'limit' => 30,
                 )
             );

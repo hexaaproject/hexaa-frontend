@@ -25,9 +25,9 @@ class ServiceOwnerType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Name",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerName'],
-                    'attr' => array('class' => 'pull-right'),
+                    'attr' => array('class' => 'col-sm-11 pull-right'),
                     'required' => false,
                 )
             )
@@ -36,9 +36,9 @@ class ServiceOwnerType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Short name",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerShortName'],
-                    'attr' => array('class' => 'pull-right'),
+                    'attr' => array('class' => 'col-sm-11 pull-right'),
                     'required' => false,
                 )
             )
@@ -47,9 +47,9 @@ class ServiceOwnerType extends AbstractType
                 TextareaType::class,
                 array(
                     "label" => "Description",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerDescription'],
-                    'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
+                    'attr' => array('class' => 'col-sm-11 pull-right', 'cols' => '30', 'rows' => '1'),
                     'required' => false,
                 )
             )
@@ -58,9 +58,9 @@ class ServiceOwnerType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Home page",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'data' => $datas['data']['properties']['serviceOwnerURL'],
-                    'attr' => array('class' => 'pull-right'),
+                    'attr' => array('class' => 'col-sm-11 pull-right'),
                     'required' => false,
                 )
             );

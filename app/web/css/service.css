@@ -172,12 +172,10 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
 }
 
 .formlabelproperties{
-    display: inline-block;
-    max-width: 100%;
-    margin-bottom: 5px;
+    display: inline;
     font-weight: bold;
-    padding-left: 20px;
-    margin-top: 10px;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
 }
 
 .uniquelabel2{
@@ -214,6 +212,10 @@ form[name="service_create_permission"] .header, form[name="service_create_permis
     font-weight: bold;
     padding-bottom: 1.5em;
     width: 630px;
+}
+
+#service_properties_serviceDescription, #service_owner_serviceOwnerDescription, #service_privacy_servicePrivacyDescription{
+    resize: vertical;
 }
 
 .actionbutton{
@@ -259,14 +261,6 @@ form[name="service_create_permission"] .header, form[name="service_create_permis
     margin-right: 15px;
     margin-top: 5px;
 }
-
-/*#scrollable-dropdown-menu .twitter-typeahead{
-    width: 310px;
-}*/
-
-/*.propertyblockedit .twitter-typeahead{
-    width: 0px;
-}*/
 
 .neworg .twitter-typeahead{
     margin-left:50px;
