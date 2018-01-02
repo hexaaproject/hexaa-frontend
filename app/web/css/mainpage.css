@@ -35,6 +35,10 @@ body {
     width: 95%;
 }
 
+.formlabel {
+    font-size: medium;
+}
+
 #welcometext1 {
     font-size: xx-large;
 }
@@ -272,9 +276,11 @@ div.hr {
 }
 
 .propertyblockedit .twitter-typeahead{
-    position: relative;
-    display: inline-block;
-    margin-left: 127.90px;
+   /*margin-left: 32px;*/
+}
+
+.container .datatable{
+    min-width: 960px;
 }
 
 #servManagers .tt-menu, #orgManagers .tt-menu{
@@ -287,17 +293,9 @@ div.hr {
 }
 
 .propertyblockedit .tt-menu{
-    width: 501px;
-    margin: 2px 0;
-    padding: 10px 0;
-    border: 1px solid #ccc;
-    border: 1px solid #61AFC5;
 }
 
 .propertyblockedit .twitter-typeahead, .ownerblockedit .twitter-typeahead, .privacyblockedit .twitter-typeahead{
-    position: relative;
-    display: inline-block;
-    margin-left: 127.90px;
 }
 
 .tt-suggestion {
@@ -349,10 +347,6 @@ div.hr {
 .loader span:nth-child(3) {
     animation-delay: .8s;
 }
-
-/*.datatable-blue input{
-    border:none;
-}*/
 
 #deleteBin{
     border: none;

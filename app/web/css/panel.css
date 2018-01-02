@@ -1,9 +1,4 @@
 #propertiespanelnoedit {
-    width: 930px;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    border: 2px solid #61AFC5;
-    margin-left: 15px;
     font-size: medium;
 }
 
@@ -19,24 +14,31 @@
     font-size: medium;
 }
 
+.propertyblocknoedit, .privacyblocknoedit, .ownerblocknoedit  {
+    border: 2px solid #61AFC5;
+    padding-bottom: 12px;
+    padding-right: 5px;
+    padding-top: 12px;
+    margin-bottom: 12px;
+}
+
 .propname {
     display: inline;
-    width: 250px;
     font-weight: bold;
     padding-left: 1.75em;
     padding-bottom: 0.5em;
-    float: left;
-    text-align: left;
+}
+
+.property {
+    resize: vertical;
 }
 
 .areaname {
     display: inline;
-    width: 243px;
     font-weight: bold;
     padding-left: 1.75em;
     padding-bottom: 0.5em;
-    float: left;
-    text-align: left;
+    margin-right: 45px;
 }
 
 #propdescription {
@@ -54,7 +56,6 @@
     font-size: x-large;
     font-weight: bold;
     padding-left: 20px;
-    padding-right: 5px;
     padding-bottom: 0.5em;
 }
 
@@ -83,11 +84,10 @@
 }
 
 .formlabel {
-    display: inline-block;
-    max-width: 100%;
-    margin-bottom: 5px;
+    display: inline;
     font-weight: bold;
-    padding-left: 20px;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
 }
 
 #row {
@@ -96,18 +96,24 @@
 }
 
 form[name="service_properties"] {
+}
+
+.propertyblockedit, .privacyblockedit, .ownerblockedit {
     border: 2px solid #61AFC5;
-    height: 280px;
+    padding-bottom: 12px;
+    padding-right: 5px;
+    padding-top: 12px;
+    margin-bottom: 12px;
+}
+
+.propertyblockedit .form-group {
+    margin-bottom: 0px;
 }
 
 form[name="service_owner"] {
-    border: 2px solid #61AFC5;
-    width: 100%;
-    padding-bottom: 0.5em;
 }
 
 form[name="service_privacy"] {
-    border: 2px solid #61AFC5;
 }
 
 select[multiple] {
@@ -115,9 +121,15 @@ select[multiple] {
 }
 
 #profilProperties{
-    width: 550px;
-    padding-top: 0.5em;
+   /* width: 550px;*/
+    font-size: medium;
+   /* padding-top: 0.5em;
     padding-bottom: 0.5em;
     border: 2px solid #61AFC5;
-    margin-left: 15px;
+    margin-left: 15px;*/
+   /* border: 2px solid #61AFC5;
+    padding-bottom: 12px;
+    padding-right: 5px;
+    padding-top: 12px;
+    margin-bottom: 12px;*/
 }

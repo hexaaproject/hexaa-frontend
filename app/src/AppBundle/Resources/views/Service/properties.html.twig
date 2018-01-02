@@ -68,29 +68,29 @@
 
     </script>
 
-    <div class="propertyblocknoedit" id="row">
+    <div class="propertyblocknoedit">
         {{ include('::panel.html.twig', { styleOfContainer: "propertiespanelnoedit", heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1"}) }}
     </div>
 
     <div class="propertyblockedit hidden">
         {{ form_start(propertiesform) }}
-        <div class="header" style="padding-top:0.5em">
+        <div class="header">
             Properties
             <button type="submit" class="sendbutton pull-right" alt="done-1" id="done1"><i
                         class="material-icons" alt="done-1" name="done-1">done</i></button>
             <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelproperty()"><i
-                        class="material-icons">cancel</i></button>
+                        class="material-icons">clear</i></button>
         </div>
-        <div>
+        <div class="row">
             {{ form_row(propertiesform.serviceName) }}
         </div>
-        <div>
+        <div class="row">
             {{ form_row(propertiesform.serviceDescription) }}
         </div>
-        <div>
+        <div class="row">
             {{ form_row(propertiesform.serviceURL) }}
         </div>
-        <div id="scrollable-dropdown-menu">
+        <div id="scrollable-dropdown-menu" class="row">
             {{ form_row(propertiesform.serviceSAML) }}
         </div>
 
@@ -98,52 +98,52 @@
     </div>
 
     <br>
-    <div class="ownerblocknoedit" id="row">
+    <div class="ownerblocknoedit">
         {{ include('::panel.html.twig', {styleOfContainer: "propertiespanelnoedit", heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()", pencilid:"2"}) }}
     </div>
 
     <div class="ownerblockedit hidden">
         {{ form_start(ownerform) }}
-        <div class="header" style="padding-top:0.5em">
+        <div class="header">
             Owner details
             <button type="submit" class="sendownerbutton pull-right" id="done2"><i
                         class="material-icons">done</i></button>
             <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelowner()"><i
-                        class="material-icons">cancel</i></button>
+                        class="material-icons">clear</i></button>
         </div>
-        <div>
+        <div class="row">
             {{ form_row(ownerform.serviceOwnerName) }}
         </div>
-        <div>
+        <div class="row">
             {{ form_row(ownerform.serviceOwnerShortName) }}
         </div>
-        <div>
+        <div class="row">
             {{ form_row(ownerform.serviceOwnerDescription) }}
         </div>
-        <div>
+        <div class="row">
             {{ form_row(ownerform.serviceOwnerURL) }}
         </div>
         {{ form_end(ownerform) }}
     </div>
 
     <br>
-    <div class="privacyblocknoedit" id="row">
+    <div class="privacyblocknoedit">
         {{ include('::panel.html.twig', {styleOfContainer: "propertiespanelnoedit", heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy()", pencilid:"3"}) }}
     </div>
 
     <div class="privacyblockedit hidden">
         {{ form_start(privacyform) }}
-        <div class="header" style="padding-top:0.5em">
+        <div class="header">
             Privacy Information
             <button type="submit" class="sendprivacybutton pull-right" id="done3"><i
                         class="material-icons" id="ic1">done</i></button>
             <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelprivacy()"><i
-                        class="material-icons">cancel</i></button>
+                        class="material-icons">clear</i></button>
         </div>
-        <div>
+        <div class="row">
             {{ form_row(privacyform.servicePrivacyURL) }}
         </div>
-        <div>
+        <div class="row">
             {{ form_row(privacyform.servicePrivacyDescription) }}
         </div>
         {{ form_end(privacyform) }}

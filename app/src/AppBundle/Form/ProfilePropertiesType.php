@@ -29,9 +29,9 @@ class ProfilePropertiesType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Name",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-4 profileformlabel'),
                     'data' => $options['data']['properties']['principalName'],
-                    'attr' => array('class' => 'pull-right'),
+                   /* 'attr' => array('class' => 'pull-right'),*/
                     'required' => true,
                 )
             )
@@ -40,9 +40,9 @@ class ProfilePropertiesType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Email",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-4 profileformlabel'),
                     'data' => $options['data']['properties']['principalEmail'],
-                    'attr' => array('class' => 'pull-right'),
+                   /* 'attr' => array('class' => 'pull-right'),*/
                     'required' => true,
                 )
             );

@@ -171,13 +171,17 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
     margin-top: 5px;
 }
 
+.propertyblockedit .form-control, .privacyblockedit .form-control, .ownerblockedit .form-control {
+    width: 600px;
+    margin-right: 50px;
+}
+
 .formlabelproperties{
-    display: inline-block;
-    max-width: 100%;
-    margin-bottom: 5px;
+    display: inline;
     font-weight: bold;
-    padding-left: 20px;
-    margin-top: 10px;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+    margin-top: 7px;
 }
 
 .uniquelabel2{
@@ -210,10 +214,14 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
 form[name="service_create_permission"] .header, form[name="service_create_permission_set"] .header{
     text-align: left;
     color: #61AFC5;
-    font-size: large;
+    font-size: x-large;
     font-weight: bold;
-    padding-bottom: 1.5em;
-    width: 630px;
+    padding-left: 20px;
+    padding-bottom: 0.5em;
+}
+
+#service_properties_serviceDescription, #service_owner_serviceOwnerDescription, #service_privacy_servicePrivacyDescription{
+    resize: vertical;
 }
 
 .actionbutton{
@@ -260,14 +268,6 @@ form[name="service_create_permission"] .header, form[name="service_create_permis
     margin-top: 5px;
 }
 
-/*#scrollable-dropdown-menu .twitter-typeahead{
-    width: 310px;
-}*/
-
-/*.propertyblockedit .twitter-typeahead{
-    width: 0px;
-}*/
-
 .neworg .twitter-typeahead{
     margin-left:50px;
     width: 310px;
@@ -282,7 +282,7 @@ form[name="service_create_permission"] .header, form[name="service_create_permis
 
 .propertyblockedit #scrollable-dropdown-menu .tt-menu{
     margin:2px 0;
-    width: 500px;
+    width: 600px;
     border: 1px solid #61AFC5;
     color: black;
 }
