@@ -155,9 +155,9 @@
                         {% if heading != "Entity IDs" and heading != "Connected entitlements" and heading != "Connected entitlement packs" and manager %}
                         <div class="accordion_button_row pull-right">
                             {% if item.form is defined %}
-                                <i title="update role" class="material-icons accordion-button accordion_edit_button">create</i>
+                                <i title="update role" data-behattarget="update_{{ loop.index }}" class="material-icons accordion-button accordion_edit_button">create</i>
                             {% endif %}
-                            <i title="delete role" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
+                            <i title="delete role" data-behattarget="delete_{{ loop.index }}" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
                         </div>
                         {% endif %}
                         {% if item.form is defined %}
