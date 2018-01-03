@@ -333,8 +333,12 @@ class ServiceController extends Controller
                 ));
             }
         } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+         // dump($form['name']->getErrors());
+
+           $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
+
+        //dump($form['name']->getErrors());
 
         return $this->render(
             'AppBundle:Service:create.html.twig',
@@ -1688,7 +1692,7 @@ class ServiceController extends Controller
         return $this->redirectToRoute("app_service_permissionssets", array("id" => $servId));
     }
 
-    /**
+  /**
      * Replace accents
      *
      * @param string  $string

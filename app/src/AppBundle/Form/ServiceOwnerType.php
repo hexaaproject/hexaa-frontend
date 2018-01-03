@@ -47,7 +47,7 @@ class ServiceOwnerType extends AbstractType
                 TextareaType::class,
                 array(
                     "label" => "Description",
-                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabelpropertiesfordescription'),
                     'data' => $datas['data']['properties']['serviceOwnerDescription'],
                     'attr' => array('class' => 'col-sm-11', 'cols' => '30', 'rows' => '1'),
                     'required' => false,
