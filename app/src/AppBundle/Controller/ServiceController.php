@@ -334,8 +334,7 @@ class ServiceController extends Controller
             }
         } catch (\Exception $e) {
          // dump($form['name']->getErrors());
-
-           $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
 
         //dump($form['name']->getErrors());
