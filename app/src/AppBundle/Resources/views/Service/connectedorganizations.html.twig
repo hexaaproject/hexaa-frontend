@@ -7,6 +7,7 @@
         {% stylesheets
         '@datatables_css'
         'css/tables.css'
+        '@protip_min_css'
         filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
@@ -14,7 +15,9 @@
 
     {% block javascripts %}
         {% javascripts
-        '@datatables_js' %}
+        '@datatables_js'
+        '@protip_min_js'
+        %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
@@ -54,6 +57,11 @@
 
             $(document).ready(function () {
 
+                $.protip();
+                var tooltip = $('.actionbutton');
+                tooltip.protipSet({
+                    trigger: 'click'
+                })
 
                 {# hide pagination if one page #}
                 if (($('#connected_org').DataTable().page.info().pages == 1) | ($('#connected_org').DataTable().page.info().pages == 0)) {
@@ -359,6 +367,7 @@
     {% endfor %}
 
     <button class="btnhexaa btn-red dependent hidden-xs" id="connectNewOrgButton" {% if manager == false %} disabled {% endif %}><i class="material-icons">add</i>New org connect</button>
+    <button type="button" id="help" class="actionbutton protip" style="vertical-align: middle; outline: none" data-pt-arrow="true" data-pt-scheme="lightred" data-pt-gravity="true" data-pt-title="Here you can connect organizations to your service or create links with tokens for non existing organizations." ><i class="material-icons" style="font-size: 22px; color: #EA7373; vertical-align: middle">help</i></button>
 
     {% set i = 0 %}
     {% for form in forms %}

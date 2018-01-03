@@ -38,6 +38,17 @@
           "type": "zip"
         }
       }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "DoclerLabs/Protip",
+        "version": "1.4.1",
+        "dist": {
+          "url": "https://github.com/DoclerLabs/Protip/archive/master.zip",
+          "type": "zip"
+        }
+      }
     }
   ],
   "require": {
@@ -67,7 +78,8 @@
     "chromawoods/instaFilta": "^1.4.4",
     "botmonster/jquery-bootpag": "^1.0.7",
     "twig/extensions": "^1.5",
-    "huynguyen/bootstrap-tagsinput": "^0.4.2"
+    "huynguyen/bootstrap-tagsinput": "^0.4.2",
+    "DoclerLabs/Protip": "^1.4.1"
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",
