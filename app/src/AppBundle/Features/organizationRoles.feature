@@ -32,6 +32,14 @@ Feature: When I go to organization's roles
     And I press "clear"
     Then I should not see "Create role"
 
+  @wip
+  Scenario: Separated forms (accordion)
+    Given I should see "Brand new role"
+    And I should see "Second brand new role"
+    When I click on accordion "Brand new role"
+    And I click the 'i[data-behattarget="update_1"]' element
+    Then the "Name" field should contain "Brand new role"
+
 #  FIXME valamikor
 #  Scenario: Delete role
 #    Given I should see "Second brand new role"
