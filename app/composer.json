@@ -93,7 +93,8 @@
     "squizlabs/php_codesniffer": "^2.8",
     "escapestudios/symfony2-coding-standard": "^2.10",
     "bex/behat-screenshot": "^1.2",
-    "bex/behat-screenshot-image-driver-unsee": "^1.0"
+    "bex/behat-screenshot-image-driver-unsee": "^1.0",
+    "jakub-onderka/php-var-dump-check": "dev-master"
   },
   "scripts": {
     "symfony-scripts": [
