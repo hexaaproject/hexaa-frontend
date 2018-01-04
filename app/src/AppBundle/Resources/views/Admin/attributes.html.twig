@@ -59,32 +59,32 @@
     <div class="col-sm-11 col-sm-offset-2">
         <div class="createAttributeSpec hidden" id="createAttributeSpecBlock">
             {{ form_start(formCreateAttributeSpec) }}
-            <div class="header" style="padding-top:0.5em">
+            <div class="header">
                 Create Attribute Specification
                 <div class="pull-right">
                     <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i
-                                class="material-icons">cancel</i></button>
+                                class="material-icons">clear</i></button>
                     <button type="submit" id="submitbutton" class="actionbutton"><i class="material-icons">done</i>
                     </button>
                 </div>
 
             </div>
-            <div>
+            <div class="row">
                 {{ form_row(formCreateAttributeSpec.attributeSpecName) }}
             </div>
-            <div>
+            <div class="row" >
                 {{ form_row(formCreateAttributeSpec.attributeSpecURI) }}
             </div>
-            <div>
+            <div class="row" >
                 {{ form_row(formCreateAttributeSpec.attributeSpecDescription) }}
             </div>
-            <div>
+            <div class="row" >
                 {{ form_row(formCreateAttributeSpec.attributeSpecMaintainer) }}
             </div>
-            <div>
+            <div class="row">
                 {{ form_row(formCreateAttributeSpec.attributeSpecSyntax) }}
             </div>
-            <div>
+            <div class="row">
                 {{ form_row(formCreateAttributeSpec.attributeSpecIsMultivalue) }}
             </div>
             {{ form_end(formCreateAttributeSpec) }}
