@@ -203,4 +203,24 @@ class FeatureContext extends MinkContext
         $element->click();
     }
 
+    /**
+     *
+     * elements with data-behattarget attribute at least aimable
+     *
+     * @When I click the :arg1 behat target
+     */
+    public function iClickTheBehatTarget($databehattarget)
+    {
+        $page = $this->getSession()->getPage();
+        $locator = '//i[@data-behattarget="'.$databehattarget.'"]';
+
+        $element = $page->find('xpath', $locator);
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('$locator')");
+        }
+
+        $element->click();
+    }
+
 }
