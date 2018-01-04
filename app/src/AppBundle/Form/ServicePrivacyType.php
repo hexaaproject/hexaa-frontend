@@ -25,9 +25,9 @@ class ServicePrivacyType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "URL",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'data' => $datas['data']['properties']['servicePrivacyURL'],
-                    'attr' => array('class' => 'pull-right'),
+                    'attr' => array('class' => 'col-sm-11'),
                     'required' => false,
                 )
             )
@@ -36,9 +36,9 @@ class ServicePrivacyType extends AbstractType
                 TextareaType::class,
                 array(
                     "label" => "Description",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'data' => $datas['data']['properties']['servicePrivacyDescription'],
-                    'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
+                    'attr' => array('class' => 'col-sm-11', 'cols' => '30', 'rows' => '1'),
                     'required' => false,
                 )
             );

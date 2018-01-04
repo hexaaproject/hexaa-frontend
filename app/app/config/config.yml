@@ -113,6 +113,14 @@ assetic:
             inputs:
                 - "%kernel.root_dir%/../vendor/huynguyen/bootstrap-tagsinput/dist/bootstrap-tagsinput.css"
             filters: [cssrewrite]
+        protip_min_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/DoclerLabs/Protip/protip.min.js"
+        protip_min_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/DoclerLabs/Protip/protip.min.css"
+            filters: [cssrewrite]
+
 
 
 # Doctrine Configuration
