@@ -175,8 +175,8 @@
 
                             <div class="{{ hasErrors?"hasErrors":"" }} hidden accordion-editform">
                                 <div class="pull-right">
-                                    <i class="material-icons accordion-button accordion_edit_cancel_button">clear</i>
-                                    <i class="material-icons accordion-button accordion_edit_submit_button">done</i>
+                                    <i data-behattarget="cancel_{{ loop.index }}" role="button" class="material-icons accordion-button accordion_edit_cancel_button">clear</i>
+                                    <i data-behattarget="submit_{{ loop.index }}" role="button" class="material-icons accordion-button accordion_edit_submit_button">done</i>
                                 </div>
                                 {{ form(item.form) }}
                             </div>
