@@ -29,8 +29,8 @@ class ServiceCreatePermissionSetType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Name",
-                    "label_attr" => array('class' => 'formlabel'),
-                    'attr' => array('class' => 'pull-right'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
+                    'attr' => array('class' => 'col-sm-11 pull-right'),
                     'required' => true,
                 )
             )
@@ -39,8 +39,8 @@ class ServiceCreatePermissionSetType extends AbstractType
                 TextareaType::class,
                 array(
                     "label" => "Description",
-                    "label_attr" => array('class' => 'formlabel'),
-                    'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
+                    'attr' => array('class' => 'col-sm-11 pull-right', 'cols' => '30', 'rows' => '1'),
                     'required' => false,
                 )
             )
@@ -49,7 +49,7 @@ class ServiceCreatePermissionSetType extends AbstractType
                 ChoiceType::class,
                 array(
                     "label" => "Type",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'choices' => array('private' => 'private', 'public' => 'public'),
                     'multiple' => false,
                     'expanded' => true,

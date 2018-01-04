@@ -1,9 +1,28 @@
 form[name="admin_attribute_spec"]{
+}
+
+#createAttributeSpecBlock {
     border: 2px solid #61AFC5;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    padding-left: 10px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     padding-right: 10px;
+}
+
+.formlabel {
+    font-size: medium;
+    display: inline;
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+    margin-top: 5px;
+}
+
+#createAttributeSpecBlock .form-group {
+    margin-bottom: 0em;
+}
+
+.radio {
+    margin-right: 10px;
 }
 
 .loader span {
@@ -16,7 +35,7 @@ form[name="admin_attribute_spec"]{
 }
 
 form[name="admin_attribute_spec"] .form-group{
-    padding-right: 60px;
+    padding-right: 110px;
 }
 
 #admin_attribute_spec_attributeSpecName, #admin_attribute_spec_attributeSpecURI, #admin_attribute_spec_attributeSpecDescription{
@@ -40,10 +59,10 @@ form[name="admin_attribute_spec"] .form-group{
 form[name="admin_attribute_spec"] .header{
     text-align: left;
     color: #61AFC5;
-    font-size: large;
+    font-size: x-large;
     font-weight: bold;
-    padding-bottom: 1.5em;
-    width: 630px;
+    padding-left: 20px;
+    padding-bottom: 0.5em;
 }
 
 .actionbutton{
@@ -67,4 +86,8 @@ form[name="admin_attribute_spec"] .header{
 
 #admin_attribute_spec_attributeSpecIsMultivalue .formlabel {
     padding-right: 19.2px;
+}
+
+#admin_attribute_spec_attributeSpecDescription {
+    resize: vertical;
 }

@@ -28,7 +28,7 @@ class AdminAttributeSpecType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Name",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'attr' => array('class' => 'pull-right'),
                     'required' => true,
                 )
@@ -38,7 +38,7 @@ class AdminAttributeSpecType extends AbstractType
                 TextareaType::class,
                 array(
                     "label" => "Description",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
                     'required' => false,
                 )
@@ -48,7 +48,7 @@ class AdminAttributeSpecType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "OID",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'attr' => array('class' => 'pull-right'),
                     'required' => true,
                 )
@@ -59,7 +59,7 @@ class AdminAttributeSpecType extends AbstractType
                 array(
                     "label" => "Maintainer",
                     "data" => "user",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'choices' => array('user' => 'user', 'manager' => 'manager'),
                     'multiple' => false,
                     'expanded' => true,
@@ -72,7 +72,7 @@ class AdminAttributeSpecType extends AbstractType
                 array(
                     "label" => "Syntax",
                     "data" => "string",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'choices' => array('string' => 'string', 'base64' => 'base64'),
                     'multiple' => false,
                     'expanded' => true,
@@ -85,7 +85,7 @@ class AdminAttributeSpecType extends AbstractType
                 array(
                     "label" => "Multivalue",
                     "data" => true,
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'choices' => array('true' => true, 'false' => false),
                     'multiple' => false,
                     'expanded' => true,

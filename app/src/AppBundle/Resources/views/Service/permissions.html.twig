@@ -126,7 +126,7 @@
     <div class="col-sm-11 col-sm-offset-2">
         <div class="createPermission hidden" id="createPermissionBlock">
             {{ form_start(formCreatePermission) }}
-            <div class="header" style="padding-left: 6px;">
+            <div class="header">
                 Create Permission
                 <div class="pull-right">
                     <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i
@@ -136,15 +136,15 @@
                 </div>
 
             </div>
-            <div>
+            <div class="row">
                 {{ form_row(formCreatePermission.permissionName) }}
             </div>
-            <div>
+            <div class="row">
                 {{ form_label(formCreatePermission.permissionURL) }}
-                {{ uriprefix }}:{{ serviceID }}:
+                <div id="prefix">{{ uriprefix }}:{{ serviceID }}:</div>
                 {{ form_widget(formCreatePermission.permissionURL) }}
             </div>
-            <div>
+            <div class="row">
                 {{ form_row(formCreatePermission.permissionDescription) }}
             </div>
 
