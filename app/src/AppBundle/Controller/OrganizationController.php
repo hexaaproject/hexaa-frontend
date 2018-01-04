@@ -202,7 +202,7 @@ class OrganizationController extends BaseController
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
 
-                "roles" => $this->rolesToAccordion($roles, $id, $request),
+                "roles" => $this->rolesToAccordion($roles, $id, false, false, $request),
 
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -703,14 +703,15 @@ class OrganizationController extends BaseController
     }
 
     /**
-     * @Route("/{id}/roles/{action}", defaults={"action": false})
+     * @Route("/{id}/roles/{action}/{roleId}", defaults={"action": false, "roleId": false})
      * @Template()
      * @return Response
      * @param int     $id      Organization ID
      * @param string  $action  More action ex. create show create form
+     * @param int     $roleId  actual role id
      * @param Request $request Request
      */
-    public function rolesAction($id, $action, Request $request)
+    public function rolesAction($id, $action, $roleId, Request $request)
     {
         if (! in_array($action, array("false", "create"))) {
             $this->createNotFoundException("Invalid action in url: ".$action);
@@ -718,7 +719,7 @@ class OrganizationController extends BaseController
 
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
-        $rolesAccordion = $this->rolesToAccordion($roles, $id, $request);
+        $rolesAccordion = $this->rolesToAccordion($roles, $id, $action, $roleId, $request);
 
         $form = $this->createForm(
             OrganizationRoleType::class,
@@ -1084,11 +1085,13 @@ class OrganizationController extends BaseController
     /**
      * @param array   $roles
      * @param int     $orgId
+     * @param string  $action
+     * @param int     $roleId
      * @param Request $request
      *
      * @return array
      */
-    private function rolesToAccordion($roles, $orgId, Request $request)
+    private function rolesToAccordion($roles, $orgId, $action, $roleId, Request $request)
     {
         $rolesAccordion = array();
         foreach ($roles as $role) {
@@ -1099,7 +1102,7 @@ class OrganizationController extends BaseController
                 OrganizationRoleUpdateType::class,
                 $role,
                 array(
-                    "action" => $this->generateUrl("app_organization_roles", array("id" => $orgId)),
+                    "action" => $this->generateUrl("app_organization_roles", array("id" => $orgId, "action" => "update", "roleId" => $role['id'])),
                 )
             );
 
@@ -1129,8 +1132,10 @@ class OrganizationController extends BaseController
                 ),
             );
 
+            if ($roleId == $role['id']) { // csak akkor dolgozzuk fel, ha erről a role-ról van szó.
+                $form->handleRequest($request);
+            }
 
-            $form->handleRequest($request);
             if ($form->isValid() and $form->isSubmitted()) {
                 $data = $form->getData();
                 $roleResource = $this->get('role');
