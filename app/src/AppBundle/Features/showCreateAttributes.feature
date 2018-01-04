@@ -29,5 +29,5 @@ Feature: When I go to admin's attributes
 
     When I press "Create"
     And I fill in "Name" with "Color"
-    And I press "cancel"
+    And I press "clear"
     Then I should not see "Color"
