@@ -32,15 +32,21 @@ Feature: When I go to organization's roles
     And I press "clear"
     Then I should not see "Create role"
 
-#  FIXME valamikor
-#  Scenario: Delete role
-#    Given I should see "Second brand new role"
-#    When I click on accordion "Second brand new role"
-#    Then I should see "Permissions"
-#    # nem tudom rendesen megcélozni
-#    When I click the "i[data-id=4]" element
-#    And I wait for "Are you sure?" to appear
-#    And I press "Delete"
-#    Then I should see "Success"
-#    And I should not see "Second brand new role"
+  Scenario: Separated forms (accordion)
+    Given I should see "Brand new role"
+    And I should see "Second brand new role"
+    When I click on accordion "Brand new role"
+    Then I should see "Permission"
+    When I click the "update_1" behat target
+#    Then the "Name" field should contain "Brand new role"
+
+  Scenario: Delete role
+    Given I should see "Second brand new role"
+    When I click on accordion "Second brand new role"
+    Then I should see "Permissions"
+    When I click the "delete_2" behat target
+    And I wait for "Are you sure?" to appear
+    And I press "Delete"
+    Then I should see "Success"
+    And I should not see "Second brand new role"
 
