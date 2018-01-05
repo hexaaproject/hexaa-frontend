@@ -1,4 +1,8 @@
 {% extends "base.html.twig" %}
+{% block container %}
+
+    {% endblock %}
+
 {% block body %}
     {% set hasServices = services.items is defined and services.item_number > 0 %}
     {% if not hasServices %}
@@ -52,11 +56,13 @@
                 <div {% if hasServices %} class="col tablemain" style="border: 1px solid #61AFC5;" {% else %} class="col-sm-5 tablemain" style=" padding: 1em; border: 1px solid #61AFC5; width: 300px;" {% endif %}>
                     <div id="orgtablemain">
                         <div id="orgtableheader" class="tableheader"><b>ORGANIZATIONS</b></div>
+                        <input id="hexaaSearchFieldOrg" type="text" name="filter" class="hexaaSearchField pull-left" placeholder="Search organization">
+                        <br><br>
                         {% if organizations.items == null %}
                             <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
                         {% endif %}
                         {% for organization in organizations.items %}
-                            <div id="orgtablecontent"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
+                            <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
                         {% endfor %}
                     </div>
                 </div>
@@ -66,9 +72,11 @@
                     <div class="col tablemain" style="border: 1px solid #FA8072; margin-right: 5px;">
                         <div id="servtablemain">
                             <div id="servtableheader" class="tableheader"><b>SERVICES</b></div>
+                            <input id="hexaaSearchFieldServ" type="text" name="filter" class="hexaaSearchField pull-left" placeholder="Search service">
+                            <br><br>
                             {% for service in services.items %}
-                                <div id="servtablecontent"><a href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|truncate(25) }}</a></div>
-                                {% endfor %}
+                                <div id="servtablecontent" class="servs"><a href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|truncate(25) }}</a></div>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
@@ -84,4 +92,19 @@
             </div>
         </div>
     </div>
+
+    {% block javascript %}
+        {% javascripts
+        '@instafilta_js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script>
+            $(document).ready(function () {
+                $('#hexaaSearchFieldOrg').instaFilta({targets:'.orgs'});
+                $('#hexaaSearchFieldServ').instaFilta({targets:'.servs'});
+            });
+        </script>
+    {% endblock %}
+
 {% endblock %}
