@@ -44,25 +44,24 @@
         <div class="text-center progressbar-order">Enter your service's main parameters
         </div>
         <fieldset id="createServiceFormFields">
-            {{ form_row(form.name) }}
-            <br><br>
-            {{ form_row(form.description) }}
-            <br><br>
-            {{ form_row(form.url) }}
-            <br><br>
-            <div id="scrollable-dropdown-menu">
-            {{ form_row(form.entityid) }}
-            </div>
+            {% for key, field in form  %}
+                {% if field.vars.name == 'name' or field.vars.name == 'description' or field.vars.name == 'url' %}
+                    {{ form_widget(field) }}
 
-            {#{% for key, field in form  %}
-                {% if field.vars.name == 'name' %}
-            {{ form_label(field) }}
-            {{ form_widget(field) }}
-            {% if field.vars.valid|length %}
-                <div class="col-sm-offset-3 col-sm-11 has-error">{{ field.vars.valid|length }}</div>
-            {% endif %}
-            {% endif %}
-            {% endfor %}#}
+                    {% if field.vars.errors|length %}
+                        <div class="col-sm-offset-4 col-sm-11 has-error"><i class="material-icons">error</i> {{ field.vars.errors}}</div>
+                    {% endif %}
+                {% endif %}
+                {% if field.vars.name == 'entityid' %}
+                    <div id="scrollable-dropdown-menu">
+                        {{ form_widget(field) }}
+
+                        {% if field.vars.errors|length %}
+                            <div class="col-sm-offset-4 col-sm-11 has-error"><i class="material-icons">error</i> {{ field.vars.errors}}</div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
 
         </fieldset>
     </div>
@@ -84,11 +83,14 @@
 
         <div class="text-center progressbar-order">Create your entitlements of your service</div>
         <fieldset>
-            {{ form_row(form.entitlement) }}
-            <br><br>
-            {{ form_row(form.entitlementplus1) }}
-            <br><br>
-            {{ form_row(form.entitlementplus2) }}
+            {% for key, field in form  %}
+                {% if field.vars.name == 'entitlement' or field.vars.name == 'entitlementplus1' or field.vars.name == 'entitlementplus2' %}
+                    {{ form_widget(field) }}
+                        {% if field.vars.errors|length %}
+                            <div class="col-sm-offset-4 col-sm-11 has-error"><i class="material-icons">error</i> {{ field.vars.errors}}</div>
+                        {% endif %}
+                {% endif %}
+            {% endfor %}
         </fieldset>
     </div>
 
@@ -101,39 +103,6 @@
     {% endjavascripts %}
 
     {{ form_javascript(form) }}
-
-    <script>
-       /* var form  = document.getElementsByTagName('form')[0];
-        var name = $('#service_name');
-        console.log(name);
-        var error = document.querySelector('.error');
-
-        $('#service_name').bind("input", function (event) {
-            console.log('OJAJAJ');
-            // Each time the user types something, we check if the
-            // email field is valid.
-            if ( $('#service_name').validity.valid) {
-                console.log('HAHOÓÓÓ');
-                // In case there is an error message visible, if the field
-                // is valid, we remove the error message.
-                error.innerHTML = ""; // Reset the content of the message
-                error.className = "error"; // Reset the visual state of the message
-            }
-        }, false);
-        $('form[name="service"]').bind("submit", function (event) {
-            // Each time the user tries to send the data, we check
-            // if the email field is valid.
-            if (!name.validity.valid) {
-
-                // If the field is not valid, we display a custom
-                // error message.
-                error.innerHTML = "I expect an e-mail, darling!";
-                error.className = "error active";
-                // And we prevent the form from being sent by canceling the event
-                event.preventDefault();
-            }
-        }, false);*/
-    </script>
 
 {% endblock %}
 
