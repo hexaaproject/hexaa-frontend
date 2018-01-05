@@ -10,6 +10,10 @@ body {
     text-align: center;
 }
 
+#hexaaSearchFieldServ {
+    border: 2px solid #FA8072;
+}
+
 .desktopbutton{
     font-size: x-large;
 }
@@ -133,8 +137,8 @@ div.hr {
 }
 
 .tablemain > div {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #orgtablecontent, #servtablecontent {
