@@ -12,7 +12,7 @@
 
 {% block container %}
 
-   {# {% for flashMessage in app.session.flashbag.get('error') %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
         <div class="flash-error flash">
             <h4>There was some failure!</h4>
             {{ flashMessage|raw }}
@@ -23,8 +23,9 @@
             {{ flashMessage|raw }}
         </div>
     {% endfor %}
-#}
+
     {{ form_start(form) }}
+
     <div id="first" class="progresswrapper">
         <div class="row">
             <div class="col-md-11 col-md-offset-2">
@@ -43,37 +44,16 @@
         <div class="text-center progressbar-order">Enter your service's main parameters
         </div>
         <fieldset id="createServiceFormFields">
-            {% for key, field in form  %}
-                {% if field.vars.name == 'name' or field.vars.name == 'description' or field.vars.name == 'url' %}
-                    {{ form_widget(field) }}
-
-                    {% if field.vars.errors|length %}
-                        <div class="col-sm-offset-4 col-sm-11 has-error"><i class="material-icons">error</i> {{ field.vars.errors}}</div>
-                    {% endif %}
-                {% endif %}
-                {% if field.vars.name == 'entityid' %}
-                    <div id="scrollable-dropdown-menu">
-                        {{ form_widget(field) }}
-
-                        {% if field.vars.errors|length %}
-                            <div class="col-sm-offset-4 col-sm-11 has-error"><i class="material-icons">error</i> {{ field.vars.errors}}</div>
-                        {% endif %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-
-       {#{{ form_row(form.name) }}#}
+            {{ form_row(form.name) }}
             <br><br>
-            {#{{ form_row(form.description) }}
+            {{ form_row(form.description) }}
             <br><br>
             {{ form_row(form.url) }}
             <br><br>
             <div id="scrollable-dropdown-menu">
             {{ form_row(form.entityid) }}
-            </div>#}
-            {#{% if form.vars.errors|length %}
-                <div class="col-sm-offset-4 col-sm-11 has-error">{{ form.vars.errors }}</div>
-            {% endif %}#}
+            </div>
+
             {#{% for key, field in form  %}
                 {% if field.vars.name == 'name' %}
             {{ form_label(field) }}
@@ -104,19 +84,11 @@
 
         <div class="text-center progressbar-order">Create your entitlements of your service</div>
         <fieldset>
-            {% for key, field in form  %}
-                {% if field.vars.name == 'entitlement' or field.vars.name == 'entitlementplus1' or field.vars.name == 'entitlementplus2' %}
-                    {{ form_widget(field) }}
-                        {% if field.vars.errors|length %}
-                            <div class="col-sm-offset-4 col-sm-11 has-error"><i class="material-icons">error</i> {{ field.vars.errors}}</div>
-                        {% endif %}
-                {% endif %}
-            {% endfor %}
-            {#{{ form_row(form.entitlement) }}
+            {{ form_row(form.entitlement) }}
             <br><br>
             {{ form_row(form.entitlementplus1) }}
             <br><br>
-            {{ form_row(form.entitlementplus2) }}#}
+            {{ form_row(form.entitlementplus2) }}
         </fieldset>
     </div>
 
@@ -168,12 +140,6 @@
 {% block javascripts %}
     <script>
         {{ include('::progressbar.js.twig') }}
-
-        $( document ).ready(function() {
-            {% if click == "true" %}
-                $('#next-1').click();
-            {% endif %}
-        });
     </script>
 {% endblock %}
 
