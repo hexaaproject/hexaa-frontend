@@ -406,13 +406,6 @@ class ServiceController extends Controller
                 $headerspartsary = explode("/", $headers[0]);
                 $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
 
-                if (! ($form['name']->getErrors() and $form['entityid']->getErrors() and $form['description']->getErrors() and $form['url']->getErrors())) {
-                    if ($form['entitlement']->getErrors() or $form['entitlementplus1']->getErrors() or $form['entitlementplus2']->getErrors()) {
-                        dump('sndjdsnjsandjkasndkjsandjksandjkas');
-                        $click = "true";
-                    }
-                }
-
                 return $this->redirect($this->generateUrl(
                     'app_service_createemail',
                     array('servid' => $servid, 'token' => $getlink['token'], 'entity' =>  $dataToBackend["entityid"], 'click' => $click)
