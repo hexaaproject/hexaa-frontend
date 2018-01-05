@@ -30,7 +30,7 @@ class ServiceType extends AbstractType
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Name of service",
-                        "class" => "col-md-5 col-md-offset-5",
+                        "class" => "col-md-5 col-md-offset-5 createform",
                     ),
                     "required" => true,
                 )
@@ -42,22 +42,22 @@ class ServiceType extends AbstractType
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "Description of service",
-                        "class" => "col-md-5 col-md-offset-5",
+                        "class" => "col-md-5 col-md-offset-5 createform ",
                     ),
                     "required" => false,
                 )
             )
             ->add(
                 'url',
-                UrlType::class,
+                TextType::class,
                 array(
                     "label" => false,
                     "attr" => array(
                         "placeholder" => "URL of service",
-                        "class" => "col-md-5 col-md-offset-5",
+                        "class" => "col-md-5 col-md-offset-5 createform ",
                     ),
                     "required" => false,
-                    "constraints" => new Constraints\Url(),
+                    /*"constraints" => new Constraints\Url(),*/
                 )
             )
            ->add(
@@ -72,6 +72,7 @@ class ServiceType extends AbstractType
                    'source' => $entityidsarray['data'],
                    "attr" => array(
                        "class" => "entityidtypeahead",
+                       "id" => "scrollable-dropdown-menu",
                    ),
                    'required' => true,
                    'limit' => 30,
@@ -87,7 +88,7 @@ class ServiceType extends AbstractType
                     'data' => 'Default permission',
                     //       'placeholder' => 'Name of default permission',
                     'attr' => array(
-                        'class' => "col-md-5 col-md-offset-5",
+                        'class' => "col-md-5 col-md-offset-5 createform ",
                     ),
                 )
             )
@@ -98,7 +99,7 @@ class ServiceType extends AbstractType
                     "label" => false,
                     'required' => false,
                     'attr' => array(
-                        'class' => "col-md-5 col-md-offset-5",
+                        'class' => "col-md-5 col-md-offset-5 createform ",
                         'placeholder' => 'optional permission name 1',
                     ),
                 )
@@ -110,7 +111,7 @@ class ServiceType extends AbstractType
                     "label" => false,
                     'required' => false,
                     'attr' => array(
-                        'class' => "col-md-5 col-md-offset-5",
+                        'class' => "col-md-5 col-md-offset-5 createform",
                         'placeholder' => 'optional permission name 2',
                     ),
                 )
