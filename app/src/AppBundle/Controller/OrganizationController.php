@@ -842,10 +842,17 @@ class OrganizationController extends BaseController
         }
 
         $principalentitlements = $this->get('principal')->getEntitlements();
+        $organizationentitlements = $this->get('organization')->getEntitlements($id);
         foreach ($entitlementsunique as $entitlementunique) {
-            $entitlement = $this->get('entitlement')->get($entitlementunique);
-            if (empty($entitlements)) {
+            $entitlement = null;
+            foreach ($organizationentitlements['items'] as $organizationentitlement) {
+                if ($entitlementunique == $organizationentitlement['id']) {
+                    $entitlement = $organizationentitlement ;
+                }
             }
+            /*$entitlement = $this->get('entitlement')->get($entitlementunique);
+            if (empty($entitlements)) {
+            }*/
             //dump($entitlements);exit;
             if (!in_array($entitlement, $entitlements)) {
                 array_push($entitlements, $entitlement);
