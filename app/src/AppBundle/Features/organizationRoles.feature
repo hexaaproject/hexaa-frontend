@@ -36,9 +36,15 @@ Feature: When I go to organization's roles
     Given I should see "Brand new role"
     And I should see "Second brand new role"
     When I click on accordion "Brand new role"
-    Then I should see "Permission"
+    Then I should see "Permissions"
     When I click the "update_1" behat target
-#    Then the "Name" field should contain "Brand new role"
+    Then the "organization_role_update_name" field should contain "Brand new role"
+    When I fill in "organization_role_update_name" with "Updated brand new role"
+    And I click the "submit_1" behat target
+    Then I should see "Roles"
+    When I click on accordion "Brand new role"
+    And I click on accordion "Second brand new role"
+    Then I should not see "done"
 
   Scenario: Delete role
     Given I should see "Second brand new role"

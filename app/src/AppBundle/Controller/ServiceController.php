@@ -26,7 +26,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Devmachine\Bundle\FormBundle\Form\Type\TypeaheadType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use WebDriver\Exception;
-use Symfony\Component\Form\FormError;
 
 /**
  * @Route("/service")
@@ -169,11 +168,10 @@ class ServiceController extends Controller
     /**
      * @Route("/create")
      * @Template()
-     * @param   Request $request request
-     * @param   bool    $click
      * @return \Symfony\Component\HttpFoundation\Response
+     * @param   Request $request request
      */
-    public function createAction(Request $request, $click = "false")
+    public function createAction(Request $request)
     {
         $services = $this->getServices();
         $servicesNames = array();
@@ -189,33 +187,26 @@ class ServiceController extends Controller
         }
 
         $form = $this->createForm(ServiceType::class, $entityidsarray);
+
         $form->handleRequest($request);
 
         $emailForm = null;
-        $click = "false";
 
         try {
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
 
                 $dataToBackend = $data;
-                $firstpageerror = "false";
+
 
                 foreach ($services['items'] as $service) {
                     if (strtolower($service['name']) == strtolower($dataToBackend["name"])) {
-                        $form["name"]->addError(new FormError('Service name is case insensitive! This name already exists!'));
-                        $firstpageerror = "true";
+                        throw new \Exception('Service name is case insensitive! This name already exists!');
                     }
                 }
 
                 if (strlen($dataToBackend['name']) < 3) {
-                    $form["name"]->addError(new FormError('This name of service has to be at least three character long!'));
-                    $firstpageerror = "true";
-                }
-
-                if ($dataToBackend['entityid'] == null) {
-                    $form["entityid"]->addError(new FormError('Invalid choosen!'));
-                    $firstpageerror = "true";
+                    throw new \Exception('This name of service has to be at least three character long!');
                 }
 
                 $withoutAccent = $this->removeAccents($dataToBackend['entitlement']);
@@ -226,104 +217,34 @@ class ServiceController extends Controller
                 $modifiedNamePlus2 = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccentPlus2);
 
                 if ($modifiedName == null) {
-                    $form["entitlement"]->addError(new FormError('First field must be fill out!'));
-                    if ($firstpageerror == "false" && $click != "true") {
-                        $click = "true";
-                    }
-                }
-
-                if ($modifiedName != null) {
-                    if (strlen($modifiedName) < 3) {
-                        $form["entitlement"]->addError(new FormError('This name of entitlement has to be at least three character long!'));
-                        if ($firstpageerror == "false" && $click != "true") {
-                            $click = "true";
-                        }
-                    }
+                    throw new \Exception('First field must be fill out!');
                 }
 
                 if ($modifiedNamePlus1 != null) {
                     if (strtolower($modifiedName) == strtolower($modifiedNamePlus1)) {
-                        $form["entitlementplus1"]->addError(new FormError('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!'));
-                        if ($firstpageerror == "false" && $click != "true") {
-                            $click = "true";
-                        }
-                    }
-                    if (strlen($modifiedNamePlus1) < 3) {
-                        $form["entitlementplus1"]->addError(new FormError('This name of entitlement has to be at least three character long!'));
-                        if ($firstpageerror == "false" && $click != "true") {
-                            $click = "true";
-                        }
+                        throw new \Exception('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!');
                     }
                 }
 
                 if ($modifiedNamePlus2 != null) {
                     if (strtolower($modifiedName) == strtolower($modifiedNamePlus2)) {
-                        $form["entitlementplus2"]->addError(new FormError('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!'));
-                        if ($firstpageerror == "false" && $click != "true") {
-                            $click = "true";
-                        }
-                    }
-                    if (strlen($modifiedNamePlus2) < 3) {
-                        $form["entitlementplus2"]->addError(new FormError('This name of entitlement has to be at least three character long!'));
-                        if ($firstpageerror == "false" && $click != "true") {
-                            $click = "true";
-                        }
+                        throw new \Exception('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!');
                     }
                 }
 
                 if ($modifiedNamePlus1 != null && $modifiedNamePlus2 != null) {
                     if (strtolower($modifiedNamePlus1) == strtolower($modifiedNamePlus2)) {
-                        $form["entitlementplus2"]->addError(new FormError('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!'));
-                        if ($firstpageerror == "false" && $click != "true") {
-                            $click = "true";
-                        }
+                        throw new \Exception('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!');
                     }
                 }
 
-                $errors = array();
-
-                foreach ($form['name']->getErrors() as $key => $error) {
-                     array_push($errors, $error->getMessage());
-                }
-
-                foreach ($form['url']->getErrors() as $key => $error) {
-                    array_push($errors, $error->getMessage());
-                }
-
-                foreach ($form['description']->getErrors() as $key => $error) {
-                    array_push($errors, $error->getMessage());
-                }
-
-                foreach ($form['entityid']->getErrors() as $key => $error) {
-                    array_push($errors, $error->getMessage());
-                }
-
-                foreach ($form['entitlement']->getErrors() as $key => $error) {
-                    array_push($errors, $error->getMessage());
-                }
-
-                foreach ($form['entitlementplus1']->getErrors() as $key => $error) {
-                    array_push($errors, $error->getMessage());
-                }
-
-                foreach ($form['entitlementplus2']->getErrors() as $key => $error) {
-                    array_push($errors, $error->getMessage());
-                }
-
-                foreach ($errors as $error) {
-                    $form->addError(new FormError($error));
-                    throw new \Exception();
-                }
-
                 // create service
-                if ($dataToBackend['entityid'] != null) {
-                    $service = $this->get('service')->create(
-                        $dataToBackend["name"],
-                        $dataToBackend["description"],
-                        $dataToBackend["url"],
-                        $dataToBackend["entityid"]
-                    );
-                }
+                $service = $this->get('service')->create(
+                    $dataToBackend["name"],
+                    $dataToBackend["description"],
+                    $dataToBackend["url"],
+                    $dataToBackend["entityid"]
+                );
 
                 $servid = $service['id'];
 
@@ -408,11 +329,15 @@ class ServiceController extends Controller
 
                 return $this->redirect($this->generateUrl(
                     'app_service_createemail',
-                    array('servid' => $servid, 'token' => $getlink['token'], 'entity' =>  $dataToBackend["entityid"], 'click' => $click)
+                    array('servid' => $servid, 'token' => $getlink['token'], 'entity' =>  $dataToBackend["entityid"])
                 ));
             }
         } catch (\Exception $e) {
+         // dump($form['name']->getErrors());
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
         }
+
+        //dump($form['name']->getErrors());
 
         return $this->render(
             'AppBundle:Service:create.html.twig',
@@ -421,7 +346,6 @@ class ServiceController extends Controller
                 'organizations' => $this->getOrganizations(),
                 'services' => $this->getServices(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                'click' => $click,
                 )
         );
     }
@@ -433,9 +357,8 @@ class ServiceController extends Controller
      * @param   string  $servid  Service ID
      * @param   string  $token   generatedtoken
      * @param   Request $request request
-     * @param   bool    $click
      */
-    public function createEmailAction($servid, $token, Request $request, $click = "false")
+    public function createEmailAction($servid, $token, Request $request)
     {
         $service = $this->getService($servid);
         $entityids = $this->get('entity_id')->cget();
@@ -486,7 +409,6 @@ class ServiceController extends Controller
                     'organizations' => $this->getOrganizations(),
                     'services' => $this->getServices(),
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                    'click' => $click,
                 )
             );
         }
@@ -499,7 +421,6 @@ class ServiceController extends Controller
                   'organizations' => $this->getOrganizations(),
                   'services' => $this->getServices(),
                   "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                  'click' => $click,
               )
           );
     }

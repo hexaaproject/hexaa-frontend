@@ -12,7 +12,7 @@
 
 {% block container %}
 
-   {# {% for flashMessage in app.session.flashbag.get('error') %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
         <div class="flash-error flash">
             <h4>There was some failure!</h4>
             {{ flashMessage|raw }}
@@ -23,8 +23,9 @@
             {{ flashMessage|raw }}
         </div>
     {% endfor %}
-#}
+
     {{ form_start(form) }}
+
     <div id="first" class="progresswrapper">
         <div class="row">
             <div class="col-md-11 col-md-offset-2">
@@ -108,12 +109,6 @@
 {% block javascripts %}
     <script>
         {{ include('::progressbar.js.twig') }}
-
-        $( document ).ready(function() {
-            {% if click == "true" %}
-                $('#next-1').click();
-            {% endif %}
-        });
     </script>
 {% endblock %}
 

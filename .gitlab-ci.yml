@@ -50,6 +50,7 @@ code_style_check:
   script:
     - docker run -d --name project.local $CONTAINER_TEST_IMAGE
     - docker exec -t project.local /var/www/project/phpcs.sh
+    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/var-dump-check --no-colors --symfony --exclude /var/www/project/vendor /var/www/project'
   tags:
     - dind
 

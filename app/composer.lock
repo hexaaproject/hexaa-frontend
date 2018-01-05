@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e142d56a39b3d86955a7d10785ebbf29",
-    "content-hash": "8ebe9cc648821119482e8a1c0cb9bae6",
+    "content-hash": "ac852c04f7554ba8000a78cf192ec967",
     "packages": [
         {
             "name": "DoclerLabs/Protip",
@@ -80,7 +79,7 @@
             ],
             "description": "jQuery JavaScript Library",
             "homepage": "http://jquery.com",
-            "time": "2017-03-21 07:01:49"
+            "time": "2017-03-21T07:01:49+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -136,7 +135,7 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2017-11-29 09:37:33"
+            "time": "2017-11-29T09:37:33+00:00"
         },
         {
             "name": "datatables/datatables",
@@ -159,7 +158,7 @@
             ],
             "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.",
             "homepage": "http://www.datatables.net/",
-            "time": "2017-08-31 13:52:17"
+            "time": "2017-08-31T13:52:17+00:00"
         },
         {
             "name": "devmachine/form-bundle",
@@ -215,7 +214,7 @@
                 "form",
                 "typeahead"
             ],
-            "time": "2017-09-25 12:22:15"
+            "time": "2017-09-25T12:22:15+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -283,7 +282,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2017-02-24 16:22:25"
+            "time": "2017-02-24T16:22:25+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -353,7 +352,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2017-07-22 12:49:21"
+            "time": "2017-07-22T12:49:21+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -420,7 +419,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2017-01-03 10:49:41"
+            "time": "2017-01-03T10:49:41+00:00"
         },
         {
             "name": "doctrine/common",
@@ -493,7 +492,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2017-07-22 08:35:12"
+            "time": "2017-07-22T08:35:12+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -564,7 +563,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-07-22 20:44:48"
+            "time": "2017-07-22T20:44:48+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -649,7 +648,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2017-11-24 13:09:19"
+            "time": "2017-11-24T13:09:19+00:00"
         },
         {
             "name": "doctrine/doctrine-cache-bundle",
@@ -737,7 +736,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2017-10-12 17:23:29"
+            "time": "2017-10-12T17:23:29+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -804,7 +803,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2017-07-22 12:18:28"
+            "time": "2017-07-22T12:18:28+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -858,7 +857,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14 21:17:01"
+            "time": "2015-06-14T21:17:01+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -912,7 +911,7 @@
                 "lexer",
                 "parser"
             ],
-            "time": "2014-09-09 13:34:57"
+            "time": "2014-09-09T13:34:57+00:00"
         },
         {
             "name": "doctrine/orm",
@@ -988,7 +987,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2017-12-17 02:57:51"
+            "time": "2017-12-17T02:57:51+00:00"
         },
         {
             "name": "drmonty/datatables-plugins",
@@ -1331,7 +1330,7 @@
                 "sort",
                 "table"
             ],
-            "time": "2017-09-04 07:05:16"
+            "time": "2017-09-04T07:05:16+00:00"
         },
         {
             "name": "eightpoints/guzzle-bundle",
@@ -1395,7 +1394,7 @@
                 "symfony",
                 "web service"
             ],
-            "time": "2016-12-30 13:35:37"
+            "time": "2016-12-30T13:35:37+00:00"
         },
         {
             "name": "eightpoints/guzzle-wsse-middleware",
@@ -1450,7 +1449,7 @@
                 "web service",
                 "wsse"
             ],
-            "time": "2016-06-03 14:03:33"
+            "time": "2016-06-03T14:03:33+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1515,7 +1514,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-06-22 18:50:49"
+            "time": "2017-06-22T18:50:49+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1566,7 +1565,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20 10:07:11"
+            "time": "2016-12-20T10:07:11+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1631,7 +1630,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-03-20 17:10:46"
+            "time": "2017-03-20T17:10:46+00:00"
         },
         {
             "name": "huynguyen/bootstrap-tagsinput",
@@ -1655,7 +1654,7 @@
                     "email": "huynguyen1059@gmail.com"
                 }
             ],
-            "time": "2015-01-01 07:00:57"
+            "time": "2015-01-01T07:00:57+00:00"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1706,7 +1705,7 @@
             "keywords": [
                 "parameters management"
             ],
-            "time": "2015-11-10 17:04:01"
+            "time": "2015-11-10T17:04:01+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1756,7 +1755,7 @@
                 "highlight",
                 "sql"
             ],
-            "time": "2014-01-12 16:20:24"
+            "time": "2014-01-12T16:20:24+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -1833,7 +1832,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2016-11-11 18:43:20"
+            "time": "2016-11-11T18:43:20+00:00"
         },
         {
             "name": "mervick/material-design-icons",
@@ -1872,7 +1871,7 @@
                 "material-design",
                 "web-font"
             ],
-            "time": "2016-02-22 01:05:40"
+            "time": "2016-02-22T01:05:40+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1950,7 +1949,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-06-19 01:22:40"
+            "time": "2017-06-19T01:22:40+00:00"
         },
         {
             "name": "niif/shib-auth-bundle",
@@ -1987,7 +1986,7 @@
                 }
             ],
             "description": "Shibboleth based (federated SAML) user authentication bundle",
-            "time": "2017-06-30 06:27:52"
+            "time": "2017-06-30T06:27:52+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -2035,7 +2034,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-09-27 21:40:39"
+            "time": "2017-09-27T21:40:39+00:00"
         },
         {
             "name": "psr/cache",
@@ -2081,7 +2080,7 @@
                 "psr",
                 "psr-6"
             ],
-            "time": "2016-08-06 20:24:11"
+            "time": "2016-08-06T20:24:11+00:00"
         },
         {
             "name": "psr/http-message",
@@ -2131,7 +2130,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "psr/log",
@@ -2178,7 +2177,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -2230,7 +2229,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2017-08-25 16:55:44"
+            "time": "2017-08-25T16:55:44+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -2300,7 +2299,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-12-14 19:03:23"
+            "time": "2017-12-14T19:03:23+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -2345,7 +2344,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-10-29 18:48:08"
+            "time": "2017-10-29T18:48:08+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2399,7 +2398,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2017-05-01 15:54:03"
+            "time": "2017-05-01T15:54:03+00:00"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -2469,7 +2468,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2017-07-14 07:26:46"
+            "time": "2017-07-14T07:26:46+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -2532,7 +2531,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-11-06 16:02:17"
+            "time": "2017-11-06T16:02:17+00:00"
         },
         {
             "name": "symfony/polyfill-apcu",
@@ -2588,7 +2587,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-intl-icu",
@@ -2646,7 +2645,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2705,7 +2704,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-php56",
@@ -2761,7 +2760,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-php70",
@@ -2820,7 +2819,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-util",
@@ -2872,7 +2871,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/swiftmailer-bundle",
@@ -2931,7 +2930,7 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2017-10-19 01:06:41"
+            "time": "2017-10-19T01:06:41+00:00"
         },
         {
             "name": "symfony/symfony",
@@ -3075,7 +3074,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-11-16 18:00:05"
+            "time": "2017-11-16T18:00:05+00:00"
         },
         {
             "name": "twbs/bootstrap",
@@ -3126,7 +3125,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2016-07-25 15:51:55"
+            "time": "2016-07-25T15:51:55+00:00"
         },
         {
             "name": "twig/extensions",
@@ -3182,7 +3181,7 @@
                 "i18n",
                 "text"
             ],
-            "time": "2017-06-08 18:19:53"
+            "time": "2017-06-08T18:19:53+00:00"
         },
         {
             "name": "twig/twig",
@@ -3248,7 +3247,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-09-27 18:10:31"
+            "time": "2017-09-27T18:10:31+00:00"
         },
         {
             "name": "twitter/typeahead.js",
@@ -3265,6 +3264,7 @@
                 "shasum": ""
             },
             "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3280,11 +3280,7 @@
                 "autocomplete",
                 "typeahead"
             ],
-            "support": {
-                "issues": "https://github.com/twitter/typeahead.js/issues",
-                "source": "https://github.com/twitter/typeahead.js/tree/v0.11.1"
-            },
-            "time": "2015-04-27 04:02:14"
+            "time": "2015-04-27T04:02:14+00:00"
         },
         {
             "name": "webfontkit/open-sans",
@@ -3307,7 +3303,7 @@
             ],
             "description": "Open Sans is a humanist sans serif typeface designed by Steve Matteson, Type Director of Ascender Corp. This version contains the complete 897 character set, which includes the standard ISO Latin 1, Latin CE, Greek and Cyrillic character sets. Open Sans was designed with an upright stress, open forms and a neutral, yet friendly appearance. It was optimized for print, web, and mobile interfaces, and has excellent legibility characteristics in its letterforms.",
             "homepage": "http://www.google.com/fonts/specimen/Open+Sans",
-            "time": "2014-08-20 20:43:34"
+            "time": "2014-08-20T20:43:34+00:00"
         }
     ],
     "packages-dev": [
@@ -3392,7 +3388,7 @@
                 "symfony",
                 "testing"
             ],
-            "time": "2017-11-27 10:37:56"
+            "time": "2017-11-27T10:37:56+00:00"
         },
         {
             "name": "behat/gherkin",
@@ -3451,7 +3447,7 @@
                 "gherkin",
                 "parser"
             ],
-            "time": "2017-08-30 11:04:43"
+            "time": "2017-08-30T11:04:43+00:00"
         },
         {
             "name": "behat/mink",
@@ -3509,7 +3505,7 @@
                 "testing",
                 "web"
             ],
-            "time": "2016-03-05 08:26:18"
+            "time": "2016-03-05T08:26:18+00:00"
         },
         {
             "name": "behat/mink-browserkit-driver",
@@ -3565,7 +3561,7 @@
                 "browser",
                 "testing"
             ],
-            "time": "2016-03-05 08:59:47"
+            "time": "2016-03-05T08:59:47+00:00"
         },
         {
             "name": "behat/mink-extension",
@@ -3624,7 +3620,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-11-24 19:30:49"
+            "time": "2017-11-24T19:30:49+00:00"
         },
         {
             "name": "behat/mink-selenium2-driver",
@@ -3685,7 +3681,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2016-03-05 09:10:18"
+            "time": "2016-03-05T09:10:18+00:00"
         },
         {
             "name": "behat/symfony2-extension",
@@ -3746,7 +3742,7 @@
                 "framework",
                 "symfony"
             ],
-            "time": "2017-12-13 16:50:51"
+            "time": "2017-12-13T16:50:51+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -3790,7 +3786,7 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2017-04-04 11:38:05"
+            "time": "2017-04-04T11:38:05+00:00"
         },
         {
             "name": "bex/behat-extension-driver-locator",
@@ -3838,7 +3834,7 @@
                 "Behat",
                 "TDD"
             ],
-            "time": "2015-12-17 13:26:09"
+            "time": "2015-12-17T13:26:09+00:00"
         },
         {
             "name": "bex/behat-screenshot",
@@ -3906,7 +3902,7 @@
                 "TDD",
                 "behat-screenshot"
             ],
-            "time": "2016-11-26 16:45:39"
+            "time": "2016-11-26T16:45:39+00:00"
         },
         {
             "name": "bex/behat-screenshot-image-driver-unsee",
@@ -3961,7 +3957,7 @@
                 "TDD",
                 "behat-screenshot"
             ],
-            "time": "2015-11-14 09:05:37"
+            "time": "2015-11-14T09:05:37+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -3992,7 +3988,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
-            "time": "2017-02-14 19:40:03"
+            "time": "2017-02-14T19:40:03+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -4051,7 +4047,7 @@
             "keywords": [
                 "database"
             ],
-            "time": "2016-09-20 10:07:57"
+            "time": "2016-09-20T10:07:57+00:00"
         },
         {
             "name": "escapestudios/symfony2-coding-standard",
@@ -4098,7 +4094,7 @@
                 "phpcs",
                 "symfony"
             ],
-            "time": "2017-06-08 10:48:30"
+            "time": "2017-06-08T10:48:30+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -4148,7 +4144,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2017-08-15 16:48:10"
+            "time": "2017-08-15T16:48:10+00:00"
         },
         {
             "name": "guzzle/guzzle",
@@ -4241,7 +4237,7 @@
                 "web service"
             ],
             "abandoned": "guzzlehttp/guzzle",
-            "time": "2014-01-28 22:29:15"
+            "time": "2014-01-28T22:29:15+00:00"
         },
         {
             "name": "instaclick/php-webdriver",
@@ -4300,7 +4296,53 @@
                 "webdriver",
                 "webtest"
             ],
-            "time": "2017-06-30 04:02:48"
+            "time": "2017-06-30T04:02:48+00:00"
+        },
+        {
+            "name": "jakub-onderka/php-var-dump-check",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JakubOnderka/PHP-Var-Dump-Check.git",
+                "reference": "7d012745d012edeace62d509786ac7c3498c9c57"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JakubOnderka/PHP-Var-Dump-Check/zipball/7d012745d012edeace62d509786ac7c3498c9c57",
+                "reference": "7d012745d012edeace62d509786ac7c3498c9c57",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "~0.8",
+                "phpunit/phpunit": "~4.5"
+            },
+            "suggest": {
+                "jakub-onderka/php-console-highlighter": "For colored console output"
+            },
+            "bin": [
+                "var-dump-check"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JakubOnderka\\PhpVarDumpCheck": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jakub Onderka",
+                    "email": "jakub.onderka@gmail.com"
+                }
+            ],
+            "description": "Find forgotten variables dump in PHP source code.",
+            "time": "2017-02-08T20:33:27+00:00"
         },
         {
             "name": "knplabs/friendly-contexts",
@@ -4344,16 +4386,16 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
-                    "name": "Pedrotroller",
+                    "name": "PedroTroller",
                     "homepage": "https://github.com/PedroTroller"
                 }
             ],
             "description": "Some BEHAT contexts",
-            "time": "2017-04-19 20:40:11"
+            "time": "2017-04-19T20:40:11+00:00"
         },
         {
             "name": "kriswallsmith/buzz",
@@ -4401,7 +4443,7 @@
                 "curl",
                 "http client"
             ],
-            "time": "2017-11-24 19:18:50"
+            "time": "2017-11-24T19:18:50+00:00"
         },
         {
             "name": "nelmio/alice",
@@ -4460,7 +4502,7 @@
                 "orm",
                 "test"
             ],
-            "time": "2017-10-31 11:42:39"
+            "time": "2017-10-31T11:42:39+00:00"
         },
         {
             "name": "psr/container",
@@ -4509,7 +4551,7 @@
                 "container-interop",
                 "psr"
             ],
-            "time": "2017-02-14 16:28:37"
+            "time": "2017-02-14T16:28:37+00:00"
         },
         {
             "name": "sensio/generator-bundle",
@@ -4563,7 +4605,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2017-12-07 15:36:41"
+            "time": "2017-12-07T15:36:41+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -4641,7 +4683,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-05-22 02:43:20"
+            "time": "2017-05-22T02:43:20+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
@@ -4703,12 +4745,14 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2017-12-14 19:40:10"
+            "time": "2017-12-14T19:40:10+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "jakub-onderka/php-var-dump-check": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
