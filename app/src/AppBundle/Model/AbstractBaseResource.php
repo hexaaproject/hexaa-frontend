@@ -284,13 +284,17 @@ abstract class AbstractBaseResource
      */
     protected function putCall(string $path, array $data): ResponseInterface
     {
-        $response = $this->client->put(
-            $path,
-            [
-                'json' => $data,
-                'headers' => $this->getHeaders(),
-            ]
-        );
+        try {
+            $response = $this->client->put(
+                $path,
+                [
+                    'json' => $data,
+                    'headers' => $this->getHeaders(),
+                ]
+            );
+        } catch (RequestException $exception) {
+            throw new BackendException($exception->getMessage());
+        }
 
         return $response;
     }
@@ -307,16 +311,20 @@ abstract class AbstractBaseResource
             $admin = "true";
         }
 
-        $response = $this->client->put(
-            $path,
-            [
-                'json' => $data,
-                'headers' => $this->getHeaders(),
-                'query' => array(
-                    'admin' => $admin,
-                ),
-            ]
-        );
+        try {
+            $response = $this->client->put(
+                $path,
+                [
+                    'json' => $data,
+                    'headers' => $this->getHeaders(),
+                    'query' => array(
+                        'admin' => $admin,
+                    ),
+                ]
+            );
+        } catch (RequestException $exception) {
+            throw new BackendException($exception->getMessage());
+        }
 
         return $response;
     }
@@ -328,13 +336,17 @@ abstract class AbstractBaseResource
      */
     protected function postCall(string $path, array $data): ResponseInterface
     {
-        $response = $this->client->post(
-            $path,
-            [
-                'json' => $data,
-                'headers' => $this->getHeaders(),
-            ]
-        );
+        try {
+            $response = $this->client->post(
+                $path,
+                [
+                    'json' => $data,
+                    'headers' => $this->getHeaders(),
+                ]
+            );
+        } catch (RequestException $exception) {
+            throw new BackendException($exception->getMessage());
+        }
 
         return $response;
     }
@@ -350,16 +362,21 @@ abstract class AbstractBaseResource
         if ($admin == "1") {
             $admin = "true";
         }
-        $response = $this->client->post(
-            $path,
-            [
-                'json' => $data,
-                'headers' => $this->getHeaders(),
-                'query' => array(
-                    'admin' => $admin,
-                ),
-            ]
-        );
+
+        try {
+            $response = $this->client->post(
+                $path,
+                [
+                    'json' => $data,
+                    'headers' => $this->getHeaders(),
+                    'query' => array(
+                        'admin' => $admin,
+                    ),
+                ]
+            );
+        } catch (RequestException $exception) {
+            throw new BackendException($exception->getMessage());
+        }
 
         return $response;
     }
