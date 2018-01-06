@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormError;
 use AppBundle\Form\ServicePropertiesType;
 use AppBundle\Form\ServiceOwnerType;
 use AppBundle\Form\ServicePrivacyType;
