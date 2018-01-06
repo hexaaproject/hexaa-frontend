@@ -232,7 +232,7 @@ class ServiceController extends Controller
                         $click = "true";
                     }
                 }
-    
+
                 if ($modifiedName != null) {
                     if (strlen($modifiedName) < 3) {
                         $form["entitlement"]->addError(new FormError('This name of entitlement has to be at least three character long!'));
