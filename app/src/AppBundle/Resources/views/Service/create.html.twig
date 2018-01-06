@@ -109,6 +109,11 @@
 {% block javascripts %}
     <script>
         {{ include('::progressbar.js.twig') }}
+         $( document ).ready(function() {
+            {% if click == "true" %}
+                $('#next-1').click();
+            {% endif %}
+        });
     </script>
 {% endblock %}
 
