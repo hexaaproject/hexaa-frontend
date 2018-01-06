@@ -169,8 +169,8 @@ class ServiceController extends Controller
      * @Route("/create")
      * @Template()
      * @return \Symfony\Component\HttpFoundation\Response
-     * @param   bool    $click
      * @param   Request $request request
+     * @param   bool    $click
      */
     public function createAction(Request $request, $click = "false")
     {
@@ -274,7 +274,7 @@ class ServiceController extends Controller
 
                 if ($modifiedNamePlus1 != null && $modifiedNamePlus2 != null) {
                     if (strtolower($modifiedNamePlus1) == strtolower($modifiedNamePlus2)) {
-                       $form["entitlementplus2"]->addError(new FormError('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!'));
+                        $form["entitlementplus2"]->addError(new FormError('Entitlement names are case-insensitive and letters with accent transformed into their proper letters without accent! Add different names to entitlements!'));
                         if ($firstpageerror == "false" && $click != "true") {
                             $click = "true";
                         }
