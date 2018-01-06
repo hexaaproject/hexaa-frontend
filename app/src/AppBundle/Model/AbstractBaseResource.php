@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 /**
  * Class AbstractBaseResource
  * @package AppBundle\Model
- */
+*/
 abstract class AbstractBaseResource
 {
     protected $pathName;
@@ -23,7 +23,7 @@ abstract class AbstractBaseResource
      * BaseResource constructor.
      * @param Client       $client
      * @param TokenStorage $tokenStorage
-     */
+    */
     public function __construct(Client $client, TokenStorage $tokenStorage)
     {
         $this->client = $client;
@@ -37,7 +37,7 @@ abstract class AbstractBaseResource
     /**
      * GET token
      * @return token
-     */
+    */
     public function getToken()
     {
         if ($this->tokenStorage->getToken()) {
@@ -56,7 +56,7 @@ abstract class AbstractBaseResource
      * @param int    $offset   paging: item to start from
      * @param int    $pageSize paging: number of items to return
      * @return array
-     */
+    */
     public function cget(string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
     {
         return $this->getCollection($this->pathName, $verbose, $offset, $pageSize);
@@ -69,7 +69,7 @@ abstract class AbstractBaseResource
      * @param int    $offset   paging: item to start from
      * @param int    $pageSize paging: number of items to return
      * @return array
-     */
+    */
     public function apget(string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
     {
         return $this->getCollection("properties", $verbose, $offset, $pageSize);
@@ -81,7 +81,7 @@ abstract class AbstractBaseResource
      * @param string $id      ID of resource to GET
      * @param string $verbose One of minimal, normal or expanded
      * @return array
-     */
+    */
     public function get(string $id, string $verbose = "normal"): array
     {
         return $this->getSingular($this->pathName.'/'.$id, $verbose);
@@ -94,7 +94,7 @@ abstract class AbstractBaseResource
      * @param string $id   ID of resource to PUT
      * @param array  $data data to PUT
      * @return \Psr\Http\Message\ResponseInterface
-     */
+    */
     public function put(string $id, array $data): ResponseInterface
     {
         return $this->putCall($this->pathName.'/'.$id, $data);
@@ -106,7 +106,7 @@ abstract class AbstractBaseResource
      * @param string $id   ID of resource to PATCH
      * @param array  $data data to PATCH
      * @return \Psr\Http\Message\ResponseInterface
-     */
+    */
     public function patch(string $id, array $data): ResponseInterface
     {
         return $this->patchCall($this->pathName.'/'.$id, $data);
@@ -117,7 +117,7 @@ abstract class AbstractBaseResource
      *
      * @param array $data data to POST
      * @return \Psr\Http\Message\ResponseInterface
-     */
+    */
     public function post(array $data): ResponseInterface
     {
         return $this->postCall($this->pathName, $data);
@@ -128,7 +128,7 @@ abstract class AbstractBaseResource
      *
      * @param string $id ID of resource to GET
      * @return array
-     */
+    */
     public function delete(string $id)
     {
         return $this->deleteCall($this->pathName.'/'.$id);
@@ -139,7 +139,7 @@ abstract class AbstractBaseResource
      *
      * @param string $id ID of resource to GET
      * @return array
-     */
+    */
     public function deleteAdmin(string $id)
     {
         return $this->deleteCallAdmin($this->pathName.'/'.$id);
@@ -148,7 +148,7 @@ abstract class AbstractBaseResource
     /**
      * @return array
      * @throws \Exception
-     */
+    */
     public function getHeaders(): array
     {
         if ($this->getToken()) {
@@ -164,7 +164,7 @@ abstract class AbstractBaseResource
 
     /**
      * @return mixed
-     */
+    */
     public function getEntityIds()
     {
         $response = $this->client->get(
@@ -184,7 +184,7 @@ abstract class AbstractBaseResource
      * @param int $pageSize
      * @param string $tags
      * @return array|null
-     */
+    */
     protected function getCollection(string $path, string $verbose = "normal", int $offset = 0, int $pageSize = 25, string $tags = null)
     {
         $response = $this->client->get(
@@ -210,7 +210,7 @@ abstract class AbstractBaseResource
      * @param int  $offset
      * @param int  $pageSize
      * @return array
-     */
+    */
     protected function getCollectionAdmin(string $path, string $admin = "true", string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
     {
         $response = $this->client->get(
@@ -233,7 +233,7 @@ abstract class AbstractBaseResource
      * @param string $path
      * @param string $verbose
      * @return array
-     */
+    */
     protected function getSingular(string $path, string $verbose = 'normal'): array
     {
         $response = $this->client->get(
@@ -259,7 +259,7 @@ abstract class AbstractBaseResource
      * @return ResponseInterface
      *
      * @throws BackendException
-     */
+    */
     protected function patchCall(string $path, array $data): ResponseInterface
     {
         try {
@@ -281,7 +281,7 @@ abstract class AbstractBaseResource
      * @param string $path
      * @param array $data
      * @return ResponseInterface
-     */
+    */
     protected function putCall(string $path, array $data): ResponseInterface
     {
         $response = $this->client->put(
@@ -300,7 +300,7 @@ abstract class AbstractBaseResource
      * @param array  $data
      * @param string $admin
      * @return ResponseInterface
-     */
+    */
     protected function putCallAdmin(string $path, array $data, string $admin = "true"): ResponseInterface
     {
         if ($admin == "1") {
@@ -325,7 +325,7 @@ abstract class AbstractBaseResource
      * @param string $path
      * @param array $data
      * @return ResponseInterface
-     */
+    */
     protected function postCall(string $path, array $data): ResponseInterface
     {
         $response = $this->client->post(
@@ -344,7 +344,7 @@ abstract class AbstractBaseResource
      * @param array  $data
      * @param string $admin
      * @return ResponseInterface
-     */
+    */
     protected function postCallAdmin(string $path, array $data, string $admin = "true"): ResponseInterface
     {
         if ($admin == "1") {
@@ -368,7 +368,7 @@ abstract class AbstractBaseResource
      * @param string $path
      * @param array $data
      * @return ResponseInterface
-     */
+    */
     protected function deleteCall(string $path): ResponseInterface
     {
         $response = $this->client->delete(
@@ -385,7 +385,7 @@ abstract class AbstractBaseResource
      * @param string $path
      * @param array $data
      * @return ResponseInterface
-     */
+    */
     protected function deleteCallAdmin(string $path): ResponseInterface
     {
         $response = $this->client->delete(
