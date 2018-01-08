@@ -43,6 +43,9 @@
         <div class="col-sm-offset-2 col-sm-11" style="padding-top: 12px;">
             <div class="accordion-container-notform accordion-style-dark">
                 {{ include('::accordions.html.twig', {
+                    formaccordion: 'notform',
+                    formtitle: 'notform',
+                    formpanel: 'notform',
                     heading: "Roles",
                     variant: "dark",
                     items: roles

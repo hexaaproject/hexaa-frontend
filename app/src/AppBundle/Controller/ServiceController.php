@@ -1060,6 +1060,7 @@ class ServiceController extends Controller
                 'action' => $action,
                 'uriprefix' => $uriPrefix,
                 'serviceID' => $id,
+                'permissions' => $allallpermission,
             )
         );
     }
@@ -1137,6 +1138,7 @@ class ServiceController extends Controller
                 'permissionsetname' => $permissionsetname,
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
                 'formCreatePermissionsSet' => $formCreatePermissionsSet->createView(),
+                'permissionsets' => $allallpermissionset,
             )
         );
     }
