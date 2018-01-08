@@ -101,12 +101,14 @@
             $("#createPermissionsSetBlock").removeClass('hidden');
             $('#createButton').addClass('hidden');
             $('#hexaaSearchFieldPermissionSet').addClass('hidden');
+            $('#add').addClass('hidden');
         }
 
         function cancel() {
             $('#createButton').removeClass('hidden');
             $('#createPermissionsSetBlock').addClass('hidden');
             $('#hexaaSearchFieldPermissionSet').removeClass('hidden');
+            $('#add').removeClass('hidden');
         }
 
     </script>
@@ -139,6 +141,7 @@
         </div>
     </div>
 
+{% if permissionsets is defined and permissionsets['items']|length %}
     <div class="col-sm-11 col-sm-offset-2">
         <div class="row" style="padding-left: 15px;">
             <input id="hexaaSearchFieldPermissionSet" type="text" name="filter" class="hexaaSearchField pull-left"
@@ -166,4 +169,10 @@
             {{ include('::accordions.html.twig', { classToFilter:'service_permissionset_search', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: 'Permission sets', variant: 'dark', items: allpermissions_accordion_set }) }}
         </div>
     </div>
+{% elseif permissionsets is defined %}
+    <button class="btnhexaa btn-red" id="add" style="font-size: 25px; padding: 12px 15px; margin-left: 400px;" onclick="showCreateForm()">
+        <i class="material-icons">add</i>
+        Create
+    </button>
+{% endif %}
 {% endblock %}
