@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -23,6 +24,13 @@ class ServiceCreatePermissionSetType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
+       /* $permissions =  array();
+        if (array_key_exists('permissions', $datas['data'])) {
+            foreach ($datas['data']['permissions'] as $permission) {
+                $permissions[$permission]['name'] = $permission['id'];
+            }
+        }*/
+
         $builder
             ->add(
                 'permissionSetName',
@@ -54,6 +62,21 @@ class ServiceCreatePermissionSetType extends AbstractType
                     'multiple' => false,
                     'expanded' => true,
                     'required' => true,
+                )
+            )
+            ->add(
+                'permissions',
+                ChoiceType::class,
+                array(
+                    "label" => "Permissions",
+                    "label_attr" => array('class' => 'formlabel'),
+                    'attr' => array('data-role' => 'tagsinput'),
+                    'required' => false,
+                    "choices" => $datas['data']['permissions'],
+                    "multiple" => true,
+                    //"choices" => array()
+                    //"expanded" => true,
+                  //'entry_type' => TextType::class,
                 )
             );
     }

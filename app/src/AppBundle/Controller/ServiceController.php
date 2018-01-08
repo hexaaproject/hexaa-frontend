@@ -1091,8 +1091,20 @@ class ServiceController extends Controller
             array_push($permissionsetsperpage, $permissionsetperpage['items']);
             $offset = $offset +25;
         }
+
+        $permissions = array();
+        $servicepermissions = $this->get('service')->getEntitlements($id, $verbose, 0, 100000);
+        foreach ($servicepermissions['items'] as $servicepermission)
+        {
+            $permissions[$servicepermission['id']] = $servicepermission['name'];
+        }
+        //dump($permissions);exit;
+
         $formCreatePermissionsSet = $this->createForm(
-            ServiceCreatePermissionSetType::class
+            ServiceCreatePermissionSetType::class,
+            array(
+                'permissions' => $permissions,
+            )
         );
 
         $formCreatePermissionsSet->handleRequest($request);
@@ -1110,12 +1122,43 @@ class ServiceController extends Controller
                     }
                 }
 
+                if (count($data['service_create_permission_set']['permissions']) != 0) {
+                    $permissionids = [];
+                    $iter = 0;
+                    //dump(array_unique($data['service_create_permission_set']['permissions']));exit;
+                    $apiProperties = $this->get('service')->apget();
+                    foreach (array_unique($data['service_create_permission_set']['permissions']) as $permission) {
+                        foreach ($servicepermissions['items'] as $servicepermission) {
+                            if ($servicepermission['name'] == $permission) {
+                                array_push($permissionids, $servicepermission['id']);
+                                dump($servicepermission['id']);
+                                break;
+                            }
+                            else {
+                                $iter++;
+                            }
+                        }
+                        if ($iter == $servicepermissions['item_number']) {
+                            $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $id, $permission, $permission, NULL, $this->get('entitlement'));
+                            array_push($permissionids, $newpermission['id']);
+                        }
+                    }
+                }
+
                 $permissonSet = array(
                     'name' => $data['service_create_permission_set']['permissionSetName'],
                     'type' => $data['service_create_permission_set']['permissionSetType'],
                     'description' => $data['service_create_permission_set']['permissionSetDescription'],
                 );
-                $this->get('service')->postPermissionSet($id, $permissonSet);
+
+                if (count($data['service_create_permission_set']['permissions']) != 0) {
+                    $entitlementpack = $this->get('service')->postPermissionSet($id, $permissonSet, $this->get('entitlement_pack'));
+
+                    //dump($entitlementpack);
+                    foreach ($permissionids as $permissionid) {
+                        $this->get('entitlement_pack')->addPermissionToPermissionSet($entitlementpack['id'], $permissionid);
+                    }
+                }
 
                 return $this->redirect($request->getUri());
             }
@@ -1139,6 +1182,7 @@ class ServiceController extends Controller
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
                 'formCreatePermissionsSet' => $formCreatePermissionsSet->createView(),
                 'permissionsets' => $allallpermissionset,
+                'permissions' => $permissions,
             )
         );
     }
