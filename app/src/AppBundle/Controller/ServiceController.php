@@ -1094,11 +1094,9 @@ class ServiceController extends Controller
 
         $permissions = array();
         $servicepermissions = $this->get('service')->getEntitlements($id, $verbose, 0, 100000);
-        foreach ($servicepermissions['items'] as $servicepermission)
-        {
+        foreach ($servicepermissions['items'] as $servicepermission) {
             $permissions[$servicepermission['id']] = $servicepermission['name'];
         }
-        //dump($permissions);exit;
 
         $formCreatePermissionsSet = $this->createForm(
             ServiceCreatePermissionSetType::class,
@@ -1125,21 +1123,19 @@ class ServiceController extends Controller
                 if (count($data['service_create_permission_set']['permissions']) != 0) {
                     $permissionids = [];
                     $iter = 0;
-                    //dump(array_unique($data['service_create_permission_set']['permissions']));exit;
                     $apiProperties = $this->get('service')->apget();
                     foreach (array_unique($data['service_create_permission_set']['permissions']) as $permission) {
+                        $iter = 0;
                         foreach ($servicepermissions['items'] as $servicepermission) {
                             if ($servicepermission['name'] == $permission) {
                                 array_push($permissionids, $servicepermission['id']);
-                                dump($servicepermission['id']);
                                 break;
-                            }
-                            else {
+                            } else {
                                 $iter++;
                             }
                         }
                         if ($iter == $servicepermissions['item_number']) {
-                            $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $id, $permission, $permission, NULL, $this->get('entitlement'));
+                            $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $id, $permission, $permission, null, $this->get('entitlement'));
                             array_push($permissionids, $newpermission['id']);
                         }
                     }
@@ -1154,7 +1150,6 @@ class ServiceController extends Controller
                 if (count($data['service_create_permission_set']['permissions']) != 0) {
                     $entitlementpack = $this->get('service')->postPermissionSet($id, $permissonSet, $this->get('entitlement_pack'));
 
-                    //dump($entitlementpack);
                     foreach ($permissionids as $permissionid) {
                         $this->get('entitlement_pack')->addPermissionToPermissionSet($entitlementpack['id'], $permissionid);
                     }

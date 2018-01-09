@@ -33,27 +33,14 @@
     {{ form_javascript(formCreatePermissionsSet) }}
     <script>
         $(document).ready(function () {
+
             $('#service_create_permission_set_permissions').tagsinput(
                 {
-                    /*allowDuplicates: true,
-                    typeaheadjs: {
-                        source: ['alma', 'körte']
-                    },
-                    freeInput: false,
-                    onTagExists: function(item, $tag) {
-                        $tag.display('inline');
-                       * //$tag.hide.fadeIn();
-                    }*/
-                    /* itemValue: 'id',
-                     itemText: 'label',
-                     freeInput: true,
-                     allowDuplicates : false,
-                     freeElementSelector: "#freeTexts"*/
                 }
             );
-            $('#service_create_permission_set_permissions').on('beforeItemAdd', function(event) {
+           /* $('#service_create_permission_set_permissions').on('beforeItemAdd', function(event) {
                 event.cancel = true;
-            });
+            });*/
 
             $('#hexaaSearchFieldPermissionSet').instaFilta({
                 onFilterComplete: function(matchedItems) {

@@ -302,8 +302,9 @@ class Service extends AbstractBaseResource
 
     /**
      * Create permission set in service page
-     * @param string $id              of service
-     * @param array  $entitlementPack
+     * @param string                           $id              of service
+     * @param array                            $entitlementPack
+     * @param \AppBundle\Model\EntitlementPack $entitlementpack
      * @return array
      */
     public function postPermissionSet(string $id, array $entitlementPack, EntitlementPack $entitlementpack)

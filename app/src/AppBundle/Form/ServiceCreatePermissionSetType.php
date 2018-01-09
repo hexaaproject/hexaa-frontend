@@ -74,11 +74,10 @@ class ServiceCreatePermissionSetType extends AbstractType
                     'required' => false,
                     "choices" => $datas['data']['permissions'],
                     "multiple" => true,
-                    //"choices" => array()
-                    //"expanded" => true,
-                  //'entry_type' => TextType::class,
                 )
             );
+
+        $builder->get('permissions')->resetViewTransformers();
     }
 
     /**
