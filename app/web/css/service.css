@@ -212,6 +212,18 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
     background-color: #EA7373;
 }
 
+.createPermissionSet .bootstrap-tagsinput {
+    margin-left: 53px;
+    width: 400px;
+    resize: vertical;
+}
+
+#dummy{
+    visibility: hidden!Important;
+    height:1px;
+    width:1px;
+}
+
 .has-error {
     color: #a94442;
     margin-bottom: 10px;

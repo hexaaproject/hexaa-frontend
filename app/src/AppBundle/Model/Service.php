@@ -302,13 +302,19 @@ class Service extends AbstractBaseResource
 
     /**
      * Create permission set in service page
-     * @param string $id              of service
-     * @param array  $entitlementPack
-     * @return \Psr\Http\Message\ResponseInterface
+     * @param string                           $id              of service
+     * @param array                            $entitlementPack
+     * @param \AppBundle\Model\EntitlementPack $entitlementpack
+     * @return array
      */
-    public function postPermissionSet(string $id, array $entitlementPack)
+    public function postPermissionSet(string $id, array $entitlementPack, EntitlementPack $entitlementpack)
     {
-        return $this->postCall($this->pathName.'/'.$id.'/entitlementpacks', $entitlementPack);
+        $response = $this->postCall($this->pathName.'/'.$id.'/entitlementpacks', $entitlementPack);
+        $locations = $response->getHeader('Location');
+        $location = $locations[0];
+        $id = preg_replace('#.*/#', '', $location);
+
+        return $entitlementpack->get($id, "expanded");
     }
 
     /**

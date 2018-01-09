@@ -1012,6 +1012,7 @@ class ServiceController extends Controller
         );
 
         $formCreatePermissions->handleRequest($request);
+        $error = 'false';
 
         try {
             if ($formCreatePermissions->isSubmitted() && $formCreatePermissions->isValid()) {
@@ -1042,6 +1043,7 @@ class ServiceController extends Controller
             }
         } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+            $error = 'true';
         }
 
         return $this->render(
@@ -1061,6 +1063,7 @@ class ServiceController extends Controller
                 'uriprefix' => $uriPrefix,
                 'serviceID' => $id,
                 'permissions' => $allallpermission,
+                'error' => $error,
             )
         );
     }
@@ -1091,11 +1094,22 @@ class ServiceController extends Controller
             array_push($permissionsetsperpage, $permissionsetperpage['items']);
             $offset = $offset +25;
         }
+
+        $permissions = array();
+        $servicepermissions = $this->get('service')->getEntitlements($id, $verbose, 0, 100000);
+        foreach ($servicepermissions['items'] as $servicepermission) {
+            $permissions[$servicepermission['id']] = $servicepermission['name'];
+        }
+
         $formCreatePermissionsSet = $this->createForm(
-            ServiceCreatePermissionSetType::class
+            ServiceCreatePermissionSetType::class,
+            array(
+                'permissions' => $permissions,
+            )
         );
 
         $formCreatePermissionsSet->handleRequest($request);
+        $error = "false";
 
         try {
             if ($formCreatePermissionsSet->isSubmitted() && $formCreatePermissionsSet->isValid()) {
@@ -1110,17 +1124,48 @@ class ServiceController extends Controller
                     }
                 }
 
+                if (count($data['service_create_permission_set']['permissions']) != 0) {
+                    $permissionids = [];
+                    $iter = 0;
+                    $apiProperties = $this->get('service')->apget();
+                    foreach (array_unique($data['service_create_permission_set']['permissions']) as $permission) {
+                        $iter = 0;
+                        foreach ($servicepermissions['items'] as $servicepermission) {
+                            if ($servicepermission['name'] == $permission) {
+                                array_push($permissionids, $servicepermission['id']);
+                                break;
+                            } else {
+                                $iter++;
+                            }
+                        }
+                        if ($iter == $servicepermissions['item_number']) {
+                            $withoutAccent = $this->removeAccents($permission);
+                            $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
+                            $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $id, $modifiedName, $permission, null, $this->get('entitlement'));
+                            array_push($permissionids, $newpermission['id']);
+                        }
+                    }
+                }
+
                 $permissonSet = array(
                     'name' => $data['service_create_permission_set']['permissionSetName'],
                     'type' => $data['service_create_permission_set']['permissionSetType'],
                     'description' => $data['service_create_permission_set']['permissionSetDescription'],
                 );
-                $this->get('service')->postPermissionSet($id, $permissonSet);
+
+                if (count($data['service_create_permission_set']['permissions']) != 0) {
+                    $entitlementpack = $this->get('service')->postPermissionSet($id, $permissonSet, $this->get('entitlement_pack'));
+
+                    foreach ($permissionids as $permissionid) {
+                        $this->get('entitlement_pack')->addPermissionToPermissionSet($entitlementpack['id'], $permissionid);
+                    }
+                }
 
                 return $this->redirect($request->getUri());
             }
         } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+            $error = "true";
         }
 
         return $this->render(
@@ -1139,6 +1184,8 @@ class ServiceController extends Controller
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
                 'formCreatePermissionsSet' => $formCreatePermissionsSet->createView(),
                 'permissionsets' => $allallpermissionset,
+                'permissions' => $permissions,
+                'error' => $error,
             )
         );
     }

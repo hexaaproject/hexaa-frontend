@@ -33,6 +33,11 @@
 
     <script>
         $(document).ready(function () {
+
+            {% if error == 'true' %}
+                $("#createButton").click();
+            {% endif %}
+
             $( "textarea#service_create_permission_permissionDescription" ).parent().css( "display", "inline-flex" );
 
             $('#hexaaSearchFieldPermission').instaFilta({

@@ -4,6 +4,7 @@
     {% block stylesheets %}
         {% stylesheets
         'css/accordions.css'
+        '@bootstrap_tagsinput_css'
         filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
@@ -24,12 +25,27 @@
     {% javascripts
     '@instafilta_js'
     '@jquery_bootpag_js'
+    '@bootstrap_tagsinput_js'
+    '@typeahead_js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
+    {{ form_javascript(formCreatePermissionsSet) }}
     <script>
         $(document).ready(function () {
+
+            $('#service_create_permission_set_permissions').tagsinput(
+                {
+                }
+            );
+           /* $('#service_create_permission_set_permissions').on('beforeItemAdd', function(event) {
+                event.cancel = true;
+            });*/
+
+            {% if error == 'true' %}
+                $("#createButton").click();
+            {% endif %}
+
             $('#hexaaSearchFieldPermissionSet').instaFilta({
                 onFilterComplete: function(matchedItems) {
                     var allnum = {{ total_number|json_encode }}
@@ -135,6 +151,9 @@
             </div>
             <div class="row">
                 {{ form_row(formCreatePermissionsSet.permissionSetDescription) }}
+            </div>
+            <div class="row">
+                {{ form_row(formCreatePermissionsSet.permissions) }}
             </div>
 
             {{ form_end(formCreatePermissionsSet) }}
