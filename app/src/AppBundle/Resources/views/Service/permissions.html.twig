@@ -34,8 +34,14 @@
     <script>
         $(document).ready(function () {
 
-            {% if error == 'true' %}
-                $("#createButton").click();
+            {% if permissions is defined and permissions['items']|length %}
+                {% if error == 'true' %}
+                    $("#createButton").click();
+                {% endif %}
+            {% elseif  permissions is defined %}
+                {% if error == 'true' %}
+                    $("#add").click();
+                {% endif %}
             {% endif %}
 
             $( "textarea#service_create_permission_permissionDescription" ).parent().css( "display", "inline-flex" );
