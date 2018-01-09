@@ -42,6 +42,10 @@
                 event.cancel = true;
             });*/
 
+            {% if error == 'true' %}
+                $("#createButton").click();
+            {% endif %}
+
             $('#hexaaSearchFieldPermissionSet').instaFilta({
                 onFilterComplete: function(matchedItems) {
                     var allnum = {{ total_number|json_encode }}

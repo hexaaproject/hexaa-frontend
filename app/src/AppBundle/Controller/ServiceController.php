@@ -1012,6 +1012,7 @@ class ServiceController extends Controller
         );
 
         $formCreatePermissions->handleRequest($request);
+        $error = 'false';
 
         try {
             if ($formCreatePermissions->isSubmitted() && $formCreatePermissions->isValid()) {
@@ -1042,6 +1043,7 @@ class ServiceController extends Controller
             }
         } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+            $error = 'true';
         }
 
         return $this->render(
@@ -1061,6 +1063,7 @@ class ServiceController extends Controller
                 'uriprefix' => $uriPrefix,
                 'serviceID' => $id,
                 'permissions' => $allallpermission,
+                'error' => $error,
             )
         );
     }
@@ -1106,6 +1109,7 @@ class ServiceController extends Controller
         );
 
         $formCreatePermissionsSet->handleRequest($request);
+        $error = "false";
 
         try {
             if ($formCreatePermissionsSet->isSubmitted() && $formCreatePermissionsSet->isValid()) {
@@ -1135,7 +1139,9 @@ class ServiceController extends Controller
                             }
                         }
                         if ($iter == $servicepermissions['item_number']) {
-                            $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $id, $permission, $permission, null, $this->get('entitlement'));
+                            $withoutAccent = $this->removeAccents($permission);
+                            $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
+                            $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $id, $modifiedName, $permission, null, $this->get('entitlement'));
                             array_push($permissionids, $newpermission['id']);
                         }
                     }
@@ -1159,6 +1165,7 @@ class ServiceController extends Controller
             }
         } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+            $error = "true";
         }
 
         return $this->render(
@@ -1178,6 +1185,7 @@ class ServiceController extends Controller
                 'formCreatePermissionsSet' => $formCreatePermissionsSet->createView(),
                 'permissionsets' => $allallpermissionset,
                 'permissions' => $permissions,
+                'error' => $error,
             )
         );
     }
