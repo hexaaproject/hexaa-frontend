@@ -25,17 +25,32 @@ class OrganizationRoleUpdateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
+        $role = $datas["data"];
+
         $membersChoices = array();
+        if (array_key_exists('organizationMembers', $role) && $role['organizationMembers']) {
+            foreach ($role['organizationMembers'] as $organizationMember) {
+                $membersChoices[$organizationMember['display_name'] . ' <' . $organizationMember['fedid'] . '>'] = $organizationMember['id'];
+            }
+        }
+
+        $checkedMembersChoices = array();
         if (array_key_exists('principals', $datas['data'])) {
             foreach ($datas['data']['principals'] as $principal) {
-                $membersChoices[$principal['principal']['display_name'].' <'.$principal['principal']['fedid'].'>'] = $principal['principal']['fedid'];
+                $checkedMembersChoices[] = $principal['principal']['id'];
             }
         }
 
         $entitlementChoices =  array();
+        if (array_key_exists('organizationEntitlements', $role) && $role['organizationEntitlements']) {
+            foreach ($role['organizationEntitlements'] as $entitlement) {
+                $entitlementChoices[$entitlement['scoped_name']] = $entitlement['id'];
+            }
+        }
+        $checkedEntitlementChoices = array();
         if (array_key_exists('entitlements', $datas['data'])) {
-            foreach ($datas['data']['entitlements'] as $entitlement) {
-                $entitlementChoices[$entitlement]['name'] = $entitlement['id'];
+            foreach ($role['entitlements'] as $entitlement) {
+                $checkedEntitlementChoices[] = $entitlement['id'] ;
             }
         }
 
@@ -56,10 +71,12 @@ class OrganizationRoleUpdateType extends AbstractType
                 array(
                     "label" => "Permissions",
                     "label_attr" => array('class' => 'formlabel'),
-                    'attr' => array('data-role' => 'tagsinput'),
+//                    'attr' => array('data-role' => 'tagsinput'),
                     'required' => true,
                     "choices" => $entitlementChoices,
+                    "data" => $checkedEntitlementChoices,
                     "multiple" => true,
+                    "expanded" => true,
                 )
             )
             ->add(
@@ -68,10 +85,12 @@ class OrganizationRoleUpdateType extends AbstractType
                 array(
                     "label" => "Members",
                     "label_attr" => array('class' => 'formlabel'),
-                    'attr' => array('data-role' => 'tagsinput'),
+//                    'attr' => array('data-role' => 'tagsinput'),
                     'required' => true,
                     "choices" => $membersChoices,
+                    "data" => $checkedMembersChoices,
                     "multiple" => true,
+                    "expanded" => true,
                 )
             );
     }
