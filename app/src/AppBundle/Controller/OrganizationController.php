@@ -721,6 +721,10 @@ class OrganizationController extends BaseController
         $roles = $this->getRoles($organization);
         $rolesAccordion = $this->rolesToAccordion($roles, $id, $action, $roleId, $request);
 
+        if (! $rolesAccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
+            return $this->redirectToRoute('app_organization_roles', array("id" => $id));
+        }
+
         $form = $this->createForm(
             OrganizationRoleType::class,
             array()
@@ -1142,12 +1146,21 @@ class OrganizationController extends BaseController
                 try {
                     $role = $roleResource->get($data['id']);
                     $this->amIManagerOfThis($role); //TODO
-                    $role["name"] = $data["name"];
 
-                    // persist role
-                    $roleResource->patch($role['id'], $role);
+                    $roleToBackend = array(
+                        'name' => $data['name'],
+                    );
+                    $roleResource->patch($role['id'], $roleToBackend);
+
+                    // entitlements TODO
+                    dump($data['entitlements']);
+                    // members TODO
+                    dump($data['members']);
                 } catch (\AppBundle\Exception $exception) {
                     $form->addError(new FormError($exception->getMessage()));
+                }
+                if (! $form->getErrors()->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
+                    return false;
                 }
             }
             $rolesAccordion[$role['id']]['form'] = $form->createView();
