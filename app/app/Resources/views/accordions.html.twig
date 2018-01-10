@@ -178,7 +178,27 @@
                                     <i data-behattarget="cancel_{{ loop.index }}" role="button" class="material-icons accordion-button accordion_edit_cancel_button">clear</i>
                                     <i data-behattarget="submit_{{ loop.index }}" role="button" class="material-icons accordion-button accordion_edit_submit_button">done</i>
                                 </div>
-                                {{ form(item.form) }}
+                                {% if item.uriprefix is defined %}
+                                    {{ form_start(item.form) }}
+                                    {% for key, field in item.form  %}
+                                        {% if field.vars['label'] == "URI" %}
+                                            {{ form_label(field) }}
+                                            {{ item.uriprefix }}
+                                            {{ form_errors(field) }}
+                                            {{ form_widget(field) }}
+                                        {% elseif field.vars['id'] != "service_permission_update__token" %}
+                                            {{ form_label(field) }}
+                                            {{ form_errors(field) }}
+                                            {{ form_widget(field) }}
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                    {{ form_end(item.form) }}
+                                {% else %}
+                                    {{ form(item.form) }}
+                                {% endif %}
+                               {# {{ dump(item.form.children["uripost"]) }}#}
                             </div>
                         {% endif %}
                         <table cellspacing="0" class="accordion">

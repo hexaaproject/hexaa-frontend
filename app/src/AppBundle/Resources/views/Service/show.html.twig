@@ -12,7 +12,7 @@
 {% block container %}
     <div id="srvmain">
         <div id="maindivcontents">
-            <div class="desktopbuttonorg"><a href="{{ path("app_service_permissions", {"id": service.id, "action": "create"}) }}"><img class="desktopbuttonimage" src="/img/create_permission_160x160.svg"/><br/> <p><b>Create permission</b></p></a></div>
+            <div class="desktopbuttonorg"><a href="{{ path("app_service_permissions", {"id": service.id, "action": "create", permissionId: "false"}) }}"><img class="desktopbuttonimage" src="/img/create_permission_160x160.svg"/><br/> <p><b>Create permission</b></p></a></div>
             
             <div class="desktopbuttonorg"><a href="{{ path("app_service_attributes", {"id": service.id}) }}"><img class="desktopbuttonimage" src="/img/add_attribute_specification_160x160.svg"/><br/><p><b>Add attribute specification</b></p></a></div>
             

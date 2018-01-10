@@ -22,6 +22,7 @@ use AppBundle\Form\ServiceType;
 use AppBundle\Form\ServiceCreatePermissionType;
 use AppBundle\Form\ServiceCreatePermissionSetType;
 use AppBundle\Form\ServiceCreateEmailType;
+use AppBundle\Form\ServicePermissionUpdateType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Devmachine\Bundle\FormBundle\Form\Type\TypeaheadType;
@@ -978,14 +979,15 @@ class ServiceController extends Controller
     }
 
     /**
-     * @Route("/permissions/{id}/{action}", defaults={"action" = null})
+     * @Route("/permissions/{id}/{permissionId}/{action}", defaults={"permissionId" : false, "action" : null})
      * @Template()
      * @param integer     $id
      * @param Request     $request
+     * @param integer     $permissionId
      * @param string|null $action
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function permissionsAction($id, Request $request, $action = null)
+    public function permissionsAction($id, Request $request, $permissionId, $action = null)
     {
         $apiProperties = $this->get('service')->apget();
         $uriPrefix = $apiProperties['entitlement_base'];
@@ -1053,7 +1055,7 @@ class ServiceController extends Controller
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
-                'permissions_accordion' => $this->permissionsToAccordion($permissionsperpage, $id),
+                'permissions_accordion' => $this->permissionsToAccordion($permissionsperpage, $id, $permissionId, $action, $request),
                 'allpermissions_accordion' => $this->allpermissionsToAccordion($allallpermission, $id),
                 'total_number' => $totalnumber,
                 'total_pages' => $totalpages,
@@ -1998,18 +2000,33 @@ class ServiceController extends Controller
     /**
      * @param $permissions
      * @param $servId
+     * @param $permissionId,
+     * @param $action
+     * @param $request
      * @return array
      */
-    private function permissionsToAccordion($permissions, $servId)
+    private function permissionsToAccordion($permissions, $servId, $permissionId, $action, Request $request)
     {
         $permissionsAccordion = array();
-        $i = 0;
         foreach ($permissions as $onepermissiongroup) {
             foreach ($onepermissiongroup as $permission) {
-                $permissionsAccordion[$i]['title'] = $permission['name'];
+
+                $urichunked = explode(':', $permission['uri']);
+                $permissionsAccordion[$permission['id']]['uripostfix'] = $urichunked[5];
+                $permissionsAccordion[$permission['id']]['uriprefix'] = $urichunked[0].':'.$urichunked[1].':'.$urichunked[2].':'.$urichunked[3].':'.$urichunked[4];
+                $form =  $this->createForm(
+                    ServicePermissionUpdateType::class,
+                    $permission,
+                    array(
+                        "action" => $this->generateUrl("app_service_permissions", array("id" => $servId, "action" => "update", "permissionId" => $permission['id'])),
+                    )
+                );
+
+
+                $permissionsAccordion[$permission['id']]['title'] = $permission['name'];
 
                 // FIXME @annamari, nem találok permission delete url-t.
-                $permissionsAccordion[$i]['deleteUrl'] = $this->generateUrl("app_service_permissiondelete", [
+                $permissionsAccordion[$permission['id']]['deleteUrl'] = $this->generateUrl("app_service_permissiondelete", [
                     'servId' => $servId,
                     'id' => $permission['id'],
                     'action' => "delete",
@@ -2019,7 +2036,7 @@ class ServiceController extends Controller
                 $uri = [];
                 array_push($description, $permission['description']);
                 array_push($uri, $permission['uri']);
-                $permissionsAccordion[$i]['contents'] = [
+                $permissionsAccordion[$permission['id']]['contents'] = [
                 [
                     'key' => 'Description',
                     'values' => $description,
@@ -2029,7 +2046,40 @@ class ServiceController extends Controller
                     'values' => $uri,
                 ],
                 ];
-                $i++;
+
+                if ($permissionId == $permission['id']) { // csak akkor dolgozzuk fel, ha erről a role-ról van szó.
+                    $form->handleRequest($request);
+                }
+
+                $permissionsAccordion[$permission['id']]['form'] = $form->createView();
+
+                if ($form->isValid() and $form->isSubmitted()) {
+                    $data = $form->getData();
+                    $entitlementResource = $this->get('entitlement');
+                    try {
+                        $entitlement = $entitlementResource->get($data['id']);
+                       // dump($data);exit;
+                       /* $this->amIManagerOfThis($role); //TODO*/
+                       dump('HAHAHAHAH');
+                        $entitlement["name"] = $data["name"];
+                        $entitlement["description"] = $data["description"];
+                        $entitlement["scoped_name"] = $data["service"]["name"].'::'.$data["name"];
+                        $apiProperties = $this->get('service')->apget();
+                        $uriPrefix = $apiProperties['entitlement_base'];
+                        $withoutAccent = $this->removeAccents($data['uripost']);
+                        $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
+                        $entitlement["uri"] = $uriPrefix.':'.$modifiedName;
+
+                        dump($entitlement['id']);dump($permissionId);
+                        $this->get('entitlement')->patch($entitlement['id'], array('uri'=> $entitlement["uri"], 'name' => $entitlement["name"], 'description' => $entitlement["description"]));
+                      /*return $this->redirect($this->generateUrl(
+                        'app_service_permissions',
+                        array("id" => $servId, "action" => "update", "permissionId" => $permission['id'])
+                      ));*/
+                    } catch (\AppBundle\Exception $exception) {
+                        $form->addError(new FormError($exception->getMessage()));
+                    }
+                }
             }
         }
 
