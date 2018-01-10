@@ -1163,22 +1163,31 @@ class OrganizationController extends BaseController
                     $roleToBackend = array(
                         'name' => $data['name'],
                     );
-                    $roleResource->patch($role['id'], $roleToBackend);
+                    try {
+                        $roleResource->patch($role['id'], $roleToBackend);
+                    } catch (\Exception $exception) {
+                        $form->get('name')->addError(new FormError($exception->getMessage()));
+                    }
 
-                    // entitlements TODO
                     $entitlementsToBackend = array();
                     foreach ($data['entitlements'] as $id) {
                         $entitlementsToBackend["entitlements"][] = $id;
                     }
-                    $roleResource->setEntitlements($roleId, $entitlementsToBackend);
+                    try {
+                        $roleResource->setEntitlements($roleId, $entitlementsToBackend);
+                    } catch (\Exception $exception) {
+                        $form->get('entitlements')->addError(new FormError($exception->getMessage()));
+                    }
 
-                    
-                    // members TODO
                     $principalsToBackend = array();
-                    foreach (array_keys($data['members']) as $id) {
+                    foreach ($data['members'] as $id) {
                         $principalsToBackend["principals"][] = array("principal" => $id);
                     }
-                    $roleResource->setPrincipals($roleId, $principalsToBackend);
+                    try {
+                        $roleResource->setPrincipals($roleId, $principalsToBackend);
+                    } catch (\Exception $exception) {
+                        $form->get('members')->addError(new FormError($exception->getMessage()));
+                    }
                 } catch (\AppBundle\Exception $exception) {
                     $form->addError(new FormError($exception->getMessage()));
                 }
