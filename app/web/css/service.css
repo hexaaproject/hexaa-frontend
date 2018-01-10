@@ -187,7 +187,7 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
 
 #service_create_permission_permissionURL{
     height: 30px;
-    width: 215px;
+    width: 210px;
     margin-right: 110px;
 }
 
@@ -262,7 +262,26 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
     padding-left: 1.75em;
     padding-bottom: 0.5em;
     margin-top: 5px;
-    margin-right: 45px;
+    margin-right: 46px;
+}
+
+.permissioneditlabel {
+    font-size: medium;
+}
+
+.permissionediturilabel {
+    font-size: medium;
+}
+
+.uripostfixstyle {
+}
+
+.prefix {
+    display: flex;
+}
+
+.labelprefix {
+    padding-top: 7px;
 }
 
 .entitylabel{

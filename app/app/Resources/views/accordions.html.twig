@@ -141,7 +141,7 @@
                                                 <td class="{% if not loop.first %}accordion-hr{% endif %} accordion">
                                                     <ul class="accordion">
                                                         {% for listitem in content.values %}
-                                                        <li>{{ listitem }}
+                                                            <li>{{ listitem }}</li>
                                                             {% endfor %}
                                                     </ul>
                                                 </td>
@@ -178,7 +178,30 @@
                                     <i data-behattarget="cancel_{{ loop.index }}" role="button" class="material-icons accordion-button accordion_edit_cancel_button">clear</i>
                                     <i data-behattarget="submit_{{ loop.index }}" role="button" class="material-icons accordion-button accordion_edit_submit_button">done</i>
                                 </div>
-                                {{ form(item.form) }}
+                                {% if item.uriprefix is defined %}
+                                    {{ form_start(item.form) }}
+                                    {{ form_errors(item.form) }}
+                                    {% for key, field in item.form  %}
+                                        {% if field.vars['label'] == "URI" %}
+                                            <div class="form-group">
+                                                {{ form_label(field) }}
+                                                <div class="prefix">
+                                                    <div class="labelprefix"> {{ item.uriprefix }}</div>
+                                                    {{ form_widget(field) }}
+                                                </div>
+                                            </div>
+                                        {% elseif field.vars['id'] != "service_permission_update__token" %}
+                                            <div class="form-group">
+                                                {{ form_label(field) }}
+                                                {{ form_widget(field) }}
+                                            </div>
+                                        {% endif %}
+
+                                    {% endfor %}
+                                    {{ form_end(item.form) }}
+                                {% else %}
+                                    {{ form(item.form) }}
+                                {% endif %}
                             </div>
                         {% endif %}
                         <table cellspacing="0" class="accordion">

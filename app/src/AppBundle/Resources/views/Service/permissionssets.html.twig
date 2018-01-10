@@ -42,8 +42,14 @@
                 event.cancel = true;
             });*/
 
-            {% if error == 'true' %}
-                $("#createButton").click();
+            {% if permissionsets is defined and permissionsets['items']|length %}
+                {% if error == 'true' %}
+                    $("#createButton").click();
+                {% endif %}
+            {% elseif  permissionsets is defined %}
+                {% if error == 'true' %}
+                    $("#add").click();
+                {% endif %}
             {% endif %}
 
             $('#hexaaSearchFieldPermissionSet').instaFilta({
