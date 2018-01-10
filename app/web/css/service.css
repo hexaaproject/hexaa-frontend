@@ -284,6 +284,10 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
     padding-top: 7px;
 }
 
+#service_permission_set_update .bootstrap-tagsinput {
+    width: 700px;
+}
+
 .entitylabel{
     display: inline-block;
     max-width: 100%;

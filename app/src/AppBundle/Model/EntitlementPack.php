@@ -78,6 +78,17 @@ class EntitlementPack extends AbstractBaseResource
     }
 
     /**
+    * Sets permissions in permissionset
+    * @param string $id  of entitlementpack
+    * @param string $ids of entitlements
+    * @return \Psr\Http\Message\ResponseInterface
+    */
+    public function setPermissionsToPermissionSet(string $id, array $ids)
+    {
+        return $this->putCall($this->pathName.'/'.$id.'/entitlement', array("entitlements" => $ids));
+    }
+
+    /**
      *DELETE permission set
      *
      * @param  string $id ID of permission
