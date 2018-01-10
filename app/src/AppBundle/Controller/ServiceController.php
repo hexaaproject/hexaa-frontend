@@ -1009,6 +1009,11 @@ class ServiceController extends Controller
             $offset = $offset +25;
         }
 
+        $permissionsaccordion = $this->permissionsToAccordion($permissionsperpage, $id, $permissionId, $action, $request);
+        if (! $permissionsaccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
+            return $this->redirectToRoute('app_service_permissions', array("id" => $id));
+        }
+
         $formCreatePermissions = $this->createForm(
             ServiceCreatePermissionType::class
         );
@@ -1055,7 +1060,7 @@ class ServiceController extends Controller
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
-                'permissions_accordion' => $this->permissionsToAccordion($permissionsperpage, $id, $permissionId, $action, $request),
+                'permissions_accordion' => $permissionsaccordion,
                 'allpermissions_accordion' => $this->allpermissionsToAccordion($allallpermission, $id),
                 'total_number' => $totalnumber,
                 'total_pages' => $totalpages,
@@ -2010,10 +2015,9 @@ class ServiceController extends Controller
         $permissionsAccordion = array();
         foreach ($permissions as $onepermissiongroup) {
             foreach ($onepermissiongroup as $permission) {
-
                 $urichunked = explode(':', $permission['uri']);
                 $permissionsAccordion[$permission['id']]['uripostfix'] = $urichunked[5];
-                $permissionsAccordion[$permission['id']]['uriprefix'] = $urichunked[0].':'.$urichunked[1].':'.$urichunked[2].':'.$urichunked[3].':'.$urichunked[4];
+                $permissionsAccordion[$permission['id']]['uriprefix'] = $urichunked[0].':'.$urichunked[1].':'.$urichunked[2].':'.$urichunked[3].':'.$urichunked[4].':';
                 $form =  $this->createForm(
                     ServicePermissionUpdateType::class,
                     $permission,
@@ -2051,35 +2055,25 @@ class ServiceController extends Controller
                     $form->handleRequest($request);
                 }
 
-                $permissionsAccordion[$permission['id']]['form'] = $form->createView();
-
                 if ($form->isValid() and $form->isSubmitted()) {
                     $data = $form->getData();
                     $entitlementResource = $this->get('entitlement');
                     try {
                         $entitlement = $entitlementResource->get($data['id']);
-                       // dump($data);exit;
-                       /* $this->amIManagerOfThis($role); //TODO*/
-                       dump('HAHAHAHAH');
                         $entitlement["name"] = $data["name"];
                         $entitlement["description"] = $data["description"];
-                        $entitlement["scoped_name"] = $data["service"]["name"].'::'.$data["name"];
-                        $apiProperties = $this->get('service')->apget();
-                        $uriPrefix = $apiProperties['entitlement_base'];
                         $withoutAccent = $this->removeAccents($data['uripost']);
                         $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
-                        $entitlement["uri"] = $uriPrefix.':'.$modifiedName;
-
-                        dump($entitlement['id']);dump($permissionId);
-                        $this->get('entitlement')->patch($entitlement['id'], array('uri'=> $entitlement["uri"], 'name' => $entitlement["name"], 'description' => $entitlement["description"]));
-                      /*return $this->redirect($this->generateUrl(
-                        'app_service_permissions',
-                        array("id" => $servId, "action" => "update", "permissionId" => $permission['id'])
-                      ));*/
+                        $entitlement["uri"] = $permissionsAccordion[$permission['id']]['uriprefix'].$modifiedName;
+                        $this->get('entitlement')->patch($entitlement['id'], array('uri' => $entitlement["uri"], 'name' => $entitlement["name"], 'description' => $entitlement["description"]));
                     } catch (\AppBundle\Exception $exception) {
                         $form->addError(new FormError($exception->getMessage()));
                     }
+                    if (! $form->getErrors()->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
+                        return false;
+                    }
                 }
+                $permissionsAccordion[$permission['id']]['form'] = $form->createView();
             }
         }
 

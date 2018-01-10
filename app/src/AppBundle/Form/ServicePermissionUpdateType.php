@@ -33,7 +33,7 @@ class ServicePermissionUpdateType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Name",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'permissioneditlabel'),
                     'attr' => array(),
                     'required' => true,
                 )
@@ -43,7 +43,7 @@ class ServicePermissionUpdateType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "Description",
-                    "label_attr" => array('class' => 'formlabel'),
+                    "label_attr" => array('class' => 'permissioneditlabel'),
                     'attr' => array(),
                     'required' => false,
                 )
@@ -53,8 +53,8 @@ class ServicePermissionUpdateType extends AbstractType
                 TextType::class,
                 array(
                     "label" => "URI",
-                    "label_attr" => array('class' => 'formlabel'),
-                    'attr' => array(),
+                    "label_attr" => array('class' => 'permissionediturilabel'),
+                    'attr' => array('class' => 'uripostfixstyle'),
                     'data' => $uripostfix,
                     'required' => true,
                 )
@@ -66,8 +66,6 @@ class ServicePermissionUpdateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-         // 'method' => 'PATCH'
-        ));
+        $resolver->setDefaults(array());
     }
 }

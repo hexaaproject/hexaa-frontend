@@ -141,7 +141,7 @@
                                                 <td class="{% if not loop.first %}accordion-hr{% endif %} accordion">
                                                     <ul class="accordion">
                                                         {% for listitem in content.values %}
-                                                        <li>{{ listitem }}
+                                                            <li>{{ listitem }}</li>
                                                             {% endfor %}
                                                     </ul>
                                                 </td>
@@ -180,25 +180,28 @@
                                 </div>
                                 {% if item.uriprefix is defined %}
                                     {{ form_start(item.form) }}
+                                    {{ form_errors(item.form) }}
                                     {% for key, field in item.form  %}
                                         {% if field.vars['label'] == "URI" %}
-                                            {{ form_label(field) }}
-                                            {{ item.uriprefix }}
-                                            {{ form_errors(field) }}
-                                            {{ form_widget(field) }}
+                                            <div class="form-group">
+                                                {{ form_label(field) }}
+                                                <div class="prefix">
+                                                    <div class="labelprefix"> {{ item.uriprefix }}</div>
+                                                    {{ form_widget(field) }}
+                                                </div>
+                                            </div>
                                         {% elseif field.vars['id'] != "service_permission_update__token" %}
-                                            {{ form_label(field) }}
-                                            {{ form_errors(field) }}
-                                            {{ form_widget(field) }}
+                                            <div class="form-group">
+                                                {{ form_label(field) }}
+                                                {{ form_widget(field) }}
+                                            </div>
                                         {% endif %}
 
                                     {% endfor %}
-
                                     {{ form_end(item.form) }}
                                 {% else %}
                                     {{ form(item.form) }}
                                 {% endif %}
-                               {# {{ dump(item.form.children["uripost"]) }}#}
                             </div>
                         {% endif %}
                         <table cellspacing="0" class="accordion">
