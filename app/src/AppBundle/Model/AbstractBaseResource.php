@@ -284,13 +284,18 @@ abstract class AbstractBaseResource
     */
     protected function putCall(string $path, array $data): ResponseInterface
     {
-        $response = $this->client->put(
-            $path,
-            [
-                'json' => $data,
-                'headers' => $this->getHeaders(),
-            ]
-        );
+        try {
+            $response = $this->client->put(
+                $path,
+                [
+                    'json' => $data,
+                    'headers' => $this->getHeaders(),
+                ]
+            );
+        } catch (RequestException $exception) {
+            throw new BackendException($exception->getMessage());
+        }
+
 
         return $response;
     }

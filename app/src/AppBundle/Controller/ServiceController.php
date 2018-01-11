@@ -2074,11 +2074,31 @@ class ServiceController extends Controller
                         $withoutAccent = $this->removeAccents($data['uripost']);
                         $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
                         $entitlement["uri"] = $permissionsAccordion[$permission['id']]['uriprefix'].$modifiedName;
-                        $this->get('entitlement')->patch($entitlement['id'], array('uri' => $entitlement["uri"], 'name' => $entitlement["name"], 'description' => $entitlement["description"]));
+                        try {
+                            $this->get('entitlement')->patch($entitlement['id'], [
+                                'name' => $entitlement["name"],
+                            ]);
+                        } catch (\Exception $exception) {
+                            $form->get('name')->addError(new FormError($exception->getMessage()));
+                        }
+                        try {
+                            $this->get('entitlement')->patch($entitlement['id'], [
+                                'uri' => $entitlement["uri"],
+                            ]);
+                        } catch (\Exception $exception) {
+                            $form->get('uripost')->addError(new FormError($exception->getMessage()));
+                        }
+                        try {
+                            $this->get('entitlement')->patch($entitlement['id'], [
+                                'description' => $entitlement["description"],
+                            ]);
+                        } catch (\Exception $exception) {
+                            $form->get('description')->addError(new FormError($exception->getMessage()));
+                        }
                     } catch (\AppBundle\Exception $exception) {
                         $form->addError(new FormError($exception->getMessage()));
                     }
-                    if (! $form->getErrors()->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
+                    if (! $form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
                         return false;
                     }
                 }
@@ -2229,18 +2249,33 @@ class ServiceController extends Controller
                                 if ($iter == $servicepermissions['item_number']) {
                                     $withoutAccent = $this->removeAccents($permission);
                                     $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
-                                    $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $servId, $modifiedName, $permission, null, $this->get('entitlement'));
-                                    array_push($permissionids, $newpermission['id']);
+                                    try {
+                                        $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $servId, $modifiedName, $permission, null, $this->get('entitlement'));
+                                        array_push($permissionids, $newpermission['id']);
+                                    } catch (\Exception $exception) {
+                                        $form->get('permissions')->addError(new FormError($exception->getMessage()));
+                                    }
                                 }
                             }
                         }
-
-                        $this->get('entitlement_pack')->put($data['id'], array('type' => $entitlementpack["type"], 'name' => $entitlementpack["name"], 'description' => $entitlementpack["description"]));
-                        $this->get('entitlement_pack')->setPermissionsToPermissionSet($data['id'], $permissionids);
+                        try {
+                            $this->get('entitlement_pack')->put($data['id'], [
+                                'type' => $entitlementpack["type"],
+                                'name' => $entitlementpack["name"],
+                                'description' => $entitlementpack["description"],
+                            ]);
+                        } catch (\Exception $exception) {
+                            $form->get('name')->addError(new FormError($exception->getMessage()));
+                        }
+                        try {
+                            $this->get('entitlement_pack')->setPermissionsToPermissionSet($data['id'], $permissionids);
+                        } catch (\Exception $exception) {
+                            $form->get('entitlement_pack')->addError(new FormError($exception->getMessage()));
+                        }
                     } catch (\AppBundle\Exception $exception) {
                         $form->addError(new FormError($exception->getMessage()));
                     }
-                    if (! $form->getErrors()->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
+                    if (! $form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
                         return false;
                     }
                 }
