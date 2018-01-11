@@ -110,6 +110,7 @@ div.accordion-panel-notform, div.accordion-panel-form {
 
 div.accordion-panel-notform.active {
     border-color: #ec666a;
+ /*   display: block;*/
 }
 
 div.accordion-panel-form.active {

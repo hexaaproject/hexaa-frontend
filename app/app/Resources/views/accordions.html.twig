@@ -51,6 +51,8 @@
             showForm(containerWithErrors);
             var accordionContainer = containerWithErrors.closest('.accordion-container');
             var accordionTitle = accordionContainer.find('.accordion-title');
+            var click = accordionTitle[0].nextElementSibling;
+            click.style.display = "none";
             toggleAccordion(accordionTitle[0]); // dom element
         }
     }
@@ -59,7 +61,8 @@
 
         {% if manager %}
 
-            showErrors($(".hasErrors"));
+            showErrors(
+                $(".hasErrors"));
 
             $('.accordion_delete_button').on("click", function () {
                 var deleteBox = $('#deleteBox');
@@ -189,11 +192,13 @@
                                                     <div class="labelprefix"> {{ item.uriprefix }}</div>
                                                     {{ form_widget(field) }}
                                                 </div>
+                                                {{ form_errors(field) }}
                                             </div>
                                         {% elseif field.vars['id'] != "service_permission_update__token" %}
                                             <div class="form-group">
                                                 {{ form_label(field) }}
                                                 {{ form_widget(field) }}
+                                                {{ form_errors(field) }}
                                             </div>
                                         {% endif %}
 

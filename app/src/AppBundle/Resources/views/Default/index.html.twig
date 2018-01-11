@@ -52,8 +52,12 @@
                 <div {% if hasServices %} class="col tablemain" style="border: 1px solid #61AFC5;" {% else %} class="col-sm-5 tablemain" style=" padding: 1em; border: 1px solid #61AFC5; width: 300px;" {% endif %}>
                     <div id="orgtablemain">
                         <div id="orgtableheader" class="tableheader"><b>ORGANIZATIONS</b></div>
-                        <input id="hexaaSearchFieldOrg" type="text" name="filter" class="hexaaSearchField pull-left" placeholder="Search organization">
-                        <br><br>
+                        {% if (organizations.items | length) > 3 %}
+                            <input id="hexaaSearchFieldOrg" type="text" name="filter" class="hexaaSearchField pull-left" placeholder="Search organization">
+                        {% endif %}
+                        {% if ((organizations.items | length) > 3 and (services.items| length) > 3) or ((organizations.items| length) > 3) or ((services.items| length) > 3) %}
+                            <br><br>
+                        {% endif %}
                         {% if organizations.items == null %}
                             <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
                         {% endif %}
@@ -68,8 +72,12 @@
                     <div class="col tablemain" style="border: 1px solid #FA8072; margin-right: 5px;">
                         <div id="servtablemain">
                             <div id="servtableheader" class="tableheader"><b>SERVICES</b></div>
-                            <input id="hexaaSearchFieldServ" type="text" name="filter" class="hexaaSearchField pull-left" placeholder="Search service">
-                            <br><br>
+                            {% if services.items | length > 3 %}
+                                <input id="hexaaSearchFieldServ" type="text" name="filter" class="hexaaSearchField pull-left" placeholder="Search service">
+                            {% endif %}
+                            {% if ((organizations.items | length) > 3 and (services.items| length) > 3) or ((organizations.items| length) > 3) or ((services.items| length) > 3) %}
+                                <br><br>
+                            {% endif %}
                             {% for service in services.items %}
                                 <div id="servtablecontent" class="servs"><a href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|truncate(25) }}</a></div>
                                 {% endfor %}
