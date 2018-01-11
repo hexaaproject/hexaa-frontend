@@ -1110,7 +1110,6 @@ class OrganizationController extends BaseController
     {
         $rolesAccordion = array();
         foreach ($roles as $role) {
-
             $rolesAccordion[$role['id']]['title'] = $role['name'];
             $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
 

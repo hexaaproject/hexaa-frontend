@@ -30,7 +30,7 @@ class OrganizationRoleUpdateType extends AbstractType
         $membersChoices = array();
         if (array_key_exists('organizationMembers', $role) && $role['organizationMembers']) {
             foreach ($role['organizationMembers'] as $organizationMember) {
-                $membersChoices[$organizationMember['display_name'] . ' <' . $organizationMember['fedid'] . '>'] = $organizationMember['id'];
+                $membersChoices[$organizationMember['display_name'].' <'.$organizationMember['fedid'].'>'] = $organizationMember['id'];
             }
         }
 
@@ -71,7 +71,7 @@ class OrganizationRoleUpdateType extends AbstractType
                 array(
                     "label" => "Permissions",
                     "label_attr" => array('class' => 'formlabel'),
-//                    'attr' => array('data-role' => 'tagsinput'),
+                    // 'attr' => array('data-role' => 'tagsinput'),
                     'required' => true,
                     "choices" => $entitlementChoices,
                     "data" => $checkedEntitlementChoices,
@@ -85,7 +85,7 @@ class OrganizationRoleUpdateType extends AbstractType
                 array(
                     "label" => "Members",
                     "label_attr" => array('class' => 'formlabel'),
-//                    'attr' => array('data-role' => 'tagsinput'),
+                    //'attr' => array('data-role' => 'tagsinput'),
                     'required' => true,
                     "choices" => $membersChoices,
                     "data" => $checkedMembersChoices,
