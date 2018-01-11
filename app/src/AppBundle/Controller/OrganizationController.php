@@ -202,7 +202,7 @@ class OrganizationController extends BaseController
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
 
-                "roles" => $this->rolesToAccordion($roles, $id, false, false, $request),
+                "roles" => $this->rolesToAccordion($roles, $id, false, false, false, false, $request),
 
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -719,7 +719,13 @@ class OrganizationController extends BaseController
 
         $organization = $this->getOrganization($id);
         $roles = $this->getRoles($organization);
-        $rolesAccordion = $this->rolesToAccordion($roles, $id, $action, $roleId, $request);
+        $entitlements = $this->getEntitlements($organization);
+        $members = $this->getMembers($organization);
+        $rolesAccordion = $this->rolesToAccordion($roles, $id, $entitlements, $members, $action, $roleId, $request);
+
+        if (! $rolesAccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
+            return $this->redirectToRoute('app_organization_roles', array("id" => $id));
+        }
 
         $form = $this->createForm(
             OrganizationRoleType::class,
@@ -1065,6 +1071,15 @@ class OrganizationController extends BaseController
     }
 
     /**
+     * @param $organization
+     * @return mixed
+     */
+    private function getEntitlements($organization)
+    {
+        return $this->get('organization')->getEntitlements($organization['id'])['items'];
+    }
+
+    /**
      * @param $service
      * @return mixed
      */
@@ -1091,10 +1106,16 @@ class OrganizationController extends BaseController
      *
      * @return array
      */
-    private function rolesToAccordion($roles, $orgId, $action, $roleId, Request $request)
+    private function rolesToAccordion($roles, $orgId, $entitlements, $principals, $action, $roleId, Request $request)
     {
         $rolesAccordion = array();
         foreach ($roles as $role) {
+            $rolesAccordion[$role['id']]['title'] = $role['name'];
+            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
+
+            $role['organizationMembers'] = $principals;
+            $role['organizationEntitlements'] = $entitlements;
+
             if (! array_key_exists('principals', $role)) {
                 $role['principals'] = array();
             }
@@ -1106,17 +1127,12 @@ class OrganizationController extends BaseController
                 )
             );
 
-
-            $rolesAccordion[$role['id']]['title'] = $role['name'];
-            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
-
             $members = array();
-            $permissions = array();
-
-
             foreach ($role['principals'] as $principal) {
-                $members[] = $principal['principal']['display_name'];
+                $members[$principal['principal']['id']] = $principal['principal']['display_name'];
             }
+
+            $permissions = array();
             foreach ($role['entitlements'] as $entitlement) {
                 $permissions[] = $entitlement['name'];
             }
@@ -1138,16 +1154,44 @@ class OrganizationController extends BaseController
 
             if ($form->isValid() and $form->isSubmitted()) {
                 $data = $form->getData();
-                $roleResource = $this->get('role');
                 try {
+                    $roleResource = $this->get('role');
                     $role = $roleResource->get($data['id']);
                     $this->amIManagerOfThis($role); //TODO
-                    $role["name"] = $data["name"];
 
-                    // persist role
-                    $roleResource->patch($role['id'], $role);
+                    $roleToBackend = array(
+                        'name' => $data['name'],
+                    );
+                    try {
+                        $roleResource->patch($role['id'], $roleToBackend);
+                    } catch (\Exception $exception) {
+                        $form->get('name')->addError(new FormError($exception->getMessage()));
+                    }
+
+                    $entitlementsToBackend = array();
+                    foreach ($data['entitlements'] as $id) {
+                        $entitlementsToBackend["entitlements"][] = $id;
+                    }
+                    try {
+                        $roleResource->setEntitlements($roleId, $entitlementsToBackend);
+                    } catch (\Exception $exception) {
+                        $form->get('entitlements')->addError(new FormError($exception->getMessage()));
+                    }
+
+                    $principalsToBackend = array();
+                    foreach ($data['members'] as $id) {
+                        $principalsToBackend["principals"][] = array("principal" => $id);
+                    }
+                    try {
+                        $roleResource->setPrincipals($roleId, $principalsToBackend);
+                    } catch (\Exception $exception) {
+                        $form->get('members')->addError(new FormError($exception->getMessage()));
+                    }
                 } catch (\AppBundle\Exception $exception) {
                     $form->addError(new FormError($exception->getMessage()));
+                }
+                if (! $form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
+                    return false;
                 }
             }
             $rolesAccordion[$role['id']]['form'] = $form->createView();
