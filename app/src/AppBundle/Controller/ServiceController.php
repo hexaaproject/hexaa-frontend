@@ -1011,7 +1011,7 @@ class ServiceController extends Controller
         }
 
         $permissionsaccordion = $this->permissionsToAccordion($permissionsperpage, $id, $permissionId, $action, $request);
-        if (! $permissionsaccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
+        if (false === $permissionsaccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
             return $this->redirectToRoute('app_service_permissions', array("id" => $id));
         }
 
@@ -1113,7 +1113,7 @@ class ServiceController extends Controller
 
         $permissionsetaccordion = $this->permissionSetToAccordion($permissionsetsperpage, $id, $permissionsetId, $action, $request);
 
-        if (! $permissionsetaccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
+        if (false === $permissionsetaccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
             return $this->redirectToRoute('app_service_permissionssets', array("id" => $id));
         }
 
@@ -2038,7 +2038,6 @@ class ServiceController extends Controller
 
                 $permissionsAccordion[$permission['id']]['title'] = $permission['name'];
 
-                // FIXME @annamari, nem találok permission delete url-t.
                 $permissionsAccordion[$permission['id']]['deleteUrl'] = $this->generateUrl("app_service_permissiondelete", [
                     'servId' => $servId,
                     'id' => $permission['id'],
