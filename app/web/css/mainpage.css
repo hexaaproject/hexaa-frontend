@@ -283,10 +283,6 @@ div.hr {
    /*margin-left: 32px;*/
 }
 
-.container .datatable{
-    min-width: 960px;
-}
-
 #servManagers .tt-menu, #orgManagers .tt-menu{
     width: 651.5px;
     margin: 2px 0;

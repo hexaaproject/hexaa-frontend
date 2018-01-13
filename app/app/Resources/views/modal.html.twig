@@ -11,9 +11,27 @@ Usage:
         button:
             {
                 text: 'text of form submitter button',
-                class: 'btn-red'
-                id: 'idofthebutton
+                class: 'btn-red',
+                formid: 'form_id',
+                id: 'idofthebutton'
             },
+        rightbuttons:      // optional
+            [
+                {
+                    text: 'text of any other button',
+                    class: 'btn-red',
+                    value: 'anyvalue',
+                    formid: 'form_id',
+                    id: 'idofthebutton1'
+                },
+                {
+                    text: 'text of any other button',
+                    class: 'btn-red',
+                    value: 'anyvalue',
+                    formid: 'form_id',
+                    id: 'idofthebutton2'
+                },
+            ],
         leftbutton: // optional
             {
                 text: 'text of form back or cancel left button',
@@ -42,9 +60,8 @@ Usage:
 {% block stylesheets %}
     {% stylesheets
     'css/modal.css'
-    filter='cssrewrite'
-    %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
 
@@ -52,27 +69,56 @@ Usage:
     <div class="modal-dialog">
         <div class="modal-content">
             {% if formaction is defined %}
-            <form action="{{ formaction }}" method="POST">{% endif %}
-                <div class="modal-header">
-                    <button type="button" class="close" title="Close" data-dismiss="modal" aria-hidden="true"><i
-                                class="material-icons" style="color: black">clear</i></button>
-                    <h4 class="modal-title">{{ title }}</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-body-head">{% if bodyhead is defined %}{{ bodyhead }}{% endif %}</div>
-                    <div class="modal-body-content">{% if bodycontent is defined %}{{ bodycontent|raw }}{% endif %}</div>
-                </div>
-                <div class="modal-footer">
-                    {% if leftbutton is defined %}
-                        <button type="button" id="{% if leftbutton.id is defined %}{{ leftbutton.id }}{% else %}leftbutton{% endif %}"
-                                class="pull-left btnhexaa {% if leftbutton.class is defined %}{{ leftbutton.class }}{% else %}btn-blue{% endif %}" {% if leftbutton.dismiss is defined %} data-dismiss="modal" {% endif %}>{{ leftbutton.text }}</button>
-                    {% else %}
-                        <button type="button" id="leftbutton" class="pull-left btnhexaa btn-blue" data-dismiss="modal">Cancel</button>
+              <form action="{{ formaction }}" method="POST">
+            {% endif %}
+            <div class="modal-header">
+                <button type="button" class="close" title="Close" data-dismiss="modal" aria-hidden="true">
+                    <i class="material-icons" style="color: black">clear</i>
+                </button>
+                <h4 class="modal-title">{{ title }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-head">{% if bodyhead is defined %}{{ bodyhead }}{% endif %}</div>
+                <div class="modal-body-content">{% if bodycontent is defined %}{{ bodycontent|raw }}{% endif %}</div>
+            </div>
+            <div class="modal-footer">
+                {% if leftbutton is defined %}
+                    <button type="button"
+                            id="{% if leftbutton.id is defined %}{{ leftbutton.id }}{% else %}leftbutton{% endif %}"
+                            class="pull-left btnhexaa
+                                   {% if leftbutton.class is defined %}
+                                       {{ leftbutton.class }}
+                                   {% else %}
+                                       btn-blue
+                                   {% endif %}"
+                            {% if leftbutton.dismiss is defined %}
+                                data-dismiss="modal"
+                            {% endif %}>
+                        {{ leftbutton.text }}
+                    </button>
+                {% else %}
+                    <button type="button" id="leftbutton" class="pull-left btnhexaa btn-blue" data-dismiss="modal">
+                        Cancel
+                    </button>
+                {% endif %}
+                <div class="pull-right">
+                    {% if rightbuttons is defined %}
+                        {% for button in rightbuttons %}
+                            <button type="submit" {% if button.id is defined %} id="{{ button.id }}" {% endif %}
+                                    {% if button.value is defined %} value="{{ button.value }}" {% endif %}
+                                    class="btnhexaa {{ button.class }}">
+                                {{ button.text }}
+                            </button>
+                        {% endfor %}
                     {% endif %}
                     <button type="submit" {% if button.id is defined %} id="{{ button.id }}" {% endif %}
-                            class="pull-right btnhexaa {{ button.class }}">{{ button.text }}</button>
+                            {% if button.value is defined %} value="{{ button.value }}" {% endif %}
+                           class="btnhexaa {{ button.class }}">
+                        {{ button.text }}
+                    </button>
                 </div>
-                {% if formaction is defined %}</form>{% endif %}
+            </div>
+            {% if formaction is defined %}</form>{% endif %}
         </div>
     </div>
 </div>

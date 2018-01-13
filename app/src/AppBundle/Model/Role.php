@@ -74,6 +74,16 @@ class Role extends AbstractBaseResource
 
     /**
      * @param string $id
+     * @param string $principalId
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deletePrincipal(string $id, string $principalId)
+    {
+        return $this->deleteCall($this->pathName.'/'.$id.'/principals/'.$principalId, []);
+    }
+
+    /**
+     * @param string $id
      * @param array  $principals
      *
      * @return \Psr\Http\Message\ResponseInterface
