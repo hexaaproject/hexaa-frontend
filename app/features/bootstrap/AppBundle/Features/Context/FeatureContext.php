@@ -223,4 +223,24 @@ class FeatureContext extends MinkContext
         $element->click();
     }
 
+    /**
+     *
+     * elements with data-behattarget attribute at least aimable
+     *
+     * @When I check the :arg1 behat targeted checkbox
+     */
+    public function iCheckTheBehatTarget($databehattarget)
+    {
+        $page = $this->getSession()->getPage();
+        $locator = '//input[@type="checkbox" and @data-behattarget="'.$databehattarget.'"]';
+
+        $element = $page->find('xpath', $locator);
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('$locator')");
+        }
+
+        $element->check();
+    }
+
 }

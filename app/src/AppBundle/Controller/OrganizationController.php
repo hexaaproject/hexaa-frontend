@@ -7,6 +7,7 @@ use AppBundle\Form\ConnectServiceRequest2Type;
 use AppBundle\Form\OrganizationPropertiesType;
 use AppBundle\Form\OrganizationRoleType;
 use AppBundle\Form\OrganizationRoleUpdateType;
+use AppBundle\Form\OrganizationUserChangeRolesType;
 use AppBundle\Form\OrganizationUserInvitationSendEmailType;
 use AppBundle\Form\OrganizationUserInvitationType;
 use AppBundle\Form\OrganizationType;
@@ -14,6 +15,7 @@ use AppBundle\Form\OrganizationUserMessageManagerType;
 use AppBundle\Form\OrganizationUserMessageType;
 use AppBundle\Form\ConnectServiceType;
 use AppBundle\Model\Organization;
+use AppBundle\Model\Role;
 use GuzzleHttp\Exception\ClientException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -288,6 +290,7 @@ class OrganizationController extends BaseController
 
 
         $form = $this->createCreateInvitationForm($organization);
+
         $sendInEmailForm = $this->createForm(
             OrganizationUserInvitationSendEmailType::class,
             array(),
@@ -314,6 +317,15 @@ class OrganizationController extends BaseController
                 "method" => "POST",
             )
         );*/
+
+        $changeRolesForm = $this->createForm(
+            OrganizationUserChangeRolesType::class,
+            array('organizationRoles' => $this->getRoles($organization)),
+            array(
+                "action" => $this->generateUrl("app_organization_changerole", array("id" => $id)),
+                "method" => "POST",
+            )
+        );
 
         $form->handleRequest($request);
 
@@ -354,6 +366,7 @@ class OrganizationController extends BaseController
                     "sendInEmailForm" => $sendInEmailForm->createView(),
                     "sendEmailForm" => $sendEmailForm->createView(),
                     /*"sendMemberEmailForm" => $sendMemberEmailForm->createView(),*/
+                    "changeRolesForm" => $changeRolesForm->createView(),
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 )
             );
@@ -376,6 +389,7 @@ class OrganizationController extends BaseController
                 "sendInEmailForm" => $sendInEmailForm->createView(),
                 "sendEmailForm" => $sendEmailForm->createView(),
                /* "sendMemberEmailForm" => $sendMemberEmailForm->createView(),*/
+                "changeRolesForm" => $changeRolesForm->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
             )
         );
@@ -688,14 +702,38 @@ class OrganizationController extends BaseController
      * @return Response
      * @param   int     $id      Organization ID
      * @param   Request $request request
+     * @throws \AppBundle\Exception
      */
     public function changeroleAction($id, Request $request)
     {
+        $organization = $this->getOrganization($id);
         try {
-            // do something
-            $this->get('session')->getFlashBag()->add('success', 'Siker');
+            $form = $this->createForm(
+                OrganizationUserChangeRolesType::class,
+                array('organizationRoles' => $this->getRoles($organization))
+            );
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $action = $request->get('action');
+                $principalIds = $request->get('userId');
+                $data = $form->getData();
+                $roleIds = $data['roles'];
+                $roleResource = $this->get('role');
+                foreach ($roleIds as $roleId) {
+                    foreach ($principalIds as $principalId) {
+                        if ('add' == $action) {
+                            $roleResource->putPrincipal($roleId, $principalId);
+                        } elseif ('remove' == $action) {
+                            $roleResource->deletePrincipal($roleId, $principalId);
+                        } else {
+                            throw new \AppBundle\Exception("Invalid action: ".$action);
+                        }
+                    }
+                }
+            }
+            $this->get('session')->getFlashBag()->add('success', 'Roles of users updated successful.');
         } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('error', 'Hiba a feldolgozás során');
+            $this->get('session')->getFlashBag()->add('error', $e->getMessage());
             $this->get('logger')->error($e);
         }
 

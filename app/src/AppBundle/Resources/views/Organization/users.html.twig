@@ -29,67 +29,6 @@
                 ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
             }
 
-            {% if members is defined and members|length %}
-                /*var membersTableActionButtons = $('.members_table_actionButtons');
-                var membersRemove = $('#membersRemove');
-                var membersMessage = $('#membersMessage');
-                var membersProposal = $('#membersProposal');
-                var membersChangeRole = $('#membersChangeRole');
-
-                $(document).on('click', '.modal#membersMessage button[type=submit]', function (event) {
-                    event.preventDefault();
-                    $('form[name=organization_user_message]').submit();
-                });
-
-                membersTableActionButtons.on('click', '#remove', function(event) {
-                    event.preventDefault();
-                    var content = membersRemove.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = membersRemove.find('ul');
-                    $('#members_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
-                    });
-                    membersRemove.modal('show');
-                });
-
-                membersTableActionButtons.on('click', '#message', function(event) {
-                    event.preventDefault();
-                    var content = membersMessage.find('.modal-body-content');
-                    var form = content.find('form');
-                    form.append('<ul></ul>');
-                    var ul = membersMessage.find('ul');
-                    $('#members_table input:checked').each(function(index, el) {
-                        populateList2(ul, el);
-                    });
-                    membersMessage.modal('show');
-                });
-
-                membersTableActionButtons.on('click', '#proposal', function(event) {
-                    event.preventDefault();
-                    var content = membersProposal.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = membersProposal.find('ul');
-                    $('#members_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
-                    });
-                    membersProposal.modal('show');
-                });
-
-                membersTableActionButtons.on('click', '#changerole', function(event) {
-                    event.preventDefault();
-                    var content = membersChangeRole.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = membersChangeRole.find('ul');
-                    $('#members_table input:checked').each(function(index, el) {
-                        populateList(ul, el);
-                    });
-                    membersChangeRole.modal('show');
-                });*/
-            {% endif %}
-
             {% if managers is defined and managers|length %}
                 var managersTableActionButtons = $('.managers_table_actionButtons');
                 var managersRemove = $('#managersRemove');
@@ -97,11 +36,6 @@
                 var managersRevoke = $('#managersRevoke');
                 var membersProposal = $('#membersProposal');
                 var managersChangeRole = $('#managersChangeRole');
-
-                $(document).on('click', '.modal#managersMessage button[type=submit]', function (event) {
-                    event.preventDefault();
-                    $('form[name=organization_user_message_manager]').submit();
-                });
 
                 managersTableActionButtons.on('click', '#remove', function(event) {
                     event.preventDefault();
@@ -136,6 +70,10 @@
                     }
                     managersMessage.modal('show');
                 });
+                $(document).on('click', '.modal#managersMessage button[type=submit]', function (event) {
+                    event.preventDefault();
+                    $('form[name=organization_user_message_manager]').submit();
+                });
 
                 managersTableActionButtons.on('click', '#revoke', function(event) {
                     event.preventDefault();
@@ -164,9 +102,10 @@
                 managersTableActionButtons.on('click', '#changerole', function(event) {
                     event.preventDefault();
                     var content = managersChangeRole.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
+                    var form = content.find('form');
+                    form.prepend('<ul></ul>');
                     var ul = managersChangeRole.find('ul');
+                    ul.empty();
                     $('#managers_table input:checked').each(function(index, el) {
                         populateList(ul, el);
                     });
@@ -177,6 +116,14 @@
                     }
                     managersChangeRole.modal('show');
                 });
+                $(document).on('click', '.modal#managersChangeRole button[type=submit]', function (event) {
+                    event.preventDefault();
+                    var input = '<input type="hidden" name="action" value="'+$(this).val()+'">';
+                    var form = $('form[name=organization_user_change_roles]');
+                    form.append(input);
+                    $('form[name=organization_user_change_roles]').submit();
+                });
+
             {% endif %}
         });
     </script>
@@ -192,7 +139,6 @@
             {{ flashMessage|raw }}
         </div>
     {% endfor %}
-
     {% if managers is defined and managers|length %}
     <div class="row">
         <div class="col-md-15">
@@ -259,14 +205,24 @@
             {
                 id: 'managersChangeRole',
                 title: 'Change role',
-                bodyhead: 'Change the selected managers role',
-                bodycontent: 'Itt lesz a user lista TODO',
+                bodyhead: 'Change the selected users role',
+                bodycontent: form(changeRolesForm),
                 button:
                     {
-                        text: 'Change roles',
-                        class: 'btn-red'
+                        text: 'Add roles',
+                        class: 'btn-red',
+                        value: 'add',
+                        id: 'add_roles_button'
                     },
-                formaction: path('app_organization_changerole', {id: entity.id })
+                rightbuttons:
+                    [
+                        {
+                            text: 'Remove roles',
+                            class: 'btn-red',
+                            value: 'remove',
+                            id: 'remove_roles_button'
+                        },
+                    ],
             })
         }}
 
@@ -303,67 +259,6 @@
                 })
             }}
         </div>
-
-       {# {{ include('::modal.html.twig',
-            {
-                id: 'membersRemove',
-                title: 'Remove members',
-                bodyhead: 'Are you ready to remove these users from your organization?',
-                bodycontent: 'Optional',
-                button:
-                    {
-                        text: 'Remove',
-                        class: 'btn-red'
-                    },
-                formaction: path('app_organization_removeusers', {id: entity.id })
-            })
-        }}
-
-        {{ include('::modal.html.twig',
-            {
-                id: 'membersMessage',
-                title: 'Send message to selected users',
-                bodycontent: form_start(sendMemberEmailForm)
-                ~ form_row(sendMemberEmailForm.subject)
-                ~ form_row(sendMemberEmailForm.message)
-                ~ form_end(sendMemberEmailForm),
-                button:
-                    {
-                        text: 'Send',
-                        class: 'btn-red'
-                    }
-            })
-        }}
-
-        {{ include('::modal.html.twig',
-            {
-                id: 'membersProposal',
-                title: 'Propose members status',
-                bodyhead: 'Propose members to managers',
-                bodycontent: 'Optional',
-                button:
-                    {
-                        text: 'Propose',
-                        class: 'btn-red'
-                    },
-                formaction: path('app_organization_propose', {id: entity.id })
-            })
-        }}
-
-        {{ include('::modal.html.twig',
-            {
-                id: 'membersChangeRole',
-                title: 'Change role',
-                bodyhead: 'Change the selected members role',
-                bodycontent: 'Itt lesz a textarea és a user lista TODO',
-                button:
-                    {
-                        text: 'Change roles',
-                        class: 'btn-red'
-                    },
-                formaction: path('app_organization_changerole', {id: entity.id })
-            })
-        }}#}
     </div>
     {% endif %}
 
