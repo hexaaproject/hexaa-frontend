@@ -1,6 +1,5 @@
 @organization
 @users
-  @wip
 Feature: When I go to organization's users
   As an authenticaed user
   I can see and edit the users
