@@ -22,6 +22,9 @@ class AdminAttributeSpecUpdateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $multivalue = $options['data']['is_multivalue'];
+
         $builder
             ->add(
                 'name',
@@ -87,6 +90,7 @@ class AdminAttributeSpecUpdateType extends AbstractType
                     //"data" => true,
                     "label_attr" => array('class' => 'formlabel'),
                     'choices' => array('true' => true, 'false' => null),
+                    'data' => $multivalue,
                     'multiple' => false,
                     'expanded' => true,
                     'required' => true,

@@ -298,27 +298,26 @@ abstract class AbstractBaseResource
     */
     protected function patchCallAdmin(string $path, array $data, string $admin = "true"): ResponseInterface
     {
-        dump($data);
         if ($admin == "1") {
             $admin = "true";
         }
         try {
             $response = $this->client->patch(
-            $path,
-            [
-                'json'    => $data,
-                'headers' => $this->getHeaders(),
-                'query' => array(
-                    'admin' => $admin,
-                ),
-            ]
-        );
+                $path,
+                [
+                    'json'    => $data,
+                    'headers' => $this->getHeaders(),
+                    'query' => array(
+                        'admin' => $admin,
+                    ),
+                ]
+            );
         } catch (RequestException $exception) {
-            //dump($exception);exit;
             throw new BackendException($exception->getMessage());
         }
+
         return $response;
-  }
+    }
 
     /**
      * @param string $path

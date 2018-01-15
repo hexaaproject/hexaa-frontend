@@ -1090,7 +1090,8 @@ class ServiceController extends Controller
      */
     public function permissionssetsAction(Request $request, $id, $permissionsetId, $action, $token = null, $permissionsetname = null)
     {
-        $allpermissionset = $this->get('service')->getEntitlementPacks($id);
+        $service = $this->get('service');
+        $allpermissionset = $service->getEntitlementPacks($id);
         $permissionssets = $allpermissionset['items'];
         $totalnumber = $allpermissionset['item_number'];
         $totalpages = ceil($totalnumber / 25);
@@ -1098,16 +1099,16 @@ class ServiceController extends Controller
         $pagesize = 25;
         $verbose = "normal";
         $permissionsetsperpage = array();
-        $allallpermissionset = $this->get('service')->getEntitlementPacks($id, $verbose, 0, 100000);
+        $allallpermissionset = $service->getEntitlementPacks($id, $verbose, 0, 10000);
         array_push($permissionsetsperpage, $permissionssets);
         for ($i = 1; $i < $totalpages; $i++) {
-            $permissionsetperpage = $this->get('service')->getEntitlementPacks($id, $verbose, $offset, $pagesize);
+            $permissionsetperpage = $service->getEntitlementPacks($id, $verbose, $offset, $pagesize);
             array_push($permissionsetsperpage, $permissionsetperpage['items']);
             $offset = $offset +25;
         }
 
         $permissions = array();
-        $servicepermissions = $this->get('service')->getEntitlements($id, $verbose, 0, 100000);
+        $servicepermissions = $service->getEntitlements($id, $verbose, 0, 10000);
         foreach ($servicepermissions['items'] as $servicepermission) {
             $permissions[$servicepermission['id']] = $servicepermission['name'];
         }
@@ -1158,7 +1159,7 @@ class ServiceController extends Controller
                         if ($iter == $servicepermissions['item_number']) {
                             $withoutAccent = $this->removeAccents($permission);
                             $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
-                            $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $id, $modifiedName, $permission, null, $this->get('entitlement'));
+                            $newpermission = $service->createPermission($apiProperties['entitlement_base'], $id, $modifiedName, $permission, null, $this->get('entitlement'));
                             array_push($permissionids, $newpermission['id']);
                         }
                     }
@@ -1171,7 +1172,7 @@ class ServiceController extends Controller
                 );
 
                 if (count($data['service_create_permission_set']['permissions']) != 0) {
-                    $entitlementpack = $this->get('service')->postPermissionSet($id, $permissonSet, $this->get('entitlement_pack'));
+                    $entitlementpack = $service->postPermissionSet($id, $permissonSet, $this->get('entitlement_pack'));
 
                     foreach ($permissionids as $permissionid) {
                         $this->get('entitlement_pack')->addPermissionToPermissionSet($entitlementpack['id'], $permissionid);
@@ -2197,8 +2198,7 @@ class ServiceController extends Controller
                 array_push($description, $permissionSet['description']);
                 array_push($type, $permissionSet['type']);
                 foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
-                    $entitlement = $this->get('entitlement')
-                    ->getEntitlement($entitlementid);
+                    $entitlement = $this->get('entitlement')->getEntitlement($entitlementid);
                     array_push($permissions, $entitlement['name']);
                 }
                 $permissionsAccordionSet[$permissionSet['id']]['contents'] = [

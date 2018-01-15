@@ -40,6 +40,7 @@ class AdminController extends Controller
      * @Route("/attributes/{admin}/{attributeId}/{action}", defaults={"attributeId" : false, "action" : false})
      * @Template()
      * @param bool    $admin
+     * @param integer $attributeId
      * @param string  $action
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -84,6 +85,7 @@ class AdminController extends Controller
                 );
                 $this->get('attribute_spec')->createAttributeSpec($admin, $attributeSpec);
                 //  $this->get('service')->createPermission($permisson['uri'], $id, $permisson['name'], $permisson['description'], $this->get('entitlement'));
+                $this->get('session')->getFlashBag()->add('success', 'Attribute specification created succesfully.');
 
                 return $this->redirect($request->getUri());
             }
@@ -191,9 +193,7 @@ class AdminController extends Controller
             $offset = $offset +25;
         }
         $allentitypart = $this->get('entity_id')->cget($verbose, 0, 100000);
-     // array_push($allentity, $allentitypart);
-     //   dump($allentity);
-      // dump($this->allEntityIDsToAccordion($allentitypart));exit;
+
         return $this->render(
             'AppBundle:Admin:entity.html.twig',
             array(
@@ -427,7 +427,6 @@ class AdminController extends Controller
     {
         $attributesAccordion = array();
         foreach ($attributespecifications['items'] as $attributespecification) {
-
             $form =  $this->createForm(
                 AdminAttributeSpecUpdateType::class,
                 $attributespecification,
@@ -476,7 +475,6 @@ class AdminController extends Controller
 
             if ($form->isValid() and $form->isSubmitted()) {
                 $data = $form->getData();
-                dump($data);
                 $attributeResource = $this->get('attribute_spec');
                 try {
                     $attributespec = $attributeResource->get($data['id']);
@@ -486,27 +484,47 @@ class AdminController extends Controller
                     $attributespec["maintainer"] = $data["maintainer"];
                     $attributespec["is_multivalue"] = $data["Multivalue"];
                     $attributespec["syntax"] = $data["syntax"];
-                    dump($attributespec['name']);
                     try {
-                        //$attributeResource->patchAdmin($attributespec['id'], $attributespec);
-                        $attributeResource->patchAdmin($attributespec['id'], ["name" => $attributespec['name'], "description" => $attributespec['description'], "uri" => $attributespec['uri'], "syntax" => $attributespec['syntax'], "maintainer" => $attributespec['maintainer'], "is_multivalue" => $attributespec["is_multivalue"]]);
+                        $attributeResource->patchAdmin($attributespec['id'], ["name" => $attributespec['name']]);
+                       // $attributeResource->patchAdmin($attributespec['id'], ["name" => $attributespec['name'], "description" => $attributespec['description'], "uri" => $attributespec['uri'], "syntax" => $attributespec['syntax'], "maintainer" => $attributespec['maintainer'], "is_multivalue" => $attributespec["is_multivalue"]]);
                     } catch (\Exception $exception) {
                         $form->get('name')->addError(new FormError($exception->getMessage()));
                     }
-                 /*try {
-                   $this->get('entitlement')->patch($entitlement['id'], [
-                     'uri' => $entitlement["uri"],
-                   ]);
-                 } catch (\Exception $exception) {
-                   $form->get('uripost')->addError(new FormError($exception->getMessage()));
-                 }
-                 try {
-                   $this->get('entitlement')->patch($entitlement['id'], [
-                     'description' => $entitlement["description"],
-                   ]);
-                 } catch (\Exception $exception) {
-                   $form->get('description')->addError(new FormError($exception->getMessage()));
-                 }*/
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["description" => $attributespec['description']]);
+                    } catch (\Exception $exception) {
+                        $form->get('description')->addError(new FormError($exception->getMessage()));
+                    }
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["uri" => $attributespec['uri']]);
+                    } catch (\Exception $exception) {
+                        $form->get('uri')->addError(new FormError($exception->getMessage()));
+                    }
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["syntax" => $attributespec['syntax']]);
+                    } catch (\Exception $exception) {
+                        $form->get('syntax')->addError(new FormError($exception->getMessage()));
+                    }
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["maintainer" => $attributespec['maintainer']]);
+                    } catch (\Exception $exception) {
+                        if (strpos($exception->getMessage(), "this AttributeSpec can not be linked to a principal") !== false) {
+                            $form->get('maintainer')
+                            ->addError(new FormError("First delete attribute value connected to attribute spec! ".$exception->getMessage()));
+                        } elseif (strpos($exception->getMessage(), "Can't assign maintainer to user to AttributeSpec") !== false) {
+                            $form->get('maintainer')
+                            ->addError(new FormError("First delete attribute value connected to attribute spec! ".$exception->getMessage()));
+                        } else {
+                            $form->get('maintainer')->addError(new FormError($exception->getMessage()));
+                        }
+                    }
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["is_multivalue" => $attributespec['is_multivalue']]);
+                    } catch (\Exception $exception) {
+                        $form->get('uri')->addError(new FormError($exception->getMessage()));
+                    }
+
+                    $this->get('session')->getFlashBag()->add('success', 'Attribute specification modified succesfully.');
                 } catch (\AppBundle\Exception $exception) {
                     $form->addError(new FormError($exception->getMessage()));
                 }
@@ -515,8 +533,8 @@ class AdminController extends Controller
                 }
             }
             $attributesAccordion[$attributespecification['id']]['form'] = $form->createView();
-
         }
+
         return $attributesAccordion;
     }
 

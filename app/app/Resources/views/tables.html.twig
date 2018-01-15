@@ -270,7 +270,7 @@ buttons array:
     {% for user in users %}
         <tr id="{{ user.id }}">
         {% if buttons is defined %}
-            <td><input type="checkbox" name="checkbox" data-id="{{ user.id }}" data-fedid="{{ user.fedid }}" data-behattarget="{{ user.fedid }}"></td>
+            <td><input type="checkbox" name="checkbox" {% if attributes is not defined %} data-id="{{ user.id }}" data-fedid="{{ user.fedid }}" data-behattarget="{{ user.fedid }}" {% endif %}></td>
         {% endif %}
         {% if attributes is defined %}
             <td class="{{ tdcolor }}"><strong>{{ user.name }}</strong></td>
