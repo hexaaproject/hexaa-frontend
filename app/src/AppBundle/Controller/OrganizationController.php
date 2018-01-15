@@ -723,11 +723,11 @@ class OrganizationController extends BaseController
         $members = $this->getMembers($organization);
         $rolesAccordion = $this->rolesToAccordion($roles, $id, $entitlements, $members, $action, $roleId, $request);
 
-        if (! $rolesAccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
-            return $this->redirectToRoute('app_organization_roles', array("id" => $id));
-        }
+          if (!$rolesAccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
+            return $this->redirectToRoute('app_organization_roles', ["id" => $id]);
+          }
 
-        $form = $this->createForm(
+      $form = $this->createForm(
             OrganizationRoleType::class,
             array()
         );

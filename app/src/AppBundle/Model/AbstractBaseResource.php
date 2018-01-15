@@ -113,6 +113,18 @@ abstract class AbstractBaseResource
     }
 
     /**
+    * PATCH resource
+    *
+    * @param string $id   ID of resource to PATCH
+    * @param array  $data data to PATCH
+    * @return \Psr\Http\Message\ResponseInterface
+    */
+    public function patchAdmin(string $id, array $data): ResponseInterface
+    {
+        return $this->patchCallAdmin($this->pathName.'/'.$id, $data);
+    }
+
+    /**
      * POST resource
      *
      * @param array $data data to POST
@@ -276,6 +288,37 @@ abstract class AbstractBaseResource
 
         return $response;
     }
+
+    /**
+    * @param string $path
+    * @param array  $data
+    * @param string $admin
+    * @return ResponseInterface
+    * @throws BackendException
+    */
+    protected function patchCallAdmin(string $path, array $data, string $admin = "true"): ResponseInterface
+    {
+        dump($data);
+        if ($admin == "1") {
+            $admin = "true";
+        }
+        try {
+            $response = $this->client->patch(
+            $path,
+            [
+                'json'    => $data,
+                'headers' => $this->getHeaders(),
+                'query' => array(
+                    'admin' => $admin,
+                ),
+            ]
+        );
+        } catch (RequestException $exception) {
+            //dump($exception);exit;
+            throw new BackendException($exception->getMessage());
+        }
+        return $response;
+  }
 
     /**
      * @param string $path
