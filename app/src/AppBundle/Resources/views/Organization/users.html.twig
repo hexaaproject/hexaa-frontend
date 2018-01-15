@@ -103,9 +103,9 @@
                     event.preventDefault();
                     var content = managersChangeRole.find('.modal-body-content');
                     var form = content.find('form');
+                    form.find('ul').remove();
                     form.prepend('<ul></ul>');
-                    var ul = managersChangeRole.find('ul');
-                    ul.empty();
+                    var ul = form.find('ul');
                     $('#managers_table input:checked').each(function(index, el) {
                         populateList(ul, el);
                     });
