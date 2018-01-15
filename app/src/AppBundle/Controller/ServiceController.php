@@ -2165,8 +2165,8 @@ class ServiceController extends Controller
         $permissionsAccordionSet = array();
         foreach ($permissionSets as $onePermissionSetGroup) {
             foreach ($onePermissionSetGroup as $permissionSet) {
-                $permissionsChoices = array();
-                if (array_key_exists('entitlement_ids', $permissionSet)) {
+                $permissionsChoices = [];
+                if (array_key_exists('entitlement_ids', $permissionSet) and !(empty($permissionSet['entitlement_ids']))) {
                     foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
                         $entitlement = $this->get('entitlement')->get($entitlementid);
                         $permissionsChoices['permissions'][$entitlementid] = $entitlement['name'];
@@ -2175,15 +2175,26 @@ class ServiceController extends Controller
                         $permissionsChoices['type'] = $permissionSet['type'];
                         $permissionsChoices['id'] = $permissionSet['id'];
                     }
+                } else {
+                    $permissionsChoices['name'] = $permissionSet['name'];
+                    $permissionsChoices['description'] = $permissionSet['description'];
+                    $permissionsChoices['type'] = $permissionSet['type'];
+                    $permissionsChoices['id'] = $permissionSet['id'];
+                    $permissionsChoices['permissions'] = [];
                 }
-
-                $form =  $this->createForm(
-                    ServicePermissionSetUpdateType::class,
-                    $permissionsChoices,
-                    array(
-                        "action" => $this->generateUrl("app_service_permissionssets", array("id" => $servId, "action" => "update", "permissionsetId" => $permissionSet['id'])),
-                    )
-                );
+                if (!empty($permissionsChoices)) {
+                    $form = $this->createForm(
+                        ServicePermissionSetUpdateType::class,
+                        $permissionsChoices,
+                        [
+                            "action" => $this->generateUrl("app_service_permissionssets", [
+                                "id" => $servId,
+                                "action" => "update",
+                                "permissionsetId" => $permissionSet['id'],
+                            ]),
+                        ]
+                    );
+                }
 
                 $permissionsAccordionSet[$permissionSet['id']]['title'] = $permissionSet['name'];
                 $permissionsAccordionSet[$permissionSet['id']]['deleteUrl'] = $this->generateUrl("app_service_permissionsetdelete", [
@@ -2202,18 +2213,18 @@ class ServiceController extends Controller
                     array_push($permissions, $entitlement['name']);
                 }
                 $permissionsAccordionSet[$permissionSet['id']]['contents'] = [
-                [
-                    'key' => 'Description',
-                    'values' => $description,
-                ],
-                [
-                    'key' => 'Type',
-                    'values' => $type,
-                ],
-                [
-                    'key' => 'Permissions',
-                    'values' => $permissions,
-                ],
+                    [
+                        'key' => 'Description',
+                        'values' => $description,
+                    ],
+                    [
+                        'key' => 'Type',
+                        'values' => $type,
+                    ],
+                    [
+                        'key' => 'Permissions',
+                        'values' => $permissions,
+                    ],
                 ];
 
 
@@ -2224,68 +2235,68 @@ class ServiceController extends Controller
                 $verbose = "normal";
 
                 $servicepermissions = $this->get('service')->getEntitlements($servId, $verbose, 0, 100000);
+                if (!empty($permissionsChoices)) {
+                    if ($form->isValid() and $form->isSubmitted()) {
+                        $data = $form->getData();
+                        $entitlementpackResource = $this->get('entitlement_pack');
+                        try {
+                            $entitlementpack = $entitlementpackResource->get($data['id']);
+                            $entitlementpack["name"] = $data["name"];
+                            $entitlementpack["description"] = $data["description"];
+                            $entitlementpack["type"] = $data["type"];
 
-                if ($form->isValid() and $form->isSubmitted()) {
-                    $data = $form->getData();
-                    $entitlementpackResource = $this->get('entitlement_pack');
-                    try {
-                        $entitlementpack = $entitlementpackResource->get($data['id']);
-                        $entitlementpack["name"] = $data["name"];
-                        $entitlementpack["description"] = $data["description"];
-                        $entitlementpack["type"] = $data["type"];
-
-                        $permissionids = [];
-                        if (count(array_unique($data['permissions'])) != 0) {
-                            $iter = 0;
-                            $apiProperties = $this->get('service')->apget();
-                            foreach (array_unique($data['permissions']) as $permission) {
+                            $permissionids = [];
+                            if (count(array_unique($data['permissions'])) != 0) {
                                 $iter = 0;
-                                foreach ($servicepermissions['items'] as $servicepermission) {
-                                    if ($servicepermission['name'] == $permission) {
-                                        array_push($permissionids, $servicepermission['id']);
-                                        break;
-                                    } else {
-                                        $iter++;
+                                $apiProperties = $this->get('service')->apget();
+                                foreach (array_unique($data['permissions']) as $permission) {
+                                    $iter = 0;
+                                    foreach ($servicepermissions['items'] as $servicepermission) {
+                                        if ($servicepermission['name'] == $permission) {
+                                            array_push($permissionids, $servicepermission['id']);
+                                            break;
+                                        } else {
+                                            $iter++;
+                                        }
                                     }
-                                }
-                                if ($iter == $servicepermissions['item_number']) {
-                                    $withoutAccent = $this->removeAccents($permission);
-                                    $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
-                                    try {
-                                        $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $servId, $modifiedName, $permission, null, $this->get('entitlement'));
-                                        array_push($permissionids, $newpermission['id']);
-                                    } catch (\Exception $exception) {
-                                        $form->get('permissions')->addError(new FormError($exception->getMessage()));
+                                    if ($iter == $servicepermissions['item_number']) {
+                                        $withoutAccent = $this->removeAccents($permission);
+                                        $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
+                                        try {
+                                            $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $servId, $modifiedName, $permission, null, $this->get('entitlement'));
+                                            array_push($permissionids, $newpermission['id']);
+                                        } catch (\Exception $exception) {
+                                            $form->get('permissions')->addError(new FormError($exception->getMessage()));
+                                        }
                                     }
                                 }
                             }
+                            try {
+                                $this->get('entitlement_pack')->put($data['id'], [
+                                    'type' => $entitlementpack["type"],
+                                    'name' => $entitlementpack["name"],
+                                    'description' => $entitlementpack["description"],
+                                ]);
+                            } catch (\Exception $exception) {
+                                $form->get('name')->addError(new FormError($exception->getMessage()));
+                            }
+                            try {
+                                $this->get('entitlement_pack')->setPermissionsToPermissionSet($data['id'], $permissionids);
+                            } catch (\Exception $exception) {
+                                $form->get('entitlement_pack')->addError(new FormError($exception->getMessage()));
+                            }
+                            $this->get('session')->getFlashBag()->add('success', 'Permission set modified succesfully.');
+                        } catch (\AppBundle\Exception $exception) {
+                            $form->addError(new FormError($exception->getMessage()));
                         }
-                        try {
-                            $this->get('entitlement_pack')->put($data['id'], [
-                                'type' => $entitlementpack["type"],
-                                'name' => $entitlementpack["name"],
-                                'description' => $entitlementpack["description"],
-                            ]);
-                        } catch (\Exception $exception) {
-                            $form->get('name')->addError(new FormError($exception->getMessage()));
+                        if (!$form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
+                            return false;
                         }
-                        try {
-                            $this->get('entitlement_pack')->setPermissionsToPermissionSet($data['id'], $permissionids);
-                        } catch (\Exception $exception) {
-                            $form->get('entitlement_pack')->addError(new FormError($exception->getMessage()));
-                        }
-                        $this->get('session')->getFlashBag()->add('success', 'Permission set modified succesfully.');
-                    } catch (\AppBundle\Exception $exception) {
-                        $form->addError(new FormError($exception->getMessage()));
                     }
-                    if (! $form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
-                        return false;
-                    }
+                    $permissionsAccordionSet[$permissionSet['id']]['form'] = $form->createView();
                 }
-                $permissionsAccordionSet[$permissionSet['id']]['form'] = $form->createView();
             }
         }
-
         $size = 25;
         $smallarray = array_chunk($permissionsAccordionSet, $size);
 
