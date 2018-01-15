@@ -1047,6 +1047,7 @@ class ServiceController extends Controller
                 );
                 $this->get('service')->createPermission($uriPrefix, $id, $modifiedName, $permisson['name'], $permisson['description'], $this->get('entitlement'));
                 $this->get('session')->getFlashBag()->add('success', 'Permission created succesfully.');
+
                 return $this->redirect($request->getUri());
             }
         } catch (\Exception $e) {
@@ -1177,6 +1178,7 @@ class ServiceController extends Controller
                     }
                 }
                 $this->get('session')->getFlashBag()->add('success', 'Permission set created succesfully.');
+
                 return $this->redirect($request->getUri());
             }
         } catch (\Exception $e) {
