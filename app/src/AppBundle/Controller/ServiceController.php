@@ -1250,7 +1250,8 @@ class ServiceController extends Controller
 
             foreach ($entitlementpacks['items'] as $entitlementpack) {
                 foreach ($entitlementpack['entitlement_ids'] as $entitlementid) {
-                    array_push($entitlements['items'], $this->get('entitlement')->get($entitlementid));
+                   /* array_push($entitlements['items'], $this->get('entitlement')->get($entitlementid));*/
+                    array_push($entitlements['items'], $this->get('organization')->getEntitlements($entitlementid));
                 }
             }
 
