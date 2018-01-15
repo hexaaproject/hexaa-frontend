@@ -204,7 +204,7 @@ class OrganizationController extends BaseController
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
 
-                "roles" => $this->rolesToAccordion($roles, $id, false, false, false, false, $request),
+                "roles" => $this->rolesToAccordion(true, $roles, $id, false, false, false, false, $request),
 
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -759,7 +759,7 @@ class OrganizationController extends BaseController
         $roles = $this->getRoles($organization);
         $entitlements = $this->getEntitlements($organization);
         $members = $this->getMembers($organization);
-        $rolesAccordion = $this->rolesToAccordion($roles, $id, $entitlements, $members, $action, $roleId, $request);
+        $rolesAccordion = $this->rolesToAccordion(false, $roles, $id, $entitlements, $members, $action, $roleId, $request);
 
         if (false === $rolesAccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
             return $this->redirectToRoute('app_organization_roles', array("id" => $id));
@@ -1136,6 +1136,7 @@ class OrganizationController extends BaseController
     }
 
     /**
+     * @param bool    $properties
      * @param array   $roles
      * @param int     $orgId
      * @param string  $action
@@ -1144,102 +1145,114 @@ class OrganizationController extends BaseController
      *
      * @return array
      */
-    private function rolesToAccordion($roles, $orgId, $entitlements, $principals, $action, $roleId, Request $request)
+    private function rolesToAccordion($properties, $roles, $orgId, $entitlements, $principals, $action, $roleId, Request $request)
     {
         $rolesAccordion = array();
         foreach ($roles as $role) {
             $rolesAccordion[$role['id']]['title'] = $role['name'];
-            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", array('orgId' => $orgId, 'id' => $role['id']));
+            $rolesAccordion[$role['id']]['deleteUrl'] = $this->generateUrl("app_organization_roledelete", [
+                'orgId' => $orgId,
+                'id' => $role['id'],
+            ]);
 
             $role['organizationMembers'] = $principals;
             $role['organizationEntitlements'] = $entitlements;
 
-            if (! array_key_exists('principals', $role)) {
-                $role['principals'] = array();
+            if (!array_key_exists('principals', $role)) {
+                $role['principals'] = [];
             }
-            $form =  $this->createForm(
-                OrganizationRoleUpdateType::class,
-                $role,
-                array(
-                    "action" => $this->generateUrl("app_organization_roles", array("id" => $orgId, "action" => "update", "roleId" => $role['id'])),
-                )
-            );
 
-            $members = array();
+            if ($properties == false) {
+                $form = $this->createForm(
+                    OrganizationRoleUpdateType::class,
+                    $role,
+                    [
+                        "action" => $this->generateUrl("app_organization_roles", [
+                            "id" => $orgId,
+                            "action" => "update",
+                            "roleId" => $role['id'],
+                        ]),
+                    ]
+                );
+            }
+
+            $members = [];
             foreach ($role['principals'] as $principal) {
                 $members[$principal['principal']['id']] = $principal['principal']['display_name'];
             }
 
-            $permissions = array();
+            $permissions = [];
             foreach ($role['entitlements'] as $entitlement) {
                 $permissions[] = $entitlement['name'];
             }
 
-            $rolesAccordion[$role['id']]['contents'] = array(
-                array(
-                    'key'    => 'Permissions',
+            $rolesAccordion[$role['id']]['contents'] = [
+                [
+                    'key' => 'Permissions',
                     'values' => $permissions,
-                ),
-                array(
-                    'key'    => 'Members',
+                ],
+                [
+                    'key' => 'Members',
                     'values' => $members,
-                ),
-            );
+                ],
+            ];
 
-            if ($roleId == $role['id']) { // csak akkor dolgozzuk fel, ha erről a role-ról van szó.
-                $form->handleRequest($request);
-            }
-
-            if ($form->isValid() and $form->isSubmitted()) {
-                $data = $form->getData();
-                try {
-                    $roleResource = $this->get('role');
-                    $role = $roleResource->get($data['id']);
-                    $this->amIManagerOfThis($role); //TODO
-
-                    $roleToBackend = array(
-                        'name' => $data['name'],
-                    );
-                    try {
-                        $roleResource->patch($role['id'], $roleToBackend);
-                    } catch (\Exception $exception) {
-                        $form->get('name')->addError(new FormError($exception->getMessage()));
-                    }
-
-                    $entitlementsToBackend = array();
-                    foreach ($data['entitlements'] as $id) {
-                        $entitlementsToBackend["entitlements"][] = $id;
-                    }
-                    try {
-                        $roleResource->setEntitlements($roleId, $entitlementsToBackend);
-                    } catch (\Exception $exception) {
-                        $form->get('entitlements')->addError(new FormError($exception->getMessage()));
-                    }
-
-                    $principalsToBackend = array();
-                    foreach ($data['members'] as $id) {
-                        $principalsToBackend["principals"][] = array("principal" => $id);
-                    }
-                    try {
-                        $roleResource->setPrincipals($roleId, $principalsToBackend);
-                    } catch (\Exception $exception) {
-                        $form->get('members')->addError(new FormError($exception->getMessage()));
-                    }
-                } catch (\AppBundle\Exception $exception) {
-                    $form->addError(new FormError($exception->getMessage()));
+            if ($properties == false) {
+                if ($roleId == $role['id']) { // csak akkor dolgozzuk fel, ha erről a role-ról van szó.
+                    $form->handleRequest($request);
                 }
-                if (! $form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
-                    return false;
+
+                if ($form->isValid() and $form->isSubmitted()) {
+                    $data = $form->getData();
+                    try {
+                        $roleResource = $this->get('role');
+                        $role = $roleResource->get($data['id']);
+                        $this->amIManagerOfThis($role); //TODO
+
+                        $roleToBackend = [
+                            'name' => $data['name'],
+                        ];
+                        try {
+                            $roleResource->patch($role['id'], $roleToBackend);
+                        } catch (\Exception $exception) {
+                            $form->get('name')->addError(new FormError($exception->getMessage()));
+                        }
+
+                        $entitlementsToBackend = [];
+                        foreach ($data['entitlements'] as $id) {
+                            $entitlementsToBackend["entitlements"][] = $id;
+                        }
+                        try {
+                            $roleResource->setEntitlements($roleId, $entitlementsToBackend);
+                        } catch (\Exception $exception) {
+                            $form->get('entitlements')->addError(new FormError($exception->getMessage()));
+                        }
+
+                        $principalsToBackend = [];
+                        foreach ($data['members'] as $id) {
+                            $principalsToBackend["principals"][] = ["principal" => $id];
+                        }
+                        try {
+                            $roleResource->setPrincipals($roleId, $principalsToBackend);
+                        } catch (\Exception $exception) {
+                            $form->get('members')->addError(new FormError($exception->getMessage()));
+                        }
+                    } catch (\AppBundle\Exception $exception) {
+                        $form->addError(new FormError($exception->getMessage()));
+                    }
+                    if (!$form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
+                        return false;
+                    }
                 }
+                $rolesAccordion[$role['id']]['form'] = $form->createView();
             }
-            $rolesAccordion[$role['id']]['form'] = $form->createView();
         }
 
         return $rolesAccordion;
     }
 
-    /**
-     * @param $services
+  /**
+   * @param $services
      * @param $entitlementPacks
      * @return array
      */

@@ -1046,6 +1046,7 @@ class ServiceController extends Controller
                     'description' => $data['service_create_permission']['permissionDescription'],
                 );
                 $this->get('service')->createPermission($uriPrefix, $id, $modifiedName, $permisson['name'], $permisson['description'], $this->get('entitlement'));
+                $this->get('session')->getFlashBag()->add('success', 'Permission created succesfully.');
 
                 return $this->redirect($request->getUri());
             }
@@ -1176,6 +1177,7 @@ class ServiceController extends Controller
                         $this->get('entitlement_pack')->addPermissionToPermissionSet($entitlementpack['id'], $permissionid);
                     }
                 }
+                $this->get('session')->getFlashBag()->add('success', 'Permission set created succesfully.');
 
                 return $this->redirect($request->getUri());
             }
@@ -2094,6 +2096,7 @@ class ServiceController extends Controller
                         } catch (\Exception $exception) {
                             $form->get('description')->addError(new FormError($exception->getMessage()));
                         }
+                        $this->get('session')->getFlashBag()->add('success', 'Permission modified succesfully.');
                     } catch (\AppBundle\Exception $exception) {
                         $form->addError(new FormError($exception->getMessage()));
                     }
@@ -2271,6 +2274,7 @@ class ServiceController extends Controller
                         } catch (\Exception $exception) {
                             $form->get('entitlement_pack')->addError(new FormError($exception->getMessage()));
                         }
+                        $this->get('session')->getFlashBag()->add('success', 'Permission set modified succesfully.');
                     } catch (\AppBundle\Exception $exception) {
                         $form->addError(new FormError($exception->getMessage()));
                     }
