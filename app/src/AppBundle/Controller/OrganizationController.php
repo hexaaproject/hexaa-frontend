@@ -103,10 +103,20 @@ class OrganizationController extends BaseController
             // connect to service
             // $dataToBackend["service_token"], //TODO issue #103
 
-            return $this->render('AppBundle:Organization:created.html.twig', array('neworg' => $this->get('organization')->get($orgid, "expanded")));
+            return $this->render('AppBundle:Organization:created.html.twig', array(
+                'neworg' => $this->get('organization')->get($orgid, "expanded"),
+                "organizations" => $this->get('organization')->cget(),
+                "services" => $this->get('service')->cget(),
+                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+            ));
         }
 
-        return $this->render('AppBundle:Organization:create.html.twig', array('form' => $form->createView()));
+        return $this->render('AppBundle:Organization:create.html.twig', array(
+            'form' => $form->createView(),
+            "organizations" => $this->get('organization')->cget(),
+            "services" => $this->get('service')->cget(),
+            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+        ));
     }
 
     /**
@@ -126,6 +136,7 @@ class OrganizationController extends BaseController
                 'organizations' => $this->get('organization')->cget(),
                 'services' => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'submenu' => 'true',
             )
         );
     }
@@ -209,6 +220,7 @@ class OrganizationController extends BaseController
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'submenu' => 'true',
             )
         );
     }
@@ -391,6 +403,7 @@ class OrganizationController extends BaseController
                /* "sendMemberEmailForm" => $sendMemberEmailForm->createView(),*/
                 "changeRolesForm" => $changeRolesForm->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'submenu' => 'true',
             )
         );
     }
@@ -806,6 +819,7 @@ class OrganizationController extends BaseController
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'submenu' => 'true',
             )
         );
     }
@@ -888,7 +902,15 @@ class OrganizationController extends BaseController
 
         $principalentitlements = $this->get('principal')->getEntitlements();
         foreach ($entitlementsunique as $entitlementunique) {
-            $entitlement = $this->get('entitlement')->get($entitlementunique);
+            $entitlementorg = $this->get('organization')->getEntitlements($id);
+            $entitlement = null;
+            foreach ($entitlementorg['items'] as $oneentitlement) {
+                if ($oneentitlement['id'] == $entitlementunique) {
+                    $entitlement = $oneentitlement;
+                    break;
+                }
+            }
+         // $entitlement = $this->get('entitlement')->get($entitlementunique);
             if (empty($entitlements)) {
             }
             //dump($entitlements);exit;
@@ -923,6 +945,7 @@ class OrganizationController extends BaseController
                 "form" => $form->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 "manager" => $manager,
+                'submenu' => 'true',
             )
         );
     }
