@@ -24,13 +24,13 @@
                 ) }}
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-5 col-md-offset-5">
-                Success
-                <p>
-                    <a href="{{ path('app_organization_show', {'id': neworg.id}) }}">Get your new organziation</a>
-                </p>
-            </div>
+        <div class="col-md-11 col-md-offset-2" style="text-align: center">
+            <div style="color:#EA7373; font-weight:bold; font-size: larger">Your organization is done.</div>
+            <p>
+                <a href="{{ path('app_organization_show', {'id': neworg.id}) }}"
+                   style="color:#EA7373; font-weight:bold; font-size: larger">Get your new organization</a>
+            </p>
+            <img src="/img/mosoly.PNG"></img>
         </div>
     </div>
 
