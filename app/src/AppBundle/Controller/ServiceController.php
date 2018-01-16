@@ -1251,7 +1251,12 @@ class ServiceController extends Controller
             foreach ($entitlementpacks['items'] as $entitlementpack) {
                 foreach ($entitlementpack['entitlement_ids'] as $entitlementid) {
                    /* array_push($entitlements['items'], $this->get('entitlement')->get($entitlementid));*/
-                    array_push($entitlements['items'], $this->get('organization')->getEntitlements($entitlementid));
+                    $entitlementsserv = $this->get('service')->getEntitlements($id);
+                    foreach ($entitlementsserv['items'] as $entitlementserv) {
+                        if ($entitlementserv['id'] == $entitlementid) {
+                            array_push($entitlements['items'], $entitlementserv);
+                        }
+                    }
                 }
             }
 
@@ -2098,9 +2103,11 @@ class ServiceController extends Controller
                         } catch (\Exception $exception) {
                             $form->get('description')->addError(new FormError($exception->getMessage()));
                         }
-                        $this->get('session')->getFlashBag()->add('success', 'Permission modified succesfully.');
                     } catch (\AppBundle\Exception $exception) {
                         $form->addError(new FormError($exception->getMessage()));
+                    }
+                    if ($form->getErrors(true)->count() == 0) {
+                        $this->get('session')->getFlashBag()->add('success', 'Permission modified succesfully.');
                     }
                     if (! $form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
                         return false;
@@ -2286,9 +2293,11 @@ class ServiceController extends Controller
                             } catch (\Exception $exception) {
                                 $form->get('entitlement_pack')->addError(new FormError($exception->getMessage()));
                             }
-                            $this->get('session')->getFlashBag()->add('success', 'Permission set modified succesfully.');
                         } catch (\AppBundle\Exception $exception) {
                             $form->addError(new FormError($exception->getMessage()));
+                        }
+                        if ($form->getErrors(true)->count() == 0) {
+                            $this->get('session')->getFlashBag()->add('success', 'Permission set modified succesfully.');
                         }
                         if (!$form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
                             return false;

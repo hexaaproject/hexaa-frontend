@@ -523,10 +523,11 @@ class AdminController extends Controller
                     } catch (\Exception $exception) {
                         $form->get('uri')->addError(new FormError($exception->getMessage()));
                     }
-
-                    $this->get('session')->getFlashBag()->add('success', 'Attribute specification modified succesfully.');
                 } catch (\AppBundle\Exception $exception) {
                     $form->addError(new FormError($exception->getMessage()));
+                }
+                if (!$form->getErrors(true)->count() == 0) {
+                    $this->get('session')->getFlashBag()->add('success', 'Attribute specification modified succesfully.');
                 }
                 if (!$form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
                     return false;
