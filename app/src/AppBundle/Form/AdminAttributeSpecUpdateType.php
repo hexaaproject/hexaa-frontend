@@ -12,9 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 /**
- * Class AdminAttributeSpecType
+ * Class AdminAttributeSpecUpdateType
  */
-class AdminAttributeSpecType extends AbstractType
+class AdminAttributeSpecUpdateType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -22,44 +22,47 @@ class AdminAttributeSpecType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $multivalue = $options['data']['is_multivalue'];
+
         $builder
             ->add(
-                'attributeSpecName',
+                'name',
                 TextType::class,
                 array(
                     "label" => "Name",
-                    "label_attr" => array('class' => 'col-sm-3 formlabel2'),
-                    'attr' => array('class' => 'pull-right'),
+                    "label_attr" => array('class' => 'formlabel'),
+                    //'attr' => array('class' => 'pull-right'),
                     'required' => true,
                 )
             )
             ->add(
-                'attributeSpecDescription',
+                'description',
                 TextareaType::class,
                 array(
                     "label" => "Description",
-                    "label_attr" => array('class' => 'col-sm-3 formlabel2'),
-                    'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
+                    "label_attr" => array('class' => 'formlabel'),
+                   // 'attr' => array('class' => 'pull-right', 'cols' => '30', 'rows' => '1'),
                     'required' => false,
                 )
             )
             ->add(
-                'attributeSpecURI',
+                'uri',
                 TextType::class,
                 array(
-                    "label" => "OID",
-                    "label_attr" => array('class' => 'col-sm-3 formlabel2'),
-                    'attr' => array('class' => 'pull-right'),
+                    "label" => "URI",
+                    "label_attr" => array('class' => 'formlabel'),
+                   // 'attr' => array('class' => 'pull-right'),
                     'required' => true,
                 )
             )
             ->add(
-                'attributeSpecMaintainer',
+                'maintainer',
                 ChoiceType::class,
                 array(
                     "label" => "Maintainer",
-                    "data" => "user",
-                    "label_attr" => array('class' => 'col-sm-3 formlabel2'),
+                    //"data" => "user",
+                    "label_attr" => array('class' => 'formlabel'),
                     'choices' => array('user' => 'user', 'manager' => 'manager'),
                     'multiple' => false,
                     'expanded' => true,
@@ -67,12 +70,12 @@ class AdminAttributeSpecType extends AbstractType
                 )
             )
             ->add(
-                'attributeSpecSyntax',
+                'syntax',
                 ChoiceType::class,
                 array(
                     "label" => "Syntax",
-                    "data" => "string",
-                    "label_attr" => array('class' => 'col-sm-3 formlabel2'),
+                    //"data" => "string",
+                    "label_attr" => array('class' => 'formlabel'),
                     'choices' => array('string' => 'string', 'base64' => 'base64'),
                     'multiple' => false,
                     'expanded' => true,
@@ -80,13 +83,14 @@ class AdminAttributeSpecType extends AbstractType
                 )
             )
             ->add(
-                'attributeSpecIsMultivalue',
+                'Multivalue',
                 ChoiceType::class,
                 array(
                     "label" => "Multivalue",
-                    "data" => true,
-                    "label_attr" => array('class' => 'col-sm-3 formlabel2'),
-                    'choices' => array('true' => true, 'false' => false),
+                    //"data" => true,
+                    "label_attr" => array('class' => 'formlabel'),
+                    'choices' => array('true' => true, 'false' => null),
+                    'data' => $multivalue,
                     'multiple' => false,
                     'expanded' => true,
                     'required' => true,
