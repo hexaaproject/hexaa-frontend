@@ -122,23 +122,61 @@ class OrganizationController extends BaseController
     /**
      * @Route("/{id}/show")
      * @return Response
-     * @param   int $id Organization ID
+     * @param int     $id      Organization ID
+     * @param Request $request
      */
-    public function showAction($id)
+    public function showAction($id, Request $request)
     {
         $organization = $this->getOrganization($id);
+        $manager = $this->isManager($id);
 
-        return $this->render(
-            'AppBundle:Organization:show.html.twig',
-            array(
-                'entity_show_path' => $this->getEntityShowPath($organization),
-                'entity' => $organization,
-                'organizations' => $this->get('organization')->cget(),
-                'services' => $this->get('service')->cget(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                'submenu' => 'true',
-            )
-        );
+        if ($manager) {
+            $form = $this->createForm(
+                ConnectServiceType::class
+            );
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                $token = $data["token"];
+                try {
+                    $this->get('organization')->connectService($id, $token);
+                    $this->get('session')->getFlashBag()->add('success', 'Service connected successfully to the organization.');
+                } catch (\Exception $e) {
+                    $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+                }
+
+                return $this->redirect($request->getUri());
+            }
+
+            return $this->render(
+                'AppBundle:Organization:show.html.twig',
+                array(
+                    'entity_show_path' => $this->getEntityShowPath($organization),
+                    'entity' => $organization,
+                    'organizations' => $this->get('organization')->cget(),
+                    'manager' => $manager,
+                    'tokenForm' => $form->createView(),
+                    'services' => $this->get('service')->cget(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'submenu' => 'true',
+                )
+            );
+        } else {
+            return $this->render(
+                'AppBundle:Organization:show.html.twig',
+                array(
+                    'entity_show_path' => $this->getEntityShowPath($organization),
+                    'entity' => $organization,
+                    'organizations' => $this->get('organization')->cget(),
+                    'manager' => $manager,
+                    'services' => $this->get('service')->cget(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'submenu' => 'true',
+                )
+            );
+        }
     }
 
     /**
@@ -214,9 +252,7 @@ class OrganizationController extends BaseController
                 "propertiesbox" => $propertiesbox,
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
-
                 "roles" => $this->rolesToAccordion(true, $roles, $id, false, false, false, false, $request),
-
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
@@ -934,7 +970,6 @@ class OrganizationController extends BaseController
             array(
                 'entity_show_path' => $this->getEntityShowPath($organization),
                 'entity' => $organization,
-
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "services_accordion" => $servicesAccordion,
