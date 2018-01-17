@@ -38,10 +38,7 @@ class ModifyConnectOrgType extends AbstractType
             )
             ->add(
                 'link_id',
-                HiddenType::class,
-                array(
-                    'data' => $datas['data']['linkid'],
-                )
+                HiddenType::class
             )
             ->add(
                 'entitlements',

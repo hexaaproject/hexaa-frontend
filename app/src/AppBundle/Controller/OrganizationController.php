@@ -607,7 +607,6 @@ class OrganizationController extends BaseController
         $form1 = $this->createForm(OrganizationUserMessageType::class);
         $form2 = $this->createForm(OrganizationUserMessageManagerType::class);
         $pids = $request->get('userId');
-       // dump($pids);exit;
         $emails = array();
         foreach ($pids as $pid) {
             $principal = $this->get('principals')->getById($pid);
@@ -901,8 +900,8 @@ class OrganizationController extends BaseController
         }
 
         $principalentitlements = $this->get('principal')->getEntitlements();
+        $entitlementorg = $this->get('organization')->getEntitlements($id, 'normal', 0, 10000);
         foreach ($entitlementsunique as $entitlementunique) {
-            $entitlementorg = $this->get('organization')->getEntitlements($id);
             $entitlement = null;
             foreach ($entitlementorg['items'] as $oneentitlement) {
                 if ($oneentitlement['id'] == $entitlementunique) {
@@ -913,7 +912,6 @@ class OrganizationController extends BaseController
          // $entitlement = $this->get('entitlement')->get($entitlementunique);
             if (empty($entitlements)) {
             }
-            //dump($entitlements);exit;
             if (!in_array($entitlement, $entitlements)) {
                 array_push($entitlements, $entitlement);
             }
@@ -921,7 +919,7 @@ class OrganizationController extends BaseController
 
         $servicesAccordion = null;
         if ($entitlementpacks != null && $entitlementpacks[0]['items'] != null) {
-            $servicesAccordion = $this->servicesToAccordion($services, $entitlementpacks);
+            $servicesAccordion = $this->servicesToAccordion($id, $services, $entitlementpacks);
         }
 
         $entitlementsAccordion = null;
@@ -1274,12 +1272,13 @@ class OrganizationController extends BaseController
         return $rolesAccordion;
     }
 
-  /**
-   * @param $services
+     /**
+      *@param $id
+     * @param $services
      * @param $entitlementPacks
      * @return array
      */
-    private function servicesToAccordion($services, $entitlementPacks)
+    private function servicesToAccordion($id, $services, $entitlementPacks)
     {
         $servicesAccordion = array();
         foreach ($services as $service) {
@@ -1307,9 +1306,15 @@ class OrganizationController extends BaseController
                        // $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
 
                         $entitlementnames = array();
+                        $entitlementsorg = $this->get('organization')->getEntitlements($id, 'normal', 0, 10000);
                         foreach ($entitlementPack['entitlement_ids'] as $entitlementId) {
-                            $entitlement = $this->get('entitlement')->get($entitlementId);
-                            $entitlementnames[] = $entitlement['name'];
+                            foreach ($entitlementsorg['items'] as $entitlementorg) {
+                                if ($entitlementorg['id'] == $entitlementId) {
+                                    $entitlementnames[] = $entitlementorg['name'];
+                                }
+                              // $entitlement = $this->get('entitlement')->get($entitlementId);
+                              //$entitlementnames[] = $entitlement['name'];
+                            }
                         }
 
                         $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Permissions", "values" => $entitlementnames);
