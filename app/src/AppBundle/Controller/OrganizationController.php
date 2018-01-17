@@ -924,7 +924,7 @@ class OrganizationController extends BaseController
 
         $entitlementsAccordion = null;
         if ($entitlements != null) {
-            $entitlementsAccordion = $this->entitlementsToAccordion($services, $entitlements);
+            $entitlementsAccordion = $this->entitlementsToAccordion($id, $services, $entitlements);
         }
 
         $organization = $this->get('organization')->get($id);
@@ -1035,6 +1035,27 @@ class OrganizationController extends BaseController
         $response = new JsonResponse($data);
 
         return $response;
+    }
+
+    /**
+    * @Route("/{servId}/link/{id}/delete")
+    * @Template()
+    * @return Response
+    * @param int $servId Service id
+    * @param int $id     Permission Id
+    *
+    */
+    public function linkDeleteAction($servId, $id)
+    {
+        $orglinks = $this->get('organization')->getLinks($id);
+        foreach ($orglinks['items'] as $orglink) {
+            if ($orglink['organization_id'] == $id && $orglink['service_id'] == $servId) {
+                $this->get('link')->deletelink($orglink['id']);
+            }
+        }
+        $this->get('session')->getFlashBag()->add('success', 'The link has been deleted.');
+
+        return $this->redirectToRoute("app_organization_connectedservices", array("id" => $id));
     }
 
     /**
@@ -1286,6 +1307,11 @@ class OrganizationController extends BaseController
                 foreach ($entitlementPacksub['items'] as $entitlementPack) {
                     if ($entitlementPack['service_id'] == $service['id']) {
                         $servicesAccordion[$service['id']]['title'] = $service['name'];
+                        $servicesAccordion[$service['id']]['deleteUrl'] = $this->generateUrl("app_organization_linkdelete", [
+                            'servId' => $service['id'],
+                            'id' => $id,
+                            'action' => "delete",
+                        ]);
                         $servicesAccordion[$service['id']]['description'] = 'Permission sets';
                         $managers = $this->get('service')->getManagers($service['id'])['items'];
                         $managersstring = "";
@@ -1331,12 +1357,17 @@ class OrganizationController extends BaseController
      * @param $entitlements
      * @return array
      */
-    private function entitlementsToAccordion($services, $entitlements)
+    private function entitlementsToAccordion($id, $services, $entitlements)
     {
         $entitlementsAccordion = array();
         foreach ($services as $service) {
             $entitlementsAccordion[$service['id']]['title'] = $service['name'];
             $entitlementsAccordion[$service['id']]['description'] = 'Entitlements';
+            $entitlementsAccordion[$service['id']]['deleteUrl'] = $this->generateUrl("app_organization_linkdelete", [
+                'servId' => $service['id'],
+                'id' => $id,
+                'action' => "delete",
+            ]);
             $managers = $this->get('service')->getManagers($service['id'])['items'];
             $managersstring = "";
             foreach ($managers as $manager) {
