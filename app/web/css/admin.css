@@ -10,11 +10,11 @@ form[name="admin_attribute_spec"]{
 
 .formlabel2 {
     font-size: medium;
-   /* display: inline;
+    display: inline;
     font-weight: bold;
     padding-left: 1.75em;
     padding-bottom: 0.5em;
-    margin-top: 5px;*/
+    margin-top: 5px;
 }
 
 #createAttributeSpecBlock .form-group {

@@ -526,7 +526,7 @@ class AdminController extends Controller
                 } catch (\AppBundle\Exception $exception) {
                     $form->addError(new FormError($exception->getMessage()));
                 }
-                if (!$form->getErrors(true)->count() == 0) {
+                if ($form->getErrors(true)->count() == 0) {
                     $this->get('session')->getFlashBag()->add('success', 'Attribute specification modified succesfully.');
                 }
                 if (!$form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
@@ -581,7 +581,6 @@ class AdminController extends Controller
     */
     private function allEntityIDsToAccordion($entityIDs)
     {
-       // dump($entityIDs);exit;
         $entityIDsAccordion = array();
         $keys = array_keys($entityIDs['items']);
         foreach ($keys as $key) {

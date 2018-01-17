@@ -395,7 +395,7 @@ class ServiceController extends Controller
                 }
 
                 //generate token to permissionset
-                $permissionssets = $this->get('service')->getEntitlementPacks($servid)['items'];
+                $permissionssets = $this->get('service')->getEntitlementPacks($servid, 'normal', 0, 10000)['items'];
                 $permissionsetid = null;
                 foreach ($permissionssets as $permissionset) {
                     if ($permissionset['name'] == 'default') {
@@ -1248,10 +1248,10 @@ class ServiceController extends Controller
             $entitlements = $this->get('link')->getEntitlements($requestlink['id']);
             $duplicate = array();
 
+            $entitlementsserv = $this->get('service')->getEntitlements($id, 'normal', 0, 100000);
             foreach ($entitlementpacks['items'] as $entitlementpack) {
                 foreach ($entitlementpack['entitlement_ids'] as $entitlementid) {
                    /* array_push($entitlements['items'], $this->get('entitlement')->get($entitlementid));*/
-                    $entitlementsserv = $this->get('service')->getEntitlements($id);
                     foreach ($entitlementsserv['items'] as $entitlementserv) {
                         if ($entitlementserv['id'] == $entitlementid) {
                             array_push($entitlements['items'], $entitlementserv);
@@ -1294,7 +1294,7 @@ class ServiceController extends Controller
             }
         }
 
-        $entitlementpacks = $this->get('service')->getEntitlementPacks($id);
+        $entitlementpacks = $this->get('service')->getEntitlementPacks($id, 'normal', 0, 100000);
         $entitlements = $this->get('service')->getEntitlements($id);
         $totalnumber = $entitlements['item_number'];
         $totalpages = ceil($totalnumber / 25);
@@ -1449,6 +1449,8 @@ class ServiceController extends Controller
         $datasToLinkId = array();
         $forms = array ();
         foreach ($allData as $oneData) {
+            $allChoosenData = null;
+            $form1 = null;
             if ($oneData['status'] == 'accepted') {
                 $acceptedNumber++;
                 $allChoosenData['entitlementpacksToForm'] =  $datasToForm['entitlementpacksToForm'];
@@ -1479,20 +1481,20 @@ class ServiceController extends Controller
                 }
                 $allChoosenData['currentEntitlementpacksToForm'] = $epackNames;
                 $allChoosenData['currentEntitlementsToForm'] = $eNames;
-                $allChoosenData['linkid'] = $oneData['link_id'];
+                $allChoosenData['link_id'] = $oneData['link_id'];
                 $form1 = $this->createForm(
                     ModifyConnectOrgType::class,
                     $allChoosenData
                 );
                 array_push($forms, $form1);
-                array_push($datasToLinkId, $allChoosenData['linkid']);
+                array_push($datasToLinkId, $oneData['link_id']);
                 $allChoosenData = null;
+                $form1 = null;
             }
         }
 
         foreach ($forms as $form) {
             $form->handleRequest($request);
-
             if ($form->isSubmitted()) {
                 $data = $form->getData();
                 $entitlementpackIds = array();
@@ -1505,7 +1507,7 @@ class ServiceController extends Controller
                 }
                 $modified['entitlement_packs'] = $entitlementpackIds;
                 $modified['entitlements'] = $entitlementsIds;
-                $this->get('link')->editlink($data['linkid'], $modified);
+                $this->get('link')->editlink($data['link_id'], $modified);
 
                 return $this->redirect($request->getUri());
             }
