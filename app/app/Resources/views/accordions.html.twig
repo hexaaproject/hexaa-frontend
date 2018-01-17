@@ -1,4 +1,3 @@
-
 {% block stylesheets %}
     {% stylesheets
     'css/accordions.css'
@@ -33,11 +32,11 @@
         $(panel).toggle();
     }
 
-        /*
-        var deletebutton = $(panel).find(".accordion_delete_button");
-        $(".accordion_delete_button").removeAttr("id");
-        deletebutton.attr("id", "active_delete_button");
-        */
+    /*
+    var deletebutton = $(panel).find(".accordion_delete_button");
+    $(".accordion_delete_button").removeAttr("id");
+    deletebutton.attr("id", "active_delete_button");
+    */
 
     function showForm(containerWithErrors) {
         var panel = containerWithErrors.closest('.accordion-panel');
@@ -61,31 +60,31 @@
 
         {% if manager %}
 
-            showErrors(
-                $(".hasErrors"));
+        showErrors(
+            $(".hasErrors"));
 
-            $('.accordion_delete_button').on("click", function () {
-                var deleteBox = $('#deleteBox');
-                deleteBox.find('form').attr("action", $(this).data('targeturl'));
-                deleteBox.find('.displayname').text($(this).data('displayname'));
-                deleteBox.modal('show');
-            });
+        $('.accordion_delete_button').on("click", function () {
+            var deleteBox = $('#deleteBox');
+            deleteBox.find('form').attr("action", $(this).data('targeturl'));
+            deleteBox.find('.displayname').text($(this).data('displayname'));
+            deleteBox.modal('show');
+        });
 
-            {# **********  ediform ********* #}
-            $('.accordion_edit_button').on("click", function () {
-                showForm($(this));
-            });
+        {# **********  ediform ********* #}
+        $('.accordion_edit_button').on("click", function () {
+            showForm($(this));
+        });
 
-            $('.accordion_edit_cancel_button').on("click", function () {
-                var panel = $(this).closest('.accordion-panel');
-                panel.find('.accordion-editform').addClass('hidden');
-                panel.find('table.accordion').removeClass('hidden');
-                panel.find('.accordion_edit_button').removeClass('hidden');
-            });
-            $('.accordion_edit_submit_button').on("click", function () {
-                var panel = $(this).closest('.accordion-panel');
-                panel.find('form').submit();
-            });
+        $('.accordion_edit_cancel_button').on("click", function () {
+            var panel = $(this).closest('.accordion-panel');
+            panel.find('.accordion-editform').addClass('hidden');
+            panel.find('table.accordion').removeClass('hidden');
+            panel.find('.accordion_edit_button').removeClass('hidden');
+        });
+        $('.accordion_edit_submit_button').on("click", function () {
+            var panel = $(this).closest('.accordion-panel');
+            panel.find('form').submit();
+        });
         {% endif %}
     })
 
@@ -95,7 +94,7 @@
     <div class="accordion-header">{{ heading }}</div>
     <div>
         {% for itemId, item in items %}
-         <!--   <div {/% if classToFilter is defined %} class="instafilta-target"{/% endif %}> -->
+            <!--   <div {/% if classToFilter is defined %} class="instafilta-target"{/% endif %}> -->
             <div class="accordion-container">
                 <div onclick="toggleAccordion(this);"
                      class="accordion-title {% if formtitle is defined %}accordion-title-style-{{ variant }}-{{ formtitle }}{% else %}accordion-title-style-{{ variant }}{% endif %} {% if classToFilter is defined %} instafilta-target {% endif %}"
@@ -113,7 +112,13 @@
                      style="display: none;">
                     {% if item.subaccordions is defined %}
                         {% if item.description is defined %}
-                            <div class="accordion-description">{{ item.description }}</div> {% endif %}
+                            <div class="accordion-description">{{ item.description }}
+                                <div class="accordion_button_row pull-right">
+                                    <i title="delete role" role="button" data-behattarget="delete_{{ loop.index }}" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}">delete</i>
+                                </div>
+                            </div>
+                        {% endif %}
+
                         {% for id, subaccordion in item.subaccordions %}
                             <div class="accordion-container accordion-style-{{ subaccordion.variant }}" data-id="{{ id }}">
                                 <div class="accordion-header"></div>
@@ -145,7 +150,7 @@
                                                     <ul class="accordion">
                                                         {% for listitem in content.values %}
                                                             <li>{{ listitem }}</li>
-                                                            {% endfor %}
+                                                        {% endfor %}
                                                     </ul>
                                                 </td>
                                             </tr>
@@ -156,12 +161,12 @@
                         {% endfor %}
                     {% else %}
                         {% if heading != "Entity IDs" and heading != "Connected entitlements" and heading != "Connected entitlement packs" and manager %}
-                        <div class="accordion_button_row pull-right">
-                            {% if item.form is defined %}
-                                <i title="update role" role="button" data-behattarget="update_{{ loop.index }}" class="material-icons accordion-button accordion_edit_button">create</i>
-                            {% endif %}
-                            <i title="delete role" role="button" data-behattarget="delete_{{ loop.index }}" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
-                        </div>
+                            <div class="accordion_button_row pull-right">
+                                {% if item.form is defined %}
+                                    <i title="update role" role="button" data-behattarget="update_{{ loop.index }}" class="material-icons accordion-button accordion_edit_button">create</i>
+                                {% endif %}
+                                <i title="delete role" role="button" data-behattarget="delete_{{ loop.index }}" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
+                            </div>
                         {% endif %}
                         {% if item.form is defined %}
                             {% set hasErrors = false %}
@@ -212,27 +217,27 @@
                         <table cellspacing="0" class="accordion">
 
                             {% if item.contents is defined %}
-                            {% for content in item.contents %}
-                                <tr class="accordion">
-                                    <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion accordion-key">{{ content.key }}</td>
-                                    <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion">
-                                        <ul class="accordion">
-                                            {% for listitem in content.values %}
-                                                {% if content.key == "Multivalue" %}
-                                                    {% if listitem == null %}
-                                                        <i class="material-icons">clear</i>
+                                {% for content in item.contents %}
+                                    <tr class="accordion">
+                                        <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion accordion-key">{{ content.key }}</td>
+                                        <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion">
+                                            <ul class="accordion">
+                                                {% for listitem in content.values %}
+                                                    {% if content.key == "Multivalue" %}
+                                                        {% if listitem == null %}
+                                                            <i class="material-icons">clear</i>
+                                                        {% endif %}
+                                                        {% if listitem == true %}
+                                                            <i class="material-icons">check</i>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <li>{{ listitem }}</li>
                                                     {% endif %}
-                                                    {% if listitem == true %}
-                                                        <i class="material-icons">check</i>
-                                                    {% endif %}
-                                                {% else %}
-                                                    <li>{{ listitem }}</li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                             {% endif %}
                         </table>
                     {% endif %}

@@ -122,23 +122,61 @@ class OrganizationController extends BaseController
     /**
      * @Route("/{id}/show")
      * @return Response
-     * @param   int $id Organization ID
+     * @param int     $id      Organization ID
+     * @param Request $request
      */
-    public function showAction($id)
+    public function showAction($id, Request $request)
     {
         $organization = $this->getOrganization($id);
+        $manager = $this->isManager($id);
 
-        return $this->render(
-            'AppBundle:Organization:show.html.twig',
-            array(
-                'entity_show_path' => $this->getEntityShowPath($organization),
-                'entity' => $organization,
-                'organizations' => $this->get('organization')->cget(),
-                'services' => $this->get('service')->cget(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                'submenu' => 'true',
-            )
-        );
+        if ($manager) {
+            $form = $this->createForm(
+                ConnectServiceType::class
+            );
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                $token = $data["token"];
+                try {
+                    $this->get('organization')->connectService($id, $token);
+                    $this->get('session')->getFlashBag()->add('success', 'Service connected successfully to the organization.');
+                } catch (\Exception $e) {
+                    $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+                }
+
+                return $this->redirect($request->getUri());
+            }
+
+            return $this->render(
+                'AppBundle:Organization:show.html.twig',
+                array(
+                    'entity_show_path' => $this->getEntityShowPath($organization),
+                    'entity' => $organization,
+                    'organizations' => $this->get('organization')->cget(),
+                    'manager' => $manager,
+                    'tokenForm' => $form->createView(),
+                    'services' => $this->get('service')->cget(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'submenu' => 'true',
+                )
+            );
+        } else {
+            return $this->render(
+                'AppBundle:Organization:show.html.twig',
+                array(
+                    'entity_show_path' => $this->getEntityShowPath($organization),
+                    'entity' => $organization,
+                    'organizations' => $this->get('organization')->cget(),
+                    'manager' => $manager,
+                    'services' => $this->get('service')->cget(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'submenu' => 'true',
+                )
+            );
+        }
     }
 
     /**
@@ -214,9 +252,7 @@ class OrganizationController extends BaseController
                 "propertiesbox" => $propertiesbox,
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
-
                 "roles" => $this->rolesToAccordion(true, $roles, $id, false, false, false, false, $request),
-
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
@@ -924,7 +960,7 @@ class OrganizationController extends BaseController
 
         $entitlementsAccordion = null;
         if ($entitlements != null) {
-            $entitlementsAccordion = $this->entitlementsToAccordion($services, $entitlements);
+            $entitlementsAccordion = $this->entitlementsToAccordion($id, $services, $entitlements);
         }
 
         $organization = $this->get('organization')->get($id);
@@ -934,7 +970,6 @@ class OrganizationController extends BaseController
             array(
                 'entity_show_path' => $this->getEntityShowPath($organization),
                 'entity' => $organization,
-
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "services_accordion" => $servicesAccordion,
@@ -1035,6 +1070,27 @@ class OrganizationController extends BaseController
         $response = new JsonResponse($data);
 
         return $response;
+    }
+
+    /**
+    * @Route("/{servId}/link/{id}/delete")
+    * @Template()
+    * @return Response
+    * @param int $servId Service id
+    * @param int $id     Permission Id
+    *
+    */
+    public function linkDeleteAction($servId, $id)
+    {
+        $orglinks = $this->get('organization')->getLinks($id);
+        foreach ($orglinks['items'] as $orglink) {
+            if ($orglink['organization_id'] == $id && $orglink['service_id'] == $servId) {
+                $this->get('link')->deletelink($orglink['id']);
+            }
+        }
+        $this->get('session')->getFlashBag()->add('success', 'The link has been deleted.');
+
+        return $this->redirectToRoute("app_organization_connectedservices", array("id" => $id));
     }
 
     /**
@@ -1286,6 +1342,11 @@ class OrganizationController extends BaseController
                 foreach ($entitlementPacksub['items'] as $entitlementPack) {
                     if ($entitlementPack['service_id'] == $service['id']) {
                         $servicesAccordion[$service['id']]['title'] = $service['name'];
+                        $servicesAccordion[$service['id']]['deleteUrl'] = $this->generateUrl("app_organization_linkdelete", [
+                            'servId' => $service['id'],
+                            'id' => $id,
+                            'action' => "delete",
+                        ]);
                         $servicesAccordion[$service['id']]['description'] = 'Permission sets';
                         $managers = $this->get('service')->getManagers($service['id'])['items'];
                         $managersstring = "";
@@ -1331,12 +1392,17 @@ class OrganizationController extends BaseController
      * @param $entitlements
      * @return array
      */
-    private function entitlementsToAccordion($services, $entitlements)
+    private function entitlementsToAccordion($id, $services, $entitlements)
     {
         $entitlementsAccordion = array();
         foreach ($services as $service) {
             $entitlementsAccordion[$service['id']]['title'] = $service['name'];
             $entitlementsAccordion[$service['id']]['description'] = 'Entitlements';
+            $entitlementsAccordion[$service['id']]['deleteUrl'] = $this->generateUrl("app_organization_linkdelete", [
+                'servId' => $service['id'],
+                'id' => $id,
+                'action' => "delete",
+            ]);
             $managers = $this->get('service')->getManagers($service['id'])['items'];
             $managersstring = "";
             foreach ($managers as $manager) {
