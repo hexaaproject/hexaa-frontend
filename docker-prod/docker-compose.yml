@@ -1,0 +1,55 @@
+# docker-compose.yml
+
+# Compose file to run a full HEXAA environment
+
+version: "3"
+
+
+services:
+    mysql:
+        image: bitnami/mariadb:10.2
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        volumes:
+            - hexaa_db_data:/var/lib/mysql
+    frontend:
+        image: hexaa/newui-php-fpm
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        volumes:
+            - hexaa_ui_source:/app
+    backend:
+        image: hexaa/backend-php-fpm
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        volumes:
+            - hexaa_backend_source:/app
+    web:
+        image: solazs/apache-shib
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        volumes:
+            - hexaa_ui_source:/opt/ui
+            - hexaa_backend_source:/opt/backend
+        
+
+networks:
+    hexaa:
+        # Use this to pin the network bridge name (useful when using firewalls)
+        #driver_opts:
+            #com.docker.network.bridge.name: "br-hexaa"
+
+
+volumes:
+    hexaa_db_data:
+    hexaa_ui_source:
+    hexaa_backend_source:
+            
