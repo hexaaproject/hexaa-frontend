@@ -79,8 +79,6 @@ class OrganizationController extends BaseController
 
                 $dataToBackend = $data;
                 $organizations = $this->get('organization')->cget();
-                $withoutAccentname = $this->removeAccents($dataToBackend['name']);
-                $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccentname);
 
                 foreach ($organizations['items'] as $organization) {
                     if (strtolower($organization['name']) == strtolower($dataToBackend["name"])) {
@@ -900,24 +898,41 @@ class OrganizationController extends BaseController
         );
 
         $form->handleRequest($request);
+        $error = "false";
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+                if (!empty($roles)) {
+                    foreach ($roles as $role) {
+                        if (strtolower($data['name']) == $role['name']) {
+                            throw new \Exception('Role name is case insensitive! It must be unique!');
+                        }
+                    }
+                }
 
-            //create role
-            $role = $this->get('organization')->createRole(
-                $id,
-                $data['name'],
-                $this->get('role')
-            );
+                if (strlen($data['name']) < 3) {
+                    throw new \Exception('Role name has to be at least three character long!');
+                }
 
-            // put creator to role
-            if ($data["wantToBeAMember"]) {
-                $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
-                $this->get('role')->putPrincipal($role['id'], $self['id']);
+                //create role
+                $role = $this->get('organization')->createRole(
+                    $id,
+                    $data['name'],
+                    $this->get('role')
+                );
+
+                // put creator to role
+                if ($data["wantToBeAMember"]) {
+                    $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
+                    $this->get('role')->putPrincipal($role['id'], $self['id']);
+                }
+
+                return $this->redirect($request->getUri());
             }
-
-            return $this->redirect($request->getUri());
+        } catch (\Exception $exception) {
+            $this->get('session')->getFlashBag()->add('error', $exception->getMessage());
+            $error = 'true';
         }
 
         return $this->render(
@@ -925,17 +940,15 @@ class OrganizationController extends BaseController
             array(
                 'entity_show_path' => $this->getEntityShowPath($organization),
                 'entity' => $organization,
-
                 "roles" => $roles,
                 "roles_accordion" => $rolesAccordion,
                 "action" => $action,
-
                 "form" => $form->createView(),
-
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 'submenu' => 'true',
+                'error' => $error,
             )
         );
     }

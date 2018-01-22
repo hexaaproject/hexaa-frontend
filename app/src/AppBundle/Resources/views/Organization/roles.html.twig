@@ -45,13 +45,19 @@
         });
         {% endif %}
 
+        $(document).ready(function () {
+            {% if error == 'true' %}
+                $("#createrole").click();
+            {% endif %}
+        });
+
     </script>
 
     <div class="row" style="margin-bottom: 24px;">
 
         <div id="actionButtons">
             <div id="newRoleButton" class="col-md-5 col-md-offset-5">
-                <button class="btnhexaa btn-red btn-block btnhexaa-lg" onclick="showCreateForm()"><i class="material-icons" aria-hidden="true">add</i> New role</button>
+                <button id="createrole" class="btnhexaa btn-red btn-block btnhexaa-lg" onclick="showCreateForm()"><i class="material-icons" aria-hidden="true">add</i> New role</button>
             </div>
         </div>
 
@@ -83,6 +89,7 @@
 
     </div>
 
+    {% if roles is defined and roles|length %}
     <div class="row">
         <div class="col-md-11 col-md-offset-2">
             {#<div class="accordion-container-notform accordion-style-dark">#}
@@ -90,4 +97,5 @@
            {# </div>#}
         </div>
     </div>
+    {% endif %}
 {% endblock %}
