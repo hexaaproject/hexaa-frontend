@@ -196,6 +196,8 @@ class ServiceController extends Controller
 
         $emailForm = null;
         $click = "false";
+        $clickback = "false";
+        $firstpageerror = "false";
 
         try {
             if ($form->isSubmitted() && $form->isValid()) {
@@ -203,6 +205,10 @@ class ServiceController extends Controller
 
                 $dataToBackend = $data;
                 $firstpageerror = "false";
+
+           /* } catch (\Exception $exception) {
+            $form->get('name')->addError(new FormError($exception->getMessage()));
+          }*/
 
                 foreach ($services['items'] as $service) {
                     if (strtolower($service['name']) == strtolower($dataToBackend["name"])) {
@@ -281,12 +287,11 @@ class ServiceController extends Controller
                         if ($firstpageerror == "false" && $click != "true") {
                             $click = "true";
                         }
+                       // throw new \Exception();
                     }
                 }
 
-                $errors = array();
-
-                foreach ($form['name']->getErrors() as $key => $error) {
+             /*   foreach ($form['name']->getErrors() as $key => $error) {
                      array_push($errors, $error->getMessage());
                 }
 
@@ -312,14 +317,23 @@ class ServiceController extends Controller
 
                 foreach ($form['entitlementplus2']->getErrors() as $key => $error) {
                     array_push($errors, $error->getMessage());
-                }
+                }*/
 
-                foreach ($errors as $error) {
-                    $form->addError(new FormError($error));
+                foreach ($form->getErrors(true) as $error) {
+                    //$form->addError(new FormError($error));
                     throw new \Exception();
                 }
 
+
+                /*  try {*/
+                   /* if ($dataToBackend['entityid'] == null) {
+                      $form["entityid"]->addError(new FormError('Invalid choosen!'));
+                      $firstpageerror = "true";
+
+                    }*/
+              //dump($dataToBackend);exit;
                 if ($dataToBackend['entityid'] != null) {
+                    // dump($dataToBackend); exit;
                     $service = $this->get('service')->create(
                         $dataToBackend["name"],
                         $dataToBackend["description"],
@@ -327,16 +341,33 @@ class ServiceController extends Controller
                         $dataToBackend["entityid"]
                     );
                 }
-
+                 /* } catch (\Exception $exception) {*/
+                    //$firstpageerror = "true";
+                  /*  $message = $exception->getMessage();
+                    $partafterchildren = explode("\"children\":{", $message);
+                    $errormessage = $this->get_string_between($partafterchildren[1], "[\"", "\"]");
+                    if ( substr($partafterchildren[1], 0, 6) == "\"name\"") {
+                        $form["name"]->addError(new FormError($errormessage));
+                        $firstpageerror = "true";
+                    }
+                    dump($exception->getMessage());exit;*/
+                   /* dump($partafterchildren);*/
+                   /* $clickback = true;
+                     dump($exception);exit;*/
+                  /*  $this->get('session')
+                      ->getFlashBag()
+                      ->add('error', $exception->getMessage());*/
+                  /*}*/
+             /* if(count($form->getErrors(true)) == 0) {*/
                 $servid = $service['id'];
 
-                //add manager to the service
+                  //add manager to the service
                 $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
                 $this->get('service')->putManager($servid, $self['id']);
                 $apiProperties = $this->get('service')->apget();
                 $uriPrefix = $apiProperties['entitlement_base'];
 
-                // create permission
+                  // create permission
                 $permission = $this->get('service')->createPermission(
                     //$this->getParameter("hexaa_permissionprefix"),
                     $uriPrefix,
@@ -347,14 +378,14 @@ class ServiceController extends Controller
                     $this->get('entitlement')
                 );
 
-                // create permissionset to permission
+                  // create permissionset to permission
                 $permissionset = $this->get('service')->createPermissionSet(
                     $servid,
                     'default',
                     $this->get('entitlement_pack')
                 );
 
-                //add permission to permissionset
+                  //add permission to permissionset
                 $this->get('entitlement_pack')->addPermissionToPermissionSet(
                     $permissionset['id'],
                     $permission['id']
@@ -394,7 +425,7 @@ class ServiceController extends Controller
                     );
                 }
 
-                //generate token to permissionset
+                  //generate token to permissionset
                 $permissionssets = $this->get('service')->getEntitlementPacks($servid, 'normal', 0, 10000)['items'];
                 $permissionsetid = null;
                 foreach ($permissionssets as $permissionset) {
@@ -403,7 +434,10 @@ class ServiceController extends Controller
                     }
                 }
 
-                $postarray = array("service" => $servid, "entitlement_packs" => [$permissionsetid]);
+                $postarray = [
+                    "service" => $servid,
+                    "entitlement_packs" => [$permissionsetid],
+                ];
                 $response = $this->get('link')->post($postarray);
                 $headers = $response->getHeader('Location');
                 $headerspartsary = explode("/", $headers[0]);
@@ -411,10 +445,23 @@ class ServiceController extends Controller
 
                 return $this->redirect($this->generateUrl(
                     'app_service_createemail',
-                    array('servid' => $servid, 'token' => $getlink['token'], 'entity' =>  $dataToBackend["entityid"], 'click' => $click)
+                    [
+                      'servid' => $servid,
+                      'token' => $getlink['token'],
+                      'entity' => $dataToBackend["entityid"],
+                      'click' => $click,
+                      'clickback' => $clickback,
+                      'firstpageerror' => $firstpageerror,
+                    ]
                 ));
             }
-        } catch (\Exception $e) {
+        } catch (\Appbundle\Exception $exception) {
+            $form->addError(new FormError($exception->getMessage()));
+            $this->get('session')->getFlashBag()->add('error', $exception->getMessage());
+           // dump($form->getErrors(TRUE));
+        } catch (\Exception $exception) {
+          //dump($form->getErrors(TRUE));
+           //$form->addError(new FormError($exception->getMessage()));
         }
 
         return $this->render(
@@ -425,6 +472,8 @@ class ServiceController extends Controller
                 'services' => $this->getServices(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 'click' => $click,
+                'clickback' => $clickback,
+                'firstpageerror' => $firstpageerror,
                 )
         );
     }

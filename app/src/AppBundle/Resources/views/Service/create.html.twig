@@ -55,7 +55,6 @@
                 {% if field.vars.name == 'entityid' %}
                     <div id="scrollable-dropdown-menu">
                         {{ form_widget(field) }}
-
                         {% if field.vars.errors|length %}
                             <div class="col-sm-offset-4 col-sm-11 has-error"><i class="material-icons">error</i> {{ field.vars.errors}}</div>
                         {% endif %}
@@ -113,6 +112,10 @@
             {% if click == "true" %}
                 $('#next-1').click();
             {% endif %}
+
+             {% if clickback == "true" and firstpageerror == "false" %}
+                $('#back').click();
+             {% endif %}
         });
     </script>
 {% endblock %}
