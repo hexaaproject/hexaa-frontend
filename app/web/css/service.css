@@ -213,10 +213,12 @@ form[name="service_create_permission"] .form-group, form[name="service_create_pe
 }
 
 .createPermissionSet .bootstrap-tagsinput {
-    margin-left: 53px;
     width: 400px;
     resize: vertical;
 }
+
+@-moz-document url-prefix() { .createPermissionSet .bootstrap-tagsinput { margin-left: 43px;} }
+@media screen and (-webkit-min-device-pixel-ratio:0){ .createPermissionSet .bootstrap-tagsinput { margin-left: 53px; }}
 
 #dummy{
     visibility: hidden!Important;

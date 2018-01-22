@@ -5,9 +5,11 @@ namespace AppBundle\Controller;
 use AppBundle\Form\OrgManagersContactType;
 use AppBundle\Form\ServManagersContactType;
 use AppBundle\Form\AdminAttributeSpecType;
+use AppBundle\Form\AdminAttributeSpecUpdateType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -35,16 +37,23 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/attributes/{admin}/{action}", defaults={"action" : false})
+     * @Route("/attributes/{admin}/{attributeId}/{action}", defaults={"attributeId" : false, "action" : false})
      * @Template()
      * @param bool    $admin
+     * @param integer $attributeId
      * @param string  $action
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function attributesAction($admin, $action, Request $request)
+    public function attributesAction($admin, $attributeId, $action, Request $request)
     {
         $attributespecifications = $this->get('attribute_spec')->cget();
+
+        $attributesaccordion = $this->attributesToAccordion($admin, $attributespecifications, $attributeId, $action, $request);
+
+        if (! $attributesaccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
+            return $this->redirectToRoute('app_admin_attributes', array("admin" => $admin));
+        }
 
         $formCreateAttributeSpec = $this->createForm(
             AdminAttributeSpecType::class
@@ -76,6 +85,7 @@ class AdminController extends Controller
                 );
                 $this->get('attribute_spec')->createAttributeSpec($admin, $attributeSpec);
                 //  $this->get('service')->createPermission($permisson['uri'], $id, $permisson['name'], $permisson['description'], $this->get('entitlement'));
+                $this->get('session')->getFlashBag()->add('success', 'Attribute specification created succesfully.');
 
                 return $this->redirect($request->getUri());
             }
@@ -91,7 +101,7 @@ class AdminController extends Controller
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 "submenu" => "true",
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
-                'attributes_accordion' => $this->attributesToAccordion($attributespecifications),
+                'attributes_accordion' => $attributesaccordion,
                 'formCreateAttributeSpec' => $formCreateAttributeSpec->createView(),
                 'action' => $action,
             )
@@ -183,9 +193,7 @@ class AdminController extends Controller
             $offset = $offset +25;
         }
         $allentitypart = $this->get('entity_id')->cget($verbose, 0, 100000);
-     // array_push($allentity, $allentitypart);
-     //   dump($allentity);
-      // dump($this->allEntityIDsToAccordion($allentitypart));exit;
+
         return $this->render(
             'AppBundle:Admin:entity.html.twig',
             array(
@@ -408,13 +416,24 @@ class AdminController extends Controller
     }
 
     /**
+     * @param $admin
      * @param $attributespecifications
+     * @param $attributeId
+     * @param $action
+     * @param $request
      * @return array
      */
-    private function attributesToAccordion($attributespecifications)
+    private function attributesToAccordion($admin, $attributespecifications, $attributeId, $action, Request $request)
     {
         $attributesAccordion = array();
         foreach ($attributespecifications['items'] as $attributespecification) {
+            $form =  $this->createForm(
+                AdminAttributeSpecUpdateType::class,
+                $attributespecification,
+                array(
+                    "action" => $this->generateUrl("app_admin_attributes", array("admin" => $admin, "action" => "update", "attributeId" => $attributespecification['id'])),
+                )
+            );
             $attributesAccordion[$attributespecification['id']]['title'] = $attributespecification['name'];
             $attributesAccordion[$attributespecification['id']]['deleteUrl'] = $this->generateUrl("app_admin_attributespecificationdelete", array('id' => $attributespecification['id']));
             $description = array();
@@ -449,6 +468,72 @@ class AdminController extends Controller
                     'values' => $multivalue,
                 ),
             );
+
+            if ($attributeId == $attributespecification['id']) { // csak akkor dolgozzuk fel, ha erről a role-ról van szó.
+                $form->handleRequest($request);
+            }
+
+            if ($form->isValid() and $form->isSubmitted()) {
+                $data = $form->getData();
+                $attributeResource = $this->get('attribute_spec');
+                try {
+                    $attributespec = $attributeResource->get($data['id']);
+                    $attributespec["name"] = $data["name"];
+                    $attributespec["description"] = $data["description"];
+                    $attributespec["uri"] = $data["uri"];
+                    $attributespec["maintainer"] = $data["maintainer"];
+                    $attributespec["is_multivalue"] = $data["Multivalue"];
+                    $attributespec["syntax"] = $data["syntax"];
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["name" => $attributespec['name']]);
+                       // $attributeResource->patchAdmin($attributespec['id'], ["name" => $attributespec['name'], "description" => $attributespec['description'], "uri" => $attributespec['uri'], "syntax" => $attributespec['syntax'], "maintainer" => $attributespec['maintainer'], "is_multivalue" => $attributespec["is_multivalue"]]);
+                    } catch (\Exception $exception) {
+                        $form->get('name')->addError(new FormError($exception->getMessage()));
+                    }
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["description" => $attributespec['description']]);
+                    } catch (\Exception $exception) {
+                        $form->get('description')->addError(new FormError($exception->getMessage()));
+                    }
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["uri" => $attributespec['uri']]);
+                    } catch (\Exception $exception) {
+                        $form->get('uri')->addError(new FormError($exception->getMessage()));
+                    }
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["syntax" => $attributespec['syntax']]);
+                    } catch (\Exception $exception) {
+                        $form->get('syntax')->addError(new FormError($exception->getMessage()));
+                    }
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["maintainer" => $attributespec['maintainer']]);
+                    } catch (\Exception $exception) {
+                        if (strpos($exception->getMessage(), "this AttributeSpec can not be linked to a principal") !== false) {
+                            $form->get('maintainer')
+                            ->addError(new FormError("First delete attribute value connected to attribute spec! ".$exception->getMessage()));
+                        } elseif (strpos($exception->getMessage(), "Can't assign maintainer to user to AttributeSpec") !== false) {
+                            $form->get('maintainer')
+                            ->addError(new FormError("First delete attribute value connected to attribute spec! ".$exception->getMessage()));
+                        } else {
+                            $form->get('maintainer')->addError(new FormError($exception->getMessage()));
+                        }
+                    }
+                    try {
+                        $attributeResource->patchAdmin($attributespec['id'], ["is_multivalue" => $attributespec['is_multivalue']]);
+                    } catch (\Exception $exception) {
+                        $form->get('uri')->addError(new FormError($exception->getMessage()));
+                    }
+                } catch (\AppBundle\Exception $exception) {
+                    $form->addError(new FormError($exception->getMessage()));
+                }
+                if ($form->getErrors(true)->count() == 0) {
+                    $this->get('session')->getFlashBag()->add('success', 'Attribute specification modified succesfully.');
+                }
+                if (!$form->getErrors(true)->count()) { // false-szal térünk vissza, ha nincs hiba. Mehessen a redirect az alaphoz.
+                    return false;
+                }
+            }
+            $attributesAccordion[$attributespecification['id']]['form'] = $form->createView();
         }
 
         return $attributesAccordion;
@@ -496,7 +581,6 @@ class AdminController extends Controller
     */
     private function allEntityIDsToAccordion($entityIDs)
     {
-       // dump($entityIDs);exit;
         $entityIDsAccordion = array();
         $keys = array_keys($entityIDs['items']);
         foreach ($keys as $key) {

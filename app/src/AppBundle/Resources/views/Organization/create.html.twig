@@ -119,5 +119,10 @@
 {% block javascripts %}
 <script>
     {{ include('::progressbar.js.twig') }}
+    $( document ).ready(function() {
+        {% if secondpageerror == "true" %}
+            $('#next-1').click();
+        {% endif %}
+    });
 </script>
 {% endblock %}

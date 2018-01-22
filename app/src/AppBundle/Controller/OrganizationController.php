@@ -30,6 +30,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Devmachine\Bundle\FormBundle\Form\Type\TypeaheadType;
 use WebDriver\Exception;
+use AppBundle\Exception\BackendException;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * @Route("/organization")
@@ -64,70 +66,198 @@ class OrganizationController extends BaseController
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(OrganizationType::class, array('role' => 'default'));
+        $form = $this->createForm(OrganizationType::class, ['role' => 'default']);
 
         $form->handleRequest($request);
+        $firstpageerror = false;
+        $secondpageerror = false;
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                //$thirdpageerror = false;
 
-            $dataToBackend = $data;
+                $dataToBackend = $data;
+                $organizations = $this->get('organization')->cget();
+                $withoutAccentname = $this->removeAccents($dataToBackend['name']);
+                $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccentname);
 
-            // create organization
-            $organization = $this->get('organization')->create(
-                $dataToBackend["name"],
-                $dataToBackend["description"]
-            );
+                foreach ($organizations['items'] as $organization) {
+                    if (strtolower($organization['name']) == strtolower($dataToBackend["name"])) {
+                        $form["name"]->addError(new FormError('Organization name is case insensitive! This name already exists!'));
+                        $firstpageerror = "true";
+                    }
+                }
 
-            // valami miatt erre szükség van, mert amúgy más értéket fog meghívni a createRole
-            $orgid = $organization['id'];
+                if (strlen($dataToBackend['name']) < 3) {
+                    $form["name"]->addError(new FormError('This name of the organization has to be at least three character long!'));
+                    $firstpageerror = "true";
+                }
 
-            // create role
-            $role = $this->get('organization')->createRole(
-                $orgid,
-                $dataToBackend['role'],
-                $this->get('role')
-            );
-            // put creator to role
-            $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
-            $this->get('role')->putPrincipal($role['id'], $self['id']);
+                if (strlen($dataToBackend['role']) < 3) {
+                    $form["role"]->addError(new FormError('This name of the role has to be at least three character long!'));
+                    if ($firstpageerror != "true") {
+                        $secondpageerror = "true";
+                    }
+                }
 
-            // set role to default in organization
-            $this->get('organization')->patch($orgid, array("default_role" => $role['id']));
+                foreach ($form->getErrors(true) as $error) {
+                    throw new \Exception();
+                }
 
-            // create invitations
-            if ($dataToBackend["invitation_emails"]) {
-                $this->sendInvitations($organization, $role, $dataToBackend["invitation_emails"]);
+                // create organization
+                $organization = $this->get('organization')->create(
+                    $dataToBackend["name"],
+                    $dataToBackend["description"]
+                );
+
+                // valami miatt erre szükség van, mert amúgy más értéket fog meghívni a createRole
+                $orgid = $organization['id'];
+
+
+                // create role
+                $role = $this->get('organization')->createRole(
+                    $orgid,
+                    $dataToBackend['role'],
+                    $this->get('role')
+                );
+                // put creator to role
+                $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
+                $this->get('role')->putPrincipal($role['id'], $self['id']);
+
+                // set role to default in organization
+                $this->get('organization')->patch($orgid, ["default_role" => $role['id']]);
+
+                // create invitations
+                try {
+                    if ($dataToBackend["invitation_emails"]) {
+                        $this->sendInvitations($organization, $role, $dataToBackend["invitation_emails"]);
+                    }
+                } catch (\Exception $e) {
+                    $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+                }
+
+                // connect to service
+                $token = $dataToBackend["service_token"]; //TODO issue #103
+                try {
+                    if ($dataToBackend["service_token"] !== null) {
+                        $this->get('organization')->connectService($orgid, $token);
+                    }
+                  // $this->get('session')->getFlashBag()->add('success', 'Service connected successfully to the organization.');
+                } catch (\Exception $e) {
+                    $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+                }
+
+
+                return $this->render('AppBundle:Organization:created.html.twig', [
+                    'neworg' => $this->get('organization')->get($orgid, "expanded"),
+                    "organizations" => $this->get('organization')->cget(),
+                    "services" => $this->get('service')->cget(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    "firstpageerror" => $firstpageerror,
+                    "secondpageerror" => $secondpageerror,
+                ]);
             }
-
-            // connect to service
-            // $dataToBackend["service_token"], //TODO issue #103
-
-            return $this->render('AppBundle:Organization:created.html.twig', array('neworg' => $this->get('organization')->get($orgid, "expanded")));
+        } catch (\Appbundle\Exception $exception) {
+            $form->addError(new FormError($exception->getMessage()));
+            $this->get('session')->getFlashBag()->add('error', $exception->getMessage());
+       /*     $partaftermessage = explode("\"message\":", $message);
+          dump($partaftermessage);
+            $errormessage = $this->get_string_between($partaftermessage[1], "\"", "\"");
+            //dump($errormessage);exit;
+            if ($errormessage == "Token not found") {
+                $form["service_token"]->addError(new FormError($errormessage));
+                if ($firstpageerror != "true" and $secondpageerror != "true") {
+                    $thirdpageerror = "true";
+                }
+            } else {
+            }*/
+        } catch (\Exception $exception) {
         }
 
-        return $this->render('AppBundle:Organization:create.html.twig', array('form' => $form->createView()));
+        return $this->render('AppBundle:Organization:create.html.twig', [
+            'form' => $form->createView(),
+            "organizations" => $this->get('organization')->cget(),
+            "services" => $this->get('service')->cget(),
+            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+            "firstpageerror" => $firstpageerror,
+            "secondpageerror" => $secondpageerror,
+        ]);
     }
 
+   /* /**
+    * @param string $string
+    * @param int    $start
+    * @param int    $end
+    * @return string
+    */
+  /*  public function getStringBetween($string, $start, $end){
+        $string = ' ' . $string;
+        $ini = strpos($string, $start);
+        if ($ini == 0) return '';
+        $ini += strlen($start);
+        $len = strpos($string, $end, $ini) - $ini;
+        return substr($string, $ini, $len);
+    }*/
+
     /**
-     * @Route("/{id}/show")
+    * @Route("/{id}/show")
      * @return Response
-     * @param   int $id Organization ID
+     * @param int     $id      Organization ID
+     * @param Request $request
      */
-    public function showAction($id)
+    public function showAction($id, Request $request)
     {
         $organization = $this->getOrganization($id);
+        $manager = $this->isManager($id);
 
-        return $this->render(
-            'AppBundle:Organization:show.html.twig',
-            array(
-                'entity_show_path' => $this->getEntityShowPath($organization),
-                'entity' => $organization,
-                'organizations' => $this->get('organization')->cget(),
-                'services' => $this->get('service')->cget(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
-            )
-        );
+        if ($manager) {
+            $form = $this->createForm(
+                ConnectServiceType::class
+            );
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                $token = $data["token"];
+                try {
+                    $this->get('organization')->connectService($id, $token);
+                    $this->get('session')->getFlashBag()->add('success', 'Service connected successfully to the organization.');
+                } catch (\Exception $e) {
+                    $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+                }
+
+                return $this->redirect($request->getUri());
+            }
+
+            return $this->render(
+                'AppBundle:Organization:show.html.twig',
+                array(
+                    'entity_show_path' => $this->getEntityShowPath($organization),
+                    'entity' => $organization,
+                    'organizations' => $this->get('organization')->cget(),
+                    'manager' => $manager,
+                    'tokenForm' => $form->createView(),
+                    'services' => $this->get('service')->cget(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'submenu' => 'true',
+                )
+            );
+        } else {
+            return $this->render(
+                'AppBundle:Organization:show.html.twig',
+                array(
+                    'entity_show_path' => $this->getEntityShowPath($organization),
+                    'entity' => $organization,
+                    'organizations' => $this->get('organization')->cget(),
+                    'manager' => $manager,
+                    'services' => $this->get('service')->cget(),
+                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'submenu' => 'true',
+                )
+            );
+        }
     }
 
     /**
@@ -203,12 +333,11 @@ class OrganizationController extends BaseController
                 "propertiesbox" => $propertiesbox,
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
-
                 "roles" => $this->rolesToAccordion(true, $roles, $id, false, false, false, false, $request),
-
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'submenu' => 'true',
             )
         );
     }
@@ -391,6 +520,7 @@ class OrganizationController extends BaseController
                /* "sendMemberEmailForm" => $sendMemberEmailForm->createView(),*/
                 "changeRolesForm" => $changeRolesForm->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'submenu' => 'true',
             )
         );
     }
@@ -594,7 +724,6 @@ class OrganizationController extends BaseController
         $form1 = $this->createForm(OrganizationUserMessageType::class);
         $form2 = $this->createForm(OrganizationUserMessageManagerType::class);
         $pids = $request->get('userId');
-       // dump($pids);exit;
         $emails = array();
         foreach ($pids as $pid) {
             $principal = $this->get('principals')->getById($pid);
@@ -806,6 +935,7 @@ class OrganizationController extends BaseController
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'submenu' => 'true',
             )
         );
     }
@@ -887,11 +1017,18 @@ class OrganizationController extends BaseController
         }
 
         $principalentitlements = $this->get('principal')->getEntitlements();
+        $entitlementorg = $this->get('organization')->getEntitlements($id, 'normal', 0, 10000);
         foreach ($entitlementsunique as $entitlementunique) {
-            $entitlement = $this->get('entitlement')->get($entitlementunique);
+            $entitlement = null;
+            foreach ($entitlementorg['items'] as $oneentitlement) {
+                if ($oneentitlement['id'] == $entitlementunique) {
+                    $entitlement = $oneentitlement;
+                    break;
+                }
+            }
+         // $entitlement = $this->get('entitlement')->get($entitlementunique);
             if (empty($entitlements)) {
             }
-            //dump($entitlements);exit;
             if (!in_array($entitlement, $entitlements)) {
                 array_push($entitlements, $entitlement);
             }
@@ -899,12 +1036,12 @@ class OrganizationController extends BaseController
 
         $servicesAccordion = null;
         if ($entitlementpacks != null && $entitlementpacks[0]['items'] != null) {
-            $servicesAccordion = $this->servicesToAccordion($services, $entitlementpacks);
+            $servicesAccordion = $this->servicesToAccordion($id, $services, $entitlementpacks);
         }
 
         $entitlementsAccordion = null;
         if ($entitlements != null) {
-            $entitlementsAccordion = $this->entitlementsToAccordion($services, $entitlements);
+            $entitlementsAccordion = $this->entitlementsToAccordion($id, $services, $entitlements);
         }
 
         $organization = $this->get('organization')->get($id);
@@ -914,7 +1051,6 @@ class OrganizationController extends BaseController
             array(
                 'entity_show_path' => $this->getEntityShowPath($organization),
                 'entity' => $organization,
-
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "services_accordion" => $servicesAccordion,
@@ -923,6 +1059,7 @@ class OrganizationController extends BaseController
                 "form" => $form->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 "manager" => $manager,
+                'submenu' => 'true',
             )
         );
     }
@@ -1014,6 +1151,27 @@ class OrganizationController extends BaseController
         $response = new JsonResponse($data);
 
         return $response;
+    }
+
+    /**
+    * @Route("/{servId}/link/{id}/delete")
+    * @Template()
+    * @return Response
+    * @param int $servId Service id
+    * @param int $id     Permission Id
+    *
+    */
+    public function linkDeleteAction($servId, $id)
+    {
+        $orglinks = $this->get('organization')->getLinks($id);
+        foreach ($orglinks['items'] as $orglink) {
+            if ($orglink['organization_id'] == $id && $orglink['service_id'] == $servId) {
+                $this->get('link')->deletelink($orglink['id']);
+            }
+        }
+        $this->get('session')->getFlashBag()->add('success', 'The link has been deleted.');
+
+        return $this->redirectToRoute("app_organization_connectedservices", array("id" => $id));
     }
 
     /**
@@ -1251,12 +1409,13 @@ class OrganizationController extends BaseController
         return $rolesAccordion;
     }
 
-  /**
-   * @param $services
+     /**
+      *@param $id
+     * @param $services
      * @param $entitlementPacks
      * @return array
      */
-    private function servicesToAccordion($services, $entitlementPacks)
+    private function servicesToAccordion($id, $services, $entitlementPacks)
     {
         $servicesAccordion = array();
         foreach ($services as $service) {
@@ -1264,6 +1423,11 @@ class OrganizationController extends BaseController
                 foreach ($entitlementPacksub['items'] as $entitlementPack) {
                     if ($entitlementPack['service_id'] == $service['id']) {
                         $servicesAccordion[$service['id']]['title'] = $service['name'];
+                        $servicesAccordion[$service['id']]['deleteUrl'] = $this->generateUrl("app_organization_linkdelete", [
+                            'servId' => $service['id'],
+                            'id' => $id,
+                            'action' => "delete",
+                        ]);
                         $servicesAccordion[$service['id']]['description'] = 'Permission sets';
                         $managers = $this->get('service')->getManagers($service['id'])['items'];
                         $managersstring = "";
@@ -1284,9 +1448,15 @@ class OrganizationController extends BaseController
                        // $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
 
                         $entitlementnames = array();
+                        $entitlementsorg = $this->get('organization')->getEntitlements($id, 'normal', 0, 10000);
                         foreach ($entitlementPack['entitlement_ids'] as $entitlementId) {
-                            $entitlement = $this->get('entitlement')->get($entitlementId);
-                            $entitlementnames[] = $entitlement['name'];
+                            foreach ($entitlementsorg['items'] as $entitlementorg) {
+                                if ($entitlementorg['id'] == $entitlementId) {
+                                    $entitlementnames[] = $entitlementorg['name'];
+                                }
+                              // $entitlement = $this->get('entitlement')->get($entitlementId);
+                              //$entitlementnames[] = $entitlement['name'];
+                            }
                         }
 
                         $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['contents'][] = array("key" => "Permissions", "values" => $entitlementnames);
@@ -1299,16 +1469,133 @@ class OrganizationController extends BaseController
     }
 
     /**
+     * Replace accents
+     *
+     * @param string  $string
+     * @return string
+     */
+    private function removeAccents($string)
+    {
+        if (!preg_match('/[\x80-\xff]/', $string)) {
+            return $string;
+        }
+
+        $chars = array(
+            chr(195).chr(128) => 'A', chr(195).chr(129) => 'A',
+            chr(195).chr(130) => 'A', chr(195).chr(131) => 'A',
+            chr(195).chr(132) => 'A', chr(195).chr(133) => 'A',
+            chr(195).chr(135) => 'C', chr(195).chr(136) => 'E',
+            chr(195).chr(137) => 'E', chr(195).chr(138) => 'E',
+            chr(195).chr(139) => 'E', chr(195).chr(140) => 'I',
+            chr(195).chr(141) => 'I', chr(195).chr(142) => 'I',
+            chr(195).chr(143) => 'I', chr(195).chr(145) => 'N',
+            chr(195).chr(146) => 'O', chr(195).chr(147) => 'O',
+            chr(195).chr(148) => 'O', chr(195).chr(149) => 'O',
+            chr(195).chr(150) => 'O', chr(195).chr(153) => 'U',
+            chr(195).chr(154) => 'U', chr(195).chr(155) => 'U',
+            chr(195).chr(156) => 'U', chr(195).chr(157) => 'Y',
+            chr(195).chr(159) => 's', chr(195).chr(160) => 'a',
+            chr(195).chr(161) => 'a', chr(195).chr(162) => 'a',
+            chr(195).chr(163) => 'a', chr(195).chr(164) => 'a',
+            chr(195).chr(165) => 'a', chr(195).chr(167) => 'c',
+            chr(195).chr(168) => 'e', chr(195).chr(169) => 'e',
+            chr(195).chr(170) => 'e', chr(195).chr(171) => 'e',
+            chr(195).chr(172) => 'i', chr(195).chr(173) => 'i',
+            chr(195).chr(174) => 'i', chr(195).chr(175) => 'i',
+            chr(195).chr(177) => 'n', chr(195).chr(178) => 'o',
+            chr(195).chr(179) => 'o', chr(195).chr(180) => 'o',
+            chr(195).chr(181) => 'o', chr(195).chr(182) => 'o',
+            chr(195).chr(182) => 'o', chr(195).chr(185) => 'u',
+            chr(195).chr(186) => 'u', chr(195).chr(187) => 'u',
+            chr(195).chr(188) => 'u', chr(195).chr(189) => 'y',
+            chr(195).chr(191) => 'y',
+            chr(196).chr(128) => 'A', chr(196).chr(129) => 'a',
+            chr(196).chr(130) => 'A', chr(196).chr(131) => 'a',
+            chr(196).chr(132) => 'A', chr(196).chr(133) => 'a',
+            chr(196).chr(134) => 'C', chr(196).chr(135) => 'c',
+            chr(196).chr(136) => 'C', chr(196).chr(137) => 'c',
+            chr(196).chr(138) => 'C', chr(196).chr(139) => 'c',
+            chr(196).chr(140) => 'C', chr(196).chr(141) => 'c',
+            chr(196).chr(142) => 'D', chr(196).chr(143) => 'd',
+            chr(196).chr(144) => 'D', chr(196).chr(145) => 'd',
+            chr(196).chr(146) => 'E', chr(196).chr(147) => 'e',
+            chr(196).chr(148) => 'E', chr(196).chr(149) => 'e',
+            chr(196).chr(150) => 'E', chr(196).chr(151) => 'e',
+            chr(196).chr(152) => 'E', chr(196).chr(153) => 'e',
+            chr(196).chr(154) => 'E', chr(196).chr(155) => 'e',
+            chr(196).chr(156) => 'G', chr(196).chr(157) => 'g',
+            chr(196).chr(158) => 'G', chr(196).chr(159) => 'g',
+            chr(196).chr(160) => 'G', chr(196).chr(161) => 'g',
+            chr(196).chr(162) => 'G', chr(196).chr(163) => 'g',
+            chr(196).chr(164) => 'H', chr(196).chr(165) => 'h',
+            chr(196).chr(166) => 'H', chr(196).chr(167) => 'h',
+            chr(196).chr(168) => 'I', chr(196).chr(169) => 'i',
+            chr(196).chr(170) => 'I', chr(196).chr(171) => 'i',
+            chr(196).chr(172) => 'I', chr(196).chr(173) => 'i',
+            chr(196).chr(174) => 'I', chr(196).chr(175) => 'i',
+            chr(196).chr(176) => 'I', chr(196).chr(177) => 'i',
+            chr(196).chr(178) => 'IJ', chr(196).chr(179) => 'ij',
+            chr(196).chr(180) => 'J', chr(196).chr(181) => 'j',
+            chr(196).chr(182) => 'K', chr(196).chr(183) => 'k',
+            chr(196).chr(184) => 'k', chr(196).chr(185) => 'L',
+            chr(196).chr(186) => 'l', chr(196).chr(187) => 'L',
+            chr(196).chr(188) => 'l', chr(196).chr(189) => 'L',
+            chr(196).chr(190) => 'l', chr(196).chr(191) => 'L',
+            chr(197).chr(128) => 'l', chr(197).chr(129) => 'L',
+            chr(197).chr(130) => 'l', chr(197).chr(131) => 'N',
+            chr(197).chr(132) => 'n', chr(197).chr(133) => 'N',
+            chr(197).chr(134) => 'n', chr(197).chr(135) => 'N',
+            chr(197).chr(136) => 'n', chr(197).chr(137) => 'N',
+            chr(197).chr(138) => 'n', chr(197).chr(139) => 'N',
+            chr(197).chr(140) => 'O', chr(197).chr(141) => 'o',
+            chr(197).chr(142) => 'O', chr(197).chr(143) => 'o',
+            chr(197).chr(144) => 'O', chr(197).chr(145) => 'o',
+            chr(197).chr(146) => 'OE', chr(197).chr(147) => 'oe',
+            chr(197).chr(148) => 'R', chr(197).chr(149) => 'r',
+            chr(197).chr(150) => 'R', chr(197).chr(151) => 'r',
+            chr(197).chr(152) => 'R', chr(197).chr(153) => 'r',
+            chr(197).chr(154) => 'S', chr(197).chr(155) => 's',
+            chr(197).chr(156) => 'S', chr(197).chr(157) => 's',
+            chr(197).chr(158) => 'S', chr(197).chr(159) => 's',
+            chr(197).chr(160) => 'S', chr(197).chr(161) => 's',
+            chr(197).chr(162) => 'T', chr(197).chr(163) => 't',
+            chr(197).chr(164) => 'T', chr(197).chr(165) => 't',
+            chr(197).chr(166) => 'T', chr(197).chr(167) => 't',
+            chr(197).chr(168) => 'U', chr(197).chr(169) => 'u',
+            chr(197).chr(170) => 'U', chr(197).chr(171) => 'u',
+            chr(197).chr(172) => 'U', chr(197).chr(173) => 'u',
+            chr(197).chr(174) => 'U', chr(197).chr(175) => 'u',
+            chr(197).chr(176) => 'U', chr(197).chr(177) => 'u',
+            chr(197).chr(178) => 'U', chr(197).chr(179) => 'u',
+            chr(197).chr(180) => 'W', chr(197).chr(181) => 'w',
+            chr(197).chr(182) => 'Y', chr(197).chr(183) => 'y',
+            chr(197).chr(184) => 'Y', chr(197).chr(185) => 'Z',
+            chr(197).chr(186) => 'z', chr(197).chr(187) => 'Z',
+            chr(197).chr(188) => 'z', chr(197).chr(189) => 'Z',
+            chr(197).chr(190) => 'z', chr(197).chr(191) => 's',
+        );
+
+        $string = strtr($string, $chars);
+
+        return $string;
+    }
+
+    /**
      * @param $services
      * @param $entitlements
      * @return array
      */
-    private function entitlementsToAccordion($services, $entitlements)
+    private function entitlementsToAccordion($id, $services, $entitlements)
     {
         $entitlementsAccordion = array();
         foreach ($services as $service) {
             $entitlementsAccordion[$service['id']]['title'] = $service['name'];
             $entitlementsAccordion[$service['id']]['description'] = 'Entitlements';
+            $entitlementsAccordion[$service['id']]['deleteUrl'] = $this->generateUrl("app_organization_linkdelete", [
+                'servId' => $service['id'],
+                'id' => $id,
+                'action' => "delete",
+            ]);
             $managers = $this->get('service')->getManagers($service['id'])['items'];
             $managersstring = "";
             foreach ($managers as $manager) {
@@ -1348,25 +1635,29 @@ class OrganizationController extends BaseController
         // create invitation
 
         $tokenResolverLink = $this->get('invitation')->createHexaaInvitation($organization['id'], $this->get('router'), $role['id']);
-        $message = $mailer->createMessage()
-            ->setSubject($config['subject'])
-            ->setFrom($config['from'])
-            ->setCc($emails)
-            ->setReplyTo($config['reply-to'])
-            ->setBody(
-                $this->render(
-                    'AppBundle:Organization:invitationEmail.txt.twig',
-                    array(
-                        'link' => $tokenResolverLink,
-                        'organization' => $organization,
-                        'footer' => $config['footer'],
-                        'role' => $role,
-                        'message' => $messageInMail,
-                    )
-                ),
-                'text/plain'
-            );
+        try {
+            $message = $mailer->createMessage()
+                ->setSubject($config['subject'])
+                ->setFrom($config['from'])
+                ->setCc($emails)
+                ->setReplyTo($config['reply-to'])
+                ->setBody(
+                    $this->render(
+                        'AppBundle:Organization:invitationEmail.txt.twig',
+                        array(
+                            'link' => $tokenResolverLink,
+                            'organization' => $organization,
+                            'footer' => $config['footer'],
+                            'role' => $role,
+                            'message' => $messageInMail,
+                        )
+                    ),
+                    'text/plain'
+                );
 
-        $mailer->send($message);
+              $mailer->send($message);
+        } catch (Exception $exception) {
+            $this->get('session')->getFlashBag()->add('error', 'Invitation sending failure. The error was: <br> '.$exception->getMessage());
+        }
     }
 }

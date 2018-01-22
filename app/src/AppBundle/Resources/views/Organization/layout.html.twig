@@ -10,13 +10,15 @@
         <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
-    {% set names = {
+    {% if submenu is defined %}
+        {% set names = {
             app_organization_properties: "Properties",
             app_organization_users: "Users",
             app_organization_roles: "Roles",
             app_organization_connectedservices: "Connected services"
             }
-     %}
+        %}
+    {% endif %}
 
     {{ include('::navbar.html.twig') }}
 
@@ -38,4 +40,12 @@
             {% block container %}{% endblock %}
         </div>
     </div>
+
+
+    <script>
+        var serv = $("#serv");
+        serv.css('background-color', "#333333");
+        var org = $("#org");
+        org.css('background-color', "#61AFC5");
+    </script>
 {% endblock %}
