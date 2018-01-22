@@ -25,6 +25,15 @@ table#centertable3 {
     padding-top: 10px;
 }
 
+.propname {
+    font-size: medium;
+    display: inline;
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+    margin-top: 5px;
+}
+
 #propertyname {
     text-align: left;
     padding-left: 1em;
