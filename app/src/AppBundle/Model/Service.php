@@ -241,7 +241,7 @@ class Service extends AbstractBaseResource
      * @param string      $entityid
      * @return array expanded organization
      */
-    public function create(string $name, string $description = null, string $url = null, string $entityid)
+    public function create(string $name, string $description = null, string $url = null, string $entityid = null)
     {
         $serviceData = array();
         $serviceData['name'] = $name;
