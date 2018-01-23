@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Route("/admin")
  */
-class AdminController extends Controller
+class AdminController extends BaseController
 {
     /**
      * @Route("/")
@@ -48,10 +48,11 @@ class AdminController extends Controller
     public function attributesAction($admin, $attributeId, $action, Request $request)
     {
         $attributespecifications = $this->get('attribute_spec')->cget();
+        $error = "false";
 
         $attributesaccordion = $this->attributesToAccordion($admin, $attributespecifications, $attributeId, $action, $request);
 
-        if (! $attributesaccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
+        if (false === $attributesaccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
             return $this->redirectToRoute('app_admin_attributes', array("admin" => $admin));
         }
 
@@ -91,6 +92,7 @@ class AdminController extends Controller
             }
         } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+            $error = "true";
         }
 
         return $this->render(
@@ -99,11 +101,16 @@ class AdminController extends Controller
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'organizationsWhereManager' => $this->orgWhereManager(),
                 "submenu" => "true",
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
                 'attributes_accordion' => $attributesaccordion,
                 'formCreateAttributeSpec' => $formCreateAttributeSpec->createView(),
                 'action' => $action,
+                'attributespecifications' => $attributespecifications,
+                'error' => $error,
+                'manager' => "false",
+                'ismanager' => "true",
             )
         );
     }
@@ -134,6 +141,10 @@ class AdminController extends Controller
                 "adminsubmenubox" => $this->getAdminSubmenupoints(),
                 "principals_buttons" => $principalsButtons,
                 "principals" => $principals,
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
+                'ismanager' => "true",
+
             )
         );
     }
@@ -206,6 +217,9 @@ class AdminController extends Controller
                 'all_entityid' => $this->allEntityIDsToAccordion($allentitypart),
                 'total_number' => $totalnumber,
                 'total_pages' => $totalpages,
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
+                'ismanager' => "true",
             )
         );
     }
@@ -380,6 +394,8 @@ class AdminController extends Controller
                 "formOrgManagers" => $orgManagersForm->createView(),
                 "formManagers" => $managersForm->createView(),
                 "servicesName" => $servicesNames,
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
             )
         );
     }

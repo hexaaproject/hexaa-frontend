@@ -216,36 +216,42 @@ buttons array:
 <div class="{{ table_id }}_actionButtons" id="tablewithcheckbox">
 
     {% if form is not defined %}
-        <input class="hexaaCheckBox hidden-xs pull-left" id="{{checkbox_all}}" type="checkbox" value="" name="selectAll">
+        {% if ismanager == "true" %}
+            <input class="hexaaCheckBox hidden-xs pull-left" id="{{checkbox_all}}" type="checkbox" value="" name="selectAll">
+        {% endif %}
         <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left"
                {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
     {% endif %}
     {% if buttons is defined and buttons %}
-        {% for id, button in buttons %}
-            {% if not button.last is defined %}
-                <button class="btnhexaa {{ button.class }} dependent hidden-xs" disabled="disabled"
-                        id="{{ id }}">{{ button.text|raw }}</button>
-            {% endif %}
-        {% endfor %}
-        {% for id, button in buttons %}
-            {% if button.last is defined %}
-                <button class="btnhexaa {{ button.class }} pull-right" id="{{ id }}">{{ button.text|raw }}</button>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-
-    {% if buttons is defined and buttons %}
-        <div class="visible-xs" style="margin-top: 12px;">
+        {% if ismanager == "true" %}
             {% for id, button in buttons %}
                 {% if not button.last is defined %}
-                    <button class="btnhexaa {{ button.class }} dependent" disabled="disabled"
+                    <button class="btnhexaa {{ button.class }} dependent hidden-xs" disabled="disabled"
                             id="{{ id }}">{{ button.text|raw }}</button>
                 {% endif %}
             {% endfor %}
-        </div>
-        <div class="visible-xs" style="margin-top: 12px;">
-            <input class="hexaaCheckBox" type="checkbox" value="">
-        </div>
+            {% for id, button in buttons %}
+                {% if button.last is defined %}
+                    <button class="btnhexaa {{ button.class }} pull-right" id="{{ id }}">{{ button.text|raw }}</button>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+
+    {% if buttons is defined and buttons %}
+        {% if ismanager == "true" %}
+            <div class="visible-xs" style="margin-top: 12px;">
+                {% for id, button in buttons %}
+                    {% if not button.last is defined %}
+                        <button class="btnhexaa {{ button.class }} dependent" disabled="disabled"
+                                id="{{ id }}">{{ button.text|raw }}</button>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="visible-xs" style="margin-top: 12px;">
+                <input class="hexaaCheckBox" type="checkbox" value="">
+            </div>
+        {% endif %}
     {% endif %}
 </div>
 
@@ -256,7 +262,9 @@ buttons array:
     <thead>
     <tr>
         {% if buttons is defined %}
-            <th></th>
+            {% if ismanager == "true" %}
+                <th></th>
+            {% endif %}
         {% endif %}
         {% if attributes is defined %}
             <th></th>
@@ -270,7 +278,9 @@ buttons array:
     {% for user in users %}
         <tr id="{{ user.id }}">
         {% if buttons is defined %}
-            <td><input type="checkbox" name="checkbox" {% if attributes is not defined %} data-id="{{ user.id }}" data-fedid="{{ user.fedid }}" data-behattarget="{{ user.fedid }}" {% endif %}></td>
+            {% if ismanager == "true" %}
+                <td><input type="checkbox" name="checkbox" {% if attributes is not defined %} data-id="{{ user.id }}" data-fedid="{{ user.fedid }}" data-behattarget="{{ user.fedid }}" {% endif %}></td>
+            {% endif %}
         {% endif %}
         {% if attributes is defined %}
             <td class="{{ tdcolor }}"><strong>{{ user.name }}</strong></td>

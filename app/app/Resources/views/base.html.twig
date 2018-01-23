@@ -57,7 +57,17 @@
                     {% if organizations.items != null %}
                         <ul class="dropdown-menu">
                             {% for organization in organizations.items %}
-                                <li><a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a></li>
+                                {% for orgWhereManager in organizationsWhereManager %}
+                                    {% if orgWhereManager.id == organization.id %}
+                                        <li><a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a></li>
+                                        {% set manager = "true" %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if manager == "false" %}
+                                    <li><a href="{{ path("app_organization_properties", { id: organization.id }) }}">{{ organization.name|e }}</a></li>
+                                {% endif %}
+                                {% set manager = "false" %}
+                               {# <li><a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a></li>#}
                             {% endfor %}
                         </ul>
                     {% endif %}
