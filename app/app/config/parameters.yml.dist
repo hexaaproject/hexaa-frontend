@@ -7,6 +7,7 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     shib_auth_username_attribute: eduPersonPrincipalName
+    shib_auth_module_attribute: HTTP_SHIB_APPLICATION_ID
     shib_attribute_map:
         eppn: eduPersonPrincipalName
         displayName: displayName

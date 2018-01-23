@@ -161,6 +161,8 @@ niif_shib_auth:
     # logoutReturnPath:       "%shib_auth_logout_return_path%" # optional, have default value: "/"
     logoutReturnPath:  "%shib_auth_logout_return_path%" # optional, have default value: "/"
     usernameAttribute: "%shib_auth_username_attribute%" # optional, have default value: REMOTE_USER
+    moduleAttribute:   "%shib_auth_module_attribute%"   # optional, has default value: HTTP_SHIB_APPLICATION_ID
+
 
 guzzle:
     # (de)activate logging/profiler; default: %kernel.debug%

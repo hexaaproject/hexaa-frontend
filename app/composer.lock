@@ -1953,16 +1953,16 @@
         },
         {
             "name": "niif/shib-auth-bundle",
-            "version": "v1.2.4",
+            "version": "v1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NIIF/ShibAuthBundle.git",
-                "reference": "ea844867abb9bf0ab914e33bf194f2f786d53ba2"
+                "reference": "418786363deaf47f2f13bd01dfdd3661d97bcfd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NIIF/ShibAuthBundle/zipball/ea844867abb9bf0ab914e33bf194f2f786d53ba2",
-                "reference": "ea844867abb9bf0ab914e33bf194f2f786d53ba2",
+                "url": "https://api.github.com/repos/NIIF/ShibAuthBundle/zipball/418786363deaf47f2f13bd01dfdd3661d97bcfd4",
+                "reference": "418786363deaf47f2f13bd01dfdd3661d97bcfd4",
                 "shasum": ""
             },
             "type": "library",
@@ -1986,7 +1986,7 @@
                 }
             ],
             "description": "Shibboleth based (federated SAML) user authentication bundle",
-            "time": "2017-06-30T06:27:52+00:00"
+            "time": "2018-01-15T15:40:43+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -3264,7 +3264,6 @@
                 "shasum": ""
             },
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3280,6 +3279,10 @@
                 "autocomplete",
                 "typeahead"
             ],
+            "support": {
+                "issues": "https://github.com/twitter/typeahead.js/issues",
+                "source": "https://github.com/twitter/typeahead.js/tree/v0.11.1"
+            },
             "time": "2015-04-27T04:02:14+00:00"
         },
         {
@@ -4386,11 +4389,11 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
-                    "name": "PedroTroller",
+                    "name": "Pedrotroller",
                     "homepage": "https://github.com/PedroTroller"
                 }
             ],
