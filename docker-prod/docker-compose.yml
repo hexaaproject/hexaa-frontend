@@ -15,21 +15,21 @@ services:
         volumes:
             - hexaa_db_data:/var/lib/mysql
     frontend:
-        image: hexaa/newui-php-fpm
+        image: hexaaproject/hexaa-newui:new-dev
         networks:
             - hexaa
         env_file: settings.env
         restart: always
         volumes:
-            - hexaa_ui_source:/app
+            - hexaa_ui_source:/opt/hexaa-newui
     backend:
-        image: hexaa/backend-php-fpm
+        image: hexaaproject/hexaa-backend:new-api-dev
         networks:
             - hexaa
         env_file: settings.env
         restart: always
         volumes:
-            - hexaa_backend_source:/app
+            - hexaa_backend_source:/opt/hexaa-backend
     web:
         image: solazs/apache-shib
         networks:

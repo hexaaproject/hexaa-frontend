@@ -1,7 +1,14 @@
-FROM bitnami/php-fpm
+FROM php:7.2.1-fpm-stretch
 LABEL MAINTAINER Balázs SOLTÉSZ <solazs@sztaki.hu>
 
-COPY ./app/. /app
+# Install some dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+                       wget \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY ./app/. /opt/hexaa-newui
 
 # Install composer
 COPY docker-prod/composer_downloader.sh /usr/local/bin/
@@ -12,12 +19,13 @@ RUN chmod +x /usr/local/bin/composer_downloader.sh \
     && chmod +x /usr/local/bin/composer
     
 # Install dependencies
-RUN cd /app \
+RUN cd /opt/hexaa-newui \
     && composer install -o \
-    && rm -rf /app/var/cache/*
+    && rm -rf /var/cache/* \
+    && cd /var/www && rm -r html && ln -s html /opt/hexaa-newui/web 
 
-VOLUME /app
+VOLUME /opt/hexaa-newui
 
-COPY docker-prod/boot-and-start-php-fpm.sh /usr/local/bin/
+COPY docker-prod/boot.sh /usr/local/bin/
 
-CMD ["/usr/local/bin/boot-and-start-php-fpm.sh"]
+CMD ["/usr/local/bin/boot.sh"]
