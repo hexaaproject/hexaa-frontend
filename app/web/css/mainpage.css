@@ -36,6 +36,10 @@ body {
     margin-right: auto;
 }
 
+.nav {
+    font-size: medium;
+}
+
 #welcomecontent {
     position: absolute;
     top: 50%;

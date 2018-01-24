@@ -248,7 +248,7 @@ class OrganizationController extends BaseController
                     'services' => $this->get('service')->cget(),
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
                     'submenu' => 'true',
-                    'ismanager' => $manager
+                    'ismanager' => $manager,
                 )
             );
         } else {
