@@ -33,7 +33,7 @@ use WebDriver\Exception;
 /**
  * @Route("/service")
  */
-class ServiceController extends Controller
+class ServiceController extends BaseController
 {
 
     /**
@@ -74,6 +74,8 @@ class ServiceController extends Controller
                 'organizations' => $organizations,
                 'services' => $services,
                 'menu' => $menu,
+                'manager' => "false",
+                'organizationsWhereManager' => $this->orgWhereManager(),
             )
         );
     }
@@ -92,8 +94,10 @@ class ServiceController extends Controller
                 'organizations' => $this->getOrganizations(),
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
+                'manager' => "false",
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'organizationsWhereManager' => $this->orgWhereManager(),
             )
         );
     }
@@ -163,7 +167,9 @@ class ServiceController extends Controller
             array(
                 'organizations' => $this->getOrganizations(),
                 'services' => $this->getServices(),
+                'manager' => "false",
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'organizationsWhereManager' => $this->orgWhereManager(),
             )
         );
     }
@@ -470,10 +476,12 @@ class ServiceController extends Controller
                 'form' => $form->createView(),
                 'organizations' => $this->getOrganizations(),
                 'services' => $this->getServices(),
+                'manager' => "false",
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 'click' => $click,
                 'clickback' => $clickback,
                 'firstpageerror' => $firstpageerror,
+                'organizationsWhereManager' => $this->orgWhereManager(),
                 )
         );
     }
@@ -538,7 +546,9 @@ class ServiceController extends Controller
                     'organizations' => $this->getOrganizations(),
                     'services' => $this->getServices(),
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'manager' => "false",
                     'click' => $click,
+                    'organizationsWhereManager' => $this->orgWhereManager(),
                 )
             );
         }
@@ -552,6 +562,8 @@ class ServiceController extends Controller
                   'services' => $this->getServices(),
                   "admin" => $this->get('principal')->isAdmin()["is_admin"],
                   'click' => $click,
+                  'manager' => "false",
+                  'organizationsWhereManager' => $this->orgWhereManager(),
               )
           );
     }
@@ -680,6 +692,8 @@ class ServiceController extends Controller
                 'ownerform' => $formowner->createView(),
                 'privacyform' => $formprivacy->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
             )
         );
     }
@@ -751,6 +765,9 @@ class ServiceController extends Controller
                     "inviteForm" => $form->createView(),
                     "sendInEmailForm" => $sendInEmailForm->createView(),
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'organizationsWhereManager' => $this->orgWhereManager(),
+                    'manager' => "false",
+                    'ismanager' => "true",
                 )
             );
         }
@@ -767,6 +784,9 @@ class ServiceController extends Controller
                 "inviteForm" => $form->createView(),
                 "sendInEmailForm" => $sendInEmailForm->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
+                'ismanager' => "true",
             )
         );
     }
@@ -992,6 +1012,9 @@ class ServiceController extends Controller
                 'attributes_buttons' => $attributesButtons,
                 'addAttributeSpecForm' => $form->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
+                'ismanager' => "true",
             )
         );
     }
@@ -1122,6 +1145,9 @@ class ServiceController extends Controller
                 'serviceID' => $id,
                 'permissions' => $allallpermission,
                 'error' => $error,
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
+                'ismanager' => $this->isManager($id),
             )
         );
     }
@@ -1254,6 +1280,9 @@ class ServiceController extends Controller
                 'permissionsets' => $allallpermissionset,
                 'permissions' => $permissions,
                 'error' => $error,
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
+                'ismanager' => $this->isManager($id),
             )
         );
     }
@@ -1585,6 +1614,8 @@ class ServiceController extends Controller
                 'acceptedNumber' => $acceptedNumber,
                 'forms' => $formviews,
                 'manager' => $manager,
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
             )
         );
     }
@@ -1828,6 +1859,8 @@ class ServiceController extends Controller
             "services" => $this->get('service')->cget(),
             'servsubmenubox' => $this->getServSubmenuPoints(),
             "admin" => $this->get('principal')->isAdmin()["is_admin"],
+            'organizationsWhereManager' => $this->orgWhereManager(),
+            'manager' => "false",
         );
     }
 

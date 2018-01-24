@@ -53,41 +53,43 @@
 
     </script>
 
-    <div class="row" style="margin-bottom: 24px;">
+    {% if ismanager == "true" %}
+        <div class="row" style="margin-bottom: 24px;">
 
-        <div id="actionButtons">
-            <div id="newRoleButton" class="col-md-5 col-md-offset-5">
-                <button id="createrole" class="btnhexaa btn-red btn-block btnhexaa-lg" onclick="showCreateForm()"><i class="material-icons" aria-hidden="true">add</i> New role</button>
+            <div id="actionButtons">
+                <div id="newRoleButton" class="col-md-5 col-md-offset-5">
+                    <button id="createrole" class="btnhexaa btn-red btn-block btnhexaa-lg" onclick="showCreateForm()"><i class="material-icons" aria-hidden="true">add</i> New role</button>
+                </div>
             </div>
-        </div>
 
-        <div id="createRoleForm" class="col-md-9 col-md-offset-3 hidden">
-            <div class="grid_panel">
-                <div class="header">
-                    Create role
-                    <div class="pull-right">
-                        <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i class="material-icons">clear</i></button>
-                        <button type="submit" id="submitbutton" class="actionbutton" onclick="$('#current_form').submit();" ><i class="material-icons">done</i></button>
+            <div id="createRoleForm" class="col-md-9 col-md-offset-3 hidden">
+                <div class="grid_panel">
+                    <div class="header">
+                        Create role
+                        <div class="pull-right">
+                            <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i class="material-icons">clear</i></button>
+                            <button type="submit" id="submitbutton" class="actionbutton" onclick="$('#current_form').submit();" ><i class="material-icons">done</i></button>
+                        </div>
+                    </div>
+                    <div id="panel_container">
+                        {{ form_start(form) }}
+                        {% for key, field in form  %}
+                            <div class="row {% if ("_token" == key) %} hidden {% endif %}" style="padding-top: 12px;">
+                                <div class="col-sm-3 propname">{{ form_label(field) }}</div>
+                                <div class="col-sm-11"> {{ form_widget(field) }}</div>
+                                {% if field.vars.errors|length %}
+                                    <div class="col-sm-offset-3 col-sm-11 has-error">{{ field.vars.errors|length }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        {{ form_end(form) }}
                     </div>
                 </div>
-                <div id="panel_container">
-                    {{ form_start(form) }}
-                    {% for key, field in form  %}
-                        <div class="row {% if ("_token" == key) %} hidden {% endif %}" style="padding-top: 12px;">
-                            <div class="col-sm-3 propname">{{ form_label(field) }}</div>
-                            <div class="col-sm-11"> {{ form_widget(field) }}</div>
-                            {% if field.vars.errors|length %}
-                                <div class="col-sm-offset-3 col-sm-11 has-error">{{ field.vars.errors|length }}</div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-
-                    {{ form_end(form) }}
-                </div>
             </div>
-        </div>
 
-    </div>
+        </div>
+    {% endif %}
 
     {% if roles is defined and roles|length %}
     <div class="row">

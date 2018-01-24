@@ -11,13 +11,24 @@
     {% endstylesheets %}
 
     {% if submenu is defined %}
-        {% set names = {
+        {% if ismanager == "true" %}
+            {% set names = {
+                app_organization_properties: "Properties",
+                app_organization_users: "Users",
+                app_organization_roles: "Roles",
+                app_organization_connectedservices: "Connected services",
+                app_organization_history: "View history"
+                }
+            %}
+        {% else %}
+            {% set names = {
             app_organization_properties: "Properties",
             app_organization_users: "Users",
             app_organization_roles: "Roles",
-            app_organization_connectedservices: "Connected services"
+            app_organization_history: "View history"
             }
-        %}
+            %}
+        {% endif %}
     {% endif %}
 
     {{ include('::navbar.html.twig') }}

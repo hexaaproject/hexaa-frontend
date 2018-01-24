@@ -100,6 +100,21 @@ class Organization extends AbstractBaseResource
 
 
     /**
+     * GET attribute values of Organization
+     *
+     * @param string $id       ID of organization
+     * @param string $verbose  One of minimal, normal or expanded
+     * @param int    $offset   paging: item to start from
+     * @param int    $pageSize paging: number of items to return
+     * @return array
+     */
+    public function getAttributevalues(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 1000): array
+    {
+        return $this->getCollection($this->pathName.'/'.$id.'/attributevalueorganization', $verbose, $offset, $pageSize);
+    }
+
+
+    /**
      * GET links of Organization
      *
      * @param string $id       ID of organization

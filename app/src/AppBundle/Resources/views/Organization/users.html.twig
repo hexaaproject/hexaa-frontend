@@ -139,133 +139,179 @@
             {{ flashMessage|raw }}
         </div>
     {% endfor %}
-    {% if managers is defined and managers|length %}
-    <div class="row">
-        <div class="col-md-15">
-            {{ include(
-                '::tables.html.twig',
-                {
-                    variant: 'red',
-                    caption: 'Managers',
-                    users: managers,
-                    table_id: 'managers_table',
-                    buttons: managers_buttons,
-                    search_placeholder: 'Search users',
-                    checkbox_all: 'Orgmanager'
-                })
-            }}
-        </div>
-        {{ include('::modal.html.twig',
-            {
-                id: 'managersRemove',
-                title: 'Remove managers',
-                bodyhead: 'Are you ready to remove these users from your organization?',
-                bodycontent: 'Optional',
-                button:
-                    {
-                        text: 'Remove',
-                        class: 'btn-red'
-                    },
-                formaction: path('app_organization_removeusers', {id: entity.id })
-            })
-        }}
-
-        {{ include('::modal.html.twig',
-            {
-                id: 'managersMessage',
-                title: 'Send message to selected users',
-                button:
-                {
-                    text: 'Send',
-                    class: 'btn-red'
-                },
-                bodycontent: form_start(sendEmailForm)
-                ~ form_row(sendEmailForm.subject)
-                ~ form_row(sendEmailForm.message)
-                ~ form_end(sendEmailForm),
-            })
-        }}
-
-        {{ include('::modal.html.twig',
-            {
-                id: 'managersRevoke',
-                title: 'Revoke manager status',
-                bodyhead: 'Revoke managers status',
-                bodycontent: 'Optional',
-                button:
-                    {
-                        text: 'Revoke',
-                        class: 'btn-red'
-                    },
-                formaction: path('app_organization_revoke', {id: entity.id })
-            })
-        }}
-
-        {{ include('::modal.html.twig',
-            {
-                id: 'managersChangeRole',
-                title: 'Change role',
-                bodyhead: 'Change the selected users role',
-                bodycontent: form(changeRolesForm),
-                button:
-                    {
-                        text: 'Add roles',
-                        class: 'btn-red',
-                        value: 'add',
-                        id: 'add_roles_button'
-                    },
-                rightbuttons:
-                    [
+        {% if managers is defined and managers|length %}
+            <div class="row">
+                <div class="col-md-15">
+                    {{ include(
+                        '::tables.html.twig',
                         {
-                            text: 'Remove roles',
-                            class: 'btn-red',
-                            value: 'remove',
-                            id: 'remove_roles_button'
+                            variant: 'red',
+                            caption: 'Managers',
+                            users: managers,
+                            table_id: 'managers_table',
+                            buttons: managers_buttons,
+                            search_placeholder: 'Search users',
+                            checkbox_all: 'Orgmanager',
+                            ismanager: ismanager
+                        })
+                    }}
+                </div>
+                {{ include('::modal.html.twig',
+                    {
+                        id: 'managersRemove',
+                        title: 'Remove managers',
+                        bodyhead: 'Are you ready to remove these users from your organization?',
+                        bodycontent: 'Optional',
+                        button:
+                            {
+                                text: 'Remove',
+                                class: 'btn-red'
+                            },
+                        formaction: path('app_organization_removeusers', {id: entity.id })
+                    })
+                }}
+
+                {{ include('::modal.html.twig',
+                    {
+                        id: 'managersMessage',
+                        title: 'Send message to selected users',
+                        button:
+                        {
+                            text: 'Send',
+                            class: 'btn-red'
                         },
-                    ],
-            })
-        }}
+                        bodycontent: form_start(sendEmailForm)
+                        ~ form_row(sendEmailForm.subject)
+                        ~ form_row(sendEmailForm.message)
+                        ~ form_end(sendEmailForm),
+                    })
+                }}
 
-        {{ include('::modal.html.twig',
-        {
-            id: 'membersProposal',
-            title: 'Propose members status',
-            bodyhead: 'Propose members to managers',
-            bodycontent: 'Optional',
-            button:
-            {
-                text: 'Propose',
-                class: 'btn-red'
-            },
-            formaction: path('app_organization_propose', {id: entity.id })
-        })
-        }}
-    </div>
-    {% endif %}
+                {{ include('::modal.html.twig',
+                    {
+                        id: 'managersRevoke',
+                        title: 'Revoke manager status',
+                        bodyhead: 'Revoke managers status',
+                        bodycontent: 'Optional',
+                        button:
+                            {
+                                text: 'Revoke',
+                                class: 'btn-red'
+                            },
+                        formaction: path('app_organization_revoke', {id: entity.id })
+                    })
+                }}
 
-    {% if members is defined and members|length %}
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-md-15">
-            {{ include(
-                '::tables.html.twig',
+                {{ include('::modal.html.twig',
+                    {
+                        id: 'managersChangeRole',
+                        title: 'Change role',
+                        bodyhead: 'Change the selected users role',
+                        bodycontent: form(changeRolesForm),
+                        button:
+                            {
+                                text: 'Add roles',
+                                class: 'btn-red',
+                                value: 'add',
+                                id: 'add_roles_button'
+                            },
+                        rightbuttons:
+                            [
+                                {
+                                    text: 'Remove roles',
+                                    class: 'btn-red',
+                                    value: 'remove',
+                                    id: 'remove_roles_button'
+                                },
+                            ],
+                    })
+                }}
+
+                {{ include('::modal.html.twig',
                 {
-                    variant: 'blue',
-                    caption: 'Members',
-                    users: members,
-                    table_id: 'members_table',
-                    checkbox_all: null,
-                    form: 'false',
-                    buttons: null,
+                    id: 'membersProposal',
+                    title: 'Propose members status',
+                    bodyhead: 'Propose members to managers',
+                    bodycontent: 'Optional',
+                    button:
+                    {
+                        text: 'Propose',
+                        class: 'btn-red'
+                    },
+                    formaction: path('app_organization_propose', {id: entity.id })
                 })
-            }}
-        </div>
-    </div>
-    {% endif %}
+                }}
+            </div>
+        {% endif %}
 
-    {{ include('AppBundle:Organization:userInvitation.html.twig', {}) }}
-    {% if invite_link is defined %}
-        {{ include('AppBundle:Organization:userInvitationDone.html.twig', {}) }}
+        {% if members is defined and members|length %}
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-md-15">
+                    {{ include(
+                        '::tables.html.twig',
+                        {
+                            variant: 'blue',
+                            caption: 'Members',
+                            users: members,
+                            table_id: 'members_table',
+                            checkbox_all: null,
+                            form: 'false',
+                            buttons: null,
+                            ismanager: ismanager
+                        })
+                    }}
+                </div>
+            </div>
+        {% endif %}
+
+        {{ include('AppBundle:Organization:userInvitation.html.twig', {}) }}
+        {% if invite_link is defined %}
+            {{ include('AppBundle:Organization:userInvitationDone.html.twig', {}) }}
+        {% endif %}
+
+  {#  {{ dump(ismanager) }}
+    {% if ismanager == "false" %}
+        {% if managers is defined and managers|length %}
+            <div class="row">
+                <div class="col-md-15">
+                    {{ include(
+                        '::tables.html.twig',
+                        {
+                            variant: 'red',
+                            caption: 'Managers',
+                            users: managers,
+                            table_id: 'managers_table2',
+                            buttons: null,
+                            search_placeholder: 'Search users',
+                            checkbox_all: null
+                        })
+                    }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if members is defined and members|length %}
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-md-15">
+                    {{ include(
+                    '::tables.html.twig',
+                    {
+                        variant: 'blue',
+                        caption: 'Members',
+                        users: members,
+                        table_id: 'members_table2',
+                        checkbox_all: null,
+                        form: 'false',
+                        buttons: null,
+                    })
+                    }}
+                </div>
+            </div>
+        {% endif %}
+
     {% endif %}
+#}
 {% endblock %}
 
 {% block javascripts %}

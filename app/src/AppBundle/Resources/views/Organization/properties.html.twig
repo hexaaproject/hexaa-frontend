@@ -39,18 +39,20 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-offset-2 col-sm-11" style="padding-top: 12px;">
-                {{ include('::accordions.html.twig', {
-                    formaccordion: 'notform',
-                    formtitle: 'notform',
-                    formpanel: 'notform',
-                    heading: "Roles",
-                    variant: "dark",
-                    items: roles
-                    })
-                }}
+    {% if roles is defined and roles|length %}
+        <div class="row">
+            <div class="col-sm-offset-2 col-sm-11" style="padding-top: 12px;">
+                    {{ include('::accordions.html.twig', {
+                        formaccordion: 'notform',
+                        formtitle: 'notform',
+                        formpanel: 'notform',
+                        heading: "Roles",
+                        variant: "dark",
+                        items: roles
+                        })
+                    }}
+            </div>
         </div>
-    </div>
+    {% endif %}
 
 {% endblock %}
