@@ -32,18 +32,18 @@ HEXAA_FRONTEND_MAILER_USER=${HEXAA_FRONTEND_MAILER_USER:-"~"}
 HEXAA_FRONTEND_MAILER_PASSWORD=${HEXAA_FRONTEND_MAILER_PASSWORD:-"~"}
 
 # Write parameters.yml
-cat /opt/hexaa-newui/app/config/parameters.yml <<EOF
+cat >/opt/hexaa-newui/app/config/parameters.yml <<EOF
 parameters:
     secret:                       $HEXAA_FRONTEND_SECRET
 
     shib_auth_username_attribute: $HEXAA_FRONTEND_SHIB_USERNAME_ATTRIBUTE
     shib_auth_module_attribute:   $HEXAA_FRONTEND_SHIB_MODULE_ATTRIBUTE
-    shib_attribute_map:$HEXAA_FRONTEND_SHIB_ATTRIBUTE_MAP
+    shib_attribute_map:${HEXAA_FRONTEND_SHIB_ATTRIBUTE_MAP}
     shib_auth_logout_return_path: $HEXAA_FRONTEND_SHIB_LOGOUT_RETURN_PATH
     hexaa_base_uri:               $HEXAA_FRONTEND_API_BASE_URL
     hexaa_permissionprefix:       '$HEXAA_FRONTEND_API_PERMISSION_PREFIX'
     hexaa_scoped_key:             $HEXAA_FRONTEND_API_SCOPED_KEY
-    invitation_config:$HEXAA_FRONTEND_INVITATION_CONFIG
+    invitation_config:${HEXAA_FRONTEND_INVITATION_CONFIG}
     
     mailer_transport:  $HEXAA_FRONTEND_MAILER_TRANSPORT
     mailer_host:       $HEXAA_FRONTEND_MAILER_HOST
@@ -52,3 +52,5 @@ parameters:
     mailer_password:   $HEXAA_FRONTEND_MAILER_PASSWORD
 
 EOF
+
+docker-php-entrypoint php-fpm

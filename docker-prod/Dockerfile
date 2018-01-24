@@ -21,8 +21,12 @@ RUN chmod +x /usr/local/bin/composer_downloader.sh \
 # Install dependencies
 RUN cd /opt/hexaa-newui \
     && composer install -o \
-    && rm -rf /var/cache/* \
-    && cd /var/www && rm -r html && ln -s html /opt/hexaa-newui/web 
+    && rm -rf var/cache/* \
+    && chown root:www-data /opt/hexaa-newui -R \
+    && chmod g+r /opt/hexaa-newui -R \
+    && chmod g+w /opt/hexaa-newui/var/cache -R\
+    && chmod g+w /opt/hexaa-newui/var/logs -R \
+    && mkdir /var/lib/php5 && chown www-data /var/lib/php5
 
 VOLUME /opt/hexaa-newui
 
