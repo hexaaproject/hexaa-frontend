@@ -13,8 +13,7 @@
     <div id="srvmain">
             <div id="maindivcontents">
                 <div class="desktopbuttonorg" id="createDiv"><a href="{{ path('app_organization_roles', {"id": entity.id, "action": "create"}) }}"><img class="desktopbuttonimage" src="/img/create_role_160x160.svg"/><br/> <p id="createText"><b>Create role</b></p></a></div>
-
-                {% if manager == 'true' %}
+                {% if ismanager == 'true' %}
                     <div class="desktopbuttonorg" id="connectDiv"><img class="desktopbuttonimage" src="/img/connect_to_service_160x160.svg"/><br/><p id="connectText"><b>Connect to service</b></p></div>
                 {% endif %}
 
