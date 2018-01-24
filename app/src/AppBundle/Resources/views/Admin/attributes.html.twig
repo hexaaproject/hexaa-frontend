@@ -38,6 +38,17 @@
                     $( this ).css({ 'display': "none" });
                 });
             });
+
+            {% if attributespecifications is defined and attributespecifications['items']|length %}
+                {% if error == 'true' %}
+                    $("#createButton").click();
+                {% endif %}
+            {% elseif attributespecifications is defined %}
+                {% if error == 'true' %}
+                    $("#add").click();
+                {% endif %}
+            {% endif %}
+
         });
     </script>
 
@@ -46,12 +57,14 @@
             $("#createAttributeSpecBlock").removeClass('hidden');
             $('#createButton').addClass('hidden');
             $('#hexaaSearchFieldAdminAttributes').addClass('hidden');
+            $('#add').addClass('hidden');
         }
 
         function cancel() {
             $('#createButton').removeClass('hidden');
             $('#createAttributeSpecBlock').addClass('hidden');
             $('#hexaaSearchFieldAdminAttributes').removeClass('hidden');
+            $('#add').removeClass('hidden');
         }
 
     </script>
@@ -91,13 +104,20 @@
         </div>
     </div>
 
-    <div class="col-sm-11 col-sm-offset-2">
-        <input id="hexaaSearchFieldAdminAttributes" type="text" name="filter" class="hexaaSearchField pull-left"
-               placeholder="Search attributes">
+    {% if attributespecifications is defined and attributespecifications['items']|length %}
+        <div class="col-sm-11 col-sm-offset-2">
+            <input id="hexaaSearchFieldAdminAttributes" type="text" name="filter" class="hexaaSearchField pull-left"
+                   placeholder="Search attributes">
 
-        <button class="btnhexaa btn-red btnhexaa-sm pull-right" onclick="showCreateAttributeSpecForm()" id="createButton"><i class="material-icons">add</i> Create</button>
-    </div>
-    <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
-        {{ include('::accordions.html.twig', {classToFilter:'admin_attributes', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Attribute specifications", variant: "dark", items: attributes_accordion }) }}
-    </div>
+            <button class="btnhexaa btn-red btnhexaa-sm pull-right" onclick="showCreateAttributeSpecForm()" id="createButton"><i class="material-icons">add</i> Create</button>
+        </div>
+        <div class="col-sm-11 col-sm-offset-2" style="margin-top: 12px">
+            {{ include('::accordions.html.twig', {classToFilter:'admin_attributes', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Attribute specifications", variant: "dark", items: attributes_accordion }) }}
+        </div>
+    {% elseif attributespecifications is defined %}
+        <button class="btnhexaa btn-red" id="add" style="font-size: 25px; padding: 12px 15px; margin-left: 400px;" onclick="showCreateAttributeSpecForm()">
+            <i class="material-icons">add</i>
+            Create
+        </button>
+    {% endif %}
 {% endblock %}

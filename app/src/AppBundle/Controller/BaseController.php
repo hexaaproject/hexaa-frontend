@@ -35,10 +35,26 @@ class BaseController extends Controller
         return true;
     }
 
-    protected function getEntityShowPath($entity)
+    /**
+     *
+     * @return array
+     * @throws \Exception
+     *
+     *  TODO
+     */
+    protected function orgWhereManager()
+    {
+        return $this->get('principal')->orgsWhereUserIsManager();
+    }
+
+    protected function getEntityShowPath($entity, $manager)
     {
         if ($this instanceof OrganizationController) {
-            return $this->generateUrl("app_organization_show", array("id" => $entity["id"]));
+            if ($manager == "true") {
+                return $this->generateUrl("app_organization_show", ["id" => $entity["id"]]);
+            } else {
+                return $this->generateUrl("app_organization_properties", ["id" => $entity["id"]]);
+            }
         }
 
         return "#";

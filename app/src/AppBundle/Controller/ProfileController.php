@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 /**
  * @Route("profile")
  */
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
     /**
      * @Route("/index")
@@ -68,6 +68,8 @@ class ProfileController extends Controller
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 'admin' => $this->get('principal')->isAdmin()["is_admin"],
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
             )
         );
     }
@@ -85,6 +87,8 @@ class ProfileController extends Controller
             "organizations" => $this->get('organization')->cget(),
             "services" => $this->get('service')->cget(),
             "admin" => $this->get('principal')->isAdmin()["is_admin"],
+            'organizationsWhereManager' => $this->orgWhereManager(),
+            'manager' => "false",
         );
     }
 

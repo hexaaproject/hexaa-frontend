@@ -57,7 +57,7 @@ abstract class AbstractBaseResource
      * @param int    $pageSize paging: number of items to return
      * @return array
     */
-    public function cget(string $verbose = "normal", int $offset = 0, int $pageSize = 25): array
+    public function cget(string $verbose = "normal", int $offset = 0, int $pageSize = 50): array
     {
         return $this->getCollection($this->pathName, $verbose, $offset, $pageSize);
     }

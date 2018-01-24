@@ -49,11 +49,14 @@ class OrganizationController extends BaseController
         $organizations = $this->get('organization')->cget();
         $services = $this->get('service')->cget();
 
+
         return $this->render(
             'AppBundle:Organization:index.html.twig',
             array(
                 'organizations' => $organizations,
                 'services' => $services,
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
             )
         );
     }
@@ -151,9 +154,11 @@ class OrganizationController extends BaseController
                     'neworg' => $this->get('organization')->get($orgid, "expanded"),
                     "organizations" => $this->get('organization')->cget(),
                     "services" => $this->get('service')->cget(),
+                    'organizationsWhereManager' => $this->orgWhereManager(),
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
                     "firstpageerror" => $firstpageerror,
                     "secondpageerror" => $secondpageerror,
+                    'manager' => "false",
                 ]);
             }
         } catch (\Appbundle\Exception $exception) {
@@ -176,10 +181,12 @@ class OrganizationController extends BaseController
         return $this->render('AppBundle:Organization:create.html.twig', [
             'form' => $form->createView(),
             "organizations" => $this->get('organization')->cget(),
+            'organizationsWhereManager' => $this->orgWhereManager(),
             "services" => $this->get('service')->cget(),
             "admin" => $this->get('principal')->isAdmin()["is_admin"],
             "firstpageerror" => $firstpageerror,
             "secondpageerror" => $secondpageerror,
+            'manager' => "false",
         ]);
     }
 
@@ -232,27 +239,31 @@ class OrganizationController extends BaseController
             return $this->render(
                 'AppBundle:Organization:show.html.twig',
                 array(
-                    'entity_show_path' => $this->getEntityShowPath($organization),
+                    'entity_show_path' => $this->getEntityShowPath($organization, $manager),
                     'entity' => $organization,
                     'organizations' => $this->get('organization')->cget(),
+                    'organizationsWhereManager' => $this->orgWhereManager(),
                     'manager' => $manager,
                     'tokenForm' => $form->createView(),
                     'services' => $this->get('service')->cget(),
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
                     'submenu' => 'true',
+                    'ismanager' => $manager,
                 )
             );
         } else {
             return $this->render(
                 'AppBundle:Organization:show.html.twig',
                 array(
-                    'entity_show_path' => $this->getEntityShowPath($organization),
+                    'entity_show_path' => $this->getEntityShowPath($organization, $manager),
                     'entity' => $organization,
                     'organizations' => $this->get('organization')->cget(),
+                    'organizationsWhereManager' => $this->orgWhereManager(),
                     'manager' => $manager,
                     'services' => $this->get('service')->cget(),
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
                     'submenu' => 'true',
+                    'ismanager' => $manager,
                 )
             );
         }
@@ -326,7 +337,7 @@ class OrganizationController extends BaseController
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
-                'entity_show_path' => $this->getEntityShowPath($organization),
+                'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
                 "entity" => $organization,
                 "propertiesbox" => $propertiesbox,
                 "propertiesform" => $formProperties->createView(),
@@ -336,6 +347,9 @@ class OrganizationController extends BaseController
                 "services" => $this->get('service')->cget(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 'submenu' => 'true',
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
+                'ismanager' => $this->isManager($id),
             )
         );
     }
@@ -478,12 +492,13 @@ class OrganizationController extends BaseController
             return $this->render(
                 'AppBundle:Organization:users.html.twig',
                 array(
-                    'entity_show_path' => $this->getEntityShowPath($organization),
+                    'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
                     'entity' => $organization,
 
                     "managers" => $managers,
+                    'manager' => "false",
                     "members" => $members,
-
+                    'organizationsWhereManager' => $this->orgWhereManager(),
                     "organizations" => $this->get('organization')->cget(),
                     "services" => $this->get('service')->cget(),
                     "managers_buttons" => $managersButtons,
@@ -495,6 +510,7 @@ class OrganizationController extends BaseController
                     /*"sendMemberEmailForm" => $sendMemberEmailForm->createView(),*/
                     "changeRolesForm" => $changeRolesForm->createView(),
                     "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'ismanager' => $this->isManager($id),
                 )
             );
         }
@@ -502,12 +518,12 @@ class OrganizationController extends BaseController
         return $this->render(
             'AppBundle:Organization:users.html.twig',
             array(
-                'entity_show_path' => $this->getEntityShowPath($organization),
+                'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
                 'entity' => $organization,
-
+                'manager' => "false",
                 "managers" => $managers,
                 "members" => $members,
-
+                'organizationsWhereManager' => $this->orgWhereManager(),
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
                 "managers_buttons" => $managersButtons,
@@ -519,6 +535,7 @@ class OrganizationController extends BaseController
                 "changeRolesForm" => $changeRolesForm->createView(),
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 'submenu' => 'true',
+                'ismanager' => $this->isManager($id),
             )
         );
     }
@@ -938,7 +955,7 @@ class OrganizationController extends BaseController
         return $this->render(
             'AppBundle:Organization:roles.html.twig',
             array(
-                'entity_show_path' => $this->getEntityShowPath($organization),
+                'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
                 'entity' => $organization,
                 "roles" => $roles,
                 "roles_accordion" => $rolesAccordion,
@@ -949,6 +966,9 @@ class OrganizationController extends BaseController
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 'submenu' => 'true',
                 'error' => $error,
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'manager' => "false",
+                'ismanager' => $this->isManager($id),
             )
         );
     }
@@ -1062,7 +1082,7 @@ class OrganizationController extends BaseController
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
             array(
-                'entity_show_path' => $this->getEntityShowPath($organization),
+                'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
                 'entity' => $organization,
                 "organizations" => $this->get('organization')->cget(),
                 "services" => $this->get('service')->cget(),
@@ -1073,6 +1093,8 @@ class OrganizationController extends BaseController
                 "admin" => $this->get('principal')->isAdmin()["is_admin"],
                 "manager" => $manager,
                 'submenu' => 'true',
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'ismanager' => $this->isManager($id),
             )
         );
     }
@@ -1124,12 +1146,15 @@ class OrganizationController extends BaseController
         $organization = $organizationResource->get($id);
 
         return array(
-            'entity_show_path' => $this->getEntityShowPath($organization),
+            'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
             'entity' => $organization,
-
+            'manager' => "false",
             "organizations" => $this->get('organization')->cget(),
             "services" => $this->get('service')->cget(),
             "admin" => $this->get('principal')->isAdmin()["is_admin"],
+            'ismanager' => $this->isManager($id),
+            'submenu' => 'true',
+            'organizationsWhereManager' => $this->orgWhereManager(),
         );
     }
 

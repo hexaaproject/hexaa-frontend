@@ -37,6 +37,9 @@ class DefaultController extends Controller
             }
         }
 
+        $servicesWhereManager = $this->get('principal')->servsWhereUserIsManager();
+        $organizationsWhereManager = $this->get('principal')->orgsWhereUserIsManager();
+
         return $this->render(
             'AppBundle:Default:index.html.twig',
             array(
@@ -46,6 +49,9 @@ class DefaultController extends Controller
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'admin' => $admin,
                 'adminsubmenubox' => $this->getAdminSubmenuPoints(),
+                'servicesWhereManager' => $servicesWhereManager,
+                'organizationsWhereManager' => $organizationsWhereManager,
+                'manager' => 'false',
             )
         );
     }
@@ -78,6 +84,7 @@ class DefaultController extends Controller
             "app_organization_users" => "Users",
             "app_organization_roles" => "Roles",
             "app_organization_connectedservices" => "Conencted services",
+            "app_organization_history" => "View history",
         );
 
         return $submenuBox;
