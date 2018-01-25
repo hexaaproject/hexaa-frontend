@@ -31,6 +31,14 @@ HEXAA_FRONTEND_MAILER_PORT=${HEXAA_FRONTEND_MAILER_PORT:-"~"}
 HEXAA_FRONTEND_MAILER_USER=${HEXAA_FRONTEND_MAILER_USER:-"~"}
 HEXAA_FRONTEND_MAILER_PASSWORD=${HEXAA_FRONTEND_MAILER_PASSWORD:-"~"}
 
+HEXAA_FRONTEND_LOG_TO_STDERR=${HEXAA_FRONTEND_LOG_TO_STDERR:-"true"}
+
+# Copy alternative logging config and clear cache IF configured to do so
+if [ "$HEXAA_FRONTEND_LOG_TO_STDERR" = "true" ]; then
+    cp /root/config_prod.yml /opt/hexaa-backend/app/config/config_prod.yml
+    rm -rf /opt/hexaa-backend/app/cache/*
+fi
+
 # Write parameters.yml
 cat >/opt/hexaa-newui/app/config/parameters.yml <<EOF
 parameters:

@@ -14,6 +14,12 @@ services:
         restart: always
         volumes:
             - hexaa_db_data:/var/lib/mysql
+    memcached:
+        image: memcached
+        networks:
+            - hexaa
+#        env_file: settings.env
+        restart: always
     frontend:
         image: hexaaproject/hexaa-newui:new-dev
         networks:
@@ -28,17 +34,24 @@ services:
             - hexaa
         env_file: settings.env
         restart: always
+        depends_on:
+          - mysql
+          - memcached
         volumes:
             - hexaa_backend_source:/opt/hexaa-backend
     web:
         image: solazs/apache-shib
         networks:
             - hexaa
-        env_file: settings.env
+#        env_file: settings.env
         restart: always
+        depends_on:
+          - frontend
+          - backend
         volumes:
-            - hexaa_ui_source:/opt/ui
-            - hexaa_backend_source:/opt/backend
+            - hexaa_ui_source:/opt/hexaa-newui
+            - hexaa_backend_source:/opt/hexaa-backend
+            - ./default-hexaa.conf:/etc/apache2/sites-enabled/000-default.conf
         
 
 networks:

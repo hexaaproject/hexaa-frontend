@@ -8,6 +8,11 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy custom php.ini
+# COPY docker-prod/php.ini /usr/local/etc/php/
+
+# Copy source to container
+COPY docker-prod/config_prod.yml /root/
 COPY ./app/. /opt/hexaa-newui
 
 # Install composer
