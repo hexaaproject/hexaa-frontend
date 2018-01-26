@@ -35,8 +35,8 @@ HEXAA_FRONTEND_LOG_TO_STDERR=${HEXAA_FRONTEND_LOG_TO_STDERR:-"true"}
 
 # Copy alternative logging config and clear cache IF configured to do so
 if [ "$HEXAA_FRONTEND_LOG_TO_STDERR" = "true" ]; then
-    cp /root/config_prod.yml /opt/hexaa-backend/app/config/config_prod.yml
-    rm -rf /opt/hexaa-backend/app/cache/*
+    cp /root/config_prod.yml /opt/hexaa-frontend/app/config/config_prod.yml
+    rm -rf /opt/hexaa-frontend/app/cache/*
 fi
 
 # Write parameters.yml
