@@ -43,7 +43,7 @@ services:
         image: solazs/apache-shib
         networks:
             - hexaa
-#        env_file: settings.env
+        env_file: settings.env
         restart: always
         depends_on:
           - frontend
