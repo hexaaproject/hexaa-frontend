@@ -13,7 +13,7 @@ RUN apt-get update \
 
 # Copy source to container
 COPY docker-prod/config_prod.yml /root/
-COPY ./app/. /opt/hexaa-newui
+COPY app /opt/hexaa-newui
 
 # Install composer
 COPY docker-prod/composer_downloader.sh /usr/local/bin/
