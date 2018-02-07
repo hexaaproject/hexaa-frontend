@@ -3,6 +3,11 @@
     text-align: center;
 }
 
+.withoutpoints {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
 table#profileproperties, #profileattributes {
     width: 60%;
     display: inline-table;
@@ -18,7 +23,7 @@ table#profileproperties, #profileattributes {
 .accountbutton, .accountbutton-form {
     width: 150px;
     text-align: center;
-    margin-right: 500px;
+    margin-right: 100px;
 }
 
 .accountimage {
