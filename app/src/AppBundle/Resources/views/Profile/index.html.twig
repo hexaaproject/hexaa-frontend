@@ -24,9 +24,20 @@
             }
 
         </script>
-
+<div class="container">
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash" style="margin-top: 12px">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash" style="margin-top: 12px">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
         <div class="noedit" style="padding-top: 12px;">
-            <div class="col-sm-11 col-md-offset-4" id="profilPropertiesContainer">
+            <div class="col-sm-11 col-sm-offset-1" id="profilPropertiesContainer">
                 {{ include('::panel.html.twig', {profile: "true", styleOfContainer: "profilProperties", heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1" }) }}
             </div>
             <div class="col-sm-1"></div>
@@ -34,7 +45,7 @@
         </div>
 
         <div style="padding-top: 12px;" class="edit hidden">
-        <div class="col-sm-11 col-md-offset-4 profilPropertiesEdit" id="profilPropertiesContainer">
+        <div class="col-sm-11 col-sm-offset-1 profilPropertiesEdit" id="profilPropertiesContainer">
             {{ form_start(profilePropertiesForm) }}
             <div class="header">
                 Properties
@@ -58,5 +69,9 @@
         <div class="col-sm-1"></div>
         <div class="accountbutton-form pull-right"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="/img/account_history.svg"/><br/><br/>Account history</a></div>
         </div>
+        <div class="col-sm-13" style="margin-top: 12px; margin-left: 35px">
+            {{ include('::accordions.html.twig', {profile: 'true', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter:'null', heading: "Expected attributes of services", variant: "light", items: attributeValuesToAccordion }) }}
+        </div>
+</div>
     {% endblock %}
 {% endblock %}
