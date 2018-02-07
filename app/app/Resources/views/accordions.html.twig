@@ -68,8 +68,7 @@
             console.log(formchildren.length);
             // Try to find the counter of the list
            /* console.log(list.data('widget-counter'));*/
-            var counter = list.attr('widget-counter');
-            console.log(counter);
+            var counter = list.data('widget-counter') | formchildren.length;
             // If the counter does not exist, use the length of the list
             if (!counter) {  var counter = formchildren.length; }
 
@@ -82,9 +81,8 @@
             console.log(counter);
             // Increase the counter
             counter++;
-            console.log(counter);
             // And store it, the length cannot be used if deleting widgets is allowed
-            list.attr('widget-counter', counter);
+            list.data(' widget-counter', counter);
 
             // create a new list element and add it to the list
 
@@ -272,9 +270,9 @@
                                         {{ form_errors(item.form) }}
                                             {% for valueField in item.form %}
                                             {% if valueField.vars['id'] != "profile_attributes__token"  %}
-                                                {% if valueField.vars.prototype is defined %}
+                                                {% if valueField.children or valueField.vars.data is iterable %}
                                                 {#{% if valueField.children[0].vars['attr']['class'] == 'multivalue' %}#}
-                                                    <ul class="withoutpoints" id="{{  valueField.vars['unique_block_prefix'] }}"
+                                                    <ul class="withoutpoints" id="{{  valueField.vars['id'] }}"
                                                     data-prototype="{{ form_widget(valueField.vars.prototype)|e }}"
                                                     data-widget-tags="{{ '<li class="form-group"></li>'|e }}">
                                                         <li style="">
@@ -283,9 +281,10 @@
                                                             {{ form_widget(valueField) }}
                                                         </li>
                                                     </ul>
+
                                                     <a href="#"
                                                        class="add-another-collection-widget"
-                                                       data-list="#{{ valueField.vars['unique_block_prefix'] }}"><i class="material-icons" style="font-size: 28px;">add</i></a>
+                                                       data-list="#{{ valueField.vars['id'] }}"><i class="material-icons" style="font-size: 28px;">add</i></a>
                                                     <br>
                                                {% else %}
 
