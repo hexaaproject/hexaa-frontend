@@ -270,7 +270,7 @@
                                         {{ form_errors(item.form) }}
                                             {% for valueField in item.form %}
                                             {% if valueField.vars['id'] != "profile_attributes__token"  %}
-                                                {% if valueField.children or valueField.vars.data is iterable %}
+                                                {% if valueField.vars.prototype is defined %}
                                                 {#{% if valueField.children[0].vars['attr']['class'] == 'multivalue' %}#}
                                                     <ul class="withoutpoints" id="{{  valueField.vars['id'] }}"
                                                     data-prototype="{{ form_widget(valueField.vars.prototype)|e }}"
@@ -281,7 +281,6 @@
                                                             {{ form_widget(valueField) }}
                                                         </li>
                                                     </ul>
-
                                                     <a href="#"
                                                        class="add-another-collection-widget"
                                                        data-list="#{{ valueField.vars['id'] }}"><i class="material-icons" style="font-size: 28px;">add</i></a>
