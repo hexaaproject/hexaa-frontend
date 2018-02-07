@@ -34,9 +34,9 @@ Feature: When I go to create organization
     #Fill the fourth step
     When I fill in "Invitation email addresses" with "user@example.com"
     And I press "Finish"
-    Then I should see "Success"
+    Then I should see "Your organization is done."
     #And I should see the connected service, and permissions in members role
-    And I should see "Get your new organziation"
+    And I should see "Get your new organization"
     And there is a mail to "user@example.com"
 
 #  Scenario: Step backs in steps
