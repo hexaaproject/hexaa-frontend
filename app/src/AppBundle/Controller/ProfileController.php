@@ -87,6 +87,7 @@ class ProfileController extends BaseController
         //dump($attributevaluesforprincipal);
         $attributespecids = array();
         $linkedservices = array();
+        $attributevaluearray = null;
         foreach ($attributevaluesforprincipal['items'] as $attributevalueforprincipal) {
             $linkedservices[$attributevalueforprincipal['id']] = $this->get('attribute_value_principal')->getServicesLinkedToAttributeValue($attributevalueforprincipal['id']);
             if (! in_array($attributevalueforprincipal['attribute_spec_id'], $attributespecids)) {
