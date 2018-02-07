@@ -14,8 +14,6 @@ use AppBundle\Form\OrganizationType;
 use AppBundle\Form\OrganizationUserMessageManagerType;
 use AppBundle\Form\OrganizationUserMessageType;
 use AppBundle\Form\ConnectServiceType;
-use AppBundle\Model\Organization;
-use AppBundle\Model\Role;
 use GuzzleHttp\Exception\ClientException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -322,6 +320,7 @@ class OrganizationController extends BaseController
 //        $formProperties->addError(new FormError("ERROR"));
 
         if ($formProperties->isSubmitted() && $formProperties->isValid()) {
+            $this->checkManagerGrant($organization);
             $data = $request->request->all();
             $modified = array(
                 'name' => $data['organization_properties']['name'],
@@ -471,6 +470,7 @@ class OrganizationController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->checkManagerGrant($organization);
             $data = $form->getData();
 
             $dataToBackend = $data;
@@ -576,6 +576,8 @@ class OrganizationController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->checkManagerGrant($organization);
+
             $data = $form->getData();
 
             $dataToBackend = $data;
@@ -621,6 +623,8 @@ class OrganizationController extends BaseController
 
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $this->checkManagerGrant($organization);
+
             $data = $form->getData();
             if (! $data['emails']) { // there is no email, we are done
                 return $this->redirect($this->generateUrl('app_organization_users', array("id" => $id)));
@@ -709,6 +713,8 @@ class OrganizationController extends BaseController
     {
         $pids = $request->get('userId');
         $organizationResource = $this->get('organization');
+        $this->checkManagerGrant($organizationResource->get($id));
+
         $errors = array();
         $errormessages = array();
         foreach ($pids as $pid) {
@@ -749,6 +755,9 @@ class OrganizationController extends BaseController
         $form1->handleRequest($request);
         $form2->handleRequest($request);
         if ($form1->isValid() || $form2->isValid()) {
+            $organization = $this->getOrganization($id);
+            $this->checkManagerGrant($organization);
+
             if ($form1->isValid()) {
                 $data = $form1->getData();
             }
@@ -793,6 +802,9 @@ class OrganizationController extends BaseController
      */
     public function proposeAction($id, Request $request)
     {
+        $organization = $this->getOrganization($id);
+        $this->checkManagerGrant($organization);
+
         $pids = $request->get('userId');
         $errors = array();
         $errormessages = array();
@@ -821,6 +833,10 @@ class OrganizationController extends BaseController
      */
     public function revokeAction($id, Request $request)
     {
+
+        $organization = $this->getOrganization($id);
+        $this->checkManagerGrant($organization);
+
         $pids = $request->get('userId');
         $errors = array();
         $errormessages = array();
@@ -851,6 +867,8 @@ class OrganizationController extends BaseController
     public function changeroleAction($id, Request $request)
     {
         $organization = $this->getOrganization($id);
+        $this->checkManagerGrant($organization);
+
         try {
             $form = $this->createForm(
                 OrganizationUserChangeRolesType::class,
@@ -918,6 +936,8 @@ class OrganizationController extends BaseController
         $error = "false";
         try {
             if ($form->isSubmitted() && $form->isValid()) {
+                $this->checkManagerGrant($organization);
+
                 $data = $form->getData();
 
                 if (!empty($roles)) {
@@ -997,6 +1017,9 @@ class OrganizationController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $organization = $this->getOrganization($id);
+            $this->checkManagerGrant($organization);
+
             $data = $form->getData();
             $token = $data["token"];
             try {
@@ -1108,6 +1131,9 @@ class OrganizationController extends BaseController
      */
     public function deleteAction($id)
     {
+        $organization = $this->getOrganization($id);
+        $this->checkManagerGrant($organization);
+
         $organizationResource = $this->get('organization');
         $organizationResource->delete($id);
 
@@ -1124,6 +1150,9 @@ class OrganizationController extends BaseController
      */
     public function roleDeleteAction($orgId, $id)
     {
+        $organization = $this->getOrganization($orgId);
+        $this->checkManagerGrant($organization);
+
         $organizationResource = $this->get('role');
         $organizationResource->delete($id);
         $this->get('session')->getFlashBag()->add('success', 'The role has been deleted.');
@@ -1201,6 +1230,9 @@ class OrganizationController extends BaseController
     */
     public function linkDeleteAction($servId, $id)
     {
+        $organization = $this->getOrganization($id);
+        $this->checkManagerGrant($organization);
+
         $orglinks = $this->get('organization')->getLinks($id);
         foreach ($orglinks['items'] as $orglink) {
             if ($orglink['organization_id'] == $id && $orglink['service_id'] == $servId) {
@@ -1275,6 +1307,24 @@ class OrganizationController extends BaseController
         }
 
         return $manager;
+    }
+
+    /**
+     * Check user is manager, throw AccessDeniedException if not.
+     * @param $organization
+     * @return bool
+     * @throws AccessDeniedHttpException
+     */
+    private function checkManagerGrant($organization)
+    {
+        $managers = $this->getManagers($organization);
+        foreach ($managers as $manager) {
+            if ($this->getUser()->getUsername() == $manager["fedid"]) {
+                return true;
+            }
+        }
+
+        throw new AccessDeniedHttpException("You are not a manager of this Organization.");
     }
 
     /**

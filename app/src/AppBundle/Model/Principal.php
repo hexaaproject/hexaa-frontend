@@ -150,7 +150,7 @@ class Principal extends AbstractBaseResource
     * List organizations where user is manager
     *
     * @param string $verbose One of minimal, normal or expanded
-    * @return bool
+    * @return array
     */
     public function orgsWhereUserIsManager(string $verbose = "normal")
     {
@@ -161,7 +161,7 @@ class Principal extends AbstractBaseResource
     * List organizations where user is manager
     *
     * @param string $verbose One of minimal, normal or expanded
-    * @return bool
+    * @return array
     */
     public function servsWhereUserIsManager(string $verbose = "normal")
     {
