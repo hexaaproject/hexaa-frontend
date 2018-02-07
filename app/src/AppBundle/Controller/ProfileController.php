@@ -84,7 +84,7 @@ class ProfileController extends BaseController
             array_push($attributespecs, $attributespecsofservice);
         }
         $attributevaluesforprincipal = $this->get('principal')->getAttributeValues();
-        dump($attributevaluesforprincipal);
+        //dump($attributevaluesforprincipal);
         $attributespecids = array();
         $linkedservices = array();
         foreach ($attributevaluesforprincipal['items'] as $attributevalueforprincipal) {
@@ -95,11 +95,11 @@ class ProfileController extends BaseController
             }
             array_push($attributevaluearray[$attributevalueforprincipal['attribute_spec_id']], $attributevalueforprincipal);
         }
-      // dump($linkedservices);
-     //   dump($attributevaluearray);
-     //   dump($attributevaluesforprincipal);
-        dump($attributespecs);
-        dump($attributespecsdetails);
+        // dump($linkedservices);
+        //   dump($attributevaluearray);
+        //   dump($attributevaluesforprincipal);
+        //dump($attributespecs);
+        //dump($attributespecsdetails);
 
 
         $attributeValuesToAccordion = $this->attributeValuesToAccordion($attributevaluearray, $attributespecsdetails, $services, $request);
