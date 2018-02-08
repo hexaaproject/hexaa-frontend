@@ -83,8 +83,7 @@ class ProfileController extends BaseController
             }
             array_push($attributespecs, $attributespecsofservice);
         }
-        $pagesize = 500;
-        $attributevaluesforprincipal = $this->get('principal')->getAttributeValues('normal', 0, $pagesize);
+        $attributevaluesforprincipal = $this->get('principal')->getAttributeValues('normal', 0, 500);
         //dump($attributevaluesforprincipal);
         $attributespecids = array();
         $linkedservices = array();
@@ -202,8 +201,8 @@ class ProfileController extends BaseController
                         foreach ($values as $value) {
                             foreach ($attributevaluearray as $key => $attributevalues) {
                                 if ($key == $value['id']) {
+                                    $attribute = [];
                                     if ($value['is_multivalue'] == true) {
-                                        $attribute = [];
                                         foreach ($attributevalues as $attributevalue) {
                                             if (in_array($service['id'], $attributevalue['service_ids'])) {
                                                 array_push($attribute, $attributevalue['value']);
@@ -349,15 +348,25 @@ class ProfileController extends BaseController
                                     dump($value);
                                     dump($justmodifyinformactive);
                                     if ($justmodifyinformactive == true) {
-                                        foreach ($value as $onevalue) {
-                                            //dump($onevalue);
-                                            //dump('HAHO');exit;
-                                            $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $onevalue, $key, $principal['id']);
+                                        if (is_array($value)) {
+                                            foreach ($value as $onevalue) {
+                                                //dump($onevalue);
+                                                //dump('HAHO');exit;
+                                                $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $onevalue, $key, $principal['id']);
+                                            }
+                                        } else {
+                                              $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $value, $key, $principal['id']);
                                         }
                                     } else {
-                                        foreach ($value as $onevalue) {
+                                        if (is_array($value)) {
+                                            foreach ($value as $onevalue) {
+                                                foreach ($servicesids as $servicesid) {
+                                                    $this->get('attribute_value_principal')->postAttributeValue([$servicesid], $onevalue, $key, $principal['id']);
+                                                }
+                                            }
+                                        } else {
                                             foreach ($servicesids as $servicesid) {
-                                                $this->get('attribute_value_principal')->postAttributeValue([$servicesid], $onevalue, $key, $principal['id']);
+                                                $this->get('attribute_value_principal')->postAttributeValue([$servicesid], $value, $key, $principal['id']);
                                             }
                                         }
                                     }
@@ -389,14 +398,17 @@ class ProfileController extends BaseController
 
                                             foreach ($missingvalues as $missingvalue) {
                                                 foreach ($attributevalues['items'] as $attributevalue) {
-                                                    if ($attributevalue['value'] == $missingvalue && $attributevalue['attribute_spec_id'] == $key) {
+                                                    if ($attributevalue['value'] == $missingvalue && $attributevalue['attribute_spec_id'] == $key && in_array($form->getName(), $attributevalue['service_ids'])) {
                                                         //dump(hellok);exit;
                                                         $missingvalueid = $attributevalue['id'];
                                                         $servids = $attributevalue['service_ids'];
+                                                        //dump($servids);
+                                                        //dump($missingvalueid);
+                                                        //dump($missingvalue);
                                                         if (($keyarray = array_search($form->getName(), $servids)) !== false) {
                                                             unset($servids[$keyarray]);
                                                         }
-                                                        //dump($servids);exit;
+                                                       // dump($servids);exit;
                                                         $this->get('attribute_value_principal')->patch($missingvalueid, [
                                                             'services' => $servids,
                                                             'principal' => $principal['id'],
