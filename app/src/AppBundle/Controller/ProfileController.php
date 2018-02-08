@@ -83,7 +83,8 @@ class ProfileController extends BaseController
             }
             array_push($attributespecs, $attributespecsofservice);
         }
-        $attributevaluesforprincipal = $this->get('principal')->getAttributeValues();
+        $pagesize = 500;
+        $attributevaluesforprincipal = $this->get('principal')->getAttributeValues('normal', 0, $pagesize);
         //dump($attributevaluesforprincipal);
         $attributespecids = array();
         $linkedservices = array();
@@ -250,7 +251,7 @@ class ProfileController extends BaseController
                                     } else {
                                         $formBuilder->add($value['id'], TextType::class, ["label" => $value['name'], "attr" => ['class' => 'nonmultivalue'], "data" => $data[$value['id']]]);
                                     }
-
+                                    //dump($attributevalues);
                                     foreach ($attributevalues as $attributevalue) {
                                         if (in_array($service['id'], $attributevalue['service_ids'])) {
                                             array_push($namevalue, $attributevalue['value']);
@@ -345,12 +346,19 @@ class ProfileController extends BaseController
                                             }
                                         }
                                     }
-                                    //dump($justmodifyinformactive);exit;
+                                    dump($value);
+                                    dump($justmodifyinformactive);
                                     if ($justmodifyinformactive == true) {
-                                        $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $value[0], $key, $principal['id']);
+                                        foreach ($value as $onevalue) {
+                                            //dump($onevalue);
+                                            //dump('HAHO');exit;
+                                            $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $onevalue, $key, $principal['id']);
+                                        }
                                     } else {
-                                        foreach ($servicesids as $servicesid) {
-                                            $this->get('attribute_value_principal')->postAttributeValue([$servicesid], $value[0], $key, $principal['id']);
+                                        foreach ($value as $onevalue) {
+                                            foreach ($servicesids as $servicesid) {
+                                                $this->get('attribute_value_principal')->postAttributeValue([$servicesid], $onevalue, $key, $principal['id']);
+                                            }
                                         }
                                     }
                                 } else {
