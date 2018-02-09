@@ -345,8 +345,8 @@ class ProfileController extends BaseController
                                             }
                                         }
                                     }
-                                    dump($value);
-                                    dump($justmodifyinformactive);
+                                    //dump($value);
+                                    //dump($justmodifyinformactive);
                                     if ($justmodifyinformactive == true) {
                                         if (is_array($value)) {
                                             foreach ($value as $onevalue) {
