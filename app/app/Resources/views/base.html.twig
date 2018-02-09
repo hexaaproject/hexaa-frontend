@@ -64,67 +64,83 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
-       <div class="navbar-header">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <a class="navbar-brand" href="{{ path('homepage') }}">
                 <img id="cornerlogo" src="/img/hexaa-logo-blue.png" alt="hexaa logo"/>
             </a>
         </div>
-        <ul class="nav navbar-nav">
-           {#<li class="active"><a href="#">Home</a></li>#}
-            {% if organizations is defined %}
-                <li class="dropdown" id="org">
-                    <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Organizations
-                         <span class="caret"> </span></a>
-                    {% if organizations.items != null %}
-                        <ul class="dropdown-menu">
-                            {% for organization in organizations.items %}
-                                {% for orgWhereManager in organizationsWhereManager %}
-                                    {% if orgWhereManager.id == organization.id %}
-                                        <li><a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a></li>
-                                        {% set manager = "true" %}
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                {% if organizations is defined %}
+                    <li class="dropdown" id="org">
+                        <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Organizations
+                            <span class="caret"> </span></a>
+                        {% if organizations.items != null %}
+                            <ul class="dropdown-menu">
+                                {% for organization in organizations.items %}
+                                    {% for orgWhereManager in organizationsWhereManager %}
+                                        {% if orgWhereManager.id == organization.id %}
+                                            <li>
+                                                <a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a>
+                                            </li>
+                                            {% set manager = "true" %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if manager == "false" %}
+                                        <li>
+                                            <a href="{{ path("app_organization_properties", { id: organization.id }) }}">{{ organization.name|e }}</a>
+                                        </li>
                                     {% endif %}
+                                    {% set manager = "false" %}
+                                    {# <li><a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a></li>#}
                                 {% endfor %}
-                                {% if manager == "false" %}
-                                    <li><a href="{{ path("app_organization_properties", { id: organization.id }) }}">{{ organization.name|e }}</a></li>
-                                {% endif %}
-                                {% set manager = "false" %}
-                               {# <li><a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a></li>#}
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </li>
-            {% endif %}
-            {% if services is defined and services.item_number > 0 %}
-                <li class="dropdown" id="serv">
-                    <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Services
-                        <span class="caret"> </span></a>
-                    {% if services.items != null %}
-                        <ul class="dropdown-menu">
-                            {% for service in services.items %}
-                                <li><a href="{{ path("app_service_show", { id: service.id }) }}">{{ service.name|e }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </li>
-            {% endif %}
-            {% if admin is defined and (admin == "true" or admin == "1") %}
-                <li id="admin" {% if app.request.get('_route') starts with "app_admin" %} class="active" {% endif %}><a id="fullfill" href="{{ path("app_admin_attributes", { admin: admin }) }}">Admin</a></li>
-            {% endif %}
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ path("app_profile_index") }}">{{ app.user.username }}</a></li>
-            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                <li><a href="{{ path('app_default_login') }}" id="login_button" role="button">
-                        <img id="logpng" src="/img/logout.png">
-                    </a></li>
-            {% else %}
-                <li><a href="{{ logout_path('default') }}" id="logout_button" role="button">
-                        <img id="logpng" src="/img/logout.png">
-                    </a></li>
-            {% endif %}
-        </ul>
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endif %}
+                {% if services is defined and services.item_number > 0 %}
+                    <li class="dropdown" id="serv">
+                        <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Services
+                            <span class="caret"> </span></a>
+                        {% if services.items != null %}
+                            <ul class="dropdown-menu">
+                                {% for service in services.items %}
+                                    <li>
+                                        <a href="{{ path("app_service_show", { id: service.id }) }}">{{ service.name|e }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endif %}
+                {% if admin is defined and (admin == "true" or admin == "1") %}
+                    <li id="admin" {% if app.request.get('_route') starts with "app_admin" %} class="active" {% endif %}>
+                        <a
+                                id="fullfill" href="{{ path("app_admin_attributes", { admin: admin }) }}">Admin</a></li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ path("app_profile_index") }}">{{ app.user.username }}</a></li>
+                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li><a href="{{ path('app_default_login') }}" id="login_button" role="button">
+                            <img id="logpng" src="/img/logout.png">
+                        </a></li>
+                {% else %}
+                    <li><a href="{{ logout_path('default') }}" id="logout_button" role="button">
+                            <img id="logpng" src="/img/logout.png">
+                        </a></li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </nav>
 
