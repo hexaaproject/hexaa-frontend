@@ -19,20 +19,27 @@ class GuzzleClientExceptionListener
     private $templating;
     private $router;
 
-
+    /**
+     * GuzzleClientExceptionListener constructor.
+     *
+     * @param TwigEngine      $templating
+     * @param RouterInterface $router
+     */
     public function __construct(TwigEngine $templating, RouterInterface $router)
     {
         $this->templating = $templating;
         $this->router = $router;
     }
 
+    /**
+     * @param GetResponseForExceptionEvent $event
+     */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         /** @var ClientException $exception */
         $exception = $event->getException();
 
         if ($exception instanceof ClientException) {
-
             $header = 'Error';
             $body = 'Some error...';
             $redirectUrl = $this->router->generate("homepage");
