@@ -574,7 +574,6 @@ class OrganizationController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $data = $form->getData();
 
             $dataToBackend = $data;
@@ -620,7 +619,6 @@ class OrganizationController extends BaseController
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-
             $data = $form->getData();
             if (! $data['emails']) { // there is no email, we are done
                 return $this->redirect($this->generateUrl('app_organization_users', array("id" => $id)));
@@ -908,9 +906,9 @@ class OrganizationController extends BaseController
         $organizationResource = $this->get('role');
         $organizationResource->delete($id);
         $this->get('session')->getFlashBag()->add('success', 'The role has been deleted.');
+
         return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
     }
-
 
     /**
      * @Route("/{id}/roles/{action}/{roleId}", defaults={"action": false, "roleId": false})
@@ -946,7 +944,6 @@ class OrganizationController extends BaseController
         $error = "false";
         try {
             if ($form->isSubmitted() && $form->isValid()) {
-
                 $data = $form->getData();
 
                 if (!empty($roles)) {
