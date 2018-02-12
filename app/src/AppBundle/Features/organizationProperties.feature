@@ -33,3 +33,6 @@ Feature: When I go to organization's properties
     And I press "done"
     Then I should see "www.example.com"
 
+  Scenario: Resource not found exception
+    When I am on "organization/12/properties"
+    Then I should see "Resource not found."

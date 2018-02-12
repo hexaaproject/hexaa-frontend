@@ -320,7 +320,6 @@ class OrganizationController extends BaseController
 //        $formProperties->addError(new FormError("ERROR"));
 
         if ($formProperties->isSubmitted() && $formProperties->isValid()) {
-            $this->checkManagerGrant($organization);
             $data = $request->request->all();
             $modified = array(
                 'name' => $data['organization_properties']['name'],
@@ -470,7 +469,6 @@ class OrganizationController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->checkManagerGrant($organization);
             $data = $form->getData();
 
             $dataToBackend = $data;
@@ -576,7 +574,6 @@ class OrganizationController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->checkManagerGrant($organization);
 
             $data = $form->getData();
 
@@ -623,7 +620,6 @@ class OrganizationController extends BaseController
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->checkManagerGrant($organization);
 
             $data = $form->getData();
             if (! $data['emails']) { // there is no email, we are done
@@ -713,7 +709,6 @@ class OrganizationController extends BaseController
     {
         $pids = $request->get('userId');
         $organizationResource = $this->get('organization');
-        $this->checkManagerGrant($organizationResource->get($id));
 
         $errors = array();
         $errormessages = array();
@@ -756,7 +751,6 @@ class OrganizationController extends BaseController
         $form2->handleRequest($request);
         if ($form1->isValid() || $form2->isValid()) {
             $organization = $this->getOrganization($id);
-            $this->checkManagerGrant($organization);
 
             if ($form1->isValid()) {
                 $data = $form1->getData();
@@ -803,7 +797,6 @@ class OrganizationController extends BaseController
     public function proposeAction($id, Request $request)
     {
         $organization = $this->getOrganization($id);
-        $this->checkManagerGrant($organization);
 
         $pids = $request->get('userId');
         $errors = array();
@@ -835,7 +828,6 @@ class OrganizationController extends BaseController
     {
 
         $organization = $this->getOrganization($id);
-        $this->checkManagerGrant($organization);
 
         $pids = $request->get('userId');
         $errors = array();
@@ -867,7 +859,6 @@ class OrganizationController extends BaseController
     public function changeroleAction($id, Request $request)
     {
         $organization = $this->getOrganization($id);
-        $this->checkManagerGrant($organization);
 
         try {
             $form = $this->createForm(
@@ -903,6 +894,25 @@ class OrganizationController extends BaseController
     }
 
     /**
+     * @Route("/{orgId}/role/{id}/delete")
+     * @Template()
+     * @return Response
+     * @param int $orgId Organization id
+     * @param int $id    Role Id
+     *
+     */
+    public function roleDeleteAction($orgId, $id)
+    {
+        $organization = $this->getOrganization($orgId);
+
+        $organizationResource = $this->get('role');
+        $organizationResource->delete($id);
+        $this->get('session')->getFlashBag()->add('success', 'The role has been deleted.');
+        return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
+    }
+
+
+    /**
      * @Route("/{id}/roles/{action}/{roleId}", defaults={"action": false, "roleId": false})
      * @Template()
      * @return Response
@@ -936,7 +946,6 @@ class OrganizationController extends BaseController
         $error = "false";
         try {
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->checkManagerGrant($organization);
 
                 $data = $form->getData();
 
@@ -1018,7 +1027,6 @@ class OrganizationController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $organization = $this->getOrganization($id);
-            $this->checkManagerGrant($organization);
 
             $data = $form->getData();
             $token = $data["token"];
@@ -1132,35 +1140,12 @@ class OrganizationController extends BaseController
     public function deleteAction($id)
     {
         $organization = $this->getOrganization($id);
-        $this->checkManagerGrant($organization);
 
         $organizationResource = $this->get('organization');
         $organizationResource->delete($id);
 
         return $this->redirectToRoute("homepage");
     }
-
-    /**
-     * @Route("/{orgId}/role/{id}/delete")
-     * @Template()
-     * @return Response
-     * @param int $orgId Organization id
-     * @param int $id    Role Id
-     *
-     */
-    public function roleDeleteAction($orgId, $id)
-    {
-        $organization = $this->getOrganization($orgId);
-        $this->checkManagerGrant($organization);
-
-        $organizationResource = $this->get('role');
-        $organizationResource->delete($id);
-        $this->get('session')->getFlashBag()->add('success', 'The role has been deleted.');
-
-        return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
-    }
-
-
 
     /**
      * Get the history of the requested organization.
@@ -1221,7 +1206,7 @@ class OrganizationController extends BaseController
     }
 
     /**
-    * @Route("/{servId}/link/{id}/delete")
+    * @Route("/{id}/link/{servId}/delete")
     * @Template()
     * @return Response
     * @param int $servId Service id
@@ -1231,7 +1216,6 @@ class OrganizationController extends BaseController
     public function linkDeleteAction($servId, $id)
     {
         $organization = $this->getOrganization($id);
-        $this->checkManagerGrant($organization);
 
         $orglinks = $this->get('organization')->getLinks($id);
         foreach ($orglinks['items'] as $orglink) {

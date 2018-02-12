@@ -212,7 +212,7 @@ class FeatureContext extends MinkContext
     public function iClickTheBehatTarget($databehattarget)
     {
         $page = $this->getSession()->getPage();
-        $locator = '//i[@data-behattarget="'.$databehattarget.'"]';
+        $locator = '//*[@data-behattarget="'.$databehattarget.'"]';
 
         $element = $page->find('xpath', $locator);
 

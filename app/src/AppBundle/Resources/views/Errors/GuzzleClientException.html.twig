@@ -5,10 +5,12 @@
 {% block body %}
     <div class="container">
         <h1 class="text-danger">Error</h1>
-        <h2>{{ header }}</h2>
-        <p>
+
+        <div class="flash-error flash">
+            <h2>{{ header }}</h2>
             {{ body }}
-        </p>
+        </div>
+
         <p>
             <a href="{{ redirectUrl }}" class="pull-right">Back to the home</a>
         </p>
