@@ -4,9 +4,9 @@ namespace AppBundle\EventListener;
 
 use GuzzleHttp\Exception\ClientException;
 use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Created by PhpStorm.
@@ -24,7 +24,6 @@ class GuzzleClientExceptionListener
     {
         $this->templating = $templating;
         $this->router = $router;
-
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event)
@@ -61,7 +60,8 @@ class GuzzleClientExceptionListener
                             'body'        => $body,
                             'redirectUrl' => $redirectUrl,
                         )
-                    )
+                    ),
+                    Response::HTTP_OK
                 );
                 $event->setResponse($response);
             }

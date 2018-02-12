@@ -113,6 +113,7 @@ Usage:
                     {% endif %}
                     <button type="submit" {% if button.id is defined %} id="{{ button.id }}" {% endif %}
                             {% if button.value is defined %} value="{{ button.value }}" {% endif %}
+                            {% if button.behattarget is defined %} data-behattarget="{{ button.behattarget }}" {% endif %}
                            class="btnhexaa {{ button.class }}">
                         {{ button.text }}
                     </button>
