@@ -3,7 +3,16 @@
 {% block title %}Error{% endblock %}
 
 {% block body %}
-<h1>Error</h1>
+    <div class="container">
+        <h1 class="text-danger">Error</h1>
+        <h2>{{ header }}</h2>
+        <p>
+            {{ body }}
+        </p>
+        <p>
+            <a href="{{ redirectUrl }}" class="pull-right">Back to the home</a>
+        </p>
+    </div>
 {% endblock %}
 
 
