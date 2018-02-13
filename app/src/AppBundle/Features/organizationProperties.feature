@@ -14,25 +14,22 @@ Feature: When I go to organization's properties
     When I follow "Properties"
     Then I should see "Ez a szervezet"
 
-  Scenario: Switch to edit mode
-    When I follow "Properties"
-    And I press "create"
+  # Scenario: Switch to edit mode
+  # When I follow "Properties"
+    When I press "create"
     Then I fill in "Home page" with "www.example.com"
 
-  Scenario: Cancel the filled form
-    When I follow "Properties"
-    And I press "create"
-    And I fill in "Home page" with "www.example.com"
-    And I press "clear"
+#  Scenario: Cancel the filled form
+    When I press "clear"
     Then I should not see "www.example.com"
 
-  Scenario: Submit the form
-    When I follow "Properties"
-    And I press "create"
+#  Scenario: Submit the form
+#    When I follow "Properties"
+    When I press "create"
     And I fill in "Home page" with "www.example.com"
     And I press "done"
     Then I should see "www.example.com"
 
-  Scenario: Resource not found exception
+#  Scenario: Resource not found exception
     When I am on "organization/12/properties"
     Then I should see "Resource not found."
