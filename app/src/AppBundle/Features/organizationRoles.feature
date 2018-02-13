@@ -31,8 +31,8 @@ Feature: When I go to organization's roles
     And I press "clear"
     Then I should not see "Create role"
 
-  Scenario: Role updates
-    Given I should see "Brand new role"
+#  Scenario: Role updates
+#    Given I should see "Brand new role"
     When I click on accordion "Brand new role"
     When I click the "update_1" behat target
     Then the "organization_role_update_name" field should contain "Brand new role"
@@ -46,8 +46,8 @@ Feature: When I go to organization's roles
     And I should see "Employee Employee"
     And I should see "Student Student"
 
-  Scenario: Delete role
-    Given I should see "Second brand new role"
+#  Scenario: Delete role
+#    Given I should see "Second brand new role"
     When I click on accordion "Second brand new role"
     Then I should see "Permissions"
     When I click the "delete_1" behat target
