@@ -1,4 +1,4 @@
-@organizaton
+@organization
 @create
 Feature: When I go to create organization
   As an authenticaed user
@@ -9,8 +9,7 @@ Feature: When I go to create organization
     And I should see "employee@project.local"
 
   Scenario: Navigate to create organization first step page
-    Given I am on "/"
-    Then I follow "Add organization"
+    When I follow "Add organization"
     And I wait for "Enter your organization's main parameters" to appear
     And a field should contain placeholder "Name of organization"
     And a field should contain placeholder "Description of organization"
@@ -42,8 +41,8 @@ Feature: When I go to create organization
 #  Scenario: Step backs in steps
 #  Scenario: Required fields validation
 
-  Scenario: Delete organization
-    Given I am on "/"
+#  Scenario: Delete organization
+    When I am on "/"
     Then I follow "Teszt szervezet"
     And I wait for "Teszt szervezet" to appear
     When I click the "#deleteDiv" element

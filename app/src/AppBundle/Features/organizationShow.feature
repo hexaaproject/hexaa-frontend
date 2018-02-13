@@ -27,25 +27,25 @@ Feature: When I go to a specific organization
     And I should see "View history"
     And I should see "Delete organization"
 
-  Scenario: Navigate to organization properties
-    Given I am on "/"
-    And I wait for "testOrg1" to appear
-    Then I follow "testOrg1"
-    And I wait for "Properties" to appear
-    And I follow "Properties"
+#  Scenario: Navigate to organization properties
+#    Given I am on "/"
+#    And I wait for "testOrg1" to appear
+#    Then I follow "testOrg1"
+#    And I wait for "Properties" to appear
+    When I follow "Properties"
     Then I should see "Ez a szervezet teszteléshez készült. Jól tesztelve is lesz vele az alkalmazás."
     And I should see "Roles"
     And I should see "Test role 1"
     And I should see "Test role 2"
 
-  Scenario: Organization properties, role accordion
-    Given I am on "/"
-    And I wait for "Welcome to" to appear
-    Then I follow "testOrg1"
-    And I wait for "testOrg1" to appear
-    And I follow "Properties"
-    And I should see "Test role 1"
-    And I should see "Test role 2"
+#  Scenario: Organization properties, role accordion
+#    Given I am on "/"
+#    And I wait for "Welcome to" to appear
+#    Then I follow "testOrg1"
+#    And I wait for "testOrg1" to appear
+#    And I follow "Properties"
+#    And I should see "Test role 1"
+#    And I should see "Test role 2"
     And I should not see "Permissions"
     And I should not see "Members"
     When I click on accordion "Test role 1"
@@ -57,12 +57,12 @@ Feature: When I go to a specific organization
     And I should not see "Members"
     And I should not see "Student Student"
 
-  Scenario: Navigate to organization users
-    Given I am on "/"
-    When I wait for "testOrg1" to appear
-    Then I follow "testOrg1"
-    And I wait for "Users" to appear
-    And I follow "Users"
+#  Scenario: Navigate to organization users
+#    Given I am on "/"
+#    When I wait for "testOrg1" to appear
+#    Then I follow "testOrg1"
+#    And I wait for "Users" to appear
+    When I follow "Users"
     Then I should see "Change roles"
     And I should see "Proposal"
     And I should see "Revoke"
@@ -72,32 +72,32 @@ Feature: When I go to a specific organization
     And I should see "Managers"
     And I should see "Users"
 
-  Scenario: Organization users tables and buttons
-    Given I am on "/"
-    When I wait for "testOrg1" to appear
-    Then I follow "testOrg1"
-    When I wait for "Users" to appear
-    And I follow "Users"
-    Then I wait for "Managers" to appear
+#  Scenario: Organization users tables and buttons
+#    Given I am on "/"
+#    When I wait for "testOrg1" to appear
+#    Then I follow "testOrg1"
+#    When I wait for "Users" to appear
+#    And I follow "Users"
+#    Then I wait for "Managers" to appear
     And I should see a table with 2 row
     And I should see a table with 4 rows
     When I fill in "Search users" with "nolocal"
     Then I should see a table with  2 rows
 
-  Scenario: Navigate to organization roles
-    Given I am on "/"
-    When I wait for "testOrg1" to appear
-    Then I follow "testOrg1"
-    When I wait for "Roles" to appear
-    And I follow "Roles"
+#  Scenario: Navigate to organization roles
+#    Given I am on "/"
+#    When I wait for "testOrg1" to appear
+#    Then I follow "testOrg1"
+#    When I wait for "Roles" to appear
+    When I follow "Roles"
     Then I should see "New role"
 
-  Scenario: Navigate to organization connected services
-    Given I am on "/"
-    When I wait for "testOrg1" to appear
-    Then I follow "testOrg1"
-    When I wait for "Connected services" to appear
-    And I follow "Connected services"
+#  Scenario: Navigate to organization connected services
+#    Given I am on "/"
+#    When I wait for "testOrg1" to appear
+#    Then I follow "testOrg1"
+#    When I wait for "Connected services" to appear
+    When I follow "Connected services"
     When I wait for "Connected services" to appear
     Then I should see "Connected entitlement packs" in the ".accordion-header" element
     And I should see "testService1"

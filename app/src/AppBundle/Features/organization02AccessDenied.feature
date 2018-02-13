@@ -1,4 +1,6 @@
-@organizaton
+@organization
+@accessdenied
+  @wip
 Feature: When I go to create organization
   As an authenticaed user
   And revoke manager status
@@ -11,7 +13,7 @@ Feature: When I go to create organization
 #  Scenario: Step backs in steps
 #  Scenario: Required fields validation
   Scenario: Navigate to create organization first step page
-    Given I am on "/"
+#    Given I am on "/"
     Then I follow "Add organization"
     And I wait for "Enter your organization's main parameters" to appear
     And a field should contain placeholder "Name of organization"
@@ -46,7 +48,7 @@ Feature: When I go to create organization
     Then I follow "Access Denied teszt szerv..."
 
 # revoke manager
-  Scenario: Try to delete, access denied
+#  Scenario: Try to delete, access denied
     When I am on "organization/5/users"
     And I click the "employee@project.local" behat target
     And I press "Revoke"

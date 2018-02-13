@@ -51,7 +51,9 @@ Feature: When I go to organizations
      And I press "Done"
      And I should not see "Your invitation is done"
 
-  Scenario: Invite and send email to "alice@example.com"
+#  Scenario: Invite and send email to "alice@example.com"
+    When I press "Invite"
+    And I wait for "Create invitation" to appear
     When I select "Test role 1" from "organization_user_invitation_role"
      And I press "Create"
      And I wait for "Your invitation is done" to appear
@@ -63,7 +65,9 @@ Feature: When I go to organizations
     Then there is 1 mail
     Then there is a mail from "no_reply@hexaa.eduid.hu"
 
-  Scenario: Invalid email addresses
+#  Scenario: Invalid email addresses
+    When I press "Invite"
+    And I wait for "Create invitation" to appear
     When I select "Test role 1" from "organization_user_invitation_role"
     And I press "Create"
     And I wait for "Your invitation is done" to appear
@@ -71,14 +75,16 @@ Feature: When I go to organizations
       | Send invitation by email | alice@example.com, nemjóemailcím   |
     And I press "Done"
     And I wait for "does not comply with RFC 2822" to appear
-    Then there are 0 mails
+    Then there are 1 mails
 
-  Scenario: Invalid landing url
+#  Scenario: Invalid landing url
+    When I press "Invite"
+    And I wait for "Create invitation" to appear
     When I fill in "Landing url" with "invalid url"
      And I press "Create"
     Then I should see "Please enter a valid URL."
 
-  Scenario: Invalid date
+#  Scenario: Invalid date
     When I select "2017" from "organization_user_invitation_start_date_year"
      And I select "Feb" from "organization_user_invitation_start_date_month"
      And I select "1" from "organization_user_invitation_start_date_day"

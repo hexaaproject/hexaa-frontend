@@ -22,12 +22,14 @@ Feature: When I go to organization's users
     And I press "Remove roles"
     Then I should see "Roles of users updated successful."
     When I follow "Roles"
+    Then I should see "Test role 1"
     And I click on accordion "Test role 1"
     Then I should not see "Student"
 
-  Scenario: Add roles to users
-    Given I wait for "Members" to appear
-    When I check the "student@project.local" behat targeted checkbox
+#  Scenario: Add roles to users
+#    Given I wait for "Members" to appear
+    When I follow "Users"
+    And I check the "student@project.local" behat targeted checkbox
     And I check the "student@project.nolocal" behat targeted checkbox
     And I check the "student@server.hexaa.eu" behat targeted checkbox
     And I press "Change roles"
@@ -36,5 +38,6 @@ Feature: When I go to organization's users
     And I press "Add roles"
     Then I should see "Roles of users updated successful."
     When I follow "Roles"
+    Then I should see "Test role 1"
     And I click on accordion "Test role 1"
     Then I should see "Student"
