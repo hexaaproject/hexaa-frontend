@@ -32,10 +32,10 @@ Feature: When I go to create service
     And I press "Finish"
     Then I should see "Your service is done."
     And I should see "Generated token"
-    And I should see "Get your new service"
+    And I should see "Start managing your service"
 
     # Follow link
-    When I follow "Get your new service"
+    When I follow "Start managing your service"
     Then I should see "Test service 4"
     And I should see "Permissions"
     And I should see "Permissions sets"
