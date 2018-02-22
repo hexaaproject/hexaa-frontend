@@ -67,7 +67,7 @@ Usage:
 
 <div class="modal fade" id="{{ id }}">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content protip-target">
             {% if formaction is defined %}
               <form action="{{ formaction }}" method="POST">
             {% endif %}
@@ -75,7 +75,10 @@ Usage:
                 <button type="button" class="close" title="Close" data-dismiss="modal" aria-hidden="true">
                     <i class="material-icons" style="color: black">clear</i>
                 </button>
-                <h4 class="modal-title">{{ title }}</h4>
+                <h4 class="modal-title" style="display: initial">{{ title }}</h4>
+                {% if protiptext is defined %}
+                    <button type="button" id="help" class="actionbutton protip" style="outline: none; display: inline-flex;" data-pt-arrow="true" data-pt-scheme="blue" data-pt-gravity="true" data-pt-title="{{ protiptext }}" ><i class="material-icons" style="font-size: 22px; color: #369; vertical-align: middle">help</i></button>
+                {% endif %}
             </div>
             <div class="modal-body">
                 <div class="modal-body-head">{% if bodyhead is defined %}{{ bodyhead }}{% endif %}</div>

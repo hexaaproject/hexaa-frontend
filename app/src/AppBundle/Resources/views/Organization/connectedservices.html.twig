@@ -17,13 +17,16 @@
         {% stylesheets
             'css/accordions.css'
             'css/grid_panel.css'
+            '@protip_min_css'
         filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
 
     {% javascripts
-    '@instafilta_js' %}
+    '@instafilta_js'
+    '@protip_min_js'
+    %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -48,6 +51,12 @@
         {% endif %}
 
         $(document).ready(function () {
+
+            $.protip();
+            var tooltip = $('.actionbutton');
+            tooltip.protipSet({
+                trigger: 'click'
+            });
 
             $('#hexaaSearchFieldPermissionSet').instaFilta();
             $('#hexaaSearchFieldPermissionSet').keypress(function(){
@@ -83,11 +92,13 @@
                 {{ form_start(form) }}
                 {% for key, field in form  %}
                     <div class="row {% if ("_token" == key) %} hidden {% endif %}" style="padding-top: 12px;">
-                        <div class="col-sm-3 propname">{{ form_label(field) }}</div>
+                        <div class="col-sm-2 formlabel" style="margin-top:7px;">{{ form_label(field) }}</div>
+                        <button type="button" id="help" class="actionbutton protip col-sm-1" style="outline: none; margin-top: 3px;" data-pt-arrow="true" data-pt-scheme="blue" data-pt-gravity="true" data-pt-title="Tokens are acquired from the administrators of a Service." ><i class="material-icons" style="font-size: 22px; color: #369; vertical-align: middle">help</i></button>
                         <div class="col-sm-11"> {{ form_widget(field) }}</div>
                         {% if field.vars.errors|length %}
                             <div class="col-sm-offset-3 col-sm-11 has-error">{{ field.vars.errors|length }}</div>
                         {% endif %}
+
                     </div>
                 {% endfor %}
 
@@ -97,12 +108,16 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-7" style="margin-top: 20px">
-            {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter: "service_connected_org_search", heading: "Connected entitlement packs", variant: "light", items: services_accordion }) }}
-        </div>
-        <div class="col-sm-1"></div>
-        <div class="col-sm-7" style="margin-top: 20px">
-            {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter: "service_connected_org_search", heading: "Connected entitlements", variant: "light", items: entitlements_accordion }) }}
-        </div>
+        {%  if services_accordion %}
+            <div class="col-sm-7" style="margin-top: 20px">
+                {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter: "service_connected_org_search", heading: "Connected entitlement packs", variant: "light", items: services_accordion }) }}
+            </div>
+            <div class="col-sm-1"></div>
+        {% endif %}
+        {% if entitlements_accordion %}
+            <div class="col-sm-7" style="margin-top: 20px">
+                {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter: "service_connected_org_search", heading: "Connected entitlements", variant: "light", items: entitlements_accordion }) }}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
