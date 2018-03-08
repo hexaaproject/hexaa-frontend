@@ -3,6 +3,14 @@
     font-size: x-large;
 }
 
+.formlabel {
+    font-size: medium;
+    display: inline;
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+}
+
 .desktopbuttonimage {
     width: 10vw;
     cursor: pointer;
@@ -25,14 +33,14 @@ table#centertable3 {
     padding-top: 10px;
 }
 
-.propname {
+/*.propname {
     font-size: medium;
     display: inline;
     font-weight: bold;
-    padding-left: 1.75em;
-    padding-bottom: 0.5em;
+   /* padding-left: 1.75em;*/
+  /*  padding-bottom: 0.5em;
     margin-top: 5px;
-}
+}*/
 
 #propertyname {
     text-align: left;

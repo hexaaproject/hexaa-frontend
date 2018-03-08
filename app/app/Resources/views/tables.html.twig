@@ -22,6 +22,19 @@ buttons array:
  ahol last: külön kezelt ikon, ami jobbra zárt, és mobil nézetben a search mellett marad, a többi egy sort lejjebb ugrik
 
 #}
+{% block stylesheets %}
+    {% stylesheets
+    '@protip_min_css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% javascripts
+  '@protip_min_js'
+  %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -31,6 +44,14 @@ buttons array:
             {% endif %}
             "dom": 'trlip'
         });
+
+        {% if protiptext is defined %}
+            $.protip();
+            var tooltip = $('.actionbutton');
+            tooltip.protipSet({
+                trigger: 'click'
+            });
+        {% endif %}
 
         {# hide pagination if one page #}
         if ($('#{{ table_id }}').DataTable().page.info().pages == 1) {
@@ -257,7 +278,13 @@ buttons array:
 
 <table class="datatable datatable-{{ variant }}" id="{{ table_id }}">
     {% if form is not defined or form == 'false' %}
-        <caption>{{ caption }}</caption>
+        <caption>
+            {{ caption }}
+            {% if protiptext is defined %}
+                <button type="button" id="help" class="actionbutton protip" style="outline: none; display: inline-flex;" data-pt-arrow="true" data-pt-scheme="blue" data-pt-gravity="true" data-pt-title="{{ protiptext }}" ><i class="material-icons" style="font-size: 22px; color: #369; vertical-align: middle">help</i></button>
+            {% endif %}
+
+        </caption>
     {% endif %}
     <thead>
     <tr>

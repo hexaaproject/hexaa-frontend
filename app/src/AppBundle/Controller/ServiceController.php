@@ -535,7 +535,6 @@ class ServiceController extends BaseController
                     }
                 }
             }
-
             $this->get('service')->notifySP($servid, $contactsSelected);
 
             return $this->render(

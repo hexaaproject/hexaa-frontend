@@ -1,7 +1,16 @@
+{% block stylesheets %}
+    {% stylesheets
+    '@protip_min_css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
 {{ include('::modal.html.twig',
     {
         id: 'add_attributespec',
         title: 'Add attribute specification to this service',
+        protiptext: 'The service will accept attributes from the Organizations if they are defined here.',
         button:
             {
                 text: 'Create',
@@ -20,9 +29,20 @@
     })
 }}
 
+{% block javascripts %}
+    {% javascripts
+    '@protip_min_js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
 <script>
     $(document).ready(function () {
-
+        $.protip();
+        var tooltip = $('.actionbutton');
+        tooltip.protipSet({
+            trigger: 'click'
+        });
         $(document).on('click', 'button#add', function (
                 event) {
             event.preventDefault();
@@ -37,3 +57,4 @@
 
     });
 </script>
+{% endblock %}

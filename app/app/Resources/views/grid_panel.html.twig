@@ -79,7 +79,7 @@ return $this->render(
     {{ form_start(form) }}
     {% for key, field in form  %}
         <div class="row {% if ("_token" == key) %} hidden {% endif %}" style="padding-top: 12px;">
-            <div class="col-sm-3 propname">{{ form_label(field) }}</div>
+            <div class="col-sm-3 propname2">{{ form_label(field) }}</div>
             <div class="col-sm-11"> {{ form_widget(field) }}</div>
             {% if field.vars.errors|length %}
                 <div class="col-sm-offset-3 col-sm-11 has-error">{{ field.vars.errors|length }}</div>

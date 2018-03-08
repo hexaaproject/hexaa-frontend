@@ -24,6 +24,23 @@ class ServiceType extends AbstractType
     {
         $builder
             ->add(
+                'entityid',
+                TypeaheadType::class,
+                array(
+                    "label" => false,
+                    'placeholder' => 'Start typing entity ID',
+                    'source_name' => 'entityid',
+                    'min_length' => 1,
+                    'matcher' => 'contains',
+                    'source' => $entityidsarray['data'],
+                    "attr" => array(
+                      "class" => "entityidtypeahead",
+                    ),
+                    'required' => true,
+                    'limit' => 30,
+                )
+            )
+            ->add(
                 'name',
                 TextType::class,
                 array(
@@ -60,24 +77,6 @@ class ServiceType extends AbstractType
                     "constraints" => new Constraints\Url(),
                 )
             )
-           ->add(
-               'entityid',
-               TypeaheadType::class,
-               array(
-                   "label" => false,
-                   'placeholder' => 'Start typing entity ID',
-                   'source_name' => 'entityid',
-                   'min_length' => 1,
-                   'matcher' => 'contains',
-                   'source' => $entityidsarray['data'],
-                   "attr" => array(
-                       "class" => "entityidtypeahead",
-                   ),
-                   'required' => true,
-                   'limit' => 30,
-
-               )
-           )
             ->add(
                 'entitlement',
                 TextType::class,

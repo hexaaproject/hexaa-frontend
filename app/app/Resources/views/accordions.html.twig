@@ -58,6 +58,35 @@
 
     $(document).ready(function () {
 
+        jQuery('.add-another-collection-widget').click(function (e) {
+            e.preventDefault();
+            var list = jQuery(jQuery(this).attr('data-list'));
+            var li = list.children();
+            var divchildren = li.children();
+            var formchildren = divchildren.children();
+            // Try to find the counter of the list
+            var counter = list.attr('widget-counter');
+            // If the counter does not exist, use the length of the list
+            if (!counter) {  var counter = formchildren.length; }
+
+            // grab the prototype template
+            var newWidget = list.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your emails
+            // end name attribute looks like name="contact[emails][2]"
+            newWidget = newWidget.replace(/__name__/g, counter);
+            // Increase the counter
+            counter++;
+            // And store it, the length cannot be used if deleting widgets is allowed
+            list.attr('widget-counter', counter);
+
+            // create a new list element and add it to the list
+
+            var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+            newElem.appendTo(list);
+        });
+
+
         {% if manager %}
 
         showErrors(
@@ -81,11 +110,20 @@
             panel.find('table.accordion').removeClass('hidden');
             panel.find('.accordion_edit_button').removeClass('hidden');
         });
-        $('.accordion_edit_submit_button').on("click", function () {
-            var panel = $(this).closest('.accordion-panel');
-            panel.find('form').submit();
-        });
+        {% if profile is not defined %}
+            $('.accordion_edit_submit_button').on("click", function () {
+                var panel = $(this).closest('.accordion-panel');
+                panel.find('form').submit();
+            });
+        {% else %}
+            $('.accordion_edit_submit_button').on("click", function () {
+                var id = $(this).attr('id');
+                var name = "form[name=\'" + id + '\']';
+                $(name).submit();
+            });
         {% endif %}
+        {% endif %}
+
     })
 
 </script>
@@ -102,10 +140,17 @@
                     {{ item.title }}
                     <span class="accordion-title-middle">{% if item.titlemiddle is defined %}{{ item.titlemiddle }}{% endif %}</span>
                     <span class="accordion-title-right pull-right">
-                    <span class="accordion-buttons">
-                        <i class="caretbutton material-icons">arrow_drop_down</i>
+                        <span class="accordion-buttons">
+                            {% if profile is defined %}
+                                {% if item.claim == true %}
+                                    <span class="accordion-buttons">
+                                        <i class=" material-icons">priority_high</i>
+                                    </span>
+                                {% endif %}
+                            {% endif %}
+                            <i class="caretbutton material-icons">arrow_drop_down</i>
+                        </span>
                     </span>
-                </span>
                 </div>
 
                 <div class="accordion-panel {% if formpanel is defined %}accordion-panel-{{ formpanel }}{% endif %} accordion-panel-style-{{ variant }}"
@@ -166,7 +211,9 @@
                                     {% if item.form is defined %}
                                         <i title="update role" role="button" data-behattarget="update_{{ loop.index }}" class="material-icons accordion-button accordion_edit_button">create</i>
                                     {% endif %}
+                                    {% if profile is not defined %}
                                         <i title="delete role" role="button" data-behattarget="delete_{{ loop.index }}" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         {% endif %}
@@ -186,7 +233,11 @@
                             <div class="{{ hasErrors?"hasErrors":"" }} hidden accordion-editform">
                                 <div class="pull-right">
                                     <i data-behattarget="cancel_{{ loop.index }}" role="button" class="material-icons accordion-button accordion_edit_cancel_button">clear</i>
-                                    <i data-behattarget="submit_{{ loop.index }}" role="button" class="material-icons accordion-button accordion_edit_submit_button">done</i>
+                                    {% if profile is defined %}
+                                        <i data-behattarget="submit_{{ loop.index }}" role="button" id="{{ item.id }}" class="material-icons accordion-button accordion_edit_submit_button">done</i>
+                                    {% else %}
+                                        <i data-behattarget="submit_{{ loop.index }}" role="button" class="material-icons accordion-button accordion_edit_submit_button">done</i>
+                                    {% endif %}
                                 </div>
                                 {% if item.uriprefix is defined %}
                                     {{ form_start(item.form) }}
@@ -211,13 +262,45 @@
 
                                     {% endfor %}
                                     {{ form_end(item.form) }}
+                                {% elseif profile is defined %}
+                                    {{ form_start(item.form) }}
+                                        {{ form_errors(item.form) }}
+                                            {% for valueField in item.form %}
+                                            {% if valueField.vars['id'] != "profile_attributes__token"  %}
+                                                {% if valueField.vars['prototype'] is defined %}
+                                                    <ul class="withoutpoints" id="{{  valueField.vars['unique_block_prefix'] }}"
+                                                    data-prototype="{{ form_widget(valueField.vars.prototype)|e }}"
+                                                    data-widget-tags="{{ '<li class="form-group"></li>'|e }}">
+                                                        <li style="">
+                                                            {{ form_label(valueField) }}
+                                                            {{ form_errors(valueField) }}
+                                                            {{ form_widget(valueField) }}
+                                                        </li>
+                                                    </ul>
+
+                                                    <a href="#"
+                                                       class="add-another-collection-widget"
+                                                       data-list="#{{ valueField.vars['unique_block_prefix'] }}"><i class="material-icons" style="font-size: 28px;">add</i></a>
+                                                    <br>
+                                               {% else %}
+
+                                                   {{ form_label(valueField) }}
+                                                   <br>
+                                                   {{ form_errors(valueField) }}
+                                                   <div class="form-group">
+                                                       {{ form_widget(valueField) }}
+                                                   </div>
+
+                                                {% endif %}
+                                            {% endif %}
+                                            {% endfor %}
+                                    {{ form_end(item.form) }}
                                 {% else %}
                                     {{ form(item.form) }}
                                 {% endif %}
                             </div>
                         {% endif %}
                         <table cellspacing="0" class="accordion">
-
                             {% if item.contents is defined %}
                                 {% for content in item.contents %}
                                     <tr class="accordion">
@@ -238,6 +321,14 @@
                                                 {% endfor %}
                                             </ul>
                                         </td>
+                                        {% if profile is defined %}
+                                            <td>
+                                                {% for deleteitem in content.deleteurl %}
+                                                    <i title="delete attribute" role="button" data-behattarget="delete_{{ loop.index }}" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ deleteitem }}">delete</i>
+                                                    <br>
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                             {% endif %}

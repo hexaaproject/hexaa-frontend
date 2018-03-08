@@ -5,6 +5,7 @@
 {% block stylesheets %}
     {% stylesheets
     'css/progressbar.css'
+    '@protip_min_css'
     filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
@@ -32,6 +33,7 @@
                 {{ include('::progressbar.html.twig',
                 {
                     header: 'Create service',
+                    protiptext: 'You can claim a service if it is known to this HEXAA system.',
                     percent: 25,
                     next_id: 'second',
                     next_button_id: 'next-1'
@@ -72,6 +74,7 @@
                 {{ include('::progressbar.html.twig',
                 {
                     header: 'Create service',
+                    protiptext: 'You can claim a service if it is known to this HEXAA system.',
                     prev_id: 'first',
                     done: 'next',
                     percent: 50,
@@ -97,7 +100,9 @@
     {{ form_end(form) }}
 
     {% javascripts
-    '@typeahead_js' %}
+    '@typeahead_js'
+    '@protip_min_js'
+    %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -109,6 +114,12 @@
     <script>
         {{ include('::progressbar.js.twig') }}
          $( document ).ready(function() {
+             $.protip();
+             var tooltip = $('.actionbutton');
+             tooltip.protipSet({
+                 trigger: 'click'
+             });
+
             {% if click == "true" %}
                 $('#next-1').click();
             {% endif %}
