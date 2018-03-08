@@ -61,14 +61,11 @@
         jQuery('.add-another-collection-widget').click(function (e) {
             e.preventDefault();
             var list = jQuery(jQuery(this).attr('data-list'));
-            console.log(list);
             var li = list.children();
             var divchildren = li.children();
             var formchildren = divchildren.children();
-            console.log(formchildren.length);
             // Try to find the counter of the list
-           /* console.log(list.data('widget-counter'));*/
-            var counter = list.data('widget-counter') | formchildren.length;
+            var counter = list.attr('widget-counter');
             // If the counter does not exist, use the length of the list
             if (!counter) {  var counter = formchildren.length; }
 
@@ -78,17 +75,17 @@
             // with a number that's unique to your emails
             // end name attribute looks like name="contact[emails][2]"
             newWidget = newWidget.replace(/__name__/g, counter);
-            console.log(counter);
             // Increase the counter
             counter++;
             // And store it, the length cannot be used if deleting widgets is allowed
-            list.data(' widget-counter', counter);
+            list.attr('widget-counter', counter);
 
             // create a new list element and add it to the list
 
             var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
             newElem.appendTo(list);
         });
+
 
         {% if manager %}
 
@@ -270,9 +267,8 @@
                                         {{ form_errors(item.form) }}
                                             {% for valueField in item.form %}
                                             {% if valueField.vars['id'] != "profile_attributes__token"  %}
-                                                {% if valueField.children or valueField.vars.data is iterable %}
-                                                {#{% if valueField.children[0].vars['attr']['class'] == 'multivalue' %}#}
-                                                    <ul class="withoutpoints" id="{{  valueField.vars['id'] }}"
+                                                {% if valueField.vars['prototype'] is defined %}
+                                                    <ul class="withoutpoints" id="{{  valueField.vars['unique_block_prefix'] }}"
                                                     data-prototype="{{ form_widget(valueField.vars.prototype)|e }}"
                                                     data-widget-tags="{{ '<li class="form-group"></li>'|e }}">
                                                         <li style="">
@@ -284,7 +280,7 @@
 
                                                     <a href="#"
                                                        class="add-another-collection-widget"
-                                                       data-list="#{{ valueField.vars['id'] }}"><i class="material-icons" style="font-size: 28px;">add</i></a>
+                                                       data-list="#{{ valueField.vars['unique_block_prefix'] }}"><i class="material-icons" style="font-size: 28px;">add</i></a>
                                                     <br>
                                                {% else %}
 
