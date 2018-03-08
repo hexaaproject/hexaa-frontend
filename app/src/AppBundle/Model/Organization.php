@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Model;
 
+use AppBundle\Tools\Warning;
+use Doctrine\Common\Collections\ArrayCollection;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -255,6 +257,26 @@ class Organization extends AbstractBaseResource
             $offset,
             $pageSize
         );
+    }
+
+    /**
+     * @param $id
+     * @param $roleResource
+     *
+     * @return ArrayCollection
+     */
+    public function getWarnings($id, $roleResource)
+    {
+        $warnings = new ArrayCollection();
+
+        $roles = $this->getRoles($id);
+        foreach ($roles['items'] as $role) {
+            foreach ($roleResource->getWarnings($role['id']) as $warning) {
+                $warnings->add($warning);
+            };
+        }
+
+        return $warnings;
     }
 
     /**

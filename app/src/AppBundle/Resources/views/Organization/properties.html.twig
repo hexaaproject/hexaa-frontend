@@ -23,6 +23,8 @@
         });
     </script>
 
+    {{ include('::warning.html.twig', {url: path('app_organization_getwarnings', {id: entity.id}) }) }}
+
     <div class="row">
         <div class="col-sm-offset-2 col-sm-11">
                 {{ include('::grid_panel.html.twig', {

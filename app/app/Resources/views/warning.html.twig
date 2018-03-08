@@ -1,0 +1,41 @@
+{#
+grid alapú pozícionálásra szánt panel
+
+usage in twig:
+{{ include('::warning.html.twig', {url: path('any_route')}) }}
+
+#}
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '{{ url }}',
+            method: 'POST',
+            dataType: 'json'
+        }).done(function(data) {
+            var warningDiv = $('<div/>', {
+                class: 'flash-warning flash',
+            });
+            $.each(JSON.parse(data), function (index, warning) {
+                var list = $('<ul/>');
+                var header = $('<h4><i class="material-icons text-warning">warning</i> ' + warning.class + '</h4>');
+                if (warning.title) {
+                    var title = $('<li>' + warning.title + '</li>');
+                    $(list).append(title);
+                }
+                if (warning.shortDescription) {
+                    var shortDescription = $('<li>' + warning.shortDescription + '</li>');
+                    $(list).append(shortDescription);
+                }
+                if (warning.details != null) {
+                    var details = $('<li>' + warning.details + '</li>');
+                    $(list).append(details);
+                }
+                warningDiv.append(header);
+                warningDiv.append(list);
+            });
+            $(".notification-area").html(warningDiv);
+        });
+
+    });
+</script>
