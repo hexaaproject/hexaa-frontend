@@ -1235,7 +1235,7 @@ class OrganizationController extends BaseController
     {
         $organization = $this->get('organization');
         $serializer = $this->get('serializer');
-        $data = $organization->getWarnings($id, $this->get('role'));
+        $data = $organization->getWarnings($id, $this->get('role'), $this->get('principal'));
         $serializedData = $serializer->serialize($data, 'json');
 
         return new JsonResponse($serializedData);

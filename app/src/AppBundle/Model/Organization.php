@@ -1,7 +1,8 @@
 <?php
 namespace AppBundle\Model;
 
-use AppBundle\Tools\Warning;
+use AppBundle\Tools\Warning\NoRolesWarning;
+use AppBundle\Tools\Warning\RoleLessMemberWarning;
 use Doctrine\Common\Collections\ArrayCollection;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
@@ -265,11 +266,17 @@ class Organization extends AbstractBaseResource
      *
      * @return ArrayCollection
      */
-    public function getWarnings($id, $roleResource)
+    public function getWarnings($id, $roleResource, $principalResource)
     {
         $warnings = new ArrayCollection();
 
         $roles = $this->getRoles($id);
+
+        if (0 == $roles['item_number']) {
+            $warning = new NoRolesWarning();
+            $warnings->add($warning);
+        }
+
         foreach ($roles['items'] as $role) {
             foreach ($roleResource->getWarnings($role['id']) as $warning) {
                 $warnings->add($warning);

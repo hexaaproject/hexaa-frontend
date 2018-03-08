@@ -34,7 +34,9 @@ usage in twig:
                 warningDiv.append(header);
                 warningDiv.append(list);
             });
-            $(".notification-area").html(warningDiv);
+            if (JSON.parse(data).length) {
+                $(".notification-area").html(warningDiv);
+            }
         });
 
     });

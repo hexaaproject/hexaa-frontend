@@ -1,9 +1,8 @@
 <?php
 namespace AppBundle\Model;
 
-use AppBundle\Tools\MemberLessRoleWarning;
-use AppBundle\Tools\PermissionLessRoleWarning;
-use AppBundle\Tools\Warning;
+use AppBundle\Tools\Warning\MemberLessRoleWarning;
+use AppBundle\Tools\Warning\PermissionLessRoleWarning;
 use Doctrine\Common\Collections\ArrayCollection;
 use GuzzleHttp\Client;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;

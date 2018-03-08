@@ -6,13 +6,14 @@
  * Time: 8:49
  */
 
-namespace AppBundle\Tools;
+namespace AppBundle\Tools\Warning;
 
 
-class PermissionLessRoleWarning extends Warning
+class MemberLessRoleWarning extends Warning
 {
+
     public function getClass()
     {
-        return "Permissionless role";
+        return "Memberless role";
     }
 }

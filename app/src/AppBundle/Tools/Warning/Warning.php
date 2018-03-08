@@ -6,7 +6,7 @@
  * Time: 8:49
  */
 
-namespace AppBundle\Tools;
+namespace AppBundle\Tools\Warning;
 
 
 class Warning
