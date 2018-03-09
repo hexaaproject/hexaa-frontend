@@ -1929,6 +1929,23 @@ class ServiceController extends BaseController
         return $this->redirectToRoute("app_service_permissionssets", array("id" => $servId));
     }
 
+
+    /**
+     * @Route("/{id}/warnings")
+     * @param string $id
+     *
+     * @return JsonResponse
+     */
+    public function getWarnings($id)
+    {
+        $service = $this->get('service');
+        $serializer = $this->get('serializer');
+        $data = $service->getWarnings($id, array());
+        $serializedData = $serializer->serialize($data, 'json');
+
+        return new JsonResponse($serializedData);
+    }
+
   /**
      * Replace accents
      *

@@ -2,6 +2,11 @@
 
 namespace AppBundle\Model;
 
+use AppBundle\Tools\Warning\InvalidServiceWarning;
+use AppBundle\Tools\Warning\OrphanPermissionSetWarning;
+use AppBundle\Tools\Warning\OrphanPermissionWarning;
+use AppBundle\Tools\Warning\WarningableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use GuzzleHttp\Client;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -9,7 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
  * Class Service
  * @package AppBundle\Model
  */
-class Service extends AbstractBaseResource
+class Service extends AbstractBaseResource implements WarningableInterface
 {
     protected $pathName = 'services';
 
@@ -358,6 +363,23 @@ class Service extends AbstractBaseResource
     public function getHistory(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 500, string $tags = null)
     {
         return $this->getCollection($this->pathName.'/'.$id.'/news', $verbose, $offset, $pageSize, $tags);
+    }
+
+    /**
+     * @param string $id
+     * @param array  $resources
+     *
+     * @return ArrayCollection
+     */
+    public function getWarnings($id, array $resources)
+    {
+        $warnings = new ArrayCollection();
+
+        $warnings->add(new InvalidServiceWarning("TODO"));
+        $warnings->add(new OrphanPermissionWarning("TODO"));
+        $warnings->add(new OrphanPermissionSetWarning("TODO"));
+
+        return $warnings;
     }
 
     /**
