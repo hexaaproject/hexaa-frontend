@@ -8,23 +8,41 @@
 
 namespace AppBundle\Tools\Warning;
 
-
+/**
+ * Class Warning
+ *
+ * @package AppBundle\Tools\Warning
+ */
 class Warning
 {
+    /**
+     * @var null
+     */
     private $title;
+
+    /**
+     * @var null
+     */
     private $shortDescription;
+
+    /**
+     * @var null
+     */
     private $details;
+
+    /**
+     * @var
+     */
     private $class;
 
     /**
      * Warning constructor.
      *
-     * @param $title
-     * @param $shortDescription
-     * @param $details
+     * @param string $title
+     * @param string $shortDescription
+     * @param string $details
      */
-
-    public function __construct($title=null, $shortDescription=null, $details=null)
+    public function __construct($title = null, $shortDescription = null, $details = null)
     {
         $this->title = $title;
         $this->shortDescription = $shortDescription;
@@ -78,5 +96,4 @@ class Warning
     {
         $this->details = $details;
     }
-
 }

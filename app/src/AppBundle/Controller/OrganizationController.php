@@ -1227,7 +1227,7 @@ class OrganizationController extends BaseController
 
     /**
      * @Route("/{id}/warnings")
-     * @param $id
+     * @param string $id
      *
      * @return JsonResponse
      */

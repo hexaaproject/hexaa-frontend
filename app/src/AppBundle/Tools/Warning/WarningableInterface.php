@@ -8,12 +8,16 @@
 
 namespace AppBundle\Tools\Warning;
 
-
+/**
+ * Interface WarningableInterface
+ *
+ * @package AppBundle\Tools\Warning
+ */
 interface WarningableInterface
 {
     /**
-     * @param       $id
-     * @param array $resources
+     * @param string $id
+     * @param array  $resources
      *
      * @return mixed
      */

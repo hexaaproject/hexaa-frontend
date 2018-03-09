@@ -8,15 +8,25 @@
 
 namespace AppBundle\Tools\Warning;
 
-
+/**
+ * Class NoRolesWarning
+ *
+ * @package AppBundle\Tools\Warning
+ */
 class NoRolesWarning extends Warning
 {
 
+    /**
+     * @return string
+     */
     public function getClass()
     {
         return "No roles";
     }
 
+    /**
+     * @return string
+     */
     public function getShortDescription()
     {
         return "This organization hasn't got any role.";

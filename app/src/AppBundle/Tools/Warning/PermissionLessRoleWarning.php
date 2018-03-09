@@ -8,14 +8,24 @@
 
 namespace AppBundle\Tools\Warning;
 
-
+/**
+ * Class PermissionLessRoleWarning
+ *
+ * @package AppBundle\Tools\Warning
+ */
 class PermissionLessRoleWarning extends Warning
 {
+    /**
+     * @return string
+     */
     public function getClass()
     {
         return "Permissionless role";
     }
 
+    /**
+     * @return string
+     */
     public function getShortDescription()
     {
         return "This role hasn't got any permission.";

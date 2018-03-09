@@ -97,7 +97,7 @@ class Role extends AbstractBaseResource
     }
 
     /**
-     * @param $id
+     * @param string $id
      *
      * @return ArrayCollection
      */

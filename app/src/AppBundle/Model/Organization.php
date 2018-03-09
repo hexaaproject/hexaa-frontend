@@ -262,8 +262,8 @@ class Organization extends AbstractBaseResource implements WarningableInterface
     }
 
     /**
-     * @param       $id
-     * @param array $resources
+     * @param string $id
+     * @param array  $resources
      *
      * @return ArrayCollection
      */
@@ -300,7 +300,7 @@ class Organization extends AbstractBaseResource implements WarningableInterface
         }
 
         foreach ($memberIds as $memberId) {
-            $warnings->add(new RoleLessMemberWarning($memberId['display_name'] . " &lt;" . $memberId['fedid'] . "&gt;"));
+            $warnings->add(new RoleLessMemberWarning($memberId['display_name']." &lt;".$memberId['fedid']."&gt;"));
         }
 
         return $warnings;

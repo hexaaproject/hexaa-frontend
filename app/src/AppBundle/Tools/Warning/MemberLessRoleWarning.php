@@ -8,15 +8,24 @@
 
 namespace AppBundle\Tools\Warning;
 
-
+/**
+ * Class MemberLessRoleWarning
+ *
+ * @package AppBundle\Tools\Warning
+ */
 class MemberLessRoleWarning extends Warning
 {
-
+    /**
+     * @return string
+     */
     public function getClass()
     {
         return "Memberless role";
     }
 
+    /**
+     * @return string
+     */
     public function getShortDescription()
     {
         return "This member hasn't got any role.";
