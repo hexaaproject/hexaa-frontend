@@ -262,7 +262,7 @@ class Organization extends AbstractBaseResource
 
     /**
      * @param $id
-     * @param $roleResource
+     * @param Role $roleResource
      *
      * @return ArrayCollection
      */
@@ -271,16 +271,34 @@ class Organization extends AbstractBaseResource
         $warnings = new ArrayCollection();
 
         $roles = $this->getRoles($id);
+        $members = $this->getMembers($id);
+        $memberIds = array();
+        foreach ($members['items'] as $member) {
+            $memberIds[$member['id']] = $member;
+        }
 
         if (0 == $roles['item_number']) {
-            $warning = new NoRolesWarning();
-            $warnings->add($warning);
+            $warnings->add(new NoRolesWarning());
         }
 
         foreach ($roles['items'] as $role) {
             foreach ($roleResource->getWarnings($role['id']) as $warning) {
                 $warnings->add($warning);
             };
+
+            $principals = $roleResource->getPrincipals($id);
+            if ($principals['item_number']) {
+                foreach ($principals['items'] as $principal) {
+                    $principalId = $principal['principal_id'];
+                    if (array_key_exists($principalId, $memberIds)) {
+                        unset($memberIds[$principalId]);
+                    }
+                }
+            }
+        }
+
+        foreach ($memberIds as $memberId) {
+            $warnings->add(new RoleLessMemberWarning($memberId['display_name'] . " " . $memberId['fedid']));
         }
 
         return $warnings;
