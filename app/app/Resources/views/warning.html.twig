@@ -1,8 +1,8 @@
 {#
-grid alapú pozícionálásra szánt panel
+warnings render
 
 usage in twig:
-{{ include('::warning.html.twig', {url: path('any_route')}) }}
+{{ include('::warning.html.twig', {url: path('get_warnings_route')}) }}
 
 #}
 
@@ -13,12 +13,10 @@ usage in twig:
             method: 'POST',
             dataType: 'json'
         }).done(function(data) {
-            var warningDiv = $('<div/>', {
-                class: 'flash-warning flash',
-            });
+            var warningDiv = $('#warnings');
             $.each(JSON.parse(data), function (index, warning) {
                 var list = $('<ul/>');
-                var header = $('<h4><i class="material-icons text-warning">warning</i> ' + warning.class + '</h4>');
+                var header = $('<h4>' + warning.class + '</h4>');
                 if (warning.title) {
                     var title = $('<li>' + warning.title + '</li>');
                     $(list).append(title);
@@ -27,7 +25,7 @@ usage in twig:
                     var shortDescription = $('<li>' + warning.shortDescription + '</li>');
                     $(list).append(shortDescription);
                 }
-                if (warning.details != null) {
+                if (warning.details) {
                     var details = $('<li>' + warning.details + '</li>');
                     $(list).append(details);
                 }
@@ -35,9 +33,16 @@ usage in twig:
                 warningDiv.append(list);
             });
             if (JSON.parse(data).length) {
-                $(".notification-area").html(warningDiv);
+                $('#warning-div').show("slow");
             }
         });
-
     });
 </script>
+
+<div id="warning-div" class="flash-warning flash" style="display: none">
+    <div data-toggle="collapse" data-target="#warnings" style="cursor: pointer;">
+        <i class="material-icons text-warning" style="font-size: 2rem;">warning</i> There are some warnings!
+    </div>
+    <div id="warnings" class="collapse">
+    </div>
+</div>

@@ -16,4 +16,9 @@ class MemberLessRoleWarning extends Warning
     {
         return "Memberless role";
     }
+
+    public function getShortDescription()
+    {
+        return "This member hasn't got any role.";
+    }
 }

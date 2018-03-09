@@ -15,4 +15,9 @@ class PermissionLessRoleWarning extends Warning
     {
         return "Permissionless role";
     }
+
+    public function getShortDescription()
+    {
+        return "This role hasn't got any permission.";
+    }
 }

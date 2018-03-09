@@ -3,6 +3,7 @@ namespace AppBundle\Model;
 
 use AppBundle\Tools\Warning\NoRolesWarning;
 use AppBundle\Tools\Warning\RoleLessMemberWarning;
+use AppBundle\Tools\Warning\WarningableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
  * Class Organization
  * @package AppBundle\Model
  */
-class Organization extends AbstractBaseResource
+class Organization extends AbstractBaseResource implements WarningableInterface
 {
     protected $pathName = 'organizations';
 
@@ -261,13 +262,14 @@ class Organization extends AbstractBaseResource
     }
 
     /**
-     * @param $id
-     * @param Role $roleResource
+     * @param       $id
+     * @param array $resources
      *
      * @return ArrayCollection
      */
-    public function getWarnings($id, $roleResource, $principalResource)
+    public function getWarnings($id, array $resources)
     {
+        $roleResource = $resources["roleResource"];
         $warnings = new ArrayCollection();
 
         $roles = $this->getRoles($id);
@@ -298,7 +300,7 @@ class Organization extends AbstractBaseResource
         }
 
         foreach ($memberIds as $memberId) {
-            $warnings->add(new RoleLessMemberWarning($memberId['display_name'] . " " . $memberId['fedid']));
+            $warnings->add(new RoleLessMemberWarning($memberId['display_name'] . " &lt;" . $memberId['fedid'] . "&gt;"));
         }
 
         return $warnings;

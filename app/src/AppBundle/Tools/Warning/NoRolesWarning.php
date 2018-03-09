@@ -16,4 +16,9 @@ class NoRolesWarning extends Warning
     {
         return "No roles";
     }
+
+    public function getShortDescription()
+    {
+        return "This organization hasn't got any role.";
+    }
 }
