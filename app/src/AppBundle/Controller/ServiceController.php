@@ -1940,7 +1940,7 @@ class ServiceController extends BaseController
     {
         $service = $this->get('service');
         $serializer = $this->get('serializer');
-        $data = $service->getWarnings($id, array());
+        $data = $service->getWarnings($id, array("linkResource" => $this->get('link')));
         $serializedData = $serializer->serialize($data, 'json');
 
         return new JsonResponse($serializedData);

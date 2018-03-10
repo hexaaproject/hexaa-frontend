@@ -9,18 +9,18 @@
 namespace AppBundle\Tools\Warning;
 
 /**
- * Class InvalidServiceWarning
+ * Class DisabledServiceWarning
  *
  * @package AppBundle\Tools\Warning
  */
-class InvalidServiceWarning extends Warning
+class DisabledServiceWarning extends Warning
 {
     /**
      * @return string
      */
     public function getClass()
     {
-        return "Invalid service";
+        return "Service not enabled";
     }
 
     /**
@@ -28,6 +28,6 @@ class InvalidServiceWarning extends Warning
      */
     public function getShortDescription()
     {
-        return "This service is not validated by the ServiceProvider owners yet.";
+        return "This service is not enabled by the ServiceProvider owners yet.";
     }
 }
