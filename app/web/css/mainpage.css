@@ -269,14 +269,16 @@ div.hr {
     border-radius: 0px;
     margin-bottom: 12px;
     padding: 12px;
+    border-bottom-width: thick;
 }
 .flash-error {
     border-bottom-color: #FA8072;
-    border-bottom-width: thick;
 }
 .flash-success {
     border-bottom-color: #61AFC5;
-    border-bottom-width: thick;
+}
+.flash-warning {
+    border-bottom-color: #fab939;
 }
 
 #servManagers .twitter-typeahead, #orgManagers .twitter-typeahead{
@@ -369,6 +371,10 @@ div.hr {
 .alert {
     margin-top: 20px;
     border-radius: 0px;
+}
+
+.text-warning {
+    color: #fab939 !important;
 }
 
 /* protip override */

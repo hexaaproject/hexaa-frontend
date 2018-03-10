@@ -1,6 +1,10 @@
 <?php
 namespace AppBundle\Model;
 
+use AppBundle\Tools\Warning\NoRolesWarning;
+use AppBundle\Tools\Warning\RoleLessMemberWarning;
+use AppBundle\Tools\Warning\WarningableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -9,7 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
  * Class Organization
  * @package AppBundle\Model
  */
-class Organization extends AbstractBaseResource
+class Organization extends AbstractBaseResource implements WarningableInterface
 {
     protected $pathName = 'organizations';
 
@@ -286,6 +290,51 @@ class Organization extends AbstractBaseResource
             $offset,
             $pageSize
         );
+    }
+
+    /**
+     * @param string $id
+     * @param array  $resources
+     *
+     * @return ArrayCollection
+     */
+    public function getWarnings($id, array $resources)
+    {
+        $roleResource = $resources["roleResource"];
+        $warnings = new ArrayCollection();
+
+        $roles = $this->getRoles($id);
+        $members = $this->getMembers($id);
+        $memberIds = array();
+        foreach ($members['items'] as $member) {
+            $memberIds[$member['id']] = $member;
+        }
+
+        if (0 == $roles['item_number']) {
+            $warnings->add(new NoRolesWarning());
+        }
+
+        foreach ($roles['items'] as $role) {
+            foreach ($roleResource->getWarnings($role['id']) as $warning) {
+                $warnings->add($warning);
+            };
+
+            $principals = $roleResource->getPrincipals($id);
+            if ($principals['item_number']) {
+                foreach ($principals['items'] as $principal) {
+                    $principalId = $principal['principal_id'];
+                    if (array_key_exists($principalId, $memberIds)) {
+                        unset($memberIds[$principalId]);
+                    }
+                }
+            }
+        }
+
+        foreach ($memberIds as $memberId) {
+            $warnings->add(new RoleLessMemberWarning($memberId['display_name']." &lt;".$memberId['fedid']."&gt;"));
+        }
+
+        return $warnings;
     }
 
     /**

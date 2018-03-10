@@ -1226,6 +1226,22 @@ class OrganizationController extends BaseController
     }
 
     /**
+     * @Route("/{id}/warnings")
+     * @param string $id
+     *
+     * @return JsonResponse
+     */
+    public function getWarnings($id)
+    {
+        $organization = $this->get('organization');
+        $serializer = $this->get('serializer');
+        $data = $organization->getWarnings($id, array("roleResource" => $this->get('role')));
+        $serializedData = $serializer->serialize($data, 'json');
+
+        return new JsonResponse($serializedData);
+    }
+
+    /**
      * @param $organization
      * @return \Symfony\Component\Form\Form
      */

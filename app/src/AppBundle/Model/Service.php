@@ -2,6 +2,12 @@
 
 namespace AppBundle\Model;
 
+use AppBundle\Tools\Warning\DisabledServiceWarning;
+use AppBundle\Tools\Warning\OrphanPermissionSetWarning;
+use AppBundle\Tools\Warning\OrphanPermissionWarning;
+use AppBundle\Tools\Warning\PendingLinkWarning;
+use AppBundle\Tools\Warning\WarningableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use GuzzleHttp\Client;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -9,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
  * Class Service
  * @package AppBundle\Model
  */
-class Service extends AbstractBaseResource
+class Service extends AbstractBaseResource implements WarningableInterface
 {
     protected $pathName = 'services';
 
@@ -358,6 +364,73 @@ class Service extends AbstractBaseResource
     public function getHistory(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 500, string $tags = null)
     {
         return $this->getCollection($this->pathName.'/'.$id.'/news', $verbose, $offset, $pageSize, $tags);
+    }
+
+    /**
+     * @param string $id
+     * @param array  $resources
+     *
+     * @return ArrayCollection
+     */
+    public function getWarnings($id, array $resources)
+    {
+        $warnings = new ArrayCollection();
+
+        $entitlements = $this->getEntitlements($id);
+        $entitlementIds = array();
+        foreach ($entitlements['items'] as $entitlement) {
+            $entitlementIds[$entitlement['id']] = $entitlement;
+        }
+
+        $entitlementPacks = $this->getEntitlementPacks($id);
+        $entitlementPackIds = array();
+        foreach ($entitlementPacks['items'] as $entitlementPack) {
+            $entitlementPackIds[$entitlementPack['id']] = $entitlementPack;
+        }
+
+        /** @var Link $linkResource */
+        $linkResource = $resources['linkResource'];
+        $links = $this->getLinksOfService($id);
+        foreach ($links['items'] as $link) {
+            if ('pending' == $link['status']) {
+                $warnings->add(new PendingLinkWarning('Organization: '.$link['organization_id']));
+            }
+
+            $linkEntitlements = $linkResource->getEntitlements($link['id']);
+            foreach ($linkEntitlements['items'] as $linkEntitlement) {
+                if (array_key_exists($linkEntitlement['id'], $entitlementIds)) {
+                    unset($entitlementIds[$linkEntitlement['id']]);
+                }
+            }
+
+            $linkEntitlementPacks = $linkResource->getEntitlementPacks($link['id']);
+            foreach ($linkEntitlementPacks['items'] as $entitlementPack) {
+                if (array_key_exists($entitlementPack['id'], $entitlementPackIds)) {
+                    unset($entitlementPackIds[$entitlementPack['id']]);
+                }
+
+                foreach ($entitlementPack['entitlement_ids'] as $entitlementId) {
+                    if (array_key_exists($entitlementId, $entitlementIds)) {
+                        unset($entitlementIds[$entitlementId]);
+                    }
+                }
+            }
+        }
+
+        foreach ($entitlementIds as $entitlementId) {
+            $warnings->add(new OrphanPermissionWarning($entitlementId['name']));
+        }
+
+        foreach ($entitlementPackIds as $entitlementPackId) {
+            $warnings->add(new OrphanPermissionSetWarning($entitlementPackId['name']));
+        }
+
+        $service = $this->get($id);
+        if (! $service['is_enabled']) {
+            $warnings->add(new DisabledServiceWarning());
+        }
+
+        return $warnings;
     }
 
     /**

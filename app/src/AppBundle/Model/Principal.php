@@ -169,7 +169,7 @@ class Principal extends AbstractBaseResource
     }
 
     /**
-    * Get the history of the principal
+    * Get the entitlements of the principal
     * @param string $verbose
     * @return array
     */

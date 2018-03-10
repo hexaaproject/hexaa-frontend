@@ -1,6 +1,9 @@
 <?php
 namespace AppBundle\Model;
 
+use AppBundle\Tools\Warning\MemberLessRoleWarning;
+use AppBundle\Tools\Warning\PermissionLessRoleWarning;
+use Doctrine\Common\Collections\ArrayCollection;
 use GuzzleHttp\Client;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -91,5 +94,31 @@ class Role extends AbstractBaseResource
     public function setPrincipals(string $id, array $principals)
     {
         return $this->putCall($this->pathName.'/'.$id.'/principal', $principals);
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return ArrayCollection
+     */
+    public function getWarnings($id)
+    {
+        $warnings = new ArrayCollection();
+
+        $entitlements = $this->getEntitlements($id);
+        if (0 == $entitlements['item_number']) {
+            $role = $this->get($id);
+            $warning = new PermissionLessRoleWarning($role['name']);
+            $warnings->add($warning);
+        }
+
+        $principals = $this->getPrincipals($id);
+        if (0 == $principals['item_number']) {
+            $role = $this->get($id);
+            $warning = new MemberLessRoleWarning($role['name']);
+            $warnings->add($warning);
+        }
+
+        return $warnings;
     }
 }
