@@ -69,9 +69,11 @@
         <div class="col-sm-1"></div>
         <div class="accountbutton-form pull-right"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="/img/account_history.svg"/><br/><br/>Account history</a></div>
         </div>
-        <div class="col-sm-13" style="margin-top: 12px; margin-left: 35px">
-            {{ include('::accordions.html.twig', {profile: 'true', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter:'null', heading: "Expected attributes of services", variant: "light", items: attributeValuesToAccordion }) }}
-        </div>
+        {% if attributeValuesToAccordion is not empty %}
+            <div class="col-sm-13" style="margin-top: 12px; margin-left: 35px">
+                {{ include('::accordions.html.twig', {profile: 'true', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter:'null', heading: "Expected attributes of services", variant: "light", items: attributeValuesToAccordion }) }}
+            </div>
+        {% endif %}
 </div>
     {% endblock %}
 {% endblock %}

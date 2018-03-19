@@ -66,9 +66,13 @@ class ProfileController extends BaseController
         }
 
         $services = $this->get('service')->cget();
+        $servicesEnabled = array();
         $attributespecs = array();
         $attributespecsdetails = array ();
         foreach ($services['items'] as $service) {
+            if ($service['is_enabled'] == true) {
+                array_push($servicesEnabled, $service);
+            }
             $attributespecsofservice = $this->get('service')->getAttributeSpecs($service['id']);
             $attributespecarray = array();
             $i = 0;
@@ -95,7 +99,7 @@ class ProfileController extends BaseController
             array_push($attributevaluearray[$attributevalueforprincipal['attribute_spec_id']], $attributevalueforprincipal);
         }
 
-        $attributeValuesToAccordion = $this->attributeValuesToAccordion($attributevaluearray, $attributespecsdetails, $services, $request);
+        $attributeValuesToAccordion = $this->attributeValuesToAccordion($attributevaluearray, $attributespecsdetails, $servicesEnabled, $request);
         if (false === $attributeValuesToAccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
             return $this->redirectToRoute('app_profile_index', array());
         }
@@ -180,8 +184,7 @@ class ProfileController extends BaseController
     {
         $attributevaluesAccordion = array();
         $formFactory = Forms::createFormFactory();
-
-        foreach ($services['items'] as $service) {
+        foreach ($services as $service) {
             $claim = false;
             $servicespecs = $this->get('service')->getAttributeSpecs($service['id']);
             if ($servicespecs['item_number'] != 0) {
