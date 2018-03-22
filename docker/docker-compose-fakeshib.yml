@@ -19,7 +19,7 @@ services:
         - SYMFONY__LOGS_DIR=/tmp/symfony/logs
         - LOGFILES=/tmp/logs/dev/dev.log
   hexaa-backend:
-    image: hexaaproject/hexaa-backend:for-dev-7.1
+    image: hexaaproject/hexaa-backend:for-dev
     ports:
         - "8081:80"
     depends_on:
