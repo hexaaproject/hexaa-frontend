@@ -7,12 +7,12 @@ usage in twig:
 #}
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $.ajax({
             url: '{{ url }}',
             method: 'POST',
             dataType: 'json'
-        }).done(function(data) {
+        }).done(function (data) {
             var warningDiv = $('#warnings');
             $.each(JSON.parse(data), function (index, warning) {
                 var list = $('<ul/>');
@@ -39,11 +39,13 @@ usage in twig:
     });
 </script>
 
-<div id="warning-div" class="flash-warning flash col-sm-offset-2 col-sm-11" style="display: none">
-    <div data-toggle="collapse" data-target="#warnings" style="cursor: pointer;">
-        <i class="material-icons text-warning" style="font-size: 2rem;">warning</i> There are some warnings!
+<div class="row">
+    <div id="warning-div" class="flash-warning flash col-sm-offset-2 col-sm-11" style="display: none">
+        <div data-toggle="collapse" data-target="#warnings" style="cursor: pointer;">
+            <i class="material-icons text-warning" style="font-size: 2rem;">warning</i> There are some warnings!
             <span class="pull-right"><i class="material-icons" style="font-size: 2rem;">arrow_drop_down</i></span>
-    </div>
-    <div id="warnings" class="collapse">
+        </div>
+        <div id="warnings" class="collapse">
+        </div>
     </div>
 </div>
