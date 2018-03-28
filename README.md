@@ -143,3 +143,11 @@ Validálások a View rétegben (javascript, jquery)
 A base.html.twig-ben már betöltjük a validáló rendszert, leírás itt van:
 
 https://jqueryvalidation.org/
+
+Github szelet
+-------------
+
+git remote add github git@github.com:hexaaproject/hexaa-newui.git
+csak az app könyvtárat publikáljuk:
+
+git subtree push --prefix app github master
