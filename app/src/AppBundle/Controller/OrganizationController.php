@@ -872,6 +872,7 @@ class OrganizationController extends BaseController
      */
     public function changeroleAction($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $organization = $this->getOrganization($id);
 
         try {
@@ -889,9 +890,9 @@ class OrganizationController extends BaseController
                 foreach ($roleIds as $roleId) {
                     foreach ($principalIds as $principalId) {
                         if ('add' == $action) {
-                            $roleResource->putPrincipal($roleId, $principalId);
+                            $roleResource->putPrincipal($hexaaAdmin, $roleId, $principalId);
                         } elseif ('remove' == $action) {
-                            $roleResource->deletePrincipal($roleId, $principalId);
+                            $roleResource->deletePrincipal($hexaaAdmin, $roleId, $principalId);
                         } else {
                             throw new \AppBundle\Exception("Invalid action: ".$action);
                         }
@@ -917,10 +918,11 @@ class OrganizationController extends BaseController
      */
     public function roleDeleteAction($orgId, $id)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $organization = $this->getOrganization($orgId);
 
         $organizationResource = $this->get('role');
-        $organizationResource->delete($id);
+        $organizationResource->delete($hexaaAdmin, $id);
         $this->get('session')->getFlashBag()->add('success', 'The role has been deleted.');
 
         return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));

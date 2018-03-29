@@ -1857,7 +1857,7 @@ class ServiceController extends BaseController
     public function deleteAction($id)
     {
         $serviceResource = $this->get('service');
-        $serviceResource->delete($id);
+        $serviceResource->delete($this->get('session')->get('hexaaAdmin'), $id);
 
         return $this->redirectToRoute("homepage");
     }
