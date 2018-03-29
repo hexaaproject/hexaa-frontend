@@ -1775,12 +1775,13 @@ class ServiceController extends BaseController
      */
     public function removeConnectedOrganizations($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $linkIds = $request->get('linkId');
         $errors = array();
         $errormessages = array();
         foreach ($linkIds as $linkId) {
             try {
-                $this->get('link')->deleteLink($linkId);
+                $this->get('link')->deleteLink($hexaaAdmin, $linkId);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -1808,6 +1809,7 @@ class ServiceController extends BaseController
      */
     public function acceptConnectedOrganizations($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $linkIds = $request->get('linkId');
         $errors = array();
         $errormessages = array();
@@ -1815,19 +1817,19 @@ class ServiceController extends BaseController
             try {
                 //get all organization link
                // $requests = $this->get('service')->getLinkRequests($id);
-                $request =  $this->get('link')->get($linkId);
+                $request =  $this->get('link')->get($hexaaAdmin, $linkId);
              //   foreach ($requests['items'] as $request) {
                 $data = array();
                 $data['service'] = $request['service_id'];
                 $data['organization'] = $request['organization_id'];
                 $entitlementpacksIds = array();
-                $entitlementpacks = $this->get('link')->getEntitlementPacks($request['id']);
+                $entitlementpacks = $this->get('link')->getEntitlementPacks($hexaaAdmin, $request['id']);
                 foreach ($entitlementpacks['items'] as $entitlementpack) {
                     array_push($entitlementpacksIds, $entitlementpack['id']);
                 }
                 $data['entitlement_packs'] = $entitlementpacksIds;
                 $data['status'] = "accepted";
-                $this->get('link')->editLink($request['id'], $data);
+                $this->get('link')->editLink($hexaaAdmin, $request['id'], $data);
               //  }
             } catch (\Exception $e) {
                 $errors[] = $e;
