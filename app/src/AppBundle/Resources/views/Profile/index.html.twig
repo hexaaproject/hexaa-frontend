@@ -12,7 +12,6 @@
         {% endblock %}
 
         <script>
-
             function property() {
                 $(".noedit").addClass('hidden');
                 $(".edit").removeClass('hidden');
@@ -22,7 +21,6 @@
                 $(".noedit").removeClass('hidden');
                 $(".edit").addClass('hidden');
             }
-
         </script>
 <div class="container">
     {% for flashMessage in app.session.flashbag.get('error') %}

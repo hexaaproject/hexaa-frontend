@@ -11,15 +11,17 @@ class AttributeSpec extends AbstractBaseResource
     /**
      *GET attribute specifications
      *
-     * @param string $verbose  verbose
-     * @param int    $offset   offset
-     * @param int    $pageSize pagesize
+     * @param string $hexaaAdmin Admin hat
+     * @param string $verbose    verbose
+     * @param int    $offset     offset
+     * @param int    $pageSize   pagesize
      * @return array
      */
-    public function getAttributeSpec(string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    public function getAttributeSpec(string $hexaaAdmin, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
         return $this->getCollection(
             $this->pathName,
+            $hexaaAdmin,
             $verbose,
             $offset,
             $pageSize
@@ -46,16 +48,18 @@ class AttributeSpec extends AbstractBaseResource
     /**
      * GET services linked to attribute value
      *
-     * @param string $id       ID of service
-     * @param string $verbose  One of minimal, normal or expanded
-     * @param int    $offset   paging: item to start from
-     * @param int    $pageSize paging: number of items to return
+     * @param string $hexaaAdmin Admin hat
+     * @param string $id         ID of service
+     * @param string $verbose    One of minimal, normal or expanded
+     * @param int    $offset     paging: item to start from
+     * @param int    $pageSize   paging: number of items to return
      * @return array
      */
-    public function getServicesLinkedToAttributeSpec(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 1000)
+    public function getServicesLinkedToAttributeSpec(string $hexaaAdmin, string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 1000)
     {
         return $this->getCollection(
             $this->pathName.'/'.$id.'/services',
+            $hexaaAdmin,
             $verbose,
             $offset,
             $pageSize

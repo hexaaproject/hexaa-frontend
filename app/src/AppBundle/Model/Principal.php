@@ -15,43 +15,46 @@ class Principal extends AbstractBaseResource
     /**
      * GET the current Principal
      *
+     * @param string $hexaaAdmin Admin hat
      * @param string $verbose    One of minimal, normal or expanded
      * @param string $hexaatoken hexaa api token
      * @return array
      */
-    public function getSelf(string $verbose = "normal", $hexaatoken = null)
+    public function getSelf(string $hexaaAdmin, string $verbose = "normal", $hexaatoken = null)
     {
         if ($hexaatoken) {
             $this->token = $hexaatoken;
         }
 
-        return $this->getSingular($this->pathName.'/self', $verbose);
+        return $this->getSingular($this->pathName.'/self', $hexaaAdmin, $verbose);
     }
 
     /**
      * GET info about Principal
      *
-     * @param string $id      Id of principal
-     * @param string $verbose One of minimal, normal or expanded
+     * @param string $hexaaAdmin Admin hat
+     * @param string $id         Id of principal
+     * @param string $verbose    One of minimal, normal or expanded
      * @return array
      */
-    public function getPrincipalInfo(string $id, string $verbose = "normal")
+    public function getPrincipalInfo(string $hexaaAdmin, string $id, string $verbose = "normal")
     {
-        return $this->getSingular('principals'.'/'.$id.'/id', $verbose);
+        return $this->getSingular('principals'.'/'.$id.'/id', $hexaaAdmin, $verbose);
     }
 
 
     /**
      * GET attribute values of the current Principal
      *
-     * @param string $verbose  One of minimal, normal or expanded
-     * @param int    $offset   paging: item to start from
-     * @param int    $pageSize paging: number of items to return
+     * @param string $hexaaAdmin Admin hat
+     * @param string $verbose    One of minimal, normal or expanded
+     * @param int    $offset     paging: item to start from
+     * @param int    $pageSize   paging: number of items to return
      * @return array
      */
-    public function getAttributeValues(string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    public function getAttributeValues(string $hexaaAdmin, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection($this->pathName.'/attributevalueprincipal', $verbose, $offset, $pageSize);
+        return $this->getCollection($this->pathName.'/attributevalueprincipal', $hexaaAdmin, $verbose, $offset, $pageSize);
     }
 
     /**
@@ -71,13 +74,14 @@ class Principal extends AbstractBaseResource
     /**
      * Delete principal
      *
+     * @param string $hexaaAdmin Admin hat
      * @param string $admin
      * @param string $pid
      * @return array
      */
-    public function deletePrincipal(string $admin, string $pid)
+    public function deletePrincipal(string $hexaaAdmin, string $admin, string $pid)
     {
-        if ($admin == "1") {
+        if ($admin == "1" || $hexaaAdmin == "true") {
             $admin = "true";
         }
         $id = (int) ($pid);
@@ -99,12 +103,12 @@ class Principal extends AbstractBaseResource
     /**
      * Edit principal properties
      *
-     * @param string $admin
+     * @param string $hexaaAdmin
      * @param string $pid
      * @param array  $data
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function editPrincipal(string $admin, string $pid, array $data)
+    public function editPrincipal(string $hexaaAdmin, string $pid, array $data)
     {
         $response = null;
         $id = (int) ($pid);
@@ -117,7 +121,7 @@ class Principal extends AbstractBaseResource
             $response = $this->putCall($path, $data);
         }*/
 
-        $response = $this->patchCall($path, $data);
+        $response = $this->patchCall($path, $data, $hexaaAdmin);
 
         return $response;
     }
@@ -125,56 +129,61 @@ class Principal extends AbstractBaseResource
     /**
      * Principal is admin or not?
      *
-     * @param string $verbose One of minimal, normal or expanded
+     * @param string $hexaaAdmin Admin hat
+     * @param string $verbose    One of minimal, normal or expanded
      * @return array
      */
-    public function isAdmin(string $verbose = "normal")
+    public function isAdmin(string $hexaaAdmin, string $verbose = "normal")
     {
-        return $this->getSingular($this->pathName.'/isadmin', $verbose);
+        return $this->getSingular($this->pathName.'/isadmin', $hexaaAdmin, $verbose);
     }
 
     /**
      * Get the history of the principal
+     * @param string $hexaaAdmin Admin hat
      * @param string $verbose
      * @param int    $offset
      * @param int    $pageSize
      * @return array
      */
-    public function getHistory(string $verbose = "normal", int $offset = 0, int $pageSize = 500)
+    public function getHistory(string $hexaaAdmin, string $verbose = "normal", int $offset = 0, int $pageSize = 500)
     {
         //$id = (int) ($pid);
-        return $this->getCollection($this->pathName.'/news', $verbose, $offset, $pageSize);
+        return $this->getCollection($this->pathName.'/news', $hexaaAdmin, $verbose, $offset, $pageSize);
     }
 
     /**
     * List organizations where user is manager
     *
-    * @param string $verbose One of minimal, normal or expanded
+    * @param string $hexaaAdmin Admin hat
+    * @param string $verbose    One of minimal, normal or expanded
     * @return array
     */
-    public function orgsWhereUserIsManager(string $verbose = "normal")
+    public function orgsWhereUserIsManager(string $hexaaAdmin, string $verbose = "normal")
     {
-        return $this->getSingular('manager/organizations', $verbose);
+        return $this->getSingular('manager/organizations', $hexaaAdmin, $verbose);
     }
 
     /**
     * List organizations where user is manager
     *
-    * @param string $verbose One of minimal, normal or expanded
+    * @param string $hexaaAdmin Admin hat
+    * @param string $verbose    One of minimal, normal or expanded
     * @return array
     */
-    public function servsWhereUserIsManager(string $verbose = "normal")
+    public function servsWhereUserIsManager(string $hexaaAdmin, string $verbose = "normal")
     {
-        return $this->getSingular('manager/services', $verbose);
+        return $this->getSingular('manager/services', $hexaaAdmin, $verbose);
     }
 
     /**
     * Get the entitlements of the principal
+    * @param string $hexaaAdmin Admin hat
     * @param string $verbose
     * @return array
     */
-    public function getEntitlements(string $verbose = "normal")
+    public function getEntitlements(string $hexaaAdmin, string $verbose = "normal")
     {
-        return $this->getCollection($this->pathName.'/entitlements', $verbose);
+        return $this->getCollection($this->pathName.'/entitlements', $hexaaAdmin, $verbose);
     }
 }

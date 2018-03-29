@@ -29,8 +29,9 @@ class ProfileController extends BaseController
      */
     public function indexAction(Request $request)
     {
-        $user = $this->get('principal')->getSelf();
-        $admin = $this->get('principal')->isAdmin()["is_admin"];
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $user = $this->get('principal')->getSelf($hexaaAdmin);
+        $admin = $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"];
 
         $propertiesDatas["principalFedID"] = $user["fedid"];
         $propertiesDatas["principalName"] = $user["display_name"];
@@ -60,12 +61,12 @@ class ProfileController extends BaseController
             $modified = array('display_name' => $data['profile_properties']['principalName'],
               'email' => $data['profile_properties']['principalEmail'], );
 
-            $this->get('principal')->editPrincipal($admin, $user['id'], $modified);
+            $this->get('principal')->editPrincipal($hexaaAdmin, $user['id'], $modified);
 
             return $this->redirect($request->getUri());
         }
 
-        $services = $this->get('service')->cget();
+        $services = $this->get('service')->cget($hexaaAdmin);
         $servicesEnabled = array();
         $attributespecs = array();
         $attributespecsdetails = array ();
@@ -73,12 +74,12 @@ class ProfileController extends BaseController
             if ($service['is_enabled'] == true) {
                 array_push($servicesEnabled, $service);
             }
-            $attributespecsofservice = $this->get('service')->getAttributeSpecs($service['id']);
+            $attributespecsofservice = $this->get('service')->getAttributeSpecs($hexaaAdmin, $service['id']);
             $attributespecarray = array();
             $i = 0;
             $len = $attributespecsofservice['item_number'];
             foreach ($attributespecsofservice['items'] as $attributespecofservice) {
-                array_push($attributespecarray, $this->get('attribute_spec')->get($attributespecofservice['attribute_spec_id']));
+                array_push($attributespecarray, $this->get('attribute_spec')->get($hexaaAdmin, $attributespecofservice['attribute_spec_id']));
                 if ($i == $len -1) {
                     $attributespecsdetails[$attributespecofservice['service_id']] = $attributespecarray;
                 }
@@ -86,12 +87,12 @@ class ProfileController extends BaseController
             }
             array_push($attributespecs, $attributespecsofservice);
         }
-        $attributevaluesforprincipal = $this->get('principal')->getAttributeValues('normal', 0, 500);
+        $attributevaluesforprincipal = $this->get('principal')->getAttributeValues($hexaaAdmin, 'normal', 0, 500);
         $attributespecids = array();
         $linkedservices = array();
         $attributevaluearray = null;
         foreach ($attributevaluesforprincipal['items'] as $attributevalueforprincipal) {
-            $linkedservices[$attributevalueforprincipal['id']] = $this->get('attribute_value_principal')->getServicesLinkedToAttributeValue($attributevalueforprincipal['id']);
+            $linkedservices[$attributevalueforprincipal['id']] = $this->get('attribute_value_principal')->getServicesLinkedToAttributeValue($hexaaAdmin, $attributevalueforprincipal['id']);
             if (! in_array($attributevalueforprincipal['attribute_spec_id'], $attributespecids)) {
                 $attributevaluearray[$attributevalueforprincipal['attribute_spec_id']] = array();
                 array_push($attributespecids, $attributevalueforprincipal['attribute_spec_id']);
@@ -110,10 +111,10 @@ class ProfileController extends BaseController
               'propertiesbox' => $this->getPropertiesBox(),
               'main' => $user,
               'profilePropertiesForm' => $profilePropertiesForm->createView(),
-              "organizations" => $this->get('organization')->cget(),
+              "organizations" => $this->get('organization')->cget($hexaaAdmin),
               "services" => $services,
               "attributeValuesToAccordion" => $attributeValuesToAccordion,
-              'admin' => $this->get('principal')->isAdmin()["is_admin"],
+              'admin' => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
               'organizationsWhereManager' => $this->orgWhereManager(),
               'manager' => "false",
               'ismanager' => "true",
@@ -129,11 +130,12 @@ class ProfileController extends BaseController
      */
     public function historyAction()
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
 
         return array(
-            "organizations" => $this->get('organization')->cget(),
-            "services" => $this->get('service')->cget(),
-            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+            "organizations" => $this->get('organization')->cget($hexaaAdmin),
+            "services" => $this->get('service')->cget($hexaaAdmin),
+            "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
             'organizationsWhereManager' => $this->orgWhereManager(),
             'manager' => "false",
         );
@@ -147,7 +149,7 @@ class ProfileController extends BaseController
      */
     public function historyJSONAction($offset = null, $pageSize = 25)
     {
-        $data = $this->get('principal')->getHistory();
+        $data = $this->get('principal')->getHistory($this->get('session')->get('hexaaAdmin'));
         for ($i = 0; $i < $data['item_number']; $i++) {
             $dateTime = new \DateTime($data['items'][$i]['created_at']);
             $data['items'][$i]['created_at'] =  "<div style='white-space: nowrap'>".$dateTime->format('Y-m-d H:i')."</div>";
@@ -168,7 +170,7 @@ class ProfileController extends BaseController
      */
     public function attributeDeleteAction($servId, $id, $attributespecid)
     {
-        $this->get('attribute_value_principal')->delete($id);
+        $this->get('attribute_value_principal')->delete($this->get('session')->get('hexaaAdmin'), $id);
 
         return $this->redirectToRoute("app_profile_index");
     }
@@ -182,11 +184,12 @@ class ProfileController extends BaseController
      */
     private function attributeValuesToAccordion($attributevaluearray, $attributespecs, $services, $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $attributevaluesAccordion = array();
         $formFactory = Forms::createFormFactory();
         foreach ($services as $service) {
             $claim = false;
-            $servicespecs = $this->get('service')->getAttributeSpecs($service['id']);
+            $servicespecs = $this->get('service')->getAttributeSpecs($hexaaAdmin, $service['id']);
             if ($servicespecs['item_number'] != 0) {
                 $data = [];
                 foreach ($attributespecs as $key => $values) {
@@ -292,7 +295,7 @@ class ProfileController extends BaseController
                 if ($form->isSubmitted()) {
                     try {
                         $data = $form->getData();
-                        $attributevalues = $this->get('principal')->getAttributeValues();
+                        $attributevalues = $this->get('principal')->getAttributeValues($hexaaAdmin);
                         $attributespecswithvalues = [];
                         $attributespecswithvalues2 = [];
                         $attributevaluesname = [];
@@ -303,11 +306,11 @@ class ProfileController extends BaseController
                             }
                             array_push($attributespecswithvalues2, $attributevalue['attribute_spec_id']);
                         }
-                        $principal = $this->get('principal')->getSelf();
+                        $principal = $this->get('principal')->getSelf($hexaaAdmin);
                         foreach ($data as $key => $value) {
                             if ($value != null) {
                                 $servicesids = [];
-                                $services = $this->get('attribute_spec')->getServicesLinkedToAttributeSpec($key);
+                                $services = $this->get('attribute_spec')->getServicesLinkedToAttributeSpec($hexaaAdmin, $key);
                                 if (!in_array($key, $attributespecswithvalues)) {
                                     foreach ($services['items'] as $servicesone) {
                                         array_push($servicesids, $servicesone["service_id"]);
@@ -324,12 +327,12 @@ class ProfileController extends BaseController
                                         if (is_array($value)) {
                                             foreach ($value as $onevalue) {
                                                 if ($onevalue != null) {
-                                                    $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $onevalue, $key, $principal['id']);
+                                                    $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $onevalue, $key, $principal['id']);
                                                 }
                                             }
                                         } else {
                                             if ($value != null) {
-                                                $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $value, $key, $principal['id']);
+                                                $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $value, $key, $principal['id']);
                                             }
                                         }
                                     } else {
@@ -337,14 +340,14 @@ class ProfileController extends BaseController
                                             foreach ($value as $onevalue) {
                                                 foreach ($servicesids as $servicesid) {
                                                     if ($onevalue != null) {
-                                                        $this->get('attribute_value_principal')->postAttributeValue([$servicesid], $onevalue, $key, $principal['id']);
+                                                        $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$servicesid], $onevalue, $key, $principal['id']);
                                                     }
                                                 }
                                             }
                                         } else {
                                             foreach ($servicesids as $servicesid) {
                                                 if ($value != null) {
-                                                    $this->get('attribute_value_principal')->postAttributeValue([$servicesid], $value, $key, $principal['id']);
+                                                    $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$servicesid], $value, $key, $principal['id']);
                                                 }
                                             }
                                         }
@@ -360,7 +363,7 @@ class ProfileController extends BaseController
                                                     }
                                                 }
                                                 $allvaluefrombackend = array();
-                                                $attributespectoname = $this->get('attribute_spec')->get($key);
+                                                $attributespectoname = $this->get('attribute_spec')->get($hexaaAdmin, $key);
                                                 foreach ($attributespecnames as $attributespecname) {
                                                     if ($attributespecname['key'] == $attributespectoname['name']) {
                                                         $allvaluefrombackend = $attributespecname['values'];
@@ -369,7 +372,7 @@ class ProfileController extends BaseController
                                                 $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser[0]);
                                                 if (empty($missingvalues) or $missingvalues[0] == "Még nincs érték") {
                                                     if ($onevalue != null) {
-                                                        $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $onevalue, $key, $principal['id']);
+                                                        $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $onevalue, $key, $principal['id']);
                                                     }
                                                 }
 
@@ -381,13 +384,13 @@ class ProfileController extends BaseController
                                                             if (($keyarray = array_search($form->getName(), $servids)) !== false) {
                                                                 unset($servids[$keyarray]);
                                                             }
-                                                            $this->get('attribute_value_principal')->patch($missingvalueid, [
+                                                            $this->get('attribute_value_principal')->patch($hexaaAdmin, $missingvalueid, [
                                                                 'services' => $servids,
                                                                 'principal' => $principal['id'],
                                                                 'attribute_spec' => $key,
                                                             ]);
                                                             if ($onevalue != null) {
-                                                                $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $onevalue, $key, $principal['id']);
+                                                                $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $onevalue, $key, $principal['id']);
                                                             }
                                                         }
                                                     }
@@ -403,7 +406,7 @@ class ProfileController extends BaseController
                                                 }
                                             }
                                             $allvaluefrombackend = array();
-                                            $attributespectoname = $this->get('attribute_spec')->get($key);
+                                            $attributespectoname = $this->get('attribute_spec')->get($hexaaAdmin, $key);
                                             foreach ($attributespecnames as $attributespecname) {
                                                 if ($attributespecname['key'] == $attributespectoname['name']) {
                                                     $allvaluefrombackend = $attributespecname['values'];
@@ -412,7 +415,7 @@ class ProfileController extends BaseController
                                             $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser);
                                             if (empty($missingvalues) or $missingvalues[0] == "Még nincs érték") {
                                                 if ($value != null) {
-                                                    $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $value, $key, $principal['id']);
+                                                    $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $value, $key, $principal['id']);
                                                 }
                                             }
 
@@ -424,13 +427,13 @@ class ProfileController extends BaseController
                                                         if (($keyarray = array_search($form->getName(), $servids)) !== false) {
                                                             unset($servids[$keyarray]);
                                                         }
-                                                        $this->get('attribute_value_principal')->patch($missingvalueid, [
+                                                        $this->get('attribute_value_principal')->patch($hexaaAdmin, $missingvalueid, [
                                                             'services' => $servids,
                                                             'principal' => $principal['id'],
                                                             'attribute_spec' => $key,
                                                         ]);
                                                         if ($value != null) {
-                                                            $this->get('attribute_value_principal')->postAttributeValue([$form->getName()], $value, $key, $principal['id']);
+                                                            $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $value, $key, $principal['id']);
                                                         }
                                                     }
                                                 }

@@ -13,16 +13,18 @@ class Entitlement extends AbstractBaseResource
     protected $pathName = 'entitlements';
 
     /**
+     * @param string $hexaaAdmin Admin hat
      * @param string $id
      * @param string $verbose
      * @param int    $offset
      * @param int    $pageSize
      * @return array
      */
-    public function getEntitlement(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    public function getEntitlement(string $hexaaAdmin, string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
         return $this->getCollection(
             $this->pathName.'/'.$id,
+            $hexaaAdmin,
             $verbose,
             $offset,
             $pageSize
@@ -31,11 +33,11 @@ class Entitlement extends AbstractBaseResource
 
     /**
      *DELETE permission
-     *
-     * @param  string $id ID of permission
+     * @param string $hexaaAdmin Admin hat
+     * @param string $id         ID of permission
      * @return response
      */
-    public function deletePermission(string $id)
+    public function deletePermission(string $hexaaAdmin, string $id)
     {
         $path = $this->pathName.'/'.$id;
 
@@ -43,6 +45,9 @@ class Entitlement extends AbstractBaseResource
             $path,
             [
                 'headers' => $this->getHeaders(),
+                'query' => array(
+                    'admin' => $hexaaAdmin,
+                ),
             ]
         );
 

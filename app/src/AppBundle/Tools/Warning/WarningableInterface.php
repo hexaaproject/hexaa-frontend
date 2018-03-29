@@ -16,10 +16,11 @@ namespace AppBundle\Tools\Warning;
 interface WarningableInterface
 {
     /**
+     * @param string $hexaaAdmin
      * @param string $id
      * @param array  $resources
      *
      * @return mixed
      */
-    public function getWarnings($id, array $resources);
+    public function getWarnings(string $hexaaAdmin, $id, array $resources);
 }

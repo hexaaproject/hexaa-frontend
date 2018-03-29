@@ -18,17 +18,18 @@ class AttributeValuePrincipal extends AbstractBaseResource
 
     /**
      * GET services linked to attribute value
-     *
-     * @param string $id       ID of service
-     * @param string $verbose  One of minimal, normal or expanded
-     * @param int    $offset   paging: item to start from
-     * @param int    $pageSize paging: number of items to return
+     * @param string $hexaaAdmin Admin hat
+     * @param string $id         ID of service
+     * @param string $verbose    One of minimal, normal or expanded
+     * @param int    $offset     paging: item to start from
+     * @param int    $pageSize   paging: number of items to return
      * @return array
      */
-    public function getServicesLinkedToAttributeValue(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 1000)
+    public function getServicesLinkedToAttributeValue(string $hexaaAdmin, string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 1000)
     {
         return $this->getCollection(
             $this->pathName.'/'.$id.'/services',
+            $hexaaAdmin,
             $verbose,
             $offset,
             $pageSize
@@ -37,20 +38,21 @@ class AttributeValuePrincipal extends AbstractBaseResource
 
     /**
      * Create attribute value for principal
+     * @param string $hexaaAdmin  Admin hat
      * @param array  $services
      * @param string $value
      * @param int    $attrspecid
      * @param int    $principalid
      * @return ResponseInterface
      */
-    public function postAttributeValue(array $services, string $value, int $attrspecid, int $principalid)
+    public function postAttributeValue(string $hexaaAdmin, array $services, string $value, int $attrspecid, int $principalid)
     {
         $attributevalue = array();
         $attributevalue["value"] = $value;
         $attributevalue["services"] = $services;
         $attributevalue["attribute_spec"] = $attrspecid;
        // $attributevalue["principal"] = $principalid;
-        $response = $this->postCall($this->pathName, $attributevalue);
+        $response = $this->postCall($this->pathName, $attributevalue, $hexaaAdmin);
 
         return $response;
     }
