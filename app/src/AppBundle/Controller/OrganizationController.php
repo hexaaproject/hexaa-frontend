@@ -1747,13 +1747,14 @@ class OrganizationController extends BaseController
      */
     private function sendInvitations($organization, $role, string $emails, string $messageInMail = null)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $emails = explode(',', preg_replace('/\s+/', '', $emails));
         $config = $this->getParameter('invitation_config');
         $mailer = $this->get('mailer');
 
         // create invitation
 
-        $tokenResolverLink = $this->get('invitation')->createHexaaInvitation($organization['id'], $this->get('router'), $role['id']);
+        $tokenResolverLink = $this->get('invitation')->createHexaaInvitation($hexaaAdmin, $organization['id'], $this->get('router'), $role['id']);
         try {
             $message = $mailer->createMessage()
                 ->setSubject($config['subject'])

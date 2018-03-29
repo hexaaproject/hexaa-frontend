@@ -314,7 +314,7 @@ class AdminController extends BaseController
                         $this->generateUrl(
                             'app_admin_contact',
                             array(
-                                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                                 "orgEmailSended" => $orgemailsended,
                             )
                         )
@@ -373,7 +373,7 @@ class AdminController extends BaseController
                         $this->generateUrl(
                             'app_admin_contact',
                             array(
-                                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                                 "submenu" => "true",
                                 "orgEmailSended" => $orgemailsended,
                             )
