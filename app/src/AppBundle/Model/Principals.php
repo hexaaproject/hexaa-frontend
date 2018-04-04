@@ -13,13 +13,14 @@ class Principals extends AbstractBaseResource
     protected $pathName = 'principals';
 
     /**
-     * @param string $id principal ID
+     * @param string $hexaaAdmin Admin hat
+     * @param string $id         principal ID
      * @return array
      */
-    public function getById($id)
+    public function getById(string $hexaaAdmin, $id)
     {
         $verbose = "normal";
 
-        return $this->getSingular($this->pathName.'/'.$id.'/id', $verbose);
+        return $this->getSingular($this->pathName.'/'.$id.'/id', $hexaaAdmin, $verbose);
     }
 }

@@ -44,7 +44,7 @@ class BaseController extends Controller
      */
     protected function orgWhereManager()
     {
-        return $this->get('principal')->orgsWhereUserIsManager();
+        return $this->get('principal')->orgsWhereUserIsManager($this->get('session')->get('hexaaAdmin'));
     }
 
     protected function getEntityShowPath($entity, $manager)

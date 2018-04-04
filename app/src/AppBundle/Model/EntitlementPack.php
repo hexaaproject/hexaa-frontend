@@ -17,15 +17,17 @@ class EntitlementPack extends AbstractBaseResource
     protected $pathName = 'entitlementpacks';
 
     /**
+     * @param string $hexaaAdmin Admin hat
      * @param string $verbose
      * @param int    $offset
      * @param int    $pageSize
      * @return array
      */
-    public function getPublic(string $verbose = 'normal', int $offset = 0, int $pageSize = 25)
+    public function getPublic(string $hexaaAdmin, string $verbose = 'normal', int $offset = 0, int $pageSize = 25)
     {
         return $this->getCollection(
             $this->pathName.'/public',
+            $hexaaAdmin,
             $verbose,
             $offset,
             $pageSize
@@ -33,16 +35,18 @@ class EntitlementPack extends AbstractBaseResource
     }
 
     /**
+     * @param string $hexaaAdmin Admin hat
      * @param string $id
      * @param string $verbose
      * @param int    $offset
      * @param int    $pageSize
      * @return array
      */
-    public function getEntitlementsOfEntitlementpack(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    public function getEntitlementsOfEntitlementpack(string $hexaaAdmin, string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
         return $this->getCollection(
             $this->pathName.'/'.$id.'/entitlements',
+            $hexaaAdmin,
             $verbose,
             $offset,
             $pageSize
@@ -50,16 +54,18 @@ class EntitlementPack extends AbstractBaseResource
     }
 
     /**
+     * @param string $hexaaAdmin Admin hat
      * @param string $id
      * @param string $verbose
      * @param int    $offset
      * @param int    $pageSize
      * @return array
      */
-    public function getEntitlementsDetails(string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
+    public function getEntitlementsDetails(string $hexaaAdmin, string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
         return $this->getCollection(
             $this->pathName.'/'.$id,
+            $hexaaAdmin,
             $verbose,
             $offset,
             $pageSize
@@ -68,33 +74,36 @@ class EntitlementPack extends AbstractBaseResource
 
     /**
      * Add permission to permissionset
-     * @param string $id     of entitlementpack
-     * @param string $permid of entitlement
+     * @param string $hexaaAdmin Admin hat
+     * @param string $id         of entitlementpack
+     * @param string $permid     of entitlement
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function addPermissionToPermissionSet(string $id, string $permid)
+    public function addPermissionToPermissionSet(string $hexaaAdmin, string $id, string $permid)
     {
-        return $this->putCall($this->pathName.'/'.$id.'/entitlements'.'/'.$permid, []);
+        return $this->putCall($this->pathName.'/'.$id.'/entitlements'.'/'.$permid, [], $hexaaAdmin);
     }
 
     /**
     * Sets permissions in permissionset
-    * @param string $id  of entitlementpack
-    * @param string $ids of entitlements
+    * @param string $hexaaAdmin Admin hat
+    * @param string $id         of entitlementpack
+    * @param string $ids        of entitlements
     * @return \Psr\Http\Message\ResponseInterface
     */
-    public function setPermissionsToPermissionSet(string $id, array $ids)
+    public function setPermissionsToPermissionSet(string $hexaaAdmin, string $id, array $ids)
     {
-        return $this->putCall($this->pathName.'/'.$id.'/entitlement', array("entitlements" => $ids));
+        return $this->putCall($this->pathName.'/'.$id.'/entitlement', array("entitlements" => $ids), $hexaaAdmin);
     }
 
     /**
      *DELETE permission set
      *
-     * @param  string $id ID of permission
+     * @param string $hexaaAdmin Admin hat
+     * @param string $id         ID of permission
      * @return response
      */
-    public function deletePermissionSet(string $id)
+    public function deletePermissionSet(string $hexaaAdmin, string $id)
     {
         $path = $this->pathName.'/'.$id;
 
@@ -102,6 +111,9 @@ class EntitlementPack extends AbstractBaseResource
             $path,
             [
                 'headers' => $this->getHeaders(),
+                'query' => array(
+                    'admin' => $hexaaAdmin,
+                ),
             ]
         );
 

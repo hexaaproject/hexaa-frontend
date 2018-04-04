@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Model\AbstractBaseResource;
+use AppBundle\Model\Organization;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,20 +28,32 @@ class DefaultController extends Controller
     {
         $organizations = [];
         $services = [];
-
+        $hexaaadmin = $this->get('session')->get('hexaaAdmin');
+        if ($hexaaadmin == null) {
+            $this->get('session')->set('hexaaAdmin', 'false');
+            $hexaaadmin = "false";
+        }
+        $hexaahat = $this->get('session')->get('hexaaHat');
+        if ($hexaahat == null) {
+            $this->get('session')->set('hexaaHat', 'notactive');
+            $hexaahat = "notactive";
+        }
         if ($this->getUser()) { // authenticated
             try {
-                $organizations = $this->get('organization')->cget();
-                $services = $this->get('service')->cget();
-                $adminorno = $this->get('principal')->isAdmin();
+                $organizations = $this->get('organization')->cget($hexaaadmin);
+                $services = $this->get('service')->cget($hexaaadmin);
+                $adminorno = $this->get('principal')->isAdmin($hexaaadmin);
                 $admin = $adminorno["is_admin"];
+                if ($admin == 'false' && $hexaaadmin == 'true') {
+                    $admin = "true";
+                }
             } catch (ServerException $e) {
                 return $this->render('error.html.twig', array('serverexception' => $e));
             }
         }
 
-        $servicesWhereManager = $this->get('principal')->servsWhereUserIsManager();
-        $organizationsWhereManager = $this->get('principal')->orgsWhereUserIsManager();
+        $servicesWhereManager = $this->get('principal')->servsWhereUserIsManager($hexaaadmin);
+        $organizationsWhereManager = $this->get('principal')->orgsWhereUserIsManager($hexaaadmin);
 
         return $this->render(
             'AppBundle:Default:index.html.twig',
@@ -52,8 +67,31 @@ class DefaultController extends Controller
                 'servicesWhereManager' => $servicesWhereManager,
                 'organizationsWhereManager' => $organizationsWhereManager,
                 'manager' => 'false',
+                'hexaaHat' => $hexaahat,
             )
         );
+    }
+
+    /**
+     * @Route("/hexaaAdmin/{hexaaHat}", defaults={"hexaaHat" = null})
+     * @param string $hexaaHat
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function hexaaAdminAction($hexaaHat)
+    {
+        if ($this->get('session')->get('hexaaAdmin') == 'false') {
+            $this->get('session')->set('hexaaAdmin', 'true');
+        } else {
+            $this->get('session')->set('hexaaAdmin', 'false');
+        }
+
+        if ($hexaaHat == 'active' && $this->get('session')->get('hexaaHat') == 'notactive') {
+            $this->get('session')->set('hexaaHat', 'active');
+        } elseif ($this->get('session')->get('hexaaHat') == 'active') {
+            $this->get('session')->set('hexaaHat', 'notactive');
+        }
+
+        return $this->redirect($this->generateUrl('homepage'));
     }
 
     /**

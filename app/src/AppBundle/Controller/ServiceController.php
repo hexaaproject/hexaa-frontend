@@ -43,6 +43,7 @@ class ServiceController extends BaseController
      */
     public function indexAction(Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
 
         // copy + paste from service.php
         try {
@@ -53,13 +54,13 @@ class ServiceController extends BaseController
                 $menu = 'main';
             }
             if ($serviceId) {
-                $service = $this->get('service')->get($serviceId);
+                $service = $this->get('service')->get($hexaaAdmin, $serviceId);
             } else {
                 $service = null;
             }
-            $organizations = $this->get('organization')->cget();
+            $organizations = $this->get('organization')->cget($hexaaAdmin);
 
-            $services = $this->get('service')->cget();
+            $services = $this->get('service')->cget($hexaaAdmin);
         } catch (ServerException $e) {
             return $this->render(
                 'error.html.twig',
@@ -76,6 +77,7 @@ class ServiceController extends BaseController
                 'menu' => $menu,
                 'manager' => "false",
                 'organizationsWhereManager' => $this->orgWhereManager(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -96,8 +98,9 @@ class ServiceController extends BaseController
                 'service' => $this->getService($id),
                 'manager' => "false",
                 'servsubmenubox' => $this->getServSubmenuPoints(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "admin" => $this->get('principal')->isAdmin($this->get('session')->get('hexaaAdmin'))["is_admin"],
                 'organizationsWhereManager' => $this->orgWhereManager(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -110,6 +113,7 @@ class ServiceController extends BaseController
      */
     public function enableAction($token, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $tokenString = $request->getQueryString();
         $prefix = 'token=';
         $token = null;
@@ -119,7 +123,7 @@ class ServiceController extends BaseController
         }
 
         try {
-            $this->get('service')->enableService($token);
+            $this->get('service')->enableService($hexaaAdmin, $token);
 
             $this->get('session')->getFlashBag()->add('success', 'Managed to enable the service!');
 
@@ -168,8 +172,9 @@ class ServiceController extends BaseController
                 'organizations' => $this->getOrganizations(),
                 'services' => $this->getServices(),
                 'manager' => "false",
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'organizationsWhereManager' => $this->orgWhereManager(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -183,6 +188,7 @@ class ServiceController extends BaseController
      */
     public function createAction(Request $request, $click = "false")
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $services = $this->getServices();
         $servicesNames = array();
         foreach ($services['items'] as $service) {
@@ -190,7 +196,7 @@ class ServiceController extends BaseController
         }
 
         $entityidsarray = array();
-        $entityids = $this->get('entity_id')->cget();
+        $entityids = $this->get('entity_id')->cget($hexaaAdmin);
         $keys = array_keys($entityids['items']);
         foreach ($keys as $key) {
             $entityidsarray[$key] = $key;
@@ -341,6 +347,7 @@ class ServiceController extends BaseController
                 if ($dataToBackend['entityid'] != null) {
                     // dump($dataToBackend); exit;
                     $service = $this->get('service')->create(
+                        $hexaaAdmin,
                         $dataToBackend["name"],
                         $dataToBackend["description"],
                         $dataToBackend["url"],
@@ -368,14 +375,14 @@ class ServiceController extends BaseController
                 $servid = $service['id'];
 
                   //add manager to the service
-                $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
-                $this->get('service')->putManager($servid, $self['id']);
-                $apiProperties = $this->get('service')->apget();
+                $self = $this->get('principal')->getSelf($hexaaAdmin, "normal", $this->getUser()->getToken());
+                $this->get('service')->putManager($hexaaAdmin, $servid, $self['id']);
+                $apiProperties = $this->get('service')->apget($hexaaAdmin);
                 $uriPrefix = $apiProperties['entitlement_base'];
-
                   // create permission
                 $permission = $this->get('service')->createPermission(
                     //$this->getParameter("hexaa_permissionprefix"),
+                    $hexaaAdmin,
                     $uriPrefix,
                     $servid,
                     $modifiedName,
@@ -386,6 +393,7 @@ class ServiceController extends BaseController
 
                   // create permissionset to permission
                 $permissionset = $this->get('service')->createPermissionSet(
+                    $hexaaAdmin,
                     $servid,
                     'default',
                     $this->get('entitlement_pack')
@@ -393,6 +401,7 @@ class ServiceController extends BaseController
 
                   //add permission to permissionset
                 $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                    $hexaaAdmin,
                     $permissionset['id'],
                     $permission['id']
                 );
@@ -400,6 +409,7 @@ class ServiceController extends BaseController
                 if ($dataToBackend['entitlementplus1'] != null) {
                     $permissionplus1 = $this->get('service')->createPermission(
                         //$this->getParameter("hexaa_permissionprefix"),
+                        $hexaaAdmin,
                         $uriPrefix,
                         $servid,
                         $modifiedNamePlus1,
@@ -409,6 +419,7 @@ class ServiceController extends BaseController
                     );
 
                     $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                        $hexaaAdmin,
                         $permissionset['id'],
                         $permissionplus1['id']
                     );
@@ -417,6 +428,7 @@ class ServiceController extends BaseController
                 if ($dataToBackend['entitlementplus2'] != null) {
                     $permissionplus2 = $this->get('service')->createPermission(
                         //$this->getParameter("hexaa_permissionprefix"),
+                        $hexaaAdmin,
                         $uriPrefix,
                         $servid,
                         $modifiedNamePlus2,
@@ -426,13 +438,14 @@ class ServiceController extends BaseController
                     );
 
                     $this->get('entitlement_pack')->addPermissionToPermissionSet(
+                        $hexaaAdmin,
                         $permissionset['id'],
                         $permissionplus2['id']
                     );
                 }
 
                   //generate token to permissionset
-                $permissionssets = $this->get('service')->getEntitlementPacks($servid, 'normal', 0, 10000)['items'];
+                $permissionssets = $this->get('service')->getEntitlementPacks($hexaaAdmin, $servid, 'normal', 0, 10000)['items'];
                 $permissionsetid = null;
                 foreach ($permissionssets as $permissionset) {
                     if ($permissionset['name'] == 'default') {
@@ -444,10 +457,10 @@ class ServiceController extends BaseController
                     "service" => $servid,
                     "entitlement_packs" => [$permissionsetid],
                 ];
-                $response = $this->get('link')->post($postarray);
+                $response = $this->get('link')->post($hexaaAdmin, $postarray);
                 $headers = $response->getHeader('Location');
                 $headerspartsary = explode("/", $headers[0]);
-                $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
+                $getlink = $this->get('link')->getNewLinkToken($hexaaAdmin, array_pop($headerspartsary));
 
                 return $this->redirect($this->generateUrl(
                     'app_service_createemail',
@@ -477,11 +490,12 @@ class ServiceController extends BaseController
                 'organizations' => $this->getOrganizations(),
                 'services' => $this->getServices(),
                 'manager' => "false",
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'click' => $click,
                 'clickback' => $clickback,
                 'firstpageerror' => $firstpageerror,
                 'organizationsWhereManager' => $this->orgWhereManager(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
         );
     }
@@ -497,8 +511,9 @@ class ServiceController extends BaseController
      */
     public function createEmailAction($servid, $token, Request $request, $click = "false")
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $service = $this->getService($servid);
-        $entityids = $this->get('entity_id')->cget();
+        $entityids = $this->get('entity_id')->cget($hexaaAdmin);
         //type, email, surName
         $contacts = array();
         foreach ($entityids['items'] as $key => $value) {
@@ -535,19 +550,20 @@ class ServiceController extends BaseController
                     }
                 }
             }
-            $this->get('service')->notifySP($servid, $contactsSelected);
+            $this->get('service')->notifySP($hexaaAdmin, $servid, $contactsSelected);
 
             return $this->render(
                 'AppBundle:Service:created.html.twig',
                 array(
-                    'newserv' => $this->get('service')->get($servid, "expanded"),
+                    'newserv' => $this->get('service')->get($hexaaAdmin, $servid, "expanded"),
                     'token' => $token,
                     'organizations' => $this->getOrganizations(),
                     'services' => $this->getServices(),
-                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                     'manager' => "false",
                     'click' => $click,
                     'organizationsWhereManager' => $this->orgWhereManager(),
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
             );
         }
@@ -559,10 +575,11 @@ class ServiceController extends BaseController
                   'emailForm' => $form->createView(),
                   'organizations' => $this->getOrganizations(),
                   'services' => $this->getServices(),
-                  "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                  "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                   'click' => $click,
                   'manager' => "false",
                   'organizationsWhereManager' => $this->orgWhereManager(),
+                  'hexaaHat' => $this->get('session')->get('hexaaHat'),
               )
           );
     }
@@ -576,8 +593,8 @@ class ServiceController extends BaseController
      */
     public function propertiesAction($id, Request $request)
     {
-
-        $entityids = $this->get('service')->getEntityIds();
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $entityids = $this->get('service')->getEntityIds($hexaaAdmin);
         $entityidskeys = array_keys($entityids);
         $choicearray = array();
         foreach ($entityidskeys as $entityID) {
@@ -630,7 +647,7 @@ class ServiceController extends BaseController
                 $modified = array('name' => $data['service_properties']['serviceName'],
                     'entityid' => $data['service_properties']['serviceSAML'], 'description' => $data['service_properties']['serviceDescription'],
                     'url' => $data['service_properties']['serviceURL'], );
-                $this->get('service')->patch($id, $modified);
+                $this->get('service')->patch($hexaaAdmin, $id, $modified);
 
                 return $this->redirect($request->getUri());
             }
@@ -653,7 +670,7 @@ class ServiceController extends BaseController
                 'org_short_name' => $data['service_owner']['serviceOwnerShortName'],
                 'org_description' => $data['service_owner']['serviceOwnerDescription'],
                 'org_url' => $data['service_owner']['serviceOwnerURL'], );
-            $this->get('service')->patch($id, $modified);
+            $this->get('service')->patch($hexaaAdmin, $id, $modified);
 
             return $this->redirect($request->getUri());
         }
@@ -671,7 +688,7 @@ class ServiceController extends BaseController
             $data = $request->request->all();
             $modified = array('priv_url' => $data['service_privacy']['servicePrivacyURL'],
                 'priv_description' => $data['service_privacy']['servicePrivacyDescription'], );
-            $this->get('service')->patch($id, $modified);
+            $this->get('service')->patch($hexaaAdmin, $id, $modified);
 
             return $this->redirect($request->getUri());
         }
@@ -690,9 +707,10 @@ class ServiceController extends BaseController
                 'propertiesform' => $formproperties->createView(),
                 'ownerform' => $formowner->createView(),
                 'privacyform' => $formprivacy->createView(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -706,6 +724,7 @@ class ServiceController extends BaseController
      */
     public function managersAction($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $service = $this->getService($id);
         $managers = $this->getManagers($service);
         $managersButtons = array(
@@ -738,13 +757,13 @@ class ServiceController extends BaseController
             $dataToBackend = $data;
             $dataToBackend['service'] = $id;
             $invitationResource = $this->get('invitation');
-            $invite = $invitationResource->sendInvitation($dataToBackend);
+            $invite = $invitationResource->sendInvitation($hexaaAdmin, $dataToBackend);
 
             $headers = $invite->getHeaders();
 
             try {
                 $invitationId = basename(parse_url($headers['Location'][0], PHP_URL_PATH));
-                $invitation = $invitationResource->get($invitationId);
+                $invitation = $invitationResource->get($hexaaAdmin, $invitationId);
             } catch (\Exception $e) {
                 throw $this->createNotFoundException('Invitation not found at backend');
             }
@@ -763,10 +782,11 @@ class ServiceController extends BaseController
                     "invite_link" => $inviteLink,
                     "inviteForm" => $form->createView(),
                     "sendInEmailForm" => $sendInEmailForm->createView(),
-                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                     'organizationsWhereManager' => $this->orgWhereManager(),
                     'manager' => "false",
                     'ismanager' => "true",
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
             );
         }
@@ -782,10 +802,11 @@ class ServiceController extends BaseController
                 'managers_buttons' => $managersButtons,
                 "inviteForm" => $form->createView(),
                 "sendInEmailForm" => $sendInEmailForm->createView(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => "true",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -856,7 +877,7 @@ class ServiceController extends BaseController
     {
         $invitationResource = $this->get('invitation');
         try {
-            $invitationResource->accept($token);
+            $invitationResource->accept($this->get('session')->get('hexaaAdmin'), $token);
         } catch (\Exception $e) {
             $statusCode = $e->getResponse()->getStatusCode();
             switch ($statusCode) {
@@ -888,13 +909,14 @@ class ServiceController extends BaseController
      */
     public function removemanagersAction($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $pids = $request->get('userId');
         $serviceResource = $this->get('service');
         $errors = array();
         $errormessages = array();
         foreach ($pids as $pid) {
             try {
-                $serviceResource->deleteMember($id, $pid);
+                $serviceResource->deleteMember($hexaaAdmin, $id, $pid);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -923,7 +945,7 @@ class ServiceController extends BaseController
      */
     public function createInvitationAction($id, Request $request)
     {
-
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         if (!$request->isXmlHttpRequest()) {
             return new JsonResponse(array('message' => 'You can access this only using Ajax!'), 400);
         }
@@ -942,13 +964,13 @@ class ServiceController extends BaseController
 
             $invitationResource = $this->get('invitation');
             $dataToBackend['service'] = $id;
-            $invite = $invitationResource->sendInvitation($dataToBackend);
+            $invite = $invitationResource->sendInvitation($hexaaAdmin, $dataToBackend);
 
             $headers = $invite->getHeaders();
 
             try {
                 $invitationId = basename(parse_url($headers['Location'][0], PHP_URL_PATH));
-                $invitation = $invitationResource->get($invitationId);
+                $invitation = $invitationResource->get($hexaaAdmin, $invitationId);
             } catch (\Exception $e) {
                 throw $this->createNotFoundException('Invitation not found at backend');
             }
@@ -973,6 +995,7 @@ class ServiceController extends BaseController
      */
     public function attributesAction($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $service = $this->getService($id);
         $attributes = $this->getServiceAttributes($service);
         $attributesButtons = array(
@@ -995,7 +1018,7 @@ class ServiceController extends BaseController
             $data = $request->request->all();
             $added = $data['service_add_attribute_specification']['specname'];
 
-            $this->get('service')->addAttributeSpec($id, $added);
+            $this->get('service')->addAttributeSpec($hexaaAdmin, $id, $added);
 
             return $this->redirect($request->getUri());
         }
@@ -1010,10 +1033,11 @@ class ServiceController extends BaseController
                 'attributes' => $attributes,
                 'attributes_buttons' => $attributesButtons,
                 'addAttributeSpecForm' => $form->createView(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => "true",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1033,7 +1057,7 @@ class ServiceController extends BaseController
         $errormessages = array();
         foreach ($asids as $asid) {
             try {
-                $serviceResource->deleteAttributeSpec($id, $asid);
+                $serviceResource->deleteAttributeSpec($this->get('session')->get('hexaaAdmin'), $id, $asid);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -1061,12 +1085,13 @@ class ServiceController extends BaseController
      */
     public function permissionsAction($id, Request $request, $permissionId, $action = null)
     {
-        $apiProperties = $this->get('service')->apget();
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $apiProperties = $this->get('service')->apget($hexaaAdmin);
         $uriPrefix = $apiProperties['entitlement_base'];
 
         $verbose = "expanded";
-        $allpermission = $this->get('service')->getEntitlements($id, $verbose);
-        $allallpermission = $this->get('service')->getEntitlements($id, $verbose, 0, 100000);
+        $allpermission = $this->get('service')->getEntitlements($hexaaAdmin, $id, $verbose);
+        $allallpermission = $this->get('service')->getEntitlements($hexaaAdmin, $id, $verbose, 0, 100000);
         $totalnumber = $allpermission['item_number'];
         $permissions = $allpermission['items'];
         $totalpages = ceil($totalnumber / 25);
@@ -1076,7 +1101,7 @@ class ServiceController extends BaseController
         $permissionsperpage = array();
         array_push($permissionsperpage, $permissions);
         for ($i = 1; $i < $totalpages; $i++) {
-            $permissionperpage = $this->get('service')->getEntitlements($id, $verbose, $offset, $pagesize);
+            $permissionperpage = $this->get('service')->getEntitlements($hexaaAdmin, $id, $verbose, $offset, $pagesize);
             array_push($permissionsperpage, $permissionperpage['items']);
             $offset = $offset +25;
         }
@@ -1116,7 +1141,7 @@ class ServiceController extends BaseController
                     'uri' => $data['service_create_permission']['permissionURL'],
                     'description' => $data['service_create_permission']['permissionDescription'],
                 );
-                $this->get('service')->createPermission($uriPrefix, $id, $modifiedName, $permisson['name'], $permisson['description'], $this->get('entitlement'));
+                $this->get('service')->createPermission($hexaaAdmin, $uriPrefix, $id, $modifiedName, $permisson['name'], $permisson['description'], $this->get('entitlement'));
                 $this->get('session')->getFlashBag()->add('success', 'Permission created succesfully.');
 
                 return $this->redirect($request->getUri());
@@ -1137,7 +1162,7 @@ class ServiceController extends BaseController
                 'allpermissions_accordion' => $this->allpermissionsToAccordion($allallpermission, $id),
                 'total_number' => $totalnumber,
                 'total_pages' => $totalpages,
-                'admin' => $this->get('principal')->isAdmin()["is_admin"],
+                'admin' => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'formCreatePermission' => $formCreatePermissions->createView(),
                 'action' => $action,
                 'uriprefix' => $uriPrefix,
@@ -1147,6 +1172,7 @@ class ServiceController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => $this->isManager($id),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1164,8 +1190,13 @@ class ServiceController extends BaseController
      */
     public function permissionssetsAction(Request $request, $id, $permissionsetId, $action, $token = null, $permissionsetname = null)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $manager = $this->isManager($id);
+        if ($hexaaAdmin == "true") {
+            $manager = "true";
+        }
         $service = $this->get('service');
-        $allpermissionset = $service->getEntitlementPacks($id);
+        $allpermissionset = $service->getEntitlementPacks($hexaaAdmin, $id);
         $permissionssets = $allpermissionset['items'];
         $totalnumber = $allpermissionset['item_number'];
         $totalpages = ceil($totalnumber / 25);
@@ -1173,16 +1204,16 @@ class ServiceController extends BaseController
         $pagesize = 25;
         $verbose = "normal";
         $permissionsetsperpage = array();
-        $allallpermissionset = $service->getEntitlementPacks($id, $verbose, 0, 10000);
+        $allallpermissionset = $service->getEntitlementPacks($hexaaAdmin, $id, $verbose, 0, 10000);
         array_push($permissionsetsperpage, $permissionssets);
         for ($i = 1; $i < $totalpages; $i++) {
-            $permissionsetperpage = $service->getEntitlementPacks($id, $verbose, $offset, $pagesize);
+            $permissionsetperpage = $service->getEntitlementPacks($hexaaAdmin, $id, $verbose, $offset, $pagesize);
             array_push($permissionsetsperpage, $permissionsetperpage['items']);
             $offset = $offset +25;
         }
 
         $permissions = array();
-        $servicepermissions = $service->getEntitlements($id, $verbose, 0, 10000);
+        $servicepermissions = $service->getEntitlements($hexaaAdmin, $id, $verbose, 0, 10000);
         foreach ($servicepermissions['items'] as $servicepermission) {
             $permissions[$servicepermission['id']] = $servicepermission['name'];
         }
@@ -1219,7 +1250,7 @@ class ServiceController extends BaseController
                 $permissionids = [];
                 if (count($data['service_create_permission_set']['permissions']) != 0) {
                     $iter = 0;
-                    $apiProperties = $this->get('service')->apget();
+                    $apiProperties = $this->get('service')->apget($hexaaAdmin);
                     foreach (array_unique($data['service_create_permission_set']['permissions']) as $permission) {
                         $iter = 0;
                         foreach ($servicepermissions['items'] as $servicepermission) {
@@ -1233,7 +1264,7 @@ class ServiceController extends BaseController
                         if ($iter == $servicepermissions['item_number']) {
                             $withoutAccent = $this->removeAccents($permission);
                             $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
-                            $newpermission = $service->createPermission($apiProperties['entitlement_base'], $id, $modifiedName, $permission, null, $this->get('entitlement'));
+                            $newpermission = $service->createPermission($hexaaAdmin, $apiProperties['entitlement_base'], $id, $modifiedName, $permission, null, $this->get('entitlement'));
                             array_push($permissionids, $newpermission['id']);
                         }
                     }
@@ -1246,10 +1277,10 @@ class ServiceController extends BaseController
                 );
 
                 if (count($data['service_create_permission_set']['permissions']) != 0) {
-                    $entitlementpack = $service->postPermissionSet($id, $permissonSet, $this->get('entitlement_pack'));
+                    $entitlementpack = $service->postPermissionSet($hexaaAdmin, $id, $permissonSet, $this->get('entitlement_pack'));
 
                     foreach ($permissionids as $permissionid) {
-                        $this->get('entitlement_pack')->addPermissionToPermissionSet($entitlementpack['id'], $permissionid);
+                        $this->get('entitlement_pack')->addPermissionToPermissionSet($hexaaAdmin, $entitlementpack['id'], $permissionid);
                     }
                 }
                 $this->get('session')->getFlashBag()->add('success', 'Permission set created succesfully.');
@@ -1274,14 +1305,15 @@ class ServiceController extends BaseController
                 'total_number' => $totalnumber,
                 'token' => $token,
                 'permissionsetname' => $permissionsetname,
-                'admin' => $this->get('principal')->isAdmin()["is_admin"],
+                'admin' => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'formCreatePermissionsSet' => $formCreatePermissionsSet->createView(),
                 'permissionsets' => $allallpermissionset,
                 'permissions' => $permissions,
                 'error' => $error,
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
-                'ismanager' => $this->isManager($id),
+                'ismanager' => $manager,
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1296,19 +1328,22 @@ class ServiceController extends BaseController
      */
     public function connectedOrganizationsAction($id, $token, Request $request)
     {
-
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $manager = $this->isManager($id);
+        if ($hexaaAdmin == "true") {
+            $manager = "true";
+        }
 
-        $requestslinks = $this->get('service')->getLinkRequests($id);
+        $requestslinks = $this->get('service')->getLinkRequests($hexaaAdmin, $id);
 
         $allData = array();
         foreach ($requestslinks['items'] as $requestlink) {
-            $allData[$requestlink['organization_id']]['name'] = $this->get('organization')->get($requestlink['organization_id'])['name'];
+            $allData[$requestlink['organization_id']]['name'] = $this->get('organization')->get($hexaaAdmin, $requestlink['organization_id'])['name'];
             $allData[$requestlink['organization_id']]['id'] = $requestlink['organization_id'];
             $allData[$requestlink['organization_id']]['service_id'] = $requestlink['service_id'];
             $allData[$requestlink['organization_id']]['status'] = $requestlink['status'];
             $allData[$requestlink['organization_id']]['link_id'] = $requestlink['id'];
-            $entitlementpacks = $this->get('link')->getEntitlementPacks($requestlink['id']);
+            $entitlementpacks = $this->get('link')->getEntitlementPacks($hexaaAdmin, $requestlink['id']);
 
             $entitlementpackNames = null;
             $i = 0;
@@ -1322,10 +1357,10 @@ class ServiceController extends BaseController
                 $i++;
             }
 
-            $entitlements = $this->get('link')->getEntitlements($requestlink['id']);
+            $entitlements = $this->get('link')->getEntitlements($hexaaAdmin, $requestlink['id']);
             $duplicate = array();
 
-            $entitlementsserv = $this->get('service')->getEntitlements($id, 'normal', 0, 100000);
+            $entitlementsserv = $this->get('service')->getEntitlements($hexaaAdmin, $id, 'normal', 0, 100000);
             foreach ($entitlementpacks['items'] as $entitlementpack) {
                 foreach ($entitlementpack['entitlement_ids'] as $entitlementid) {
                    /* array_push($entitlements['items'], $this->get('entitlement')->get($entitlementid));*/
@@ -1371,15 +1406,15 @@ class ServiceController extends BaseController
             }
         }
 
-        $entitlementpacks = $this->get('service')->getEntitlementPacks($id, 'normal', 0, 100000);
-        $entitlements = $this->get('service')->getEntitlements($id);
+        $entitlementpacks = $this->get('service')->getEntitlementPacks($hexaaAdmin, $id, 'normal', 0, 100000);
+        $entitlements = $this->get('service')->getEntitlements($hexaaAdmin, $id);
         $totalnumber = $entitlements['item_number'];
         $totalpages = ceil($totalnumber / 25);
         $offset = 25;
         $pagesize = 25;
         $verbose = "normal";
         for ($i = 1; $i < $totalpages; $i++) {
-            $entitlementmore = $this->get('service')->getEntitlements($id, $verbose, $offset, $pagesize);
+            $entitlementmore = $this->get('service')->getEntitlements($hexaaAdmin, $id, $verbose, $offset, $pagesize);
             foreach ($entitlementmore['items'] as $oneentitlementmore) {
                 array_push($entitlements['items'], $oneentitlementmore);
             }
@@ -1445,7 +1480,7 @@ class ServiceController extends BaseController
             );
         }
 
-        $links = $this->get('service')->getLinksOfService($id);
+        $links = $this->get('service')->getLinksOfService($hexaaAdmin, $id);
         $pendinglinkIDs = array();
         if ($links != null) {
             foreach ($links['items'] as $link) {
@@ -1458,7 +1493,7 @@ class ServiceController extends BaseController
         $allpendingdata = array();
         foreach ($pendinglinkIDs as $pendinglinkID) {
             $allpendingdata[$pendinglinkID]['link_id'] = $pendinglinkID;
-            $linkEntitlementpacks = $this->get('link')->getEntitlementPacks($pendinglinkID);
+            $linkEntitlementpacks = $this->get('link')->getEntitlementPacks($hexaaAdmin, $pendinglinkID);
             $linkEntitlementpacksNames = null;
             $i = 0;
             $len = count($linkEntitlementpacks['items']);
@@ -1471,11 +1506,11 @@ class ServiceController extends BaseController
                 $i++;
             }
 
-            $linkentitlements = $this->get('link')->getEntitlements($pendinglinkID);
+            $linkentitlements = $this->get('link')->getEntitlements($hexaaAdmin, $pendinglinkID);
 
             foreach ($linkEntitlementpacks['items'] as $linkEntitlementpack) {
                 foreach ($linkEntitlementpack['entitlement_ids'] as $entitlementid) {
-                    array_push($linkentitlements['items'], $this->get('entitlement')->get($entitlementid));
+                    array_push($linkentitlements['items'], $this->get('entitlement')->get($hexaaAdmin, $entitlementid));
                 }
             }
 
@@ -1492,7 +1527,7 @@ class ServiceController extends BaseController
                 $j++;
             }
 
-            $tokens = $this->get('link')->getTokens($pendinglinkID);
+            $tokens = $this->get('link')->getTokens($hexaaAdmin, $pendinglinkID);
             $linktokens = null;
             $i = 0;
             $len3 = count($tokens);
@@ -1584,7 +1619,7 @@ class ServiceController extends BaseController
                 }
                 $modified['entitlement_packs'] = $entitlementpackIds;
                 $modified['entitlements'] = $entitlementsIds;
-                $this->get('link')->editlink($data['link_id'], $modified);
+                $this->get('link')->editlink($hexaaAdmin, $data['link_id'], $modified);
 
                 return $this->redirect($request->getUri());
             }
@@ -1601,7 +1636,7 @@ class ServiceController extends BaseController
                 'organizations' => $this->getOrganizations(),
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'all_data' => $allData,
                 'allpending_data' => $allpendingdata,
@@ -1615,6 +1650,7 @@ class ServiceController extends BaseController
                 'manager' => $manager,
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1628,18 +1664,19 @@ class ServiceController extends BaseController
      */
     public function newOrgConnect($id, Request $request)
     {
-        $orglinks = $this->get('service')->getLinkRequests($id);
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $orglinks = $this->get('service')->getLinkRequests($hexaaAdmin, $id);
 
-        $entitlementpacks = $this->get('service')->getEntitlementPacks($id);
+        $entitlementpacks = $this->get('service')->getEntitlementPacks($hexaaAdmin, $id);
 
-        $entitlements = $this->get('service')->getEntitlements($id);
+        $entitlements = $this->get('service')->getEntitlements($hexaaAdmin, $id);
         $totalnumber = $entitlements['item_number'];
         $totalpages = ceil($totalnumber / 25);
         $offset = 25;
         $pagesize = 25;
         $verbose = "normal";
         for ($i = 1; $i < $totalpages; $i++) {
-            $entitlementmore = $this->get('service')->getEntitlements($id, $verbose, $offset, $pagesize);
+            $entitlementmore = $this->get('service')->getEntitlements($hexaaAdmin, $id, $verbose, $offset, $pagesize);
             foreach ($entitlementmore['items'] as $oneentitlementmore) {
                 array_push($entitlements['items'], $oneentitlementmore);
             }
@@ -1697,7 +1734,7 @@ class ServiceController extends BaseController
                 HiddenType::class
             );
         }
-        $currentPrincipal = $this->get('principal')->getSelf();
+        $currentPrincipal = $this->get('principal')->getSelf($hexaaAdmin);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -1727,12 +1764,12 @@ class ServiceController extends BaseController
                 } else {
                     $postarray = array("status" => "pending", "service" => $id, "entitlement_packs" => $entitlementpacksIDs, "entitlements" => $entitlementsIDs);
                 }
-                $response = $this->get('link')->post($postarray);
+                $response = $this->get('link')->post($hexaaAdmin, $postarray);
 
                 if ($orgID == null) {
                     $headers = $response->getHeader('Location');
                     $headerspartsary = explode("/", $headers[0]);
-                    $getlink = $this->get('link')->getNewLinkToken(array_pop($headerspartsary));
+                    $getlink = $this->get('link')->getNewLinkToken($hexaaAdmin, array_pop($headerspartsary));
                 }
                 $this->get('session')->getFlashBag()->add('success', 'Link succesfully generated.');
             } catch (\Exception $e) {
@@ -1752,12 +1789,13 @@ class ServiceController extends BaseController
      */
     public function removeConnectedOrganizations($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $linkIds = $request->get('linkId');
         $errors = array();
         $errormessages = array();
         foreach ($linkIds as $linkId) {
             try {
-                $this->get('link')->deleteLink($linkId);
+                $this->get('link')->deleteLink($hexaaAdmin, $linkId);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -1785,6 +1823,7 @@ class ServiceController extends BaseController
      */
     public function acceptConnectedOrganizations($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $linkIds = $request->get('linkId');
         $errors = array();
         $errormessages = array();
@@ -1792,19 +1831,19 @@ class ServiceController extends BaseController
             try {
                 //get all organization link
                // $requests = $this->get('service')->getLinkRequests($id);
-                $request =  $this->get('link')->get($linkId);
+                $request =  $this->get('link')->get($hexaaAdmin, $linkId);
              //   foreach ($requests['items'] as $request) {
                 $data = array();
                 $data['service'] = $request['service_id'];
                 $data['organization'] = $request['organization_id'];
                 $entitlementpacksIds = array();
-                $entitlementpacks = $this->get('link')->getEntitlementPacks($request['id']);
+                $entitlementpacks = $this->get('link')->getEntitlementPacks($hexaaAdmin, $request['id']);
                 foreach ($entitlementpacks['items'] as $entitlementpack) {
                     array_push($entitlementpacksIds, $entitlementpack['id']);
                 }
                 $data['entitlement_packs'] = $entitlementpacksIds;
                 $data['status'] = "accepted";
-                $this->get('link')->editLink($request['id'], $data);
+                $this->get('link')->editLink($hexaaAdmin, $request['id'], $data);
               //  }
             } catch (\Exception $e) {
                 $errors[] = $e;
@@ -1834,7 +1873,7 @@ class ServiceController extends BaseController
     public function deleteAction($id)
     {
         $serviceResource = $this->get('service');
-        $serviceResource->delete($id);
+        $serviceResource->delete($this->get('session')->get('hexaaAdmin'), $id);
 
         return $this->redirectToRoute("homepage");
     }
@@ -1848,18 +1887,20 @@ class ServiceController extends BaseController
      */
     public function historyAction($id)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $serviceResource = $this->get('service');
-        $service = $serviceResource->get($id);
+        $service = $serviceResource->get($hexaaAdmin, $id);
 
         return array(
             "service" => $service,
 
-            "organizations" => $this->get('organization')->cget(),
-            "services" => $this->get('service')->cget(),
+            "organizations" => $this->get('organization')->cget($hexaaAdmin),
+            "services" => $this->get('service')->cget($hexaaAdmin),
             'servsubmenubox' => $this->getServSubmenuPoints(),
-            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+            "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
             'organizationsWhereManager' => $this->orgWhereManager(),
             'manager' => "false",
+            'hexaaHat' => $this->get('session')->get('hexaaHat'),
         );
     }
 
@@ -1874,13 +1915,13 @@ class ServiceController extends BaseController
     {
         $serviceResource = $this->get('service');
         $principalResource = $this->get('principals');
-        $data = $serviceResource->getHistory($id);
+        $data = $serviceResource->getHistory($this->get('session')->get('hexaaAdmin'), $id);
         $displayNames = array();
         for ($i = 0; $i < $data['item_number']; $i++) {
             $principalId = $data['items'][$i]['principal_id'];
             if ($principalId) {
                 if (! array_key_exists($principalId, $displayNames)) {
-                    $principal = $principalResource->getById($principalId);
+                    $principal = $principalResource->getById($this->get('session')->get('hexaaAdmin'), $principalId);
                     $displayNames[$principalId] = $principal['display_name']." «".$principal['email']."»";
                 }
                 $data['items'][$i]['principal_display_name'] = $displayNames[$principalId];
@@ -1906,7 +1947,8 @@ class ServiceController extends BaseController
      */
     public function permissionDeleteAction($servId, $id)
     {
-        $this->get('entitlement')->deletePermission($id);
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $this->get('entitlement')->deletePermission($hexaaAdmin, $id);
         $this->get('session')->getFlashBag()->add('success', 'The permission has been deleted.');
 
         return $this->redirectToRoute("app_service_permissions", array("id" => $servId));
@@ -1922,7 +1964,8 @@ class ServiceController extends BaseController
      */
     public function permissionsetDeleteAction($servId, $id)
     {
-        $this->get('entitlement_pack')->deletePermissionSet($id);
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $this->get('entitlement_pack')->deletePermissionSet($hexaaAdmin, $id);
         $this->get('session')->getFlashBag()->add('success', 'The permission set has been deleted.');
 
         return $this->redirectToRoute("app_service_permissionssets", array("id" => $servId));
@@ -1939,7 +1982,7 @@ class ServiceController extends BaseController
     {
         $service = $this->get('service');
         $serializer = $this->get('serializer');
-        $data = $service->getWarnings($id, array("linkResource" => $this->get('link')));
+        $data = $service->getWarnings($this->get('session')->get('hexaaAdmin'), $id, array("linkResource" => $this->get('link')));
         $serializedData = $serializer->serialize($data, 'json');
 
         return new JsonResponse($serializedData);
@@ -2088,11 +2131,11 @@ class ServiceController extends BaseController
         $attributespecifications = array();
         $serviceattributespecifications = array();
         $verbose = "expanded";
-
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         //service attribute specifications without names
-        $serviceattributespecs = $this->get('service')->getAttributeSpecs($service['id'])['items'];
+        $serviceattributespecs = $this->get('service')->getAttributeSpecs($hexaaAdmin, $service['id'])['items'];
 
-        foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
+        foreach ($this->get('attribute_spec')->cget($hexaaAdmin, $verbose)['items'] as $attributespecification) {
             foreach ($serviceattributespecs as $serviceattributespec) {
                 if ($attributespecification['id'] == $serviceattributespec['attribute_spec_id']) {
                     $serviceattributespecifications[$attributespecification['name']] = $serviceattributespec['attribute_spec_id'];
@@ -2102,7 +2145,7 @@ class ServiceController extends BaseController
 
         $attributespecifications["Which attribute specification?"] = "Which attribute specification?";
         //all attribute specifications
-        foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespecification) {
+        foreach ($this->get('attribute_spec')->cget($hexaaAdmin, $verbose)['items'] as $attributespecification) {
             $attributespecifications[$attributespecification['name']] = $attributespecification['id'];
         }
 
@@ -2130,6 +2173,7 @@ class ServiceController extends BaseController
      */
     private function permissionsToAccordion($permissions, $servId, $permissionId, $action, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $permissionsAccordion = array();
         foreach ($permissions as $onepermissiongroup) {
             foreach ($onepermissiongroup as $permission) {
@@ -2176,28 +2220,28 @@ class ServiceController extends BaseController
                     $data = $form->getData();
                     $entitlementResource = $this->get('entitlement');
                     try {
-                        $entitlement = $entitlementResource->get($data['id']);
+                        $entitlement = $entitlementResource->get($hexaaAdmin, $data['id']);
                         $entitlement["name"] = $data["name"];
                         $entitlement["description"] = $data["description"];
                         $withoutAccent = $this->removeAccents($data['uripost']);
                         $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
                         $entitlement["uri"] = $permissionsAccordion[$permission['id']]['uriprefix'].$modifiedName;
                         try {
-                            $this->get('entitlement')->patch($entitlement['id'], [
+                            $this->get('entitlement')->patch($hexaaAdmin, $entitlement['id'], [
                                 'name' => $entitlement["name"],
                             ]);
                         } catch (\Exception $exception) {
                             $form->get('name')->addError(new FormError($exception->getMessage()));
                         }
                         try {
-                            $this->get('entitlement')->patch($entitlement['id'], [
+                            $this->get('entitlement')->patch($hexaaAdmin, $entitlement['id'], [
                                 'uri' => $entitlement["uri"],
                             ]);
                         } catch (\Exception $exception) {
                             $form->get('uripost')->addError(new FormError($exception->getMessage()));
                         }
                         try {
-                            $this->get('entitlement')->patch($entitlement['id'], [
+                            $this->get('entitlement')->patch($hexaaAdmin, $entitlement['id'], [
                                 'description' => $entitlement["description"],
                             ]);
                         } catch (\Exception $exception) {
@@ -2270,13 +2314,14 @@ class ServiceController extends BaseController
      */
     private function permissionSetToAccordion($permissionSets, $servId, $permissionsetId, $action, $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $permissionsAccordionSet = array();
         foreach ($permissionSets as $onePermissionSetGroup) {
             foreach ($onePermissionSetGroup as $permissionSet) {
                 $permissionsChoices = [];
                 if (array_key_exists('entitlement_ids', $permissionSet) and !(empty($permissionSet['entitlement_ids']))) {
                     foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
-                        $entitlement = $this->get('entitlement')->get($entitlementid);
+                        $entitlement = $this->get('entitlement')->get($hexaaAdmin, $entitlementid);
                         $permissionsChoices['permissions'][$entitlementid] = $entitlement['name'];
                         $permissionsChoices['name'] = $permissionSet['name'];
                         $permissionsChoices['description'] = $permissionSet['description'];
@@ -2317,7 +2362,7 @@ class ServiceController extends BaseController
                 array_push($description, $permissionSet['description']);
                 array_push($type, $permissionSet['type']);
                 foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
-                    $entitlement = $this->get('entitlement')->getEntitlement($entitlementid);
+                    $entitlement = $this->get('entitlement')->getEntitlement($hexaaAdmin, $entitlementid);
                     array_push($permissions, $entitlement['name']);
                 }
                 $permissionsAccordionSet[$permissionSet['id']]['contents'] = [
@@ -2342,13 +2387,13 @@ class ServiceController extends BaseController
 
                 $verbose = "normal";
 
-                $servicepermissions = $this->get('service')->getEntitlements($servId, $verbose, 0, 100000);
+                $servicepermissions = $this->get('service')->getEntitlements($hexaaAdmin, $servId, $verbose, 0, 100000);
                 if (!empty($permissionsChoices)) {
                     if ($form->isValid() and $form->isSubmitted()) {
                         $data = $form->getData();
                         $entitlementpackResource = $this->get('entitlement_pack');
                         try {
-                            $entitlementpack = $entitlementpackResource->get($data['id']);
+                            $entitlementpack = $entitlementpackResource->get($hexaaAdmin, $data['id']);
                             $entitlementpack["name"] = $data["name"];
                             $entitlementpack["description"] = $data["description"];
                             $entitlementpack["type"] = $data["type"];
@@ -2356,7 +2401,7 @@ class ServiceController extends BaseController
                             $permissionids = [];
                             if (count(array_unique($data['permissions'])) != 0) {
                                 $iter = 0;
-                                $apiProperties = $this->get('service')->apget();
+                                $apiProperties = $this->get('service')->apget($hexaaAdmin);
                                 foreach (array_unique($data['permissions']) as $permission) {
                                     $iter = 0;
                                     foreach ($servicepermissions['items'] as $servicepermission) {
@@ -2371,7 +2416,7 @@ class ServiceController extends BaseController
                                         $withoutAccent = $this->removeAccents($permission);
                                         $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
                                         try {
-                                            $newpermission = $this->get('service')->createPermission($apiProperties['entitlement_base'], $servId, $modifiedName, $permission, null, $this->get('entitlement'));
+                                            $newpermission = $this->get('service')->createPermission($hexaaAdmin, $apiProperties['entitlement_base'], $servId, $modifiedName, $permission, null, $this->get('entitlement'));
                                             array_push($permissionids, $newpermission['id']);
                                         } catch (\Exception $exception) {
                                             $form->get('permissions')->addError(new FormError($exception->getMessage()));
@@ -2380,7 +2425,7 @@ class ServiceController extends BaseController
                                 }
                             }
                             try {
-                                $this->get('entitlement_pack')->put($data['id'], [
+                                $this->get('entitlement_pack')->put($hexaaAdmin, $data['id'], [
                                     'type' => $entitlementpack["type"],
                                     'name' => $entitlementpack["name"],
                                     'description' => $entitlementpack["description"],
@@ -2389,7 +2434,7 @@ class ServiceController extends BaseController
                                 $form->get('name')->addError(new FormError($exception->getMessage()));
                             }
                             try {
-                                $this->get('entitlement_pack')->setPermissionsToPermissionSet($data['id'], $permissionids);
+                                $this->get('entitlement_pack')->setPermissionsToPermissionSet($hexaaAdmin, $data['id'], $permissionids);
                             } catch (\Exception $exception) {
                                 $form->get('entitlement_pack')->addError(new FormError($exception->getMessage()));
                             }
@@ -2420,6 +2465,7 @@ class ServiceController extends BaseController
     */
     private function allpermissionSetToAccordion($permissionSets, $servId)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $permissionsAccordionSet = array();
         foreach ($permissionSets['items'] as $permissionSet) {
             $permissionsAccordionSet[$permissionSet['id']]['title'] = $permissionSet['name'];
@@ -2435,8 +2481,7 @@ class ServiceController extends BaseController
             array_push($description, $permissionSet['description']);
             array_push($type, $permissionSet['type']);
             foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
-                $entitlement = $this->get('entitlement')
-                ->getEntitlement($entitlementid);
+                $entitlement = $this->get('entitlement')->getEntitlement($hexaaAdmin, $entitlementid);
                 array_push($permissions, $entitlement['name']);
             }
             $permissionsAccordionSet[$permissionSet['id']]['contents'] = [
@@ -2464,7 +2509,7 @@ class ServiceController extends BaseController
      */
     private function getManagers($service)
     {
-        return $this->get('service')->getManagers($service['id'])['items'];
+        return $this->get('service')->getManagers($this->get('session')->get('hexaaAdmin'), $service['id'])['items'];
     }
 
     /**
@@ -2473,10 +2518,11 @@ class ServiceController extends BaseController
      */
     private function getServiceAttributes($service)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $verbose = "expanded";
-        $serviceattributespecs = $this->get('service')->getAttributeSpecs($service['id'])['items'];
+        $serviceattributespecs = $this->get('service')->getAttributeSpecs($hexaaAdmin, $service['id'])['items'];
         $attributestonames = array();
-        foreach ($this->get('attribute_spec')->cget($verbose)['items'] as $attributespec) {
+        foreach ($this->get('attribute_spec')->cget($hexaaAdmin, $verbose)['items'] as $attributespec) {
             foreach ($serviceattributespecs as $serviceattributespec) {
                 if ($attributespec['id'] == $serviceattributespec['attribute_spec_id']) {
                     array_push($attributestonames, $attributespec);
@@ -2494,7 +2540,7 @@ class ServiceController extends BaseController
     private function isManager($id)
     {
         $manager = false;
-        $services = $this->get('principal')->servsWhereUserIsManager();
+        $services = $this->get('principal')->servsWhereUserIsManager($this->get('session')->get('hexaaAdmin'));
         foreach ($services as $oneserv) {
             if ($oneserv['id'] == $id) {
                 $manager = true;
@@ -2510,7 +2556,7 @@ class ServiceController extends BaseController
      */
     private function getOrganizations()
     {
-        $organization = $this->get('organization')->cget();
+        $organization = $this->get('organization')->cget($this->get('session')->get('hexaaAdmin'));
 
         return $organization;
     }
@@ -2520,7 +2566,7 @@ class ServiceController extends BaseController
      */
     private function getServices()
     {
-        $services = $this->get('service')->cget();
+        $services = $this->get('service')->cget($this->get('session')->get('hexaaAdmin'));
 
         return $services;
     }
@@ -2531,7 +2577,7 @@ class ServiceController extends BaseController
      */
     private function getService($id)
     {
-        $service = $this->get('service')->get($id);
+        $service = $this->get('service')->get($this->get('session')->get('hexaaAdmin'), $id);
 
         return $service;
     }

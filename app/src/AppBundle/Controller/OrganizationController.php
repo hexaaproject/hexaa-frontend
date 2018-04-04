@@ -36,7 +36,6 @@ use GuzzleHttp\Exception\RequestException;
  */
 class OrganizationController extends BaseController
 {
-
     /**
      * @Route("/")
      * @Template()
@@ -44,8 +43,9 @@ class OrganizationController extends BaseController
      */
     public function indexAction()
     {
-        $organizations = $this->get('organization')->cget();
-        $services = $this->get('service')->cget();
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $organizations = $this->get('organization')->cget($hexaaAdmin);
+        $services = $this->get('service')->cget($hexaaAdmin);
 
 
         return $this->render(
@@ -55,6 +55,7 @@ class OrganizationController extends BaseController
                 'services' => $services,
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -67,6 +68,7 @@ class OrganizationController extends BaseController
      */
     public function createAction(Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $form = $this->createForm(OrganizationType::class, ['role' => 'default']);
 
         $form->handleRequest($request);
@@ -79,7 +81,7 @@ class OrganizationController extends BaseController
                 //$thirdpageerror = false;
 
                 $dataToBackend = $data;
-                $organizations = $this->get('organization')->cget();
+                $organizations = $this->get('organization')->cget($hexaaAdmin);
 
                 foreach ($organizations['items'] as $organization) {
                     if (strtolower($organization['name']) == strtolower($dataToBackend["name"])) {
@@ -106,6 +108,7 @@ class OrganizationController extends BaseController
 
                 // create organization
                 $organization = $this->get('organization')->create(
+                    $hexaaAdmin,
                     $dataToBackend["name"],
                     $dataToBackend["description"]
                 );
@@ -116,16 +119,17 @@ class OrganizationController extends BaseController
 
                 // create role
                 $role = $this->get('organization')->createRole(
+                    $hexaaAdmin,
                     $orgid,
                     $dataToBackend['role'],
                     $this->get('role')
                 );
                 // put creator to role
-                $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
-                $this->get('role')->putPrincipal($role['id'], $self['id']);
+                $self = $this->get('principal')->getSelf($hexaaAdmin, "normal", $this->getUser()->getToken());
+                $this->get('role')->putPrincipal($hexaaAdmin, $role['id'], $self['id']);
 
                 // set role to default in organization
-                $this->get('organization')->patch($orgid, ["default_role" => $role['id']]);
+                $this->get('organization')->patch($hexaaAdmin, $orgid, ["default_role" => $role['id']]);
 
                 // create invitations
                 try {
@@ -140,7 +144,7 @@ class OrganizationController extends BaseController
                 $token = $dataToBackend["service_token"]; //TODO issue #103
                 try {
                     if ($dataToBackend["service_token"] !== null) {
-                        $this->get('organization')->connectService($orgid, $token);
+                        $this->get('organization')->connectService($hexaaAdmin, $orgid, $token);
                     }
                   // $this->get('session')->getFlashBag()->add('success', 'Service connected successfully to the organization.');
                 } catch (\Exception $e) {
@@ -149,14 +153,15 @@ class OrganizationController extends BaseController
 
 
                 return $this->render('AppBundle:Organization:created.html.twig', [
-                    'neworg' => $this->get('organization')->get($orgid, "expanded"),
-                    "organizations" => $this->get('organization')->cget(),
-                    "services" => $this->get('service')->cget(),
+                    'neworg' => $this->get('organization')->get($hexaaAdmin, $orgid, "expanded"),
+                    "organizations" => $this->get('organization')->cget($hexaaAdmin),
+                    "services" => $this->get('service')->cget($hexaaAdmin),
                     'organizationsWhereManager' => $this->orgWhereManager(),
-                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                     "firstpageerror" => $firstpageerror,
                     "secondpageerror" => $secondpageerror,
                     'manager' => "false",
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 ]);
             }
         } catch (\Appbundle\Exception $exception) {
@@ -178,13 +183,14 @@ class OrganizationController extends BaseController
 
         return $this->render('AppBundle:Organization:create.html.twig', [
             'form' => $form->createView(),
-            "organizations" => $this->get('organization')->cget(),
+            "organizations" => $this->get('organization')->cget($hexaaAdmin),
             'organizationsWhereManager' => $this->orgWhereManager(),
-            "services" => $this->get('service')->cget(),
-            "admin" => $this->get('principal')->isAdmin()["is_admin"],
+            "services" => $this->get('service')->cget($hexaaAdmin),
+            "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
             "firstpageerror" => $firstpageerror,
             "secondpageerror" => $secondpageerror,
             'manager' => "false",
+            'hexaaHat' => $this->get('session')->get('hexaaHat'),
         ]);
     }
 
@@ -211,8 +217,12 @@ class OrganizationController extends BaseController
      */
     public function showAction($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $organization = $this->getOrganization($id);
         $manager = $this->isManager($id);
+        if ($hexaaAdmin == "true") {
+            $manager = "true";
+        }
 
         if ($manager) {
             $form = $this->createForm(
@@ -225,7 +235,7 @@ class OrganizationController extends BaseController
                 $data = $form->getData();
                 $token = $data["token"];
                 try {
-                    $this->get('organization')->connectService($id, $token);
+                    $this->get('organization')->connectService($hexaaAdmin, $id, $token);
                     $this->get('session')->getFlashBag()->add('success', 'Service connected successfully to the organization.');
                 } catch (\Exception $e) {
                     $this->get('session')->getFlashBag()->add('error', $e->getMessage());
@@ -239,14 +249,15 @@ class OrganizationController extends BaseController
                 array(
                     'entity_show_path' => $this->getEntityShowPath($organization, $manager),
                     'entity' => $organization,
-                    'organizations' => $this->get('organization')->cget(),
+                    'organizations' => $this->get('organization')->cget($hexaaAdmin),
                     'organizationsWhereManager' => $this->orgWhereManager(),
                     'manager' => $manager,
                     'tokenForm' => $form->createView(),
-                    'services' => $this->get('service')->cget(),
-                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'services' => $this->get('service')->cget($hexaaAdmin),
+                    "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                     'submenu' => 'true',
                     'ismanager' => $manager,
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
             );
         } else {
@@ -255,13 +266,14 @@ class OrganizationController extends BaseController
                 array(
                     'entity_show_path' => $this->getEntityShowPath($organization, $manager),
                     'entity' => $organization,
-                    'organizations' => $this->get('organization')->cget(),
+                    'organizations' => $this->get('organization')->cget($hexaaAdmin),
                     'organizationsWhereManager' => $this->orgWhereManager(),
                     'manager' => $manager,
-                    'services' => $this->get('service')->cget(),
-                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                    'services' => $this->get('service')->cget($hexaaAdmin),
+                    "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                     'submenu' => 'true',
                     'ismanager' => $manager,
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
             );
         }
@@ -281,6 +293,7 @@ class OrganizationController extends BaseController
         $roles = $this->getRoles($organization);
         $defaultRoleName = "";
         $rolesForFieldSource = array();
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
 
         foreach ($roles as $role) {
             if ($organization['default_role_id'] == $role['id']) {
@@ -327,27 +340,33 @@ class OrganizationController extends BaseController
                 'description' => $data['organization_properties']['description'],
                 'url' => $data['organization_properties']['url'],
             );
-            $this->get('organization')->patch($id, $modified);
+            $this->get('organization')->patch($hexaaAdmin, $id, $modified);
 
             return $this->redirect($request->getUri());
+        }
+
+        $manager = $this->isManager($id);
+        if ($hexaaAdmin == "true") {
+            $manager = "true";
         }
 
         return $this->render(
             'AppBundle:Organization:properties.html.twig',
             array(
-                'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
+                'entity_show_path' => $this->getEntityShowPath($organization, $manager),
                 "entity" => $organization,
                 "propertiesbox" => $propertiesbox,
                 "propertiesform" => $formProperties->createView(),
                 "action" => $action,
                 "roles" => $this->rolesToAccordion(true, $roles, $id, false, false, false, false, $request),
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "organizations" => $this->get('organization')->cget($hexaaAdmin),
+                "services" => $this->get('service')->cget($hexaaAdmin),
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'submenu' => 'true',
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
-                'ismanager' => $this->isManager($id),
+                'ismanager' => $manager,
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -361,7 +380,7 @@ class OrganizationController extends BaseController
      */
     public function usersAction($id, Request $request)
     {
-
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $organization = $this->getOrganization($id);
 
         $managers = $this->getManagers($organization);
@@ -467,7 +486,10 @@ class OrganizationController extends BaseController
         );
 
         $form->handleRequest($request);
-
+        $manager = $this->isManager($id);
+        if ($hexaaAdmin == "true") {
+            $manager = "true";
+        }
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
@@ -490,15 +512,15 @@ class OrganizationController extends BaseController
             return $this->render(
                 'AppBundle:Organization:users.html.twig',
                 array(
-                    'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
+                    'entity_show_path' => $this->getEntityShowPath($organization, $manager),
                     'entity' => $organization,
 
                     "managers" => $managers,
                     'manager' => "false",
                     "members" => $members,
                     'organizationsWhereManager' => $this->orgWhereManager(),
-                    "organizations" => $this->get('organization')->cget(),
-                    "services" => $this->get('service')->cget(),
+                    "organizations" => $this->get('organization')->cget($hexaaAdmin),
+                    "services" => $this->get('service')->cget($hexaaAdmin),
                     "managers_buttons" => $managersButtons,
                     /*"members_buttons" => $membersButtons,*/
                     "invite_link" => $inviteLink,
@@ -507,8 +529,9 @@ class OrganizationController extends BaseController
                     "sendEmailForm" => $sendEmailForm->createView(),
                     /*"sendMemberEmailForm" => $sendMemberEmailForm->createView(),*/
                     "changeRolesForm" => $changeRolesForm->createView(),
-                    "admin" => $this->get('principal')->isAdmin()["is_admin"],
-                    'ismanager' => $this->isManager($id),
+                    "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
+                    'ismanager' => $manager,
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
             );
         }
@@ -516,14 +539,14 @@ class OrganizationController extends BaseController
         return $this->render(
             'AppBundle:Organization:users.html.twig',
             array(
-                'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
+                'entity_show_path' => $this->getEntityShowPath($organization, $manager),
                 'entity' => $organization,
                 'manager' => "false",
                 "managers" => $managers,
                 "members" => $members,
                 'organizationsWhereManager' => $this->orgWhereManager(),
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
+                "organizations" => $this->get('organization')->cget($hexaaAdmin),
+                "services" => $this->get('service')->cget($hexaaAdmin),
                 "managers_buttons" => $managersButtons,
                 /*"members_buttons" => $membersButtons,*/
                 "inviteForm" => $form->createView(),
@@ -531,9 +554,10 @@ class OrganizationController extends BaseController
                 "sendEmailForm" => $sendEmailForm->createView(),
                /* "sendMemberEmailForm" => $sendMemberEmailForm->createView(),*/
                 "changeRolesForm" => $changeRolesForm->createView(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'submenu' => 'true',
-                'ismanager' => $this->isManager($id),
+                'ismanager' => $manager,
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -583,13 +607,13 @@ class OrganizationController extends BaseController
 
             $invitationResource = $this->get('invitation');
             $dataToBackend['organization'] = $id;
-            $invite = $invitationResource->sendInvitation($dataToBackend);
+            $invite = $invitationResource->sendInvitation($this->get('session')->get('hexaaAdmin'), $dataToBackend);
 
             $headers = $invite->getHeaders();
 
             try {
                 $invitationId = basename(parse_url($headers['Location'][0], PHP_URL_PATH));
-                $invitation = $invitationResource->get($invitationId);
+                $invitation = $invitationResource->get($this->get('session')->get('hexaaAdmin'), $invitationId);
             } catch (\Exception $e) {
                 throw $this->createNotFoundException('Invitation not found at backend');
             }
@@ -674,7 +698,7 @@ class OrganizationController extends BaseController
     {
         $invitationResource = $this->get('invitation');
         try {
-            $invitationResource->accept($token);
+            $invitationResource->accept($this->get('session')->get('hexaaAdmin'), $token);
         } catch (\Exception $e) {
             $statusCode = $e->getResponse()->getStatusCode();
             switch ($statusCode) {
@@ -712,7 +736,7 @@ class OrganizationController extends BaseController
         $errormessages = array();
         foreach ($pids as $pid) {
             try {
-                $organizationResource->deleteMember($id, $pid);
+                $organizationResource->deleteMember($this->get('session')->get('hexaaAdmin'), $id, $pid);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -740,10 +764,10 @@ class OrganizationController extends BaseController
         $pids = $request->get('userId');
         $emails = array();
         foreach ($pids as $pid) {
-            $principal = $this->get('principals')->getById($pid);
+            $principal = $this->get('principals')->getById($this->get('session')->get('hexaaAdmin'), $pid);
             array_push($emails, $principal['email']);
         }
-        $currentPrincipal = $this->get('principal')->getSelf();
+        $currentPrincipal = $this->get('principal')->getSelf($this->get('session')->get('hexaaAdmin'));
 
         $form1->handleRequest($request);
         $form2->handleRequest($request);
@@ -801,7 +825,7 @@ class OrganizationController extends BaseController
         $errormessages = array();
         foreach ($pids as $pid) {
             try {
-                $this->get('organization')->addManager($id, $pid);
+                $this->get('organization')->addManager($this->get('session')->get('hexaaAdmin'), $id, $pid);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -832,7 +856,7 @@ class OrganizationController extends BaseController
         $errormessages = array();
         foreach ($pids as $pid) {
             try {
-                $this->get('organization')->deleteManager($id, $pid);
+                $this->get('organization')->deleteManager($this->get('session')->get('hexaaAdmin'), $id, $pid);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -856,6 +880,7 @@ class OrganizationController extends BaseController
      */
     public function changeroleAction($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $organization = $this->getOrganization($id);
 
         try {
@@ -873,9 +898,9 @@ class OrganizationController extends BaseController
                 foreach ($roleIds as $roleId) {
                     foreach ($principalIds as $principalId) {
                         if ('add' == $action) {
-                            $roleResource->putPrincipal($roleId, $principalId);
+                            $roleResource->putPrincipal($hexaaAdmin, $roleId, $principalId);
                         } elseif ('remove' == $action) {
-                            $roleResource->deletePrincipal($roleId, $principalId);
+                            $roleResource->deletePrincipal($hexaaAdmin, $roleId, $principalId);
                         } else {
                             throw new \AppBundle\Exception("Invalid action: ".$action);
                         }
@@ -901,10 +926,11 @@ class OrganizationController extends BaseController
      */
     public function roleDeleteAction($orgId, $id)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $organization = $this->getOrganization($orgId);
 
         $organizationResource = $this->get('role');
-        $organizationResource->delete($id);
+        $organizationResource->delete($hexaaAdmin, $id);
         $this->get('session')->getFlashBag()->add('success', 'The role has been deleted.');
 
         return $this->redirectToRoute("app_organization_roles", array("id" => $orgId));
@@ -921,6 +947,7 @@ class OrganizationController extends BaseController
      */
     public function rolesAction($id, $action, $roleId, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         if (! in_array($action, array("false", "create"))) {
             $this->createNotFoundException("Invalid action in url: ".$action);
         }
@@ -960,6 +987,7 @@ class OrganizationController extends BaseController
 
                 //create role
                 $role = $this->get('organization')->createRole(
+                    $hexaaAdmin,
                     $id,
                     $data['name'],
                     $this->get('role')
@@ -967,8 +995,8 @@ class OrganizationController extends BaseController
 
                 // put creator to role
                 if ($data["wantToBeAMember"]) {
-                    $self = $this->get('principal')->getSelf("normal", $this->getUser()->getToken());
-                    $this->get('role')->putPrincipal($role['id'], $self['id']);
+                    $self = $this->get('principal')->getSelf($hexaaAdmin, "normal", $this->getUser()->getToken());
+                    $this->get('role')->putPrincipal($hexaaAdmin, $role['id'], $self['id']);
                 }
 
                 return $this->redirect($request->getUri());
@@ -977,24 +1005,29 @@ class OrganizationController extends BaseController
             $this->get('session')->getFlashBag()->add('error', $exception->getMessage());
             $error = 'true';
         }
+        $manager = $this->isManager($id);
+        if ($hexaaAdmin == "true") {
+            $manager = "true";
+        }
 
         return $this->render(
             'AppBundle:Organization:roles.html.twig',
             array(
-                'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
+                'entity_show_path' => $this->getEntityShowPath($organization, $manager),
                 'entity' => $organization,
                 "roles" => $roles,
                 "roles_accordion" => $rolesAccordion,
                 "action" => $action,
                 "form" => $form->createView(),
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "organizations" => $this->get('organization')->cget($hexaaAdmin),
+                "services" => $this->get('service')->cget($hexaaAdmin),
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'submenu' => 'true',
                 'error' => $error,
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
-                'ismanager' => $this->isManager($id),
+                'ismanager' => $manager,
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1010,6 +1043,10 @@ class OrganizationController extends BaseController
     public function connectedservicesAction($id, $action, Request $request)
     {
         $manager = $this->isManager($id);
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        if ($hexaaAdmin == "true") {
+            $manager = "true";
+        }
 
         if (! in_array($action, array("false", "create"))) {
             $this->createNotFoundException("Invalid action in url: ".$action);
@@ -1028,7 +1065,7 @@ class OrganizationController extends BaseController
             $data = $form->getData();
             $token = $data["token"];
             try {
-                $this->get('organization')->connectService($id, $token);
+                $this->get('organization')->connectService($hexaaAdmin, $id, $token);
             } catch (\Exception $e) {
                 $this->get('session')->getFlashBag()->add('error', $e->getMessage());
             }
@@ -1040,9 +1077,9 @@ class OrganizationController extends BaseController
         $linkIDs = array();
         $links = null;
         if ($manager) {
-            $links = $this->get('organization')->getLinks($id);
+            $links = $this->get('organization')->getLinks($hexaaAdmin, $id);
             foreach ($links['items'] as $link) {
-                $service = $this->get('service')->get($link['service_id']);
+                $service = $this->get('service')->get($hexaaAdmin, $link['service_id']);
                 array_push($services, $service);
                 array_push($linkIDs, $link['id']);
             }
@@ -1050,7 +1087,7 @@ class OrganizationController extends BaseController
 
         $entitlementpacks = array();
         foreach ($linkIDs as $linkID) {
-            $eps = $this->get('link')->getEntitlementPacks($linkID);
+            $eps = $this->get('link')->getEntitlementPacks($hexaaAdmin, $linkID);
             if ($eps['item_number'] != 0) {
                 array_push($entitlementpacks, $eps);
             }
@@ -1069,7 +1106,7 @@ class OrganizationController extends BaseController
         $entitlements = array();
 
         foreach ($linkIDs as $linkID) {
-            $linksentitlements = $this->get('link')->getEntitlements($linkID);
+            $linksentitlements = $this->get('link')->getEntitlements($hexaaAdmin, $linkID);
             foreach ($linksentitlements['items'] as $linksentitlement) {
                 if (count($linksentitlements) > 0) {
                     array_push($entitlements, $linksentitlement);
@@ -1077,8 +1114,8 @@ class OrganizationController extends BaseController
             }
         }
 
-        $principalentitlements = $this->get('principal')->getEntitlements();
-        $entitlementorg = $this->get('organization')->getEntitlements($id, 'normal', 0, 10000);
+        $principalentitlements = $this->get('principal')->getEntitlements($hexaaAdmin);
+        $entitlementorg = $this->get('organization')->getEntitlements($hexaaAdmin, $id, 'normal', 0, 10000);
         foreach ($entitlementsunique as $entitlementunique) {
             $entitlement = null;
             foreach ($entitlementorg['items'] as $oneentitlement) {
@@ -1105,24 +1142,25 @@ class OrganizationController extends BaseController
             $entitlementsAccordion = $this->entitlementsToAccordion($id, $services, $entitlements);
         }
 
-        $organization = $this->get('organization')->get($id);
+        $organization = $this->get('organization')->get($hexaaAdmin, $id);
 
         return $this->render(
             'AppBundle:Organization:connectedservices.html.twig',
             array(
-                'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
+                'entity_show_path' => $this->getEntityShowPath($organization, $manager),
                 'entity' => $organization,
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
+                "organizations" => $this->get('organization')->cget($hexaaAdmin),
+                "services" => $this->get('service')->cget($hexaaAdmin),
                 "services_accordion" => $servicesAccordion,
                 "entitlements_accordion" => $entitlementsAccordion,
                 "action" => $action,
                 "form" => $form->createView(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 "manager" => $manager,
                 'submenu' => 'true',
                 'organizationsWhereManager' => $this->orgWhereManager(),
-                'ismanager' => $this->isManager($id),
+                'ismanager' => $manager,
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1139,7 +1177,7 @@ class OrganizationController extends BaseController
         $organization = $this->getOrganization($id);
 
         $organizationResource = $this->get('organization');
-        $organizationResource->delete($id);
+        $organizationResource->delete($this->get('session')->get('hexaaAdmin'), $id);
 
         return $this->redirectToRoute("homepage");
     }
@@ -1153,19 +1191,25 @@ class OrganizationController extends BaseController
      */
     public function historyAction($id)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $organizationResource = $this->get('organization');
-        $organization = $organizationResource->get($id);
+        $organization = $organizationResource->get($hexaaAdmin, $id);
+        $manager = $this->isManager($id);
+        if ($hexaaAdmin == "true") {
+            $manager = "true";
+        }
 
         return array(
-            'entity_show_path' => $this->getEntityShowPath($organization, $this->isManager($id)),
+            'entity_show_path' => $this->getEntityShowPath($organization, $manager),
             'entity' => $organization,
             'manager' => "false",
-            "organizations" => $this->get('organization')->cget(),
-            "services" => $this->get('service')->cget(),
-            "admin" => $this->get('principal')->isAdmin()["is_admin"],
-            'ismanager' => $this->isManager($id),
+            "organizations" => $this->get('organization')->cget($hexaaAdmin),
+            "services" => $this->get('service')->cget($hexaaAdmin),
+            "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
+            'ismanager' => $manager,
             'submenu' => 'true',
             'organizationsWhereManager' => $this->orgWhereManager(),
+            'hexaaHat' => $this->get('session')->get('hexaaHat'),
         );
     }
 
@@ -1180,13 +1224,13 @@ class OrganizationController extends BaseController
     {
         $organizationResource = $this->get('organization');
         $principalResource = $this->get('principals');
-        $data = $organizationResource->getHistory($id);
+        $data = $organizationResource->getHistory($this->get('session')->get('hexaaAdmin'), $id);
         $displayNames = array();
         for ($i = 0; $i < $data['item_number']; $i++) {
             $principalId = $data['items'][$i]['principal_id'];
             if ($principalId) {
                 if (! array_key_exists($principalId, $displayNames)) {
-                    $principal = $principalResource->getById($principalId);
+                    $principal = $principalResource->getById($this->get('session')->get('hexaaAdmin'), $principalId);
                     $displayNames[$principalId] = $principal['display_name']." «".$principal['email']."»";
                 }
                 $data['items'][$i]['principal_display_name'] = $displayNames[$principalId];
@@ -1213,11 +1257,11 @@ class OrganizationController extends BaseController
     public function linkDeleteAction($servId, $id)
     {
         $organization = $this->getOrganization($id);
-
-        $orglinks = $this->get('organization')->getLinks($id);
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $orglinks = $this->get('organization')->getLinks($hexaaAdmin, $id);
         foreach ($orglinks['items'] as $orglink) {
             if ($orglink['organization_id'] == $id && $orglink['service_id'] == $servId) {
-                $this->get('link')->deletelink($orglink['id']);
+                $this->get('link')->deletelink($hexaaAdmin, $orglink['id']);
             }
         }
         $this->get('session')->getFlashBag()->add('success', 'The link has been deleted.');
@@ -1235,7 +1279,7 @@ class OrganizationController extends BaseController
     {
         $organization = $this->get('organization');
         $serializer = $this->get('serializer');
-        $data = $organization->getWarnings($id, array("roleResource" => $this->get('role')));
+        $data = $organization->getWarnings($this->get('session')->get('hexaaAdmin'), $id, array("roleResource" => $this->get('role')));
         $serializedData = $serializer->serialize($data, 'json');
 
         return new JsonResponse($serializedData);
@@ -1285,7 +1329,7 @@ class OrganizationController extends BaseController
      */
     private function getOrganization($id)
     {
-        return $this->get('organization')->get($id);
+        return $this->get('organization')->get($this->get('session')->get('hexaaAdmin'), $id);
     }
 
     /**
@@ -1295,7 +1339,7 @@ class OrganizationController extends BaseController
     private function isManager($id)
     {
         $manager = false;
-        $organizations = $this->get('principal')->orgsWhereUserIsManager();
+        $organizations = $this->get('principal')->orgsWhereUserIsManager($this->get('session')->get('hexaaAdmin'));
         foreach ($organizations as $oneorg) {
             if ($oneorg['id'] == $id) {
                 $manager = true;
@@ -1330,7 +1374,7 @@ class OrganizationController extends BaseController
      */
     private function getRoles($organization)
     {
-        return $this->get('organization')->getRoles($organization['id'], 'expanded')['items'];
+        return $this->get('organization')->getRoles($this->get('session')->get('hexaaAdmin'), $organization['id'], 'expanded')['items'];
     }
 
     /**
@@ -1339,7 +1383,7 @@ class OrganizationController extends BaseController
      */
     private function getManagers($organization)
     {
-        return $this->get('organization')->getManagers($organization['id'])['items'];
+        return $this->get('organization')->getManagers($this->get('session')->get('hexaaAdmin'), $organization['id'])['items'];
     }
 
     /**
@@ -1348,7 +1392,7 @@ class OrganizationController extends BaseController
      */
     private function getMembers($organization)
     {
-        return $this->get('organization')->getMembers($organization['id'])['items'];
+        return $this->get('organization')->getMembers($this->get('session')->get('hexaaAdmin'), $organization['id'])['items'];
     }
 
     /**
@@ -1357,7 +1401,7 @@ class OrganizationController extends BaseController
      */
     private function getEntitlements($organization)
     {
-        return $this->get('organization')->getEntitlements($organization['id'])['items'];
+        return $this->get('organization')->getEntitlements($this->get('session')->get('hexaaAdmin'), $organization['id'])['items'];
     }
 
     /**
@@ -1366,7 +1410,7 @@ class OrganizationController extends BaseController
      */
     private function getEntitlementPack($service)
     {
-        return $this->get('service')->getEntitlementPacks($service['id'])['items'];
+        return $this->get('service')->getEntitlementPacks($this->get('session')->get('hexaaAdmin'), $service['id'])['items'];
     }
 
     /**
@@ -1375,7 +1419,7 @@ class OrganizationController extends BaseController
      */
     private function getRole($id)
     {
-        return $this->get('role')->get($id);
+        return $this->get('role')->get($this->get('session')->get('hexaaAdmin'), $id);
     }
 
     /**
@@ -1450,14 +1494,14 @@ class OrganizationController extends BaseController
                     $data = $form->getData();
                     try {
                         $roleResource = $this->get('role');
-                        $role = $roleResource->get($data['id']);
+                        $role = $roleResource->get($this->get('session')->get('hexaaAdmin'), $data['id']);
                         $this->amIManagerOfThis($role); //TODO
 
                         $roleToBackend = [
                             'name' => $data['name'],
                         ];
                         try {
-                            $roleResource->patch($role['id'], $roleToBackend);
+                            $roleResource->patch($this->get('session')->get('hexaaAdmin'), $role['id'], $roleToBackend);
                         } catch (\Exception $exception) {
                             $form->get('name')->addError(new FormError($exception->getMessage()));
                         }
@@ -1467,7 +1511,7 @@ class OrganizationController extends BaseController
                             $entitlementsToBackend["entitlements"][] = $id;
                         }
                         try {
-                            $roleResource->setEntitlements($roleId, $entitlementsToBackend);
+                            $roleResource->setEntitlements($this->get('session')->get('hexaaAdmin'), $roleId, $entitlementsToBackend);
                         } catch (\Exception $exception) {
                             $form->get('entitlements')->addError(new FormError($exception->getMessage()));
                         }
@@ -1477,7 +1521,7 @@ class OrganizationController extends BaseController
                             $principalsToBackend["principals"][] = ["principal" => $id];
                         }
                         try {
-                            $roleResource->setPrincipals($roleId, $principalsToBackend);
+                            $roleResource->setPrincipals($this->get('session')->get('hexaaAdmin'), $roleId, $principalsToBackend);
                         } catch (\Exception $exception) {
                             $form->get('members')->addError(new FormError($exception->getMessage()));
                         }
@@ -1504,6 +1548,7 @@ class OrganizationController extends BaseController
     private function servicesToAccordion($id, $services, $entitlementPacks)
     {
         $servicesAccordion = array();
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         foreach ($services as $service) {
             foreach ($entitlementPacks as $entitlementPacksub) {
                 foreach ($entitlementPacksub['items'] as $entitlementPack) {
@@ -1515,7 +1560,7 @@ class OrganizationController extends BaseController
                             'action' => "delete",
                         ]);
                         $servicesAccordion[$service['id']]['description'] = 'Permission sets';
-                        $managers = $this->get('service')->getManagers($service['id'])['items'];
+                        $managers = $this->get('service')->getManagers($hexaaAdmin, $service['id'])['items'];
                         $managersstring = "";
                         foreach ($managers as $manager) {
                             $managersstring .= $manager['display_name']." (".$manager['email'].") ";
@@ -1534,7 +1579,7 @@ class OrganizationController extends BaseController
                        // $servicesAccordion[$service['id']]['subaccordions'][$entitlementPack['id']]['buttons']['deleteEntitlementPack'] = array("icon" => "delete");
 
                         $entitlementnames = array();
-                        $entitlementsorg = $this->get('organization')->getEntitlements($id, 'normal', 0, 10000);
+                        $entitlementsorg = $this->get('organization')->getEntitlements($hexaaAdmin, $id, 'normal', 0, 10000);
                         foreach ($entitlementPack['entitlement_ids'] as $entitlementId) {
                             foreach ($entitlementsorg['items'] as $entitlementorg) {
                                 if ($entitlementorg['id'] == $entitlementId) {
@@ -1673,6 +1718,7 @@ class OrganizationController extends BaseController
      */
     private function entitlementsToAccordion($id, $services, $entitlements)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $entitlementsAccordion = array();
         foreach ($services as $service) {
             $entitlementsAccordion[$service['id']]['title'] = $service['name'];
@@ -1682,7 +1728,7 @@ class OrganizationController extends BaseController
                 'id' => $id,
                 'action' => "delete",
             ]);
-            $managers = $this->get('service')->getManagers($service['id'])['items'];
+            $managers = $this->get('service')->getManagers($hexaaAdmin, $service['id'])['items'];
             $managersstring = "";
             foreach ($managers as $manager) {
                 $managersstring .= $manager['display_name']." (".$manager['email'].") ";
@@ -1714,13 +1760,14 @@ class OrganizationController extends BaseController
      */
     private function sendInvitations($organization, $role, string $emails, string $messageInMail = null)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $emails = explode(',', preg_replace('/\s+/', '', $emails));
         $config = $this->getParameter('invitation_config');
         $mailer = $this->get('mailer');
 
         // create invitation
 
-        $tokenResolverLink = $this->get('invitation')->createHexaaInvitation($organization['id'], $this->get('router'), $role['id']);
+        $tokenResolverLink = $this->get('invitation')->createHexaaInvitation($hexaaAdmin, $organization['id'], $this->get('router'), $role['id']);
         try {
             $message = $mailer->createMessage()
                 ->setSubject($config['subject'])

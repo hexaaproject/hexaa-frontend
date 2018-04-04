@@ -32,6 +32,7 @@ class AdminController extends BaseController
             array(
                 'admin' => $admin,
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -47,7 +48,8 @@ class AdminController extends BaseController
      */
     public function attributesAction($admin, $attributeId, $action, Request $request)
     {
-        $attributespecifications = $this->get('attribute_spec')->cget();
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $attributespecifications = $this->get('attribute_spec')->cget($hexaaAdmin);
         $error = "false";
 
         $attributesaccordion = $this->attributesToAccordion($admin, $attributespecifications, $attributeId, $action, $request);
@@ -98,9 +100,9 @@ class AdminController extends BaseController
         return $this->render(
             'AppBundle:Admin:attributes.html.twig',
             array(
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "organizations" => $this->get('organization')->cget($hexaaAdmin),
+                "services" => $this->get('service')->cget($hexaaAdmin),
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 "submenu" => "true",
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
@@ -111,6 +113,7 @@ class AdminController extends BaseController
                 'error' => $error,
                 'manager' => "false",
                 'ismanager' => "true",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -123,6 +126,7 @@ class AdminController extends BaseController
      */
     public function principalsAction($admin)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $principals = $this->get('principal')->getAllPrincipals()["items"];
         $principalsButtons = array(
             "remove" => array(
@@ -134,9 +138,9 @@ class AdminController extends BaseController
         return $this->render(
             'AppBundle:Admin:principals.html.twig',
             array(
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "organizations" => $this->get('organization')->cget($hexaaAdmin),
+                "services" => $this->get('service')->cget($hexaaAdmin),
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 "submenu" => "true",
                 "adminsubmenubox" => $this->getAdminSubmenupoints(),
                 "principals_buttons" => $principalsButtons,
@@ -144,7 +148,7 @@ class AdminController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => "true",
-
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -162,7 +166,7 @@ class AdminController extends BaseController
         $errormessages = array();
         foreach ($pids as $pid) {
             try {
-                $this->get('principal')->deletePrincipal($this->get('principal')->isAdmin()["is_admin"], $pid);
+                $this->get('principal')->deletePrincipal($this->get('principal')->isAdmin($this->get('session')->get('hexaaAdmin'))["is_admin"], $pid);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -189,7 +193,8 @@ class AdminController extends BaseController
      */
     public function entityAction($admin)
     {
-        $entityids = $this->get('entity_id')->cget();
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $entityids = $this->get('entity_id')->cget($hexaaAdmin);
         $totalnumber = $entityids['item_number'];
         $totalpages = ceil($totalnumber / 25);
         $offset = 25;
@@ -199,18 +204,18 @@ class AdminController extends BaseController
         $allentity = array();
         array_push($entitysperpage, $entityids['items']);
         for ($i = 1; $i < $totalpages; $i++) {
-            $entityperpage = $this->get('entity_id')->cget($verbose, $offset, $pagesize);
+            $entityperpage = $this->get('entity_id')->cget($hexaaAdmin, $verbose, $offset, $pagesize);
             array_push($entitysperpage, $entityperpage['items']);
             $offset = $offset +25;
         }
-        $allentitypart = $this->get('entity_id')->cget($verbose, 0, 100000);
+        $allentitypart = $this->get('entity_id')->cget($hexaaAdmin, $verbose, 0, 100000);
 
         return $this->render(
             'AppBundle:Admin:entity.html.twig',
             array(
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "organizations" => $this->get('organization')->cget($hexaaAdmin),
+                "services" => $this->get('service')->cget($hexaaAdmin),
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 "submenu" => "true",
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
                 'entityids_accordion' => $this->entityIDsToAccordion($entitysperpage),
@@ -220,6 +225,7 @@ class AdminController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => "true",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -234,6 +240,7 @@ class AdminController extends BaseController
      */
     public function contactAction($admin, Request $request, $orgEmailSended = "false")
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $services = $this->get('service')->getAll();
         $servicesNames = array();
         foreach ($services['items'] as $service) {
@@ -253,7 +260,7 @@ class AdminController extends BaseController
             'services' => $servicesNames,
         ));
 
-        $principal = $this->get('principal')->getSelf();
+        $principal = $this->get('principal')->getSelf($hexaaAdmin);
 
         $orgManagersForm->handleRequest($request);
         $managersForm->handleRequest($request);
@@ -275,7 +282,7 @@ class AdminController extends BaseController
                 $orgEmailSended = "true";
                 $this->get('session')->getFlashBag()->add('error', 'Organization is not exist.');
             } else {
-                $managers = $this->get('organization')->getManagers($organizationID);
+                $managers = $this->get('organization')->getManagers($hexaaAdmin, $organizationID);
 
                 $orgManagersEmail = array();
                 foreach ($managers['items'] as $manager) {
@@ -310,7 +317,7 @@ class AdminController extends BaseController
                         $this->generateUrl(
                             'app_admin_contact',
                             array(
-                                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                                 "orgEmailSended" => $orgemailsended,
                             )
                         )
@@ -336,7 +343,7 @@ class AdminController extends BaseController
                 $orgEmailSended = "false";
                 $this->get('session')->getFlashBag()->add('error', 'Service is not exist.');
             } else {
-                $managers = $this->get('service')->getManagers($serviceID);
+                $managers = $this->get('service')->getManagers($hexaaAdmin, $serviceID);
                 $managersEmail = array();
                 foreach ($managers['items'] as $manager) {
                     array_push($managersEmail, $manager['email']);
@@ -369,7 +376,7 @@ class AdminController extends BaseController
                         $this->generateUrl(
                             'app_admin_contact',
                             array(
-                                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                                 "submenu" => "true",
                                 "orgEmailSended" => $orgemailsended,
                             )
@@ -385,9 +392,9 @@ class AdminController extends BaseController
         return $this->render(
             'AppBundle:Admin:contact.html.twig',
             array(
-                "organizations" => $this->get('organization')->cget(),
-                "services" => $this->get('service')->cget(),
-                "admin" => $this->get('principal')->isAdmin()["is_admin"],
+                "organizations" => $this->get('organization')->cget($hexaaAdmin),
+                "services" => $this->get('service')->cget($hexaaAdmin),
+                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 "submenu" => "true",
                 "orgEmailSended" => $orgEmailSended,
                 "adminsubmenubox" => $this->getAdminSubmenupoints(),
@@ -396,6 +403,7 @@ class AdminController extends BaseController
                 "servicesName" => $servicesNames,
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -409,10 +417,10 @@ class AdminController extends BaseController
      */
     public function attributespecificationDeleteAction($id)
     {
-        $this->get('attribute_spec')->deleteAdmin($id);
+        $this->get('attribute_spec')->deleteAdmin($this->get('session')->get('hexaaAdmin'), $id);
         $this->get('session')->getFlashBag()->add('success', 'The attribute specification has been deleted.');
 
-        return $this->redirectToRoute("app_admin_attributes", array("admin" => $this->get('principal')->isAdmin()["is_admin"]));
+        return $this->redirectToRoute("app_admin_attributes", array("admin" => $this->get('principal')->isAdmin($this->get('session')->get('hexaaAdmin'))["is_admin"]));
     }
 
 
@@ -441,6 +449,7 @@ class AdminController extends BaseController
      */
     private function attributesToAccordion($admin, $attributespecifications, $attributeId, $action, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $attributesAccordion = array();
         foreach ($attributespecifications['items'] as $attributespecification) {
             $form =  $this->createForm(
@@ -493,7 +502,7 @@ class AdminController extends BaseController
                 $data = $form->getData();
                 $attributeResource = $this->get('attribute_spec');
                 try {
-                    $attributespec = $attributeResource->get($data['id']);
+                    $attributespec = $attributeResource->get($hexaaAdmin, $data['id']);
                     $attributespec["name"] = $data["name"];
                     $attributespec["description"] = $data["description"];
                     $attributespec["uri"] = $data["uri"];
