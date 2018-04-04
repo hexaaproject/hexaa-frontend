@@ -33,6 +33,11 @@ class DefaultController extends Controller
             $this->get('session')->set('hexaaAdmin', 'false');
             $hexaaadmin = "false";
         }
+        $hexaahat = $this->get('session')->get('hexaaHat');
+        if ($hexaahat == null) {
+            $this->get('session')->set('hexaaHat', 'notactive');
+            $hexaahat = "notactive";
+        }
         if ($this->getUser()) { // authenticated
             try {
                 $organizations = $this->get('organization')->cget($hexaaadmin);
@@ -62,21 +67,28 @@ class DefaultController extends Controller
                 'servicesWhereManager' => $servicesWhereManager,
                 'organizationsWhereManager' => $organizationsWhereManager,
                 'manager' => 'false',
+                'hexaaHat' => $hexaahat,
             )
         );
     }
 
     /**
-     * @Route("/hexaaAdmin")
-     * @Template()
+     * @Route("/hexaaAdmin/{hexaaHat}", defaults={"hexaaHat" = null})
+     * @param string $hexaaHat
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function hexaaAdminAction()
+    public function hexaaAdminAction($hexaaHat)
     {
         if ($this->get('session')->get('hexaaAdmin') == 'false') {
             $this->get('session')->set('hexaaAdmin', 'true');
         } else {
             $this->get('session')->set('hexaaAdmin', 'false');
+        }
+
+        if ($hexaaHat == 'active' && $this->get('session')->get('hexaaHat') == 'notactive') {
+            $this->get('session')->set('hexaaHat', 'active');
+        } elseif ($this->get('session')->get('hexaaHat') == 'active') {
+            $this->get('session')->set('hexaaHat', 'notactive');
         }
 
         return $this->redirect($this->generateUrl('homepage'));

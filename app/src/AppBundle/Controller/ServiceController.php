@@ -77,6 +77,7 @@ class ServiceController extends BaseController
                 'menu' => $menu,
                 'manager' => "false",
                 'organizationsWhereManager' => $this->orgWhereManager(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -99,6 +100,7 @@ class ServiceController extends BaseController
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 "admin" => $this->get('principal')->isAdmin($this->get('session')->get('hexaaAdmin'))["is_admin"],
                 'organizationsWhereManager' => $this->orgWhereManager(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -172,6 +174,7 @@ class ServiceController extends BaseController
                 'manager' => "false",
                 "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'organizationsWhereManager' => $this->orgWhereManager(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -492,6 +495,7 @@ class ServiceController extends BaseController
                 'clickback' => $clickback,
                 'firstpageerror' => $firstpageerror,
                 'organizationsWhereManager' => $this->orgWhereManager(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
         );
     }
@@ -559,6 +563,7 @@ class ServiceController extends BaseController
                     'manager' => "false",
                     'click' => $click,
                     'organizationsWhereManager' => $this->orgWhereManager(),
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
             );
         }
@@ -574,6 +579,7 @@ class ServiceController extends BaseController
                   'click' => $click,
                   'manager' => "false",
                   'organizationsWhereManager' => $this->orgWhereManager(),
+                  'hexaaHat' => $this->get('session')->get('hexaaHat'),
               )
           );
     }
@@ -704,6 +710,7 @@ class ServiceController extends BaseController
                 "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -779,6 +786,7 @@ class ServiceController extends BaseController
                     'organizationsWhereManager' => $this->orgWhereManager(),
                     'manager' => "false",
                     'ismanager' => "true",
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
             );
         }
@@ -798,6 +806,7 @@ class ServiceController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => "true",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -900,13 +909,14 @@ class ServiceController extends BaseController
      */
     public function removemanagersAction($id, Request $request)
     {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $pids = $request->get('userId');
         $serviceResource = $this->get('service');
         $errors = array();
         $errormessages = array();
         foreach ($pids as $pid) {
             try {
-                $serviceResource->deleteMember($id, $pid);
+                $serviceResource->deleteMember($hexaaAdmin, $id, $pid);
             } catch (\Exception $e) {
                 $errors[] = $e;
                 $errormessages[] = $e->getMessage();
@@ -1027,6 +1037,7 @@ class ServiceController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => "true",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1161,6 +1172,7 @@ class ServiceController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => $this->isManager($id),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1301,6 +1313,7 @@ class ServiceController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => $manager,
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1637,6 +1650,7 @@ class ServiceController extends BaseController
                 'manager' => $manager,
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1886,6 +1900,7 @@ class ServiceController extends BaseController
             "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
             'organizationsWhereManager' => $this->orgWhereManager(),
             'manager' => "false",
+            'hexaaHat' => $this->get('session')->get('hexaaHat'),
         );
     }
 
@@ -1932,7 +1947,8 @@ class ServiceController extends BaseController
      */
     public function permissionDeleteAction($servId, $id)
     {
-        $this->get('entitlement')->deletePermission($id);
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $this->get('entitlement')->deletePermission($hexaaAdmin, $id);
         $this->get('session')->getFlashBag()->add('success', 'The permission has been deleted.');
 
         return $this->redirectToRoute("app_service_permissions", array("id" => $servId));
@@ -1948,7 +1964,8 @@ class ServiceController extends BaseController
      */
     public function permissionsetDeleteAction($servId, $id)
     {
-        $this->get('entitlement_pack')->deletePermissionSet($id);
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $this->get('entitlement_pack')->deletePermissionSet($hexaaAdmin, $id);
         $this->get('session')->getFlashBag()->add('success', 'The permission set has been deleted.');
 
         return $this->redirectToRoute("app_service_permissionssets", array("id" => $servId));

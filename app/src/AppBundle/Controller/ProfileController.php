@@ -118,6 +118,7 @@ class ProfileController extends BaseController
               'organizationsWhereManager' => $this->orgWhereManager(),
               'manager' => "false",
               'ismanager' => "true",
+              'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -138,6 +139,7 @@ class ProfileController extends BaseController
             "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
             'organizationsWhereManager' => $this->orgWhereManager(),
             'manager' => "false",
+            'hexaaHat' => $this->get('session')->get('hexaaHat'),
         );
     }
 

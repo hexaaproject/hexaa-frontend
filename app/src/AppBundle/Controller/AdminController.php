@@ -32,6 +32,7 @@ class AdminController extends BaseController
             array(
                 'admin' => $admin,
                 'adminsubmenubox' => $this->getAdminSubmenupoints(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -112,6 +113,7 @@ class AdminController extends BaseController
                 'error' => $error,
                 'manager' => "false",
                 'ismanager' => "true",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -146,7 +148,7 @@ class AdminController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => "true",
-
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -223,6 +225,7 @@ class AdminController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => "true",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -400,6 +403,7 @@ class AdminController extends BaseController
                 "servicesName" => $servicesNames,
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }

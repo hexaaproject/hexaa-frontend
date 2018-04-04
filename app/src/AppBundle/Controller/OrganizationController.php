@@ -55,6 +55,7 @@ class OrganizationController extends BaseController
                 'services' => $services,
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -160,6 +161,7 @@ class OrganizationController extends BaseController
                     "firstpageerror" => $firstpageerror,
                     "secondpageerror" => $secondpageerror,
                     'manager' => "false",
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 ]);
             }
         } catch (\Appbundle\Exception $exception) {
@@ -188,6 +190,7 @@ class OrganizationController extends BaseController
             "firstpageerror" => $firstpageerror,
             "secondpageerror" => $secondpageerror,
             'manager' => "false",
+            'hexaaHat' => $this->get('session')->get('hexaaHat'),
         ]);
     }
 
@@ -254,6 +257,7 @@ class OrganizationController extends BaseController
                     "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                     'submenu' => 'true',
                     'ismanager' => $manager,
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
             );
         } else {
@@ -269,6 +273,7 @@ class OrganizationController extends BaseController
                     "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                     'submenu' => 'true',
                     'ismanager' => $manager,
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
             );
         }
@@ -361,6 +366,7 @@ class OrganizationController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => $manager,
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -525,6 +531,7 @@ class OrganizationController extends BaseController
                     "changeRolesForm" => $changeRolesForm->createView(),
                     "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                     'ismanager' => $manager,
+                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
                 )
             );
         }
@@ -550,6 +557,7 @@ class OrganizationController extends BaseController
                 "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'submenu' => 'true',
                 'ismanager' => $manager,
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1019,6 +1027,7 @@ class OrganizationController extends BaseController
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
                 'ismanager' => $manager,
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1151,6 +1160,7 @@ class OrganizationController extends BaseController
                 'submenu' => 'true',
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'ismanager' => $manager,
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
     }
@@ -1199,6 +1209,7 @@ class OrganizationController extends BaseController
             'ismanager' => $manager,
             'submenu' => 'true',
             'organizationsWhereManager' => $this->orgWhereManager(),
+            'hexaaHat' => $this->get('session')->get('hexaaHat'),
         );
     }
 

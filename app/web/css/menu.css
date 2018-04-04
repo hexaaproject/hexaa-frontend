@@ -15,6 +15,10 @@
     padding-top: 14px;
 }
 
+#hexaaHat.active {
+    background-color: #FA8072;;
+}
+
 .dropbtn, .servicecl {
     background-color: #2e2d2d;
     color: white;

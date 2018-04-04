@@ -129,7 +129,9 @@
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ path('app_default_hexaaadmin') }}"><i class="material-icons" style=" color: white;">visibility</i></a></li>
+                {% if admin is defined and (admin == "true" or admin == "1") %}
+                    <li><a id="hexaaHat" class={{ hexaaHat }}  style="height:53px;" href="{{ path('app_default_hexaaadmin', { hexaaHat: 'active'}) }}"><i class="material-icons" style=" color: white;">visibility</i></a></li>
+                {% endif %}
                 <li><a href="{{ path("app_profile_index") }}">{{ app.user.username }}</a></li>
                 {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li><a href="{{ path('app_default_login') }}" id="login_button" role="button">
@@ -158,7 +160,16 @@
 
 <script>
     $(document).ready(function () {
+      /*  var hexaaHat = null;
+        $("#hexaaHat").bind("click", function() {
+            if(hexaaHat == 'notactive' || hexaaHat == null) {
+                hexaaHat = 'active';
+            } else {
+                hexaaHat = 'notactive';
+            }
+        });
 
+        $("#hexaaHat").addClass(hexaaHat);*/
         /* jquery.validate defaults */
         $.validator.setDefaults({
             errorClass: "help-block has-error",
@@ -169,7 +180,7 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
-    })
+    });
 
     function alert(message) {
         $('#alert').text(message);
