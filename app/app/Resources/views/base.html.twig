@@ -80,7 +80,7 @@
 
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                {% if organizations is defined %}
+                {% if organizations is defined and organizations.item_number > 0 %}
                     <li class="dropdown" id="org">
                         <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Organizations
                             <span class="caret"> </span></a>
@@ -95,9 +95,16 @@
                                             {% set manager = "true" %}
                                         {% endif %}
                                     {% endfor %}
+                                    {% if hexaaHat == "active" %}
+                                        {% set manager = "true" %}
+                                    {% endif %}
                                     {% if manager == "false" %}
                                         <li>
                                             <a href="{{ path("app_organization_properties", { id: organization.id }) }}">{{ organization.name|e }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a>
                                         </li>
                                     {% endif %}
                                     {% set manager = "false" %}
