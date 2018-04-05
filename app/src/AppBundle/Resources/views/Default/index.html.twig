@@ -68,8 +68,13 @@
                                     {% set manager = "true" %}
                                 {% endif %}
                             {% endfor %}
+                            {% if hexaaHat == "active" %}
+                                {% set manager = "true" %}
+                            {% endif %}
                             {% if manager == "false" %}
                                 <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_properties', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
+                            {% else %}
+                                <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
                             {% endif %}
                             {% set manager = "false" %}
                         {% endfor %}
