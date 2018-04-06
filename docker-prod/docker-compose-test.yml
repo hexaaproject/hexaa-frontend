@@ -7,7 +7,7 @@ version: "3"
 
 services:
     mysql:
-        image: bitnami/mariadb:10.2
+        image: mariadb:10.2
         networks:
             - hexaa
         env_file: settings.env
@@ -18,7 +18,6 @@ services:
         image: memcached
         networks:
             - hexaa
-#        env_file: settings.env
         restart: always
     frontend:
         image: hexaaproject/hexaa-newui:new-dev
