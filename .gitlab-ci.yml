@@ -57,7 +57,7 @@ code_style_check:
   script:
     - docker run -d --name frontend $CONTAINER_TEST_IMAGE
     - docker exec -t frontend /var/www/project/phpcs.sh
-    - docker exec -t frontend sh -c '/var/www/project/vendor/bin/var-dump-check --no-colors --symfony --exclude /var/www/project/vendor /var/www/project'
+    - docker exec -t frontend sh -c '/opt/hexaa-newui/vendor/bin/var-dump-check --no-colors --symfony --exclude /opt/hexaa-newui/vendor /opt/hexaa-newui'
   tags:
     - dind
 
@@ -74,7 +74,7 @@ test-organization:
     - docker run --network=hexaa-test -d --name backend -v hexaa_backend_source:/opt/hexaa-backend hexaaproject/hexaa-backend:new-api-dev
     - docker run --network=hexaa-test -d --name web -v hexaa_ui_source:/opt/hexaa-newui -v hexaa_backend_source:/opt/hexaa-backend -v ./docker-prod/default-hexaa-fakeshib.conf:/etc/apache2/sites-enabled/000-default.conf solazs/apache-shib
     - docker run --network=hexaa-test dmfenton/wait web:80 -t 120
-    - docker exec -t frontend sh -c '/opt/hexaa-newui/vendor/bin/behat -c /var/www/project/behat.yml -n --tags reset,organization'
+    - docker exec -t frontend sh -c '/opt/hexaa-newui/vendor/bin/behat -c /opt/hexaa-newui/behat.yml -n --tags reset,organization'
   tags:
     - dind
 
