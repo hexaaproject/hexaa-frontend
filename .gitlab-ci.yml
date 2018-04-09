@@ -19,6 +19,8 @@ before_script:
   - docker info
   - whoami
   - hostname
+  - pwd
+  - ls -alF
 
     # Install docker-compose
 #  - apk add --update py-pip &&
@@ -56,7 +58,7 @@ code_style_check:
   stage: test
   script:
     - docker run -d --name frontend $CONTAINER_TEST_IMAGE
-    - docker exec -t frontend /var/www/project/phpcs.sh
+    - docker exec -t frontend /opt/hexaa-newui/phpcs.sh
     - docker exec -t frontend sh -c '/opt/hexaa-newui/vendor/bin/var-dump-check --no-colors --symfony --exclude /opt/hexaa-newui/vendor /opt/hexaa-newui'
   tags:
     - dind
