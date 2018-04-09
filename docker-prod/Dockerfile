@@ -19,6 +19,7 @@ COPY app /opt/hexaa-newui
 # Install composer
 COPY docker-prod/composer_downloader.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/composer_downloader.sh \
+    && sync \
     && cd /usr/local/bin/ \
     && /usr/local/bin/composer_downloader.sh \
     && mv /usr/local/bin/composer.phar /usr/local/bin/composer \
