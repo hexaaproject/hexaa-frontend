@@ -114,6 +114,9 @@ class ServiceController extends BaseController
     public function enableAction($token, Request $request)
     {
         $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        if ($hexaaAdmin == null) {
+          $hexaaAdmin = 'false';
+        }
         $tokenString = $request->getQueryString();
         $prefix = 'token=';
         $token = null;
