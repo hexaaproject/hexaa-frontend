@@ -115,7 +115,7 @@ class ServiceController extends BaseController
     {
         $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         if ($hexaaAdmin == null) {
-          $hexaaAdmin = 'false';
+            $hexaaAdmin = 'false';
         }
         $tokenString = $request->getQueryString();
         $prefix = 'token=';
