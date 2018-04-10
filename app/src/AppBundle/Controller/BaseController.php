@@ -48,6 +48,7 @@ class BaseController extends Controller
         if ($hexaaAdmin == null) {
             $hexaaAdmin = 'false';
         }
+        
         return $this->get('principal')->orgsWhereUserIsManager($hexaaAdmin);
     }
 
