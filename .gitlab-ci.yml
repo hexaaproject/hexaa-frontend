@@ -66,7 +66,7 @@ test-organization:
     - docker run --network=hexaa-test -d --name grid -e USE_SELENIUM=2 elgalu/selenium:3.2.0-p4
     - docker run --network=hexaa-test dmfenton/wait grid:24444 -t 120
     - docker run --network=hexaa-test -d --name smtp mailhog/mailhog
-    - docker run --network=hexaa-test -d --name frontend -v hexaa_ui_source:/opt/hexaa-newui -e HEXAA_FRONTEND_API_BASE_URL="http://web/backend/api/" $CONTAINER_TEST_IMAGE
+    - docker run --network=hexaa-test -d --name frontend -v hexaa_ui_source:/opt/hexaa-newui -e HEXAA_FRONTEND_API_BASE_URL="http://web/backend/api/" -e HEXAA_FRONTEND_MAILER_PORT=1025 $CONTAINER_TEST_IMAGE
     - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
     - docker run --network=hexaa-test -d --name backend -v hexaa_backend_source:/opt/hexaa-backend -e HEXAA_BACKEND_DATABASE_USER=someuser -e HEXAA_BACKEND_DATABASE_PASSWORD=somepass hexaaproject/hexaa-backend:new-api-dev
     - docker run --network=hexaa-test -d --name web -v hexaa_ui_source:/opt/hexaa-newui -v hexaa_backend_source:/opt/hexaa-backend -v /builds/hexaa/hexaa-newui/docker-prod/default-hexaa-fakeshib.conf:/etc/apache2/sites-enabled/000-default.conf -e APACHE_SHIB_APACHE_MODULES_TO_START="rewrite proxy proxy_fcgi" -e APACHE_SHIB_APACHE_START_SHIB=false solazs/apache-shib
