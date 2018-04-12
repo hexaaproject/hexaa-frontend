@@ -114,6 +114,9 @@ class ServiceController extends BaseController
     public function enableAction($token, Request $request)
     {
         $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        if ($hexaaAdmin == null) {
+            $hexaaAdmin = 'false';
+        }
         $tokenString = $request->getQueryString();
         $prefix = 'token=';
         $token = null;
@@ -2556,7 +2559,11 @@ class ServiceController extends BaseController
      */
     private function getOrganizations()
     {
-        $organization = $this->get('organization')->cget($this->get('session')->get('hexaaAdmin'));
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        if ($hexaaAdmin == null) {
+            $hexaaAdmin = 'false';
+        }
+        $organization = $this->get('organization')->cget($hexaaAdmin);
 
         return $organization;
     }
@@ -2566,7 +2573,11 @@ class ServiceController extends BaseController
      */
     private function getServices()
     {
-        $services = $this->get('service')->cget($this->get('session')->get('hexaaAdmin'));
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        if ($hexaaAdmin == null) {
+            $hexaaAdmin = 'false';
+        }
+        $services = $this->get('service')->cget($hexaaAdmin);
 
         return $services;
     }

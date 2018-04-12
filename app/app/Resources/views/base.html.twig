@@ -80,27 +80,33 @@
 
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                {% if organizations is defined %}
+                {% if organizations is defined and organizations.item_number > 0 %}
                     <li class="dropdown" id="org">
                         <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Organizations
                             <span class="caret"> </span></a>
                         {% if organizations.items != null %}
                             <ul class="dropdown-menu">
                                 {% for organization in organizations.items %}
-                                    {% for orgWhereManager in organizationsWhereManager %}
-                                        {% if orgWhereManager.id == organization.id %}
-                                            <li>
-                                                <a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a>
-                                            </li>
-                                            {% set manager = "true" %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    {% if manager == "false" %}
+                                    {% if hexaaHat == "active" %}
                                         <li>
-                                            <a href="{{ path("app_organization_properties", { id: organization.id }) }}">{{ organization.name|e }}</a>
+                                            <a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a>
                                         </li>
+                                    {% else %}
+                                        {% for orgWhereManager in organizationsWhereManager %}
+                                            {% if orgWhereManager.id == organization.id %}
+                                                <li>
+                                                    <a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a>
+                                                </li>
+                                                {% set manager = "true" %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if manager == "false" %}
+                                            <li>
+                                                <a href="{{ path("app_organization_properties", { id: organization.id }) }}">{{ organization.name|e }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% set manager = "false" %}
                                     {% endif %}
-                                    {% set manager = "false" %}
                                     {# <li><a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a></li>#}
                                 {% endfor %}
                             </ul>

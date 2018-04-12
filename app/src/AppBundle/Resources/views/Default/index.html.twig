@@ -62,16 +62,20 @@
                             <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
                         {% endif %}
                         {% for organization in organizations.items %}
-                            {% for orgWhereManager in organizationsWhereManager %}
-                                {% if orgWhereManager.id == organization.id %}
-                                    <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
-                                    {% set manager = "true" %}
+                            {% if hexaaHat == "active" %}
+                                <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
+                            {% else %}
+                                {% for orgWhereManager in organizationsWhereManager %}
+                                    {% if orgWhereManager.id == organization.id %}
+                                        <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
+                                        {% set manager = "true" %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if manager == "false" %}
+                                    <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_properties', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
                                 {% endif %}
-                            {% endfor %}
-                            {% if manager == "false" %}
-                                <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_properties', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
+                                {% set manager = "false" %}
                             {% endif %}
-                            {% set manager = "false" %}
                         {% endfor %}
                     </div>
                 </div>
