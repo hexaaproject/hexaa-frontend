@@ -4,7 +4,8 @@ default:
     extensions:
         Behat\Symfony2Extension: ~
         Behat\MinkExtension:
-            base_url:  http://web/
+#            base_url:  http://web/
+            base_url: https://project.local/
             browser_name: firefox
             sessions:
                 my_session:
@@ -18,6 +19,10 @@ default:
                            #acceptInsecureCerts: true
             # show_cmd: '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome %s'
             show_cmd: 'firefox %s'
+        Knp\FriendlyContexts\Extension:
+            api:
+                base_url: http://hexaa-test-data-manager/
+            smartTag: smartStep
         Bex\Behat\ScreenshotExtension:
             active_image_drivers: unsee
             image_drivers:
