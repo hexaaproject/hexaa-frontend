@@ -265,7 +265,7 @@ deploy_to_sztaki:
 deploy_to_staging:
   stage: deploy
   script:
-    - ssh -A gitlab@$DEPLOY_STAGING_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000; docker pull $CONTAINER_STAGING_RELEASE_IMAGE; cd /opt/hexaa; docker-compose down; docker-compose up -d;"
+    - ssh -A gitlab@$DEPLOY_STAGING_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000; docker pull $CONTAINER_STAGING_RELEASE_IMAGE; cd /opt/hexaa; docker-compose down; docker volume rm hexaa_hexaa_ui_source; docker-compose up -d;"
   only:
     - staging
   tags:
