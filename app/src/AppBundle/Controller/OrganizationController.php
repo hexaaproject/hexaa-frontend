@@ -717,7 +717,7 @@ class OrganizationController extends BaseController
         }
         $this->get('session')->getFlashBag()->add('success', 'The invitation accepted successfully.');
 
-        return $this->redirect($this->generateUrl('app_organization_show', array("id" => $organizationid)));
+        return $this->redirect($this->generateUrl('app_organization_properties', array("id" => $organizationid)));
     }
 
     /**
