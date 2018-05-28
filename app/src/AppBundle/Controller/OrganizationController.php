@@ -698,7 +698,7 @@ class OrganizationController extends BaseController
     {
         $invitationResource = $this->get('invitation');
         try {
-            $invitationResource->accept($this->get('session')->get('hexaaAdmin'), $token);
+            $invitationResource->accept($this->get('session')->get('hexaaAdmin', "false"), $token);
         } catch (\Exception $e) {
             $statusCode = $e->getResponse()->getStatusCode();
             switch ($statusCode) {
@@ -717,7 +717,7 @@ class OrganizationController extends BaseController
         }
         $this->get('session')->getFlashBag()->add('success', 'The invitation accepted successfully.');
 
-        return $this->redirect($this->generateUrl('app_organization_show', array("id" => $organizationid)));
+        return $this->redirect($this->generateUrl('app_organization_properties', array("id" => $organizationid)));
     }
 
     /**

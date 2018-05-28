@@ -117,13 +117,16 @@ class ServiceController extends BaseController
         if ($hexaaAdmin == null) {
             $hexaaAdmin = 'false';
         }
-        $tokenString = $request->getQueryString();
-        $prefix = 'token=';
-        $token = null;
 
-        if (substr($tokenString, 0, strlen($prefix)) == $prefix) {
-            $token = substr($tokenString, strlen($prefix));
-        }
+        /*
+            $tokenString = $request->getQueryString();
+            $prefix = 'token=';
+            $token = null;
+
+            if (substr($tokenString, 0, strlen($prefix)) == $prefix) {
+                $token = substr($tokenString, strlen($prefix));
+            }
+        */
 
         try {
             $this->get('service')->enableService($hexaaAdmin, $token);

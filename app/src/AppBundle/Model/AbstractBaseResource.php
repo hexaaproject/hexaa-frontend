@@ -59,9 +59,8 @@ abstract class AbstractBaseResource
      * @param int    $pageSize   paging: number of items to return
      * @return array
     */
-    public function cget(string $hexaaAdmin, string $verbose = "normal", int $offset = 0, int $pageSize = 50): array
+    public function cget(string $hexaaAdmin, string $verbose = "normal", int $offset = 0, int $pageSize = 1000): array
     {
-        //dump($hexaaAdmin);exit;
         return $this->getCollection($this->pathName, $hexaaAdmin, $verbose, $offset, $pageSize);
     }
 
