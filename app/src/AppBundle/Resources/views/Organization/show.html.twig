@@ -12,20 +12,20 @@
 {% block container %}
     <div id="srvmain">
             <div id="maindivcontents">
-                <div class="desktopbuttonorg" id="createDiv"><a href="{{ path('app_organization_roles', {"id": entity.id, "action": "create"}) }}"><img class="desktopbuttonimage" src="/img/create_role_160x160.svg"/><br/> <p id="createText"><b>Create role</b></p></a></div>
+                <div class="desktopbuttonorg" id="createDiv"><a href="{{ path('app_organization_roles', {"id": entity.id, "action": "create"}) }}"><img class="desktopbuttonimage" src="{{ asset('img/create_role_160x160.svg') }}"/><br/> <p id="createText"><b>Create role</b></p></a></div>
                 {% if ismanager == 'true' %}
-                    <div class="desktopbuttonorg" id="connectDiv"><img class="desktopbuttonimage" src="/img/connect_to_service_160x160.svg"/><br/><p id="connectText"><b>Connect to service</b></p></div>
+                    <div class="desktopbuttonorg" id="connectDiv"><img class="desktopbuttonimage" src="{{ asset('img/connect_to_service_160x160.svg') }}"/><br/><p id="connectText"><b>Connect to service</b></p></div>
                 {% endif %}
 
-                <div class="desktopbuttonorg" id="attrDiv"><img class="desktopbuttonimage" src="/img/edit_attributes_160x160.svg"/><br/><p id="attrText"><b>Edit attributes</b></p></div>
+                <div class="desktopbuttonorg" id="attrDiv"><img class="desktopbuttonimage" src="{{ asset('img/edit_attributes_160x160.svg') }}"/><br/><p id="attrText"><b>Edit attributes</b></p></div>
                 
-                <div class="desktopbuttonorg" id="manageDiv"><a href="{{ path("app_organization_users", {"id": entity.id}) }}"><img class="desktopbuttonimage" src="/img/manage_users_160x160.svg"/><br/><p id="manageText"><b>Manage users</b></p></a></div>
+                <div class="desktopbuttonorg" id="manageDiv"><a href="{{ path("app_organization_users", {"id": entity.id}) }}"><img class="desktopbuttonimage" src="{{ asset('img/manage_users_160x160.svg') }}"/><br/><p id="manageText"><b>Manage users</b></p></a></div>
                 
-                <div class="desktopbuttonorg" id="editDiv"><a href="{{ path("app_organization_properties", {"id": entity.id, "action": "edit"}) }}"><img class="desktopbuttonimage" src="/img/edit_properties_130x130.svg"/><br/><p id="editText"><b>Edit properties</b></p></a></div>
+                <div class="desktopbuttonorg" id="editDiv"><a href="{{ path("app_organization_properties", {"id": entity.id, "action": "edit"}) }}"><img class="desktopbuttonimage" src="{{ asset('img/edit_properties_130x130.svg') }}"/><br/><p id="editText"><b>Edit properties</b></p></a></div>
                 
-                <div class="desktopbuttonorg" id="viewDiv"><a href="{{ path("app_organization_history", {"id": entity.id}) }}" style="outline: none;"><img class="desktopbuttonimage" src="/img/view_history_151x130.svg"/><br/><p id="viewText"><b>View history</b></p></a></div>
+                <div class="desktopbuttonorg" id="viewDiv"><a href="{{ path("app_organization_history", {"id": entity.id}) }}" style="outline: none;"><img class="desktopbuttonimage" src="{{ asset('img/view_history_151x130.svg') }}"/><br/><p id="viewText"><b>View history</b></p></a></div>
                 
-                <div class="desktopbuttonorg" id="deleteDiv"><img class="desktopbuttonimage" src="/img/delete_organization_130x130.svg"/><br/><p id="deleteText"><b>Delete organization</b></p></div>
+                <div class="desktopbuttonorg" id="deleteDiv"><img class="desktopbuttonimage" src="{{ asset('img/delete_organization_130x130.svg') }}"/><br/><p id="deleteText"><b>Delete organization</b></p></div>
             </div>
     </div>
     {{ include('::modal.html.twig',

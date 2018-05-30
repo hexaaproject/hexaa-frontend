@@ -74,7 +74,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{{ path('homepage') }}">
-                <img id="cornerlogo" src="/img/hexaa-logo-blue.png" alt="hexaa logo"/>
+                <img id="cornerlogo" src="{{ asset('img/hexaa-logo-blue.png') }}" alt="hexaa logo"/>
             </a>
         </div>
 
@@ -141,11 +141,11 @@
                 <li><a href="{{ path("app_profile_index") }}">{{ app.user.username }}</a></li>
                 {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li><a href="{{ path('app_default_login') }}" id="login_button" role="button">
-                            <img id="logpng" src="/img/logout.png">
+                            <img id="logpng" src="{{ asset('img/logout.png') }}">
                         </a></li>
                 {% else %}
                     <li><a href="{{ logout_path('default') }}" id="logout_button" role="button">
-                            <img id="logpng" src="/img/logout.png">
+                            <img id="logpng" src="{{ asset('img/logout.png') }}">
                         </a></li>
                 {% endif %}
             </ul>

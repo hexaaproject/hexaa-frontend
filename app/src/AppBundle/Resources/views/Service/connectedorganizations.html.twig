@@ -622,7 +622,7 @@
                             <td> {{ one_content.values }}</td>
                         {% endif %}
                     {% endfor %}
-                     <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="/img/gray_pencil.svg" onclick="editlink({{ one_data.link_id }})"/></td>
+                     <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="{{ asset('img/gray_pencil.svg') }}" onclick="editlink({{ one_data.link_id }})"/></td>
                      <!-- <td><button type="button" class="btnhexaa btnhexaa-sm btn-red" onclick="acceptlink()">Accept</button></td>-->
                 </tr>
             {% endif %}
