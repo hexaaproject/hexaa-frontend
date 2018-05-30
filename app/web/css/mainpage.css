@@ -107,8 +107,9 @@ body {
 }
 
 .desktopbuttonimageafterloginlarge {
-    width: 14vw;
+    width: 9vw;
     cursor: pointer;
+    margin-top: 4vh;
 }
 
 #maindivafterlogin {
