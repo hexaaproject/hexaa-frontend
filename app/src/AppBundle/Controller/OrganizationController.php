@@ -1187,7 +1187,7 @@ class OrganizationController extends BaseController
 
     /**
      * Get the history of the requested organization.
-     * @Route("/{id}/history")
+     * @Route("/history/{id}")
      * @Template()
      * @return array
      * @param int $id Organization Id
