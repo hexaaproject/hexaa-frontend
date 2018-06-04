@@ -1635,7 +1635,6 @@ class ServiceController extends BaseController
         foreach ($forms as $form) {
             array_push($formviews, $form->createView());
         }
-
         return $this->render(
             'AppBundle:Service:connectedorganizations.html.twig',
             array(
@@ -1653,9 +1652,9 @@ class ServiceController extends BaseController
                 'pendinglinkIDs' => $pendinglinkIDs,
                 'acceptedNumber' => $acceptedNumber,
                 'forms' => $formviews,
-                'manager' => $manager,
+                'ismanager' => $manager,
                 'organizationsWhereManager' => $this->orgWhereManager(),
-                'manager' => "false",
+                'manager' => false,
                 'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
         );
