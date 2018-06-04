@@ -850,7 +850,7 @@ class ServiceController extends BaseController
                     ->setCc($emails)
                     ->setReplyTo($config['reply-to'])
                     ->setBody(
-                        $this->render(
+                        $this->renderView(
                             'AppBundle:Service:invitationEmail.html.twig',
                             array(
                                 'link' => $link,
