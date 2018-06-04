@@ -1217,7 +1217,7 @@ class OrganizationController extends BaseController
     }
 
     /**
-     * @Route("/{id}/history/json")
+     * @Route("/history/json/{id}")
      * @param string       $id       Organization id
      * @param integer|null $offset   Offset
      * @param integer      $pageSize Pagesize
