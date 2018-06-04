@@ -25,8 +25,10 @@ class ServicePermissionUpdateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
-        $urichunked = explode(':', $datas['data']['uri']);
-        $uripostfix = $urichunked[5];
+        $uripostfix = null;
+        if (substr($datas['data']['uri'], 0, strlen($datas['data']['uriPrefix'])) == ($datas['data']['uriPrefix'])) {
+            $uripostfix = substr($datas['data']['uri'], strlen($datas['data']['uriPrefix']));
+        }
         $builder
             ->add(
                 'name',

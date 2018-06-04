@@ -1112,7 +1112,7 @@ class ServiceController extends BaseController
             $offset = $offset +25;
         }
 
-        $permissionsaccordion = $this->permissionsToAccordion($permissionsperpage, $id, $permissionId, $action, $request);
+        $permissionsaccordion = $this->permissionsToAccordion($permissionsperpage, $id, $permissionId, $action, $uriPrefix, $request);
         if (false === $permissionsaccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
             return $this->redirectToRoute('app_service_permissions', array("id" => $id));
         }
@@ -1129,7 +1129,6 @@ class ServiceController extends BaseController
                 $data = $request->request->all();
                 $withoutAccent = $this->removeAccents($data['service_create_permission']['permissionURL']);
                 $modifiedName = preg_replace("/[^a-zA-Z0-9-_:]+/", "", $withoutAccent);
-
                 if (strlen($modifiedName) < 3) {
                     throw new \Exception('URI postfix must be at least 3 character long!');
                 }
@@ -2172,11 +2171,12 @@ class ServiceController extends BaseController
      * @param $permissions
      * @param $servId
      * @param $permissionId,
-     * @param $action
+     * @param $action,
+     * @param $uriPrefix,
      * @param $request
      * @return array
      */
-    private function permissionsToAccordion($permissions, $servId, $permissionId, $action, Request $request)
+    private function permissionsToAccordion($permissions, $servId, $permissionId, $action, $uriPrefix, Request $request)
     {
         $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $permissionsAccordion = array();
@@ -2184,6 +2184,7 @@ class ServiceController extends BaseController
             foreach ($onepermissiongroup as $permission) {
                 $urichunked = explode(':', $permission['uri']);
                 $permissionsAccordion[$permission['id']]['uripostfix'] = $urichunked[5];
+                $permission['uriPrefix'] = $uriPrefix .':'. $servId .':';
                 $permissionsAccordion[$permission['id']]['uriprefix'] = $urichunked[0].':'.$urichunked[1].':'.$urichunked[2].':'.$urichunked[3].':'.$urichunked[4].':';
                 $form =  $this->createForm(
                     ServicePermissionUpdateType::class,
