@@ -640,7 +640,6 @@ class OrganizationController extends BaseController
     {
         $organization = $this->getOrganization($id);
         $form = $this->createForm(OrganizationUserInvitationSendEmailType::class);
-
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
@@ -653,6 +652,8 @@ class OrganizationController extends BaseController
             }
             $emails = explode(',', preg_replace('/\s+/', '', $data['emails']));
             $config = $this->getParameter('invitation_config');
+            $hexaa_ui_url = $this->generateUrl('homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL);
+
             $mailer = $this->get('mailer');
             $link = $data['link'];
             try {
@@ -663,16 +664,18 @@ class OrganizationController extends BaseController
                     ->setReplyTo($config['reply-to'])
                     ->setBody(
                         $this->render(
-                            'AppBundle:Organization:invitationEmail.txt.twig',
+                            'AppBundle:Organization:invitationEmail.html.twig',
                             array(
                                 'link' => $link,
                                 'organization' => $organization,
                                 'footer' => $config['footer'],
                                 'role' => $role,
                                 'message' => $data['message'],
+                                'inviter' => $config['from'],
+                                'hexaa_ui_url' => $hexaa_ui_url,
                             )
                         ),
-                        'text/plain'
+                        'text/html'
                     );
 
                 $mailer->send($message);

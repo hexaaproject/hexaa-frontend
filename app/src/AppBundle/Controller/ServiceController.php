@@ -841,6 +841,7 @@ class ServiceController extends BaseController
             $config = $this->getParameter('invitation_config');
             $mailer = $this->get('mailer');
             $link = $data['link'];
+            $hexaa_ui_url = $this->generateUrl('homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL);
             // TODO this->sendInvitations()
             try {
                 $message = $mailer->createMessage()
@@ -850,15 +851,17 @@ class ServiceController extends BaseController
                     ->setReplyTo($config['reply-to'])
                     ->setBody(
                         $this->render(
-                            'AppBundle:Service:invitationEmail.txt.twig',
+                            'AppBundle:Service:invitationEmail.html.twig',
                             array(
                                 'link' => $link,
                                 'service' => $service,
                                 'footer' => $config['footer'],
                                 'message' => $data['message'],
+                                'inviter' => $config['from'],
+                                'hexaa_ui_url' => $hexaa_ui_url,
                             )
                         ),
-                        'text/plain'
+                        'text/html'
                     );
 
                 $mailer->send($message);
@@ -2182,10 +2185,13 @@ class ServiceController extends BaseController
         $permissionsAccordion = array();
         foreach ($permissions as $onepermissiongroup) {
             foreach ($onepermissiongroup as $permission) {
-                $urichunked = explode(':', $permission['uri']);
-                $permissionsAccordion[$permission['id']]['uripostfix'] = $urichunked[5];
+                $uripostfix = null;
+                if (substr($permission['uri'], 0, strlen($uriPrefix)) == ($uriPrefix)) {
+                    $uripostfix = substr($permission['uri'], strlen($uriPrefix));
+                }
+                $permissionsAccordion[$permission['id']]['uripostfix'] = $uripostfix;
                 $permission['uriPrefix'] = $uriPrefix .':'. $servId .':';
-                $permissionsAccordion[$permission['id']]['uriprefix'] = $urichunked[0].':'.$urichunked[1].':'.$urichunked[2].':'.$urichunked[3].':'.$urichunked[4].':';
+                $permissionsAccordion[$permission['id']]['uriprefix'] = $uriPrefix.':'.$servId.':';
                 $form =  $this->createForm(
                     ServicePermissionUpdateType::class,
                     $permission,
