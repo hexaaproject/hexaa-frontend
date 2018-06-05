@@ -1227,7 +1227,11 @@ class OrganizationController extends BaseController
     {
         $organizationResource = $this->get('organization');
         $principalResource = $this->get('principals');
-        $data = $organizationResource->getHistory($this->get('session')->get('hexaaAdmin'), $id);
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        if  ($this->get('session')->get('hexaaAdmin') == null) {
+            $hexaaAdmin = 'false';
+        }
+        $data = $organizationResource->getHistory($hexaaAdmin, $id);
         $displayNames = array();
         for ($i = 0; $i < $data['item_number']; $i++) {
             $principalId = $data['items'][$i]['principal_id'];

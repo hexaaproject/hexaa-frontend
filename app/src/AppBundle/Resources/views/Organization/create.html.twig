@@ -81,6 +81,7 @@
         <div class="row">
             <div class="col-md-5 col-md-offset-5">
                 <div class="text-center progressbar-order">Connect service with token</div>
+                <div class="text-center progressbar-order">Optional. If you don't have a token yet or don't know what it is, that is perfectly fine! Just click next.</div>
                 <fieldset>
                     {{ form_row(form.service_token) }}
                 </fieldset>
@@ -103,8 +104,8 @@
         </div>
         <div class="row">
             <div class="col-md-5 col-md-offset-5">
-                <div class="text-center progressbar-order">Invite members to default role
-                </div>
+                <div class="text-center progressbar-order">Invite members to default role</div>
+                <div class="text-center progressbar-order">Optional. Here you can invite members right away if you want.</div>
                 <fieldset>
                     {{ form_row(form.invitation_emails) }}
                 </fieldset>
