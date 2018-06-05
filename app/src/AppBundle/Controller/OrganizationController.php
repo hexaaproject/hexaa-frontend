@@ -1332,7 +1332,11 @@ class OrganizationController extends BaseController
      */
     private function getOrganization($id)
     {
-        return $this->get('organization')->get($this->get('session')->get('hexaaAdmin'), $id);
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        if($this->get('session')->get('hexaaAdmin') == null) {
+            $hexaaAdmin = 'false';
+        }
+        return $this->get('organization')->get($hexaaAdmin, $id);
     }
 
     /**
