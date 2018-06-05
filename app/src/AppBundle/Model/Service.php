@@ -393,7 +393,7 @@ class Service extends AbstractBaseResource implements WarningableInterface
      * @param string|null $tags
      * @return array
      */
-    public function getHistory(string $hexaaAdmin, string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 500, string $tags = null)
+    public function getHistory(string $hexaaAdmin, string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 500, array $tags = [])
     {
         return $this->getCollection($this->pathName.'/'.$id.'/news', $hexaaAdmin, $verbose, $offset, $pageSize, $tags);
     }

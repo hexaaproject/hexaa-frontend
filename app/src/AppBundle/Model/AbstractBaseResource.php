@@ -215,7 +215,7 @@ abstract class AbstractBaseResource
                     'verbose' => $verbose,
                     'offset' => $offset,
                     'limit' => $pageSize,
-                    'admin' => true,
+                    'admin' => $admin,
                     'tags' => $tags,
                 ),
             )
