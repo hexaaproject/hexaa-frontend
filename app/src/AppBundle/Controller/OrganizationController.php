@@ -653,7 +653,7 @@ class OrganizationController extends BaseController
             $emails = explode(',', preg_replace('/\s+/', '', $data['emails']));
             $config = $this->getParameter('invitation_config');
             $hexaa_ui_url = $this->generateUrl('homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL);
-
+            $currentPrincipal = $this->get('principal')->getSelf($this->get('session')->get('hexaaAdmin'));
             $mailer = $this->get('mailer');
             $link = $data['link'];
             try {
@@ -671,7 +671,7 @@ class OrganizationController extends BaseController
                                 'footer' => $config['footer'],
                                 'role' => $role,
                                 'message' => $data['message'],
-                                'inviter' => $config['from'],
+                                'inviter' => $currentPrincipal['display_name'],
                                 'hexaa_ui_url' => $hexaa_ui_url,
                             )
                         ),
@@ -1775,6 +1775,8 @@ class OrganizationController extends BaseController
         $emails = explode(',', preg_replace('/\s+/', '', $emails));
         $config = $this->getParameter('invitation_config');
         $mailer = $this->get('mailer');
+        $hexaa_ui_url = $this->generateUrl('homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL);
+        $currentPrincipal = $this->get('principal')->getSelf($this->get('session')->get('hexaaAdmin'));
 
         // create invitation
 
@@ -1786,17 +1788,19 @@ class OrganizationController extends BaseController
                 ->setCc($emails)
                 ->setReplyTo($config['reply-to'])
                 ->setBody(
-                    $this->render(
-                        'AppBundle:Organization:invitationEmail.txt.twig',
+                    $this->renderView(
+                        'AppBundle:Organization:invitationEmail.html.twig',
                         array(
                             'link' => $tokenResolverLink,
                             'organization' => $organization,
                             'footer' => $config['footer'],
                             'role' => $role,
                             'message' => $messageInMail,
+                            'hexaa_ui_url' => $hexaa_ui_url,
+                            'inviter' => $currentPrincipal['display_name'],
                         )
                     ),
-                    'text/plain'
+                    'text/html'
                 );
 
               $mailer->send($message);
