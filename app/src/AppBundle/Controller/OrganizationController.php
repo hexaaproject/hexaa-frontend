@@ -656,16 +656,17 @@ class OrganizationController extends BaseController
             $currentPrincipal = $this->get('principal')->getSelf($this->get('session')->get('hexaaAdmin'));
             $mailer = $this->get('mailer');
             $link = $data['link'];
-            try {
-                $message = $mailer->createMessage()
-                    ->setSubject($config['subject'])
-                    ->setFrom($config['from'])
-                    ->setCc($emails)
-                    ->setReplyTo($config['reply-to'])
-                    ->setBody(
-                        $this->renderView(
-                            'AppBundle:Organization:invitationEmail.html.twig',
-                            array(
+            foreach ($emails as $email) {
+                try {
+                    $message = $mailer->createMessage()
+                        ->setSubject($config['subject'] . ' to ' . $organization['name'])
+                        ->setFrom($config['from'])
+                        ->setTo($email)
+                        ->setReplyTo($config['reply-to'])
+                        ->setBody(
+                            $this->renderView(
+                              'AppBundle:Organization:invitationEmail.html.twig',
+                              [
                                 'link' => $link,
                                 'organization' => $organization,
                                 'footer' => $config['footer'],
@@ -673,15 +674,21 @@ class OrganizationController extends BaseController
                                 'message' => $data['message'],
                                 'inviter' => $currentPrincipal['display_name'],
                                 'hexaa_ui_url' => $hexaa_ui_url,
-                            )
-                        ),
-                        'text/html'
-                    );
+                                'recipient' => $email,
+                              ]
+                            ),
+                            'text/html'
+                        );
 
-                $mailer->send($message);
-                $this->get('session')->getFlashBag()->add('success', 'Invitations sent succesfully.');
-            } catch (\Exception $e) {
-                $this->get('session')->getFlashBag()->add('error', 'Invitation sending failure. <br> Please send the invitation link manually to your partners. <br> The link is: <br><strong>'.$link.'</strong><br> The error was: <br> '.$e->getMessage());
+                    $mailer->send($message);
+                    $this->get('session')
+                      ->getFlashBag()
+                      ->add('success', 'Invitations sent succesfully.');
+                } catch (\Exception $e) {
+                    $this->get('session')
+                        ->getFlashBag()
+                        ->add('error', 'Invitation sending failure. <br> Please send the invitation link manually to your partners. <br> The link is: <br><strong>' . $link . '</strong><br> The error was: <br> ' . $e->getMessage());
+                }
             }
 
             return $this->redirect($this->generateUrl('app_organization_users', array("id" => $id)));
@@ -1781,31 +1788,36 @@ class OrganizationController extends BaseController
         // create invitation
 
         $tokenResolverLink = $this->get('invitation')->createHexaaInvitation($hexaaAdmin, $organization['id'], $this->get('router'), $role['id']);
-        try {
-            $message = $mailer->createMessage()
-                ->setSubject($config['subject'])
-                ->setFrom($config['from'])
-                ->setCc($emails)
-                ->setReplyTo($config['reply-to'])
-                ->setBody(
-                    $this->renderView(
-                        'AppBundle:Organization:invitationEmail.html.twig',
-                        array(
-                            'link' => $tokenResolverLink,
-                            'organization' => $organization,
-                            'footer' => $config['footer'],
-                            'role' => $role,
-                            'message' => $messageInMail,
-                            'hexaa_ui_url' => $hexaa_ui_url,
-                            'inviter' => $currentPrincipal['display_name'],
-                        )
-                    ),
-                    'text/html'
-                );
+        foreach ($emails as $email) {
+            try {
+                $message = $mailer->createMessage()
+                    ->setSubject($config['subject'] . ' to ' . $organization['name'])
+                    ->setFrom($config['from'])
+                    ->setTo($email)
+                    ->setReplyTo($config['reply-to'])
+                    ->setBody(
+                        $this->renderView(
+                            'AppBundle:Organization:invitationEmail.html.twig',
+                            [
+                                'link' => $tokenResolverLink,
+                                'organization' => $organization,
+                                'footer' => $config['footer'],
+                                'role' => $role,
+                                'message' => $messageInMail,
+                                'hexaa_ui_url' => $hexaa_ui_url,
+                                'inviter' => $currentPrincipal['display_name'],
+                                'recipient' => $email,
+                            ]
+                        ),
+                        'text/html'
+                    );
 
-              $mailer->send($message);
-        } catch (Exception $exception) {
-            $this->get('session')->getFlashBag()->add('error', 'Invitation sending failure. The error was: <br> '.$exception->getMessage());
+                $mailer->send($message);
+            } catch (Exception $exception) {
+                $this->get('session')
+                  ->getFlashBag()
+                  ->add('error', 'Invitation sending failure. The error was: <br> ' . $exception->getMessage());
+            }
         }
     }
 }
