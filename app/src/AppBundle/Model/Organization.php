@@ -291,7 +291,7 @@ class Organization extends AbstractBaseResource implements WarningableInterface
      */
     public function getHistory(string $hexaaAdmin, string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 500, array $tags = [])
     {
-        return $this->getCollectionAdmin($this->pathName.'/'.$id.'/news');
+        return $this->getCollectionAdmin($this->pathName.'/'.$id.'/news.json');
     }
 
     /**
