@@ -842,35 +842,43 @@ class ServiceController extends BaseController
             $mailer = $this->get('mailer');
             $link = $data['link'];
             $hexaa_ui_url = $this->generateUrl('homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL);
+            $currentPrincipal = $this->get('principal')->getSelf($this->get('session')->get('hexaaAdmin'));
             // TODO this->sendInvitations()
-            try {
-                $message = $mailer->createMessage()
-                    ->setSubject($config['subject'])
-                    ->setFrom($config['from'])
-                    ->setCc($emails)
-                    ->setReplyTo($config['reply-to'])
-                    ->setBody(
-                        $this->renderView(
-                            'AppBundle:Service:invitationEmail.html.twig',
-                            array(
-                                'link' => $link,
-                                'service' => $service,
-                                'footer' => $config['footer'],
-                                'message' => $data['message'],
-                                'inviter' => $config['from'],
-                                'hexaa_ui_url' => $hexaa_ui_url,
-                            )
-                        ),
-                        'text/html'
-                    );
+            foreach ($emails as $email) {
+                try {
+                    $message = $mailer->createMessage()
+                        ->setSubject($config['subject'] . ' to ' . $service['name'])
+                        ->setFrom($config['from'])
+                        ->setTo($email)
+                        ->setReplyTo($config['reply-to'])
+                        ->setBody(
+                            $this->renderView(
+                                'AppBundle:Service:invitationEmail.html.twig',
+                                [
+                                  'link' => $link,
+                                  'service' => $service,
+                                  'footer' => $config['footer'],
+                                  'message' => $data['message'],
+                                  'inviter' => $currentPrincipal['display_name'],
+                                  'hexaa_ui_url' => $hexaa_ui_url,
+                                  'recipient' => $email,
+                                ]
+                            ),
+                            'text/html'
+                        );
 
-                $mailer->send($message);
-                $this->get('session')->getFlashBag()->add('success', 'Invitations sent succesfully.');
-            } catch (\Exception $e) {
-                $this->get('session')->getFlashBag()->add('error', 'Invitation sending failure. <br> Please send the invitation link manually to your partners. <br> The link is: <br><strong>'.$link.'</strong><br> The error was: <br> '.$e->getMessage());
+                    $mailer->send($message);
+                    $this->get('session')
+                        ->getFlashBag()
+                        ->add('success', 'Invitations sent succesfully.');
+                } catch (\Exception $e) {
+                    $this->get('session')
+                        ->getFlashBag()
+                        ->add('error', 'Invitation sending failure. <br> Please send the invitation link manually to your partners. <br> The link is: <br><strong>' . $link . '</strong><br> The error was: <br> ' . $e->getMessage());
+                }
             }
 
-            return $this->redirect($this->generateUrl('app_service_managers', array("id" => $id)));
+          return $this->redirect($this->generateUrl('app_service_managers', array("id" => $id)));
         }
     }
 
