@@ -193,22 +193,21 @@ class AdminController extends BaseController
      */
     public function entityAction($admin)
     {
+        $offset = 25;
+        $pagesize = 25;
+        $verbose = "normal";
         $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $entityids = $this->get('entity_id')->cget($hexaaAdmin);
         $totalnumber = $entityids['item_number'];
         $totalpages = ceil($totalnumber / 25);
-        $offset = 25;
-        $pagesize = 25;
-        $verbose = "normal";
         $entitysperpage = array();
-        $allentity = array();
         array_push($entitysperpage, $entityids['items']);
         for ($i = 1; $i < $totalpages; $i++) {
             $entityperpage = $this->get('entity_id')->cget($hexaaAdmin, $verbose, $offset, $pagesize);
             array_push($entitysperpage, $entityperpage['items']);
             $offset = $offset +25;
         }
-        $allentitypart = $this->get('entity_id')->cget($hexaaAdmin, $verbose, 0, 100000);
+        $allentitypart = $this->get('entity_id')->cget($hexaaAdmin, $verbose, 0, 55);
 
         return $this->render(
             'AppBundle:Admin:entity.html.twig',
