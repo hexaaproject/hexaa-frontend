@@ -98,7 +98,6 @@
         </div>
     {% endif %}
 
-    {{ dump(roles) }}
     {% if roles is defined and roles|length %}
     <div class="row">
         <div class="col-md-11 col-md-offset-2">
@@ -107,7 +106,8 @@
            {# </div>#}
         </div>
     </div>
-    {% elseif ismanager == "false" %}
+    {% endif %}
+    {% if roles is empty and ismanager == "false" %}
         {{ dump('HAHA2') }}
         <div class="col-md-5 col-md-offset-5">
             <div style="text-align: center">
