@@ -108,11 +108,11 @@ p{
 			<h1>Hello {{ recipient }}</h1> </br></br>
 
 			<p><span id="blue">{{ inviter }} </span>has invited you to participate in the Virtual Organization named <span id="blue_bold">{{ organization.name }}</span> to role <span id="blue_bold"> {{ role.name }}. </span> </p>
-			<p>{{ organization.name }} is a Virtual Organization managed in the HEXAA platform. <span id="blue_bold">To accept the invitation click on the button below:</span></p></br>
+			<p> <span id="blue_bold"> {{ organization.name }} </span> is a Virtual Organization managed in the HEXAA platform. <span id="blue_bold">To accept the invitation click on the button below:</span></p></br>
 				<div id="button_container">
 					<a href="{{ link }}" class="button">ACCEPT</a>
 				</div><br>
-			<p>Once you click on the link, you will have to log in to HEXAA using your institutional account. HEXAA will add you to {{ organization.name }} as a member and you will be able to access resources of {{ organization.name }} if the Virtual Organization administrator decided so. </p>
+			<p>Once you click on the link, you will have to log in to HEXAA using your institutional account. HEXAA will add you to <span id="blue_bold"> {{ organization.name }} </span> as a member and you will be able to access resources of <span id="blue_bold"> {{ organization.name }} </span> if the Virtual Organization administrator decided so. </p>
 
 			<p>We hope to see you in HEXAA as a user.</p>
             {% if message != null %}
@@ -128,7 +128,7 @@ p{
 			<a href="http://hexaa.eu" class="link">hexaa.eu</a>  •
 			<a href="{{ hexaa_ui_url }}" class="link">log in</a>  •
 			<a href="#" class="link">terms of use</a> <br>
-			Made by <span id="blue">SZTAKI  •  HDepartment of Network Security and Internet Technologies</span>
+			Made by <a href="http://www.sztaki.hu/en" class="link">MTA SZTAKI  •</a> <a href="https://www.sztaki.hu/en/science/departments/hbit" class="link">  Department of Network Security and Internet Technologies</a>
 		</div>
 
 	</div>

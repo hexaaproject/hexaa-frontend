@@ -96,6 +96,9 @@
             var deleteBox = $('#deleteBox');
             deleteBox.find('form').attr("action", $(this).data('targeturl'));
             deleteBox.find('.displayname').text($(this).data('displayname'));
+            if ($(this).data('last') == true) {
+                deleteBox.find('.lastRole').text('and there will be no one role left');
+            }
             deleteBox.modal('show');
         });
 
@@ -212,7 +215,7 @@
                                         <i title="update role" role="button" data-behattarget="update_{{ loop.index }}" class="material-icons accordion-button accordion_edit_button">create</i>
                                     {% endif %}
                                     {% if profile is not defined %}
-                                        <i title="delete role" role="button" data-behattarget="delete_{{ loop.index }}" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
+                                        <i title="delete role" role="button" data-behattarget="delete_{{ loop.index }}" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" {% if item.last is defined %} data-last="{{ item.last }}" {% endif %} data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
                                     {% endif %}
                                 {% endif %}
                             </div>
@@ -344,7 +347,7 @@
 {
     id: 'deleteBox',
     title: 'Are you sure?',
-    bodycontent: 'If you press the delete button, <strong><span class="displayname"></span></strong> will be deleted.',
+    bodycontent: 'If you press the delete button, <strong><span class="displayname"></span></strong> will be deleted <strong><span class="lastRole" style="color:red"></span></strong>.',
     button:
     {
         text: 'Delete',
