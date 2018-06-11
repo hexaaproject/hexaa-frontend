@@ -107,10 +107,7 @@
         </div>
     </div>
     {% endif %}
-    {{ dump(roles) }}
-    {{ dump(ismanager) }}
-    {% if roles is empty and ismanager == "false" %}
-        {{ dump('HAHA2') }}
+    {% if roles is empty and ismanager == false %}
         <div class="col-md-5 col-md-offset-5">
             <div style="text-align: center">
                 There aren't any roles yet. Please come back later!
