@@ -99,8 +99,8 @@
     {% endif %}
 
     {% if roles is defined and roles|length %}
+        {{ dump(roles) }}
     <div class="row">
-        {{ dump('HAHA1') }}
         <div class="col-md-11 col-md-offset-2">
             {#<div class="accordion-container-notform accordion-style-dark">#}
                 {{ include('::accordions.html.twig', { protiptextnull:'Permissions are provided by the Services connected to this organization. This Organization has no connected services yet', protiptextnotnull: 'These permissions are provided by the Services connected to the Organization', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Roles", variant: "dark", items: roles_accordion }) }}
