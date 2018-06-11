@@ -107,6 +107,8 @@
         </div>
     </div>
     {% endif %}
+    {{ dump(roles) }}
+    {{ dump(ismanager) }}
     {% if roles is empty and ismanager == "false" %}
         {{ dump('HAHA2') }}
         <div class="col-md-5 col-md-offset-5">
