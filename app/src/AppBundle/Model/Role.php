@@ -98,6 +98,9 @@ class Role extends AbstractBaseResource
      */
     public function setPrincipals(string $hexaaAdmin, string $id, array $principals)
     {
+        if (empty($principals)) {
+            $principals['principals'] = [];
+        }
         return $this->putCall($this->pathName.'/'.$id.'/principal', $principals, $hexaaAdmin);
     }
 

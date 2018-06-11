@@ -1463,6 +1463,11 @@ class OrganizationController extends BaseController
             $role['organizationMembers'] = $principals;
             $role['organizationEntitlements'] = $entitlements;
             $rolesAccordion[$role['id']]['entitlementstoprotip'] = true;
+            if(count($roles) == 1) {
+                $rolesAccordion[$role['id']]['last'] = 'true';
+            } else {
+                $rolesAccordion[$role['id']]['last'] = 'false';
+            }
 
             if (!array_key_exists('principals', $role)) {
                 $role['principals'] = [];
