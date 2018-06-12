@@ -1497,6 +1497,26 @@ class OrganizationController extends BaseController
                 $permissions[] = $entitlement['name'];
             }
 
+            if (empty($permissions) && empty($members))
+            {
+                $rolesAccordion[$role['id']]['protiptext'] = "This role hasn't got any permission and member";
+                $rolesAccordion[$role['id']]['claim'] = true;
+            }
+            if (empty($permissions) && !empty($members))
+            {
+                $rolesAccordion[$role['id']]['protiptext'] = "This role hasn't got any permission";
+                $rolesAccordion[$role['id']]['claim'] = true;
+            }
+            if (empty($members) && !empty($permissions))
+            {
+                $rolesAccordion[$role['id']]['protiptext'] = "This role hasn't got any member";
+                $rolesAccordion[$role['id']]['claim'] = true;
+            }
+            if (!empty($permissions) && !empty($members))
+            {
+                $rolesAccordion[$role['id']]['claim'] = false;
+            }
+
             $rolesAccordion[$role['id']]['contents'] = [
                 [
                     'key' => 'Permissions',

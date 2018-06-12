@@ -34,36 +34,48 @@
             $(".propertyblocknoedit").addClass('hidden');
             $(".sendbutton").removeClass('hidden');
             $(".propertyblockedit").removeClass('hidden');
+            $("#pencil-2").hide();
+            $("#pencil-3").hide();
         }
 
         function owner() {
             $(".ownerblocknoedit").addClass('hidden');
             $(".sendownerbutton").removeClass('hidden');
             $(".ownerblockedit").removeClass('hidden');
+            $("#pencil-1").hide();
+            $("#pencil-3").hide();
         }
 
         function privacy() {
             $(".privacyblocknoedit").addClass('hidden');
             $(".sendprivacybutton").removeClass('hidden');
             $(".privacyblockedit").removeClass('hidden');
+            $("#pencil-1").hide();
+            $("#pencil-2").hide();
         }
 
         function cancelproperty() {
             $(".propertyblocknoedit").removeClass('hidden');
             $(".sendbutton").addClass('hidden');
             $(".propertyblockedit").addClass('hidden');
+            $("#pencil-2").show();
+            $("#pencil-3").show();
         }
 
         function cancelowner() {
             $(".ownerblocknoedit").removeClass('hidden');
             $(".sendownerbutton").addClass('hidden');
             $(".ownerblockedit").addClass('hidden');
+            $("#pencil-1").show();
+            $("#pencil-3").show();
         }
 
         function cancelprivacy() {
             $(".privacyblocknoedit").removeClass('hidden');
             $(".sendprivacybutton").addClass('hidden');
             $(".privacyblockedit").addClass('hidden');
+            $("#pencil-1").show();
+            $("#pencil-2").show();
         }
 
     </script>

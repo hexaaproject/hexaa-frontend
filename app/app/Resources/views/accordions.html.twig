@@ -1,11 +1,18 @@
 {% block stylesheets %}
     {% stylesheets
+    '@protip_min_css'
     'css/accordions.css'
     filter='cssrewrite'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 {% endblock %}
+
+{% javascripts
+'@protip_min_js'
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
 
 {% set manager = true %}
 
@@ -58,6 +65,13 @@
 
     $(document).ready(function () {
 
+        $.protip();
+        var tooltip = $('.actionbutton');
+        tooltip.protipSet({
+            trigger: 'hover',
+            position: 'top'
+        });
+
         jQuery('.add-another-collection-widget').click(function (e) {
             e.preventDefault();
             var list = jQuery(jQuery(this).attr('data-list'));
@@ -105,6 +119,13 @@
         {# **********  ediform ********* #}
         $('.accordion_edit_button').on("click", function () {
             showForm($(this));
+            var panel = $(this).closest('.accordion-panel').get();
+            $('.accordion-panel').each(function(index){
+                var difference = $(panel).not($(this).get()).get();
+                if( difference.length !== 0 ) {
+                    $(this).find('.accordion_button_row').hide();
+                }
+            });
         });
 
         $('.accordion_edit_cancel_button').on("click", function () {
@@ -112,6 +133,13 @@
             panel.find('.accordion-editform').addClass('hidden');
             panel.find('table.accordion').removeClass('hidden');
             panel.find('.accordion_edit_button').removeClass('hidden');
+            $('.accordion-panel').each(function(index){
+                var difference = $(panel.get()).not($(this).get()).get();
+                if( difference.length !== 0 ) {
+                    $(this).find('.accordion_button_row').show();
+                }
+            });
+
         });
         {% if profile is not defined %}
             $('.accordion_edit_submit_button').on("click", function () {
@@ -149,6 +177,13 @@
                                     <span class="accordion-buttons">
                                         <i class=" material-icons">priority_high</i>
                                     </span>
+                                {% endif %}
+                            {% endif %}
+                            {% if heading == 'Roles' %}
+                                {% if item.claim == true %}
+                                    {% if item.protiptext is defined %}
+                                        <button type="button" id="help" class="actionbutton protip" style="outline: none; display: inline-flex;" data-pt-arrow="true" data-pt-scheme="orange" data-pt-gravity="true" data-pt-title="{{ item.protiptext }}" ><i class="material-icons" style="font-size: 22px; color: orange; vertical-align: middle">priority_high</i></button>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                             <i class="caretbutton material-icons">arrow_drop_down</i>

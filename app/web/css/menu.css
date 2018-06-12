@@ -19,6 +19,14 @@
     background-color: #FA8072;;
 }
 
+.protip-skin-default--scheme-orange.protip-container{
+    background: orange!important;
+}
+
+.protip-arrow {
+    border-color: orange transparent transparent transparent!important;
+}
+
 .dropbtn, .servicecl {
     background-color: #2e2d2d;
     color: white;
