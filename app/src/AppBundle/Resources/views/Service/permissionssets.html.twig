@@ -28,6 +28,7 @@
     '@jquery_bootpag_js'
     '@bootstrap_tagsinput_js'
     '@typeahead_js'
+    '@bloodhound_js'
     '@protip_min_js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -36,19 +37,11 @@
     <script>
         $(document).ready(function () {
 
-            $('#service_create_permission_set_permissions').tagsinput(
-                {
-                }
-            );
-
             $.protip();
             var tooltip = $('.protip');
             tooltip.protipSet({
                 trigger: 'click'
             });
-           /* $('#service_create_permission_set_permissions').on('beforeItemAdd', function(event) {
-                event.cancel = true;
-            });*/
 
             {% if permissionsets is defined and permissionsets['items']|length %}
                 {% if error == 'true' %}
@@ -103,7 +96,7 @@
                 total: {{ total_pages }},
                 page: 1,
                 maxVisible: 5,
-                leaps: true,
+                leaps: false,
                 firstLastUse: true,
                 first: '←',
                 last: '→',
@@ -189,12 +182,12 @@
     </div>
     <div class="col-sm-11 col-sm-offset-2" {% if total_pages != 1 %} style="margin-top: 5px" {% else %} style="margin-top: 12px" {% endif %}>
         <div id="1">
-            {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[0], service_id: service.id}) }}
+            {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[0], service_id: service.id, permissionsname: permissionsname}) }}
         </div>
         {% if total_pages != 1 %}
             {% for i in (1..total_pages-1) %}
                 <div class="hidden" id="{{ i+1 }}">
-                    {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[i], service_id: service.id}) }}
+                    {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[i], service_id: service.id, permisssionsname: permissionsname}) }}
                 </div>
             {% endfor %}
             <div class="show_paginator"></div>

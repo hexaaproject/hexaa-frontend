@@ -64,7 +64,7 @@ class ServicePermissionSetUpdateType extends AbstractType
                 array(
                     "label" => "Permissions",
                     "label_attr" => array('class' => 'permissioneditlabel'),
-                    'attr' => array('data-role' => 'tagsinput'),
+                    'attr' => array('class' => 'permissionstotypeahead'),
                     'required' => false,
                     "choices" => $datas['data']['permissions'],
                     "multiple" => true,

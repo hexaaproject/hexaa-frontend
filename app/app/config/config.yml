@@ -106,6 +106,9 @@ assetic:
         typeahead_js:
             inputs:
                 - "%kernel.root_dir%/../vendor/twitter/typeahead.js/dist/typeahead.jquery.js"
+        bloodhound_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twitter/typeahead.js/dist/bloodhound.js"
         bootstrap_tagsinput_js:
             inputs:
                 - "%kernel.root_dir%/../vendor/huynguyen/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"

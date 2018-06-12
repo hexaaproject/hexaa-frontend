@@ -72,6 +72,35 @@
             position: 'top'
         });
 
+        {% if permissionsname is defined %}
+
+        var names = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            local: {{ permissionsname|json_encode|raw }}
+        });
+
+        names.initialize();
+        $('.permissionstotypeahead').each(function(index){
+            $(this).tagsinput(
+                {
+                    typeaheadjs: {
+                        source: names.ttAdapter()
+                    }
+                }
+            );
+        });
+
+        $('.permissionstotypeahead').each(function(index){
+            $(this).on('itemAdded', function (event) {
+                setTimeout(function() {
+                    $('.bootstrap-tagsinput :input').val('');
+                },0);
+            });
+        });
+
+        {% endif %}
+
         jQuery('.add-another-collection-widget').click(function (e) {
             e.preventDefault();
             var list = jQuery(jQuery(this).attr('data-list'));

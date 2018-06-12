@@ -1229,9 +1229,11 @@ class ServiceController extends BaseController
         }
 
         $permissions = array();
+        $permissionsname = array();
         $servicepermissions = $service->getEntitlements($hexaaAdmin, $id, $verbose, 0, 10000);
         foreach ($servicepermissions['items'] as $servicepermission) {
             $permissions[$servicepermission['id']] = $servicepermission['name'];
+            array_push($permissionsname, $servicepermission['name']);
         }
 
         $permissionsetaccordion = $this->permissionSetToAccordion($permissionsetsperpage, $id, $permissionsetId, $action, $request);
@@ -1324,6 +1326,7 @@ class ServiceController extends BaseController
                 'admin' => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'formCreatePermissionsSet' => $formCreatePermissionsSet->createView(),
                 'permissionsets' => $allallpermissionset,
+                'permissionsname' =>$permissionsname,
                 'permissions' => $permissions,
                 'error' => $error,
                 'organizationsWhereManager' => $this->orgWhereManager(),
