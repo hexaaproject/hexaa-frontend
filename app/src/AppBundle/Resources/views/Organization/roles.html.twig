@@ -106,10 +106,11 @@
            {# </div>#}
         </div>
     </div>
-    {% elseif roles is not defined and ismanager == "false" %}
+    {% endif %}
+    {% if roles is empty and ismanager == false %}
         <div class="col-md-5 col-md-offset-5">
-            <div style="text-align: center">
-                There aren't any roles yet. Please come back later!
+            <div style="text-align: center; color:#61AFC5; font-size: medium">
+                <strong>There aren't any roles yet. Please come back later!</strong>
             </div>
         </div>
     {% endif %}
