@@ -36,7 +36,7 @@ interface WarningableInterface
      * @param string $hexaaAdmin
      * @param string $id
      * @param array  $resources
-     * @param int    $ismanager
+     * @param bool    $ismanager
      *
      * @return mixed
      */

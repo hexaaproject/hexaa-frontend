@@ -1302,7 +1302,7 @@ class OrganizationController extends BaseController
     /**
      * @Route("/{id}/{ismanager}/warnings")
      * @param string $id
-     * @param int    $ismanager
+     * @param bool    $ismanager
      *
      * @return JsonResponse
      */

@@ -336,7 +336,7 @@ class Organization extends AbstractBaseResource implements WarningableInterface
      * @param string $hexaaAdmin Admin hat
      * @param string $id
      * @param array  $resources
-     * @param int    $ismanager
+     * @param bool    $ismanager
      *
      * @return ArrayCollection
      */

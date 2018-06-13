@@ -22,8 +22,11 @@
             }
         });
     </script>
-    {{ include('::warning.html.twig', {url: path('app_organization_getwarnings', {id: entity.id, ismanager: ismanager}) }) }}
-{{ dump(ismanager) }}
+    {% if ismanager == false %}
+        {% set ismanager = 0 %}
+    {% endif %}
+    {{ include('::warning.html.twig', {url: path('app_organization_getwarnings', {id: entity.id, ismanager: ismanager }) }) }}
+
     <div class="row">
         <div class="col-sm-offset-2 col-sm-11">
                 {{ include('::grid_panel.html.twig', {
