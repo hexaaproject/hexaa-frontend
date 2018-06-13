@@ -2007,16 +2007,17 @@ class ServiceController extends BaseController
 
 
     /**
-     * @Route("/{id}/warnings")
+     * @Route("/{id}/{ismanager}/warnings")
      * @param string $id
+     * @param int    $ismanager
      *
      * @return JsonResponse
      */
-    public function getWarnings($id)
+    public function getWarnings($id, $ismanager)
     {
         $service = $this->get('service');
         $serializer = $this->get('serializer');
-        $data = $service->getWarnings($this->get('session')->get('hexaaAdmin'), $id, array("linkResource" => $this->get('link')));
+        $data = $service->getWarnings($this->get('session')->get('hexaaAdmin'), $id, array("linkResource" => $this->get('link')), $ismanager);
         $serializedData = $serializer->serialize($data, 'json');
 
         return new JsonResponse($serializedData);

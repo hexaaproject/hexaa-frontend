@@ -336,31 +336,34 @@ class Organization extends AbstractBaseResource implements WarningableInterface
      * @param string $hexaaAdmin Admin hat
      * @param string $id
      * @param array  $resources
+     * @param int    $ismanager
      *
      * @return ArrayCollection
      */
-    public function getWarnings(string $hexaaAdmin, $id, array $resources)
+    public function getWarnings(string $hexaaAdmin, $id, array $resources, $ismanager)
     {
+
         $roleResource = $resources["roleResource"];
         $warnings = new ArrayCollection();
 
-        $links = $this->getLinks($hexaaAdmin, $id);
-        if (0 == $links['item_number']) {
-            $warnings->add(new NoConnectedOrganizationWarning());
-        }
-        $acceptedLink = false;
-        if($links['item_number']) {
-            foreach ($links['items'] as $link) {
-                if ($link['status'] == 'accepted') {
-                    $acceptedLink = true;
-                    break;
-                }
-            }
-            if ($acceptedLink == false) {
+        if ($ismanager) {
+            $links = $this->getLinks($hexaaAdmin, $id);
+            if (0 == $links['item_number']) {
                 $warnings->add(new NoConnectedOrganizationWarning());
             }
+            $acceptedLink = FALSE;
+            if ($links['item_number']) {
+                foreach ($links['items'] as $link) {
+                    if ($link['status'] == 'accepted') {
+                        $acceptedLink = TRUE;
+                        break;
+                    }
+                }
+                if ($acceptedLink == FALSE) {
+                    $warnings->add(new NoConnectedOrganizationWarning());
+                }
+            }
         }
-
         $roles = $this->getRoles($hexaaAdmin, $id);
         $members = $this->getMembers($hexaaAdmin, $id);
         $memberIds = array();

@@ -80,7 +80,7 @@
 
     </script>
 
-    {{ include('::warning.html.twig', {url: path('app_service_getwarnings', {id: service.id}) }) }}
+    {{ include('::warning.html.twig', {url: path('app_service_getwarnings', {id: service.id, ismanager: 1}) }) }}
 
     <div class="propertyblocknoedit">
         {{ include('::panel.html.twig', { styleOfContainer: "propertiespanelnoedit", heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1"}) }}

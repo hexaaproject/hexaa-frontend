@@ -36,8 +36,9 @@ interface WarningableInterface
      * @param string $hexaaAdmin
      * @param string $id
      * @param array  $resources
+     * @param int    $ismanager
      *
      * @return mixed
      */
-    public function getWarnings(string $hexaaAdmin, $id, array $resources);
+    public function getWarnings(string $hexaaAdmin, $id, array $resources, $ismanager);
 }

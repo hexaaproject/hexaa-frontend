@@ -363,7 +363,7 @@ class OrganizationController extends BaseController
 
         $manager = $this->isManager($id);
         if ($hexaaAdmin == "true") {
-            $manager = "true";
+            $manager = true;
         }
 
         return $this->render(
@@ -1071,7 +1071,7 @@ class OrganizationController extends BaseController
         $manager = $this->isManager($id);
         $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         if ($hexaaAdmin == "true") {
-            $manager = "true";
+            $manager = true;
         }
 
         if (! in_array($action, array("false", "create"))) {
@@ -1300,16 +1300,17 @@ class OrganizationController extends BaseController
     }
 
     /**
-     * @Route("/{id}/warnings")
+     * @Route("/{id}/{ismanager}/warnings")
      * @param string $id
+     * @param int    $ismanager
      *
      * @return JsonResponse
      */
-    public function getWarnings($id)
+    public function getWarnings($id, $ismanager)
     {
         $organization = $this->get('organization');
         $serializer = $this->get('serializer');
-        $data = $organization->getWarnings($this->get('session')->get('hexaaAdmin'), $id, array("roleResource" => $this->get('role')));
+        $data = $organization->getWarnings($this->get('session')->get('hexaaAdmin'), $id, array("roleResource" => $this->get('role')), $ismanager);
         $serializedData = $serializer->serialize($data, 'json');
 
         return new JsonResponse($serializedData);

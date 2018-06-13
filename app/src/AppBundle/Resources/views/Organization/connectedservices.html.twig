@@ -72,7 +72,7 @@
         });
 
     </script>
-    {{ include('::warning.html.twig', {url: path('app_organization_getwarnings', {id: entity.id}) }) }}
+    {{ include('::warning.html.twig', {url: path('app_organization_getwarnings', {id: entity.id, ismanager: ismanager}) }) }}
     <div class="col-sm-16 col-sm-offset-0" id="actionButtons">
         <input type="" id="hexaaSearchFieldPermissionSet" class="hexaaSearchField" name="" placeholder="Search service or manager">
         <button class="btnhexaa btn-red pull-right" onclick="showCreateForm()" {% if manager == false %} disabled {% endif %}><i class="material-icons" aria-hidden="true">add</i> Connect service by token</button>
