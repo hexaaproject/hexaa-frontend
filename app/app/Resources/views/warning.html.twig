@@ -35,6 +35,9 @@ usage in twig:
             if (JSON.parse(data).length) {
                 $('#warning-div').show("slow");
             }
+        }).fail(function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
         });
     });
 </script>

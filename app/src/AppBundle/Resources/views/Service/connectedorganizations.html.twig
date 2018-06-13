@@ -363,6 +363,7 @@
             {{ flashMessage|raw }}
         </div>
     {% endfor %}
+    {{ include('::warning.html.twig', {url: path('app_service_getwarnings', {id: service.id}) }) }}
     <button class="btnhexaa btn-red dependent hidden-xs" id="connectNewOrgButton" {% if ismanager == false %} disabled {% endif %}><i class="material-icons">add</i>Connect Organization via Token</button>
     <button type="button" id="help" class="actionbutton protip" style="vertical-align: middle; outline: none" data-pt-arrow="true" data-pt-scheme="blue" data-pt-gravity="true" data-pt-title="Here you can connect organizations to your service or create links with tokens for non existing organizations." ><i class="material-icons" style="font-size: 22px; color:  #369; vertical-align: middle">help</i></button>
 

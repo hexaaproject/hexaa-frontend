@@ -18,6 +18,7 @@
 
 namespace AppBundle\Model;
 
+use AppBundle\Tools\Warning\NoConnectedOrganizationWarning;
 use AppBundle\Tools\Warning\NoRolesWarning;
 use AppBundle\Tools\Warning\RoleLessMemberWarning;
 use AppBundle\Tools\Warning\WarningableInterface;
@@ -343,6 +344,23 @@ class Organization extends AbstractBaseResource implements WarningableInterface
         $roleResource = $resources["roleResource"];
         $warnings = new ArrayCollection();
 
+        $links = $this->getLinks($hexaaAdmin, $id);
+        if (0 == $links['item_number']) {
+            $warnings->add(new NoConnectedOrganizationWarning());
+        }
+        $acceptedLink = false;
+        if($links['item_number']) {
+            foreach ($links['items'] as $link) {
+                if ($link['status'] == 'accepted') {
+                    $acceptedLink = true;
+                    break;
+                }
+            }
+            if ($acceptedLink == false) {
+                $warnings->add(new NoConnectedOrganizationWarning());
+            }
+        }
+
         $roles = $this->getRoles($hexaaAdmin, $id);
         $members = $this->getMembers($hexaaAdmin, $id);
         $memberIds = array();
@@ -358,7 +376,8 @@ class Organization extends AbstractBaseResource implements WarningableInterface
                 $warnings->add($warning);
             };
 
-            $principals = $roleResource->getPrincipals($hexaaAdmin, $id);
+            $principals = $roleResource->getPrincipals($hexaaAdmin, $role['id']);
+
             if ($principals['item_number']) {
                 foreach ($principals['items'] as $principal) {
                     $principalId = $principal['principal_id'];
@@ -368,7 +387,6 @@ class Organization extends AbstractBaseResource implements WarningableInterface
                 }
             }
         }
-
 
         foreach ($memberIds as $memberId) {
             $warnings->add(new RoleLessMemberWarning($memberId['display_name']." &lt;".$memberId['fedid']."&gt;"));
