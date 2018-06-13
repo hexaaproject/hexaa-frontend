@@ -23,7 +23,7 @@
         });
     </script>
     {{ include('::warning.html.twig', {url: path('app_organization_getwarnings', {id: entity.id, ismanager: ismanager}) }) }}
-
+{{ dump($ismanager) }}
     <div class="row">
         <div class="col-sm-offset-2 col-sm-11">
                 {{ include('::grid_panel.html.twig', {
