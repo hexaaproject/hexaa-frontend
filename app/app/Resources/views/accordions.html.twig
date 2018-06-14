@@ -272,16 +272,14 @@
                             </div>
                         {% endfor %}
                     {% else %}
-                        {% if heading != "Entity IDs" and heading != "Connected entitlements" and heading != "Connected entitlement packs" and manager %}
+                        {% if heading != "Entity IDs" and heading != "Connected entitlements" and heading != "Connected entitlement packs" and ismanager %}
                             <div class="accordion_button_row pull-right">
-                                {% if ismanager == "true" %}
                                     {% if item.form is defined %}
                                         <i title="update role" role="button" data-behattarget="update_{{ loop.index }}" class="material-icons accordion-button accordion_edit_button">create</i>
                                     {% endif %}
                                     {% if profile is not defined %}
                                         <i title="delete role" role="button" data-behattarget="delete_{{ loop.index }}" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" {% if item.last is defined %} data-last="{{ item.last }}" {% endif %} data-targeturl="{{ item.deleteUrl }}" data-displayname="{{ item.title }}">delete</i>
                                     {% endif %}
-                                {% endif %}
                             </div>
                         {% endif %}
                         {% if item.form is defined %}
