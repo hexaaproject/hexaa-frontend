@@ -1245,9 +1245,11 @@ class ServiceController extends BaseController
         }
 
         $permissions = array();
+        $permissionsname = array();
         $servicepermissions = $service->getEntitlements($hexaaAdmin, $id, $verbose, 0, 10000);
         foreach ($servicepermissions['items'] as $servicepermission) {
             $permissions[$servicepermission['id']] = $servicepermission['name'];
+            array_push($permissionsname, $servicepermission['name']);
         }
 
         $permissionsetaccordion = $this->permissionSetToAccordion($permissionsetsperpage, $id, $permissionsetId, $action, $request);
@@ -1340,6 +1342,7 @@ class ServiceController extends BaseController
                 'admin' => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'formCreatePermissionsSet' => $formCreatePermissionsSet->createView(),
                 'permissionsets' => $allallpermissionset,
+                'permissionsname' =>$permissionsname,
                 'permissions' => $permissions,
                 'error' => $error,
                 'organizationsWhereManager' => $this->orgWhereManager(),
@@ -2004,16 +2007,17 @@ class ServiceController extends BaseController
 
 
     /**
-     * @Route("/{id}/warnings")
+     * @Route("/{id}/{ismanager}/warnings")
      * @param string $id
+     * @param int    $ismanager
      *
      * @return JsonResponse
      */
-    public function getWarnings($id)
+    public function getWarnings($id, $ismanager)
     {
         $service = $this->get('service');
         $serializer = $this->get('serializer');
-        $data = $service->getWarnings($this->get('session')->get('hexaaAdmin'), $id, array("linkResource" => $this->get('link')));
+        $data = $service->getWarnings($this->get('session')->get('hexaaAdmin'), $id, array("linkResource" => $this->get('link')), $ismanager);
         $serializedData = $serializer->serialize($data, 'json');
 
         return new JsonResponse($serializedData);

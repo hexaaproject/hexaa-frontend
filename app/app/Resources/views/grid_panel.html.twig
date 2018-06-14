@@ -47,7 +47,7 @@ return $this->render(
 <div class="grid_panel">
     <div class="header">
         {{ heading }}
-        {% if ismanager == "true" %}
+        {% if ismanager == true %}
             <div class="pull-right">
                 <button type="button" id="editbutton"   class="actionbutton editbutton" onclick="edit()"><i class="material-icons">create</i></button>
                 <button type="button" id="cancelbutton" class="actionbutton hidden" onclick="cancel()"><i class="material-icons">clear</i></button>

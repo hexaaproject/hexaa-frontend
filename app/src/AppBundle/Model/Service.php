@@ -418,10 +418,11 @@ class Service extends AbstractBaseResource implements WarningableInterface
      * @param string $hexaaAdmin Admin hat
      * @param string $id
      * @param array  $resources
+     * @param int    $ismanager
      *
      * @return ArrayCollection
      */
-    public function getWarnings(string $hexaaAdmin, $id, array $resources)
+    public function getWarnings(string $hexaaAdmin, $id, array $resources, $ismanager)
     {
         $warnings = new ArrayCollection();
 

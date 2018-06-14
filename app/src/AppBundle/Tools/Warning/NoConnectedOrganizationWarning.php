@@ -19,26 +19,33 @@
 /**
  * Created by PhpStorm.
  * User: gyufi
- * Date: 2018. 03. 09.
- * Time: 9:09
+ * Date: 2018. 03. 08.
+ * Time: 8:49
  */
 
 namespace AppBundle\Tools\Warning;
 
 /**
- * Interface WarningableInterface
+ * Class NoRolesWarning
  *
  * @package AppBundle\Tools\Warning
  */
-interface WarningableInterface
+class NoConnectedOrganizationWarning extends Warning
 {
+
     /**
-     * @param string $hexaaAdmin
-     * @param string $id
-     * @param array  $resources
-     * @param bool    $ismanager
-     *
-     * @return mixed
+     * @return string
      */
-    public function getWarnings(string $hexaaAdmin, $id, array $resources, $ismanager);
+    public function getClass()
+    {
+        return "No services";
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortDescription()
+    {
+        return "This organization doesn't connected to any service.";
+    }
 }
