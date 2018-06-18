@@ -75,7 +75,7 @@
     {{ include('::warning.html.twig', {url: path('app_organization_getwarnings', {id: entity.id, ismanager: ismanager}) }) }}
     <div class="col-sm-16 col-sm-offset-0" id="actionButtons">
         <input type="" id="hexaaSearchFieldPermissionSet" class="hexaaSearchField" name="" placeholder="Search service or manager">
-        <button class="btnhexaa btn-red pull-right" onclick="showCreateForm()" {% if manager == false %} disabled {% endif %}><i class="material-icons" aria-hidden="true">add</i> Connect service by token</button>
+        <button class="btnhexaa btn-red pull-right" onclick="showCreateForm()" {% if manager == false %} disabled {% endif %}><i class="material-icons" aria-hidden="true">add</i> Connect service</button>
     </div>
 
 
@@ -110,13 +110,13 @@
     <div class="row">
         {%  if services_accordion %}
             <div class="col-sm-7" style="margin-top: 20px">
-                {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter: "service_connected_org_search", heading: "Connected entitlement packs", variant: "light", items: services_accordion }) }}
+                {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter: "service_connected_org_search", heading: "Connected permission sets", variant: "light", items: services_accordion }) }}
             </div>
             <div class="col-sm-1"></div>
         {% endif %}
         {% if entitlements_accordion %}
             <div class="col-sm-7" style="margin-top: 20px">
-                {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter: "service_connected_org_search", heading: "Connected entitlements", variant: "light", items: entitlements_accordion }) }}
+                {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter: "service_connected_org_search", heading: "Connected permissions", variant: "light", items: entitlements_accordion }) }}
             </div>
         {% endif %}
     </div>
