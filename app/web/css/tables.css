@@ -79,9 +79,11 @@
     text-align: left;
 }
 
-.datatable td:nth-child(odd) {
+/*.datatable td:nth-child(odd) {
     padding-left: 15px;
-}
+}*/
+
+thead, th {text-align: left; padding: 5px;}
 
 .datatable-red {
     border: 2px solid #FA8072;

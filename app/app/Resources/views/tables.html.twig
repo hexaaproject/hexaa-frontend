@@ -26,7 +26,7 @@ buttons array:
     {% stylesheets
     '@protip_min_css'
     filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}"/>
+    <link rel="stylesheet" href="{{ asset_url }}" xmlns:display="http://www.w3.org/1999/xhtml"/>
     {% endstylesheets %}
 {% endblock %}
 
@@ -286,7 +286,7 @@ buttons array:
 
         </caption>
     {% endif %}
-    <thead>
+    <thead {% if attributes is not defined %} style="font-size: medium;" {% else %} style="display: none;" {% endif %}">
     <tr>
         {% if buttons is defined %}
             {% if ismanager == "true" %}
@@ -296,8 +296,9 @@ buttons array:
         {% if attributes is defined %}
             <th></th>
         {% else %}
-            <th></th>
-            <th></th>
+            <th><strong>Federation id</strong></th>
+            <th><strong>Display name</strong></th>
+            <th><strong>E-mail</strong></th>
         {% endif %}
     </tr>
     </thead>
@@ -312,7 +313,8 @@ buttons array:
         {% if attributes is defined %}
             <td class="{{ tdcolor }}"><strong>{{ user.name }}</strong></td>
         {% else %}
-            <td><strong>{{ user.display_name }}</strong></td>
+            <td>{{ user.fedid }}</td>
+            <td>{{ user.display_name }}</td>
             <td>{{ user.email }}</td>
         {% endif %}
         </tr>

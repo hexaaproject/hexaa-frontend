@@ -1512,7 +1512,13 @@ class OrganizationController extends BaseController
 
             $members = [];
             foreach ($role['principals'] as $principal) {
-                $members[$principal['principal']['id']] = $principal['principal']['display_name'];
+                if(!(empty($principal['principal']['display_name']))){
+                    $members[$principal['principal']['id']] = $principal['principal']['display_name'];
+                } elseif (!(empty($principal['principal']['email']))){
+                    $members[$principal['principal']['id']] = $principal['principal']['email'];
+                } else {
+                    $members[$principal['principal']['id']] = $principal['principal']['fedid'];
+                }
             }
 
             $permissions = [];
