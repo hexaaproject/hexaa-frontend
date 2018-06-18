@@ -34,6 +34,13 @@ return $this->render(
         $('#editbutton').addClass('hidden');
     }
 
+    $(document).ready(function () {
+        {% if error is defined and error == true %}
+            edit();
+        {% endif %}
+    });
+
+
     function cancel(){
         $('#panel_container').html($('#ro_content').html());
 
@@ -82,7 +89,9 @@ return $this->render(
             <div class="col-sm-3 propname2">{{ form_label(field) }}</div>
             <div class="col-sm-11"> {{ form_widget(field) }}</div>
             {% if field.vars.errors|length %}
-                <div class="col-sm-offset-3 col-sm-11 has-error">{{ field.vars.errors|length }}</div>
+                {% for error in field.vars.errors %}
+                    <div class="col-sm-offset-3 col-sm-11 has-error" style="color: #a94442"><i class="material-icons">error</i> {{ error.message }}</div>
+                {% endfor %}
             {% endif %}
         </div>
     {% endfor %}

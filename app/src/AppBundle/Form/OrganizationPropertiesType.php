@@ -23,7 +23,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Devmachine\Bundle\FormBundle\Form\Type\TypeaheadType;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Url;
 
 /**
  * Class OrganizationPropertiesType
@@ -49,6 +52,11 @@ class OrganizationPropertiesType extends AbstractType
                     'data' => $datas['data']['properties']['name'],
                     'attr' => array(),
                     'required' => true,
+                    'constraints' => array(
+                        new Regex(array(
+                          'pattern' => "/\w{3,}$/",
+                          'match'   => true,
+                          'message' => 'Legalább három karakter hosszúnak kell lennie!')),)
                 )
             )
             ->add(
@@ -70,6 +78,12 @@ class OrganizationPropertiesType extends AbstractType
                     "label_attr" => array('class' => 'formlabel'),
                     'data' => $datas['data']['properties']['url'],
                     'required' => false,
+                    'constraints' => array(
+                          new Url())
+                     /*   new Regex(array(
+                      'pattern' => "/^[^ ,][^<][^>][^\][^^][^{][^}][^[][^]][^'][^~][^\"]*$/",
+                      'match'   => true,
+                      'message' => 'Nem adhatsz meg több url-t és olyan karaktereket amik nem lehetnek egy url-ben!')),)*/
                 )
             )
             ->add(

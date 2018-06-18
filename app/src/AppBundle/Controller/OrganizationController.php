@@ -343,13 +343,19 @@ class OrganizationController extends BaseController
                 'properties' => $propertiesDatas,
             )
         );
+        $error = false;
 
         $formProperties->handleRequest($request);
+        if ($request->getMethod() == 'POST') {
+            if (!$formProperties->isValid()) {
+              $error = true;
+            }
+        }
 
-//        $formProperties->addError(new FormError("ERROR"));
 
         if ($formProperties->isSubmitted() && $formProperties->isValid()) {
             $data = $request->request->all();
+            $error = false;
             $modified = array(
                 'name' => $data['organization_properties']['name'],
                 'default_role' => $data['organization_properties']['default_role_id'],
@@ -357,7 +363,6 @@ class OrganizationController extends BaseController
                 'url' => $data['organization_properties']['url'],
             );
             $this->get('organization')->patch($hexaaAdmin, $id, $modified);
-
             return $this->redirect($request->getUri());
         }
 
@@ -381,6 +386,7 @@ class OrganizationController extends BaseController
                 'submenu' => 'true',
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
+                'error' => $error,
                 'ismanager' => $manager,
                 'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
