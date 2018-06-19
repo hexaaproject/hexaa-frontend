@@ -278,7 +278,7 @@ class ProfileController extends BaseController
                                 }
                             }
                             if (empty($namevalue)) {
-                                $namevalue = ["Még nincs érték"];
+                                $namevalue = ["No value yet"];
                                 if ($value['is_multivalue'] == true) {
                                       $formBuilder->add($value['id'], CollectionType::class, [
                                           "entry_type" => TextType::class,
@@ -297,7 +297,7 @@ class ProfileController extends BaseController
                                 'deleteurl' => $deleteurls,
                             ]);
                             foreach ($namevalue as $onenamevalue) {
-                                if ($onenamevalue == "Még nincs érték") {
+                                if ($onenamevalue == "No value yet") {
                                     if ($claim != true) {
                                         $claim = true;
                                     }
@@ -388,7 +388,7 @@ class ProfileController extends BaseController
                                                     }
                                                 }
                                                 $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser[0]);
-                                                if (empty($missingvalues) or $missingvalues[0] == "Még nincs érték") {
+                                                if (empty($missingvalues) or $missingvalues[0] == "No value yet") {
                                                     if ($onevalue != null) {
                                                         $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $onevalue, $key, $principal['id']);
                                                     }
@@ -431,7 +431,7 @@ class ProfileController extends BaseController
                                                 }
                                             }
                                             $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser);
-                                            if (empty($missingvalues) or $missingvalues[0] == "Még nincs érték") {
+                                            if (empty($missingvalues) or $missingvalues[0] == "No value yet") {
                                                 if ($value != null) {
                                                     $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $value, $key, $principal['id']);
                                                 }

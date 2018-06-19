@@ -749,6 +749,10 @@ class ServiceController extends BaseController
         $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $service = $this->getService($id);
         $managers = $this->getManagers($service);
+        $ismanagertoinvite = $this->isManager($id);
+        if ($hexaaAdmin == 'true') {
+            $ismanagertoinvite = 'true';
+        }
         $managersButtons = array(
             "remove" => array(
                 "class" => "btn-blue pull-left",
@@ -809,6 +813,7 @@ class ServiceController extends BaseController
                     'manager' => "false",
                     'ismanager' => "true",
                     'hexaaHat' => $this->get('session')->get('hexaaHat'),
+                    'ismanagertoinvite' => $ismanagertoinvite,
                 )
             );
         }
@@ -829,6 +834,7 @@ class ServiceController extends BaseController
                 'manager' => "false",
                 'ismanager' => "true",
                 'hexaaHat' => $this->get('session')->get('hexaaHat'),
+                'ismanagertoinvite' => $ismanagertoinvite,
             )
         );
     }

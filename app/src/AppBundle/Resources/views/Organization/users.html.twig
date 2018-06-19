@@ -29,7 +29,7 @@
                 ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
             }
 
-            {% if managers is defined and managers|length %}
+            {% if (managers is defined and managers|length) or (members is defined and members|length and ismanager == 'true') %}
                 var managersTableActionButtons = $('.managers_table_actionButtons');
                 var managersRemove = $('#managersRemove');
                 var managersMessage = $('#managersMessage');
@@ -139,7 +139,7 @@
             {{ flashMessage|raw }}
         </div>
     {% endfor %}
-        {% if managers is defined and managers|length %}
+        {% if (managers is defined and managers|length) or (members is defined and members|length and ismanager == 'true') %}
             <div class="row">
                 <div class="col-md-15">
                     {{ include(
@@ -160,7 +160,7 @@
                 {{ include('::modal.html.twig',
                     {
                         id: 'managersRemove',
-                        title: 'Remove managers',
+                        title: 'Remove user',
                         bodyhead: 'Are you ready to remove these users from your organization?',
                         bodycontent: 'Optional',
                         button:
@@ -263,6 +263,11 @@
                         })
                     }}
                 </div>
+            </div>
+        {% endif %}
+        {% if members is empty and managers is empty and ismanager == 'true' %}
+            <div class="col-md-5 col-md-offset-5">
+                <button class="btnhexaa btn-red btn-block btnhexaa-lg" id="invite"><i class="material-icons">add</i> Invite</button>
             </div>
         {% endif %}
 

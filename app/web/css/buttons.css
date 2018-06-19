@@ -42,7 +42,7 @@
 }
 
 .btnhexaa-lg {
-    font-size: x-large;
+    font-size: x-large !important;
     padding: 12px 15px;
 }
 
