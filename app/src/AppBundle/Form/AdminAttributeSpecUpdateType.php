@@ -77,12 +77,13 @@ class AdminAttributeSpecUpdateType extends AbstractType
                 ChoiceType::class,
                 array(
                     "label" => "Maintainer",
-                    //"data" => "user",
+                    "data" => "user",
                     "label_attr" => array('class' => 'formlabel'),
                     'choices' => array('user' => 'user', 'manager' => 'manager'),
                     'multiple' => false,
                     'expanded' => true,
                     'required' => true,
+                    'disabled' => true,
                 )
             )
             ->add(

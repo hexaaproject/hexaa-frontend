@@ -80,6 +80,7 @@ class AdminAttributeSpecType extends AbstractType
                     'multiple' => false,
                     'expanded' => true,
                     'required' => true,
+                    'disabled' => true,
                 )
             )
             ->add(

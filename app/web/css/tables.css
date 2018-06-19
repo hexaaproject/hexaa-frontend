@@ -66,6 +66,10 @@
     color: #FA8072;
 }
 
+table.dataTable.no-footer{
+    border-bottom: none !important;
+}
+
 .datatable input:checked:after {
     content: '\2714';
     font-size: 14px;
