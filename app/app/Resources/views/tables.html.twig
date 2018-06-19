@@ -235,10 +235,12 @@ buttons array:
 </script>
 
 <div class="{{ table_id }}_actionButtons" id="tablewithcheckbox">
-
     {% if form is not defined %}
         {% if ismanager == "true" %}
-            <input class="hexaaCheckBox hidden-xs pull-left" id="{{checkbox_all}}" type="checkbox" value="" name="selectAll">
+            <label class="checkbox">
+                    <input class="hexaaCheckBox hidden-xs pull-left" id="{{checkbox_all}}" type="checkbox" value="" name="selectAll">
+                <span></span>
+            </label>
         {% endif %}
         <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left"
                {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
@@ -307,7 +309,12 @@ buttons array:
         <tr id="{{ user.id }}">
         {% if buttons is defined %}
             {% if ismanager == "true" %}
-                <td><input type="checkbox" name="checkbox" {% if attributes is not defined %} data-id="{{ user.id }}" data-fedid="{{ user.fedid }}" data-behattarget="{{ user.fedid }}" {% endif %}></td>
+                <td>
+                    <label class="checkboxmini-{{ variant }}">
+                        <input type="checkbox" name="checkbox" {% if attributes is not defined %} data-id="{{ user.id }}" data-fedid="{{ user.fedid }}" data-behattarget="{{ user.fedid }}" {% endif %}>
+                        <span></span>
+                    </label>
+                </td>
             {% endif %}
         {% endif %}
         {% if attributes is defined %}
