@@ -1306,7 +1306,8 @@ class ServiceController extends BaseController
 
                 $permissonSet = array(
                     'name' => $data['service_create_permission_set']['permissionSetName'],
-                    'type' => $data['service_create_permission_set']['permissionSetType'],
+                    /*'type' => $data['service_create_permission_set']['permissionSetType'],*/
+                    'type' => 'private',
                     'description' => $data['service_create_permission_set']['permissionSetDescription'],
                 );
 
@@ -2466,7 +2467,8 @@ class ServiceController extends BaseController
                             }
                             try {
                                 $this->get('entitlement_pack')->put($hexaaAdmin, $data['id'], [
-                                    'type' => $entitlementpack["type"],
+                                    /*'type' => $entitlementpack["type"],*/
+                                    'type' => 'private',
                                     'name' => $entitlementpack["name"],
                                     'description' => $entitlementpack["description"],
                                 ]);
