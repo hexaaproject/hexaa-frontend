@@ -74,14 +74,15 @@ table.dataTable.no-footer{
     background-color: #61AFC5 !important;
 }
 
-label.checkbox input[type="checkbox"] {display:none;}
-.checkbox{
+label.checkboxnotconnectedorganizations input[type="checkbox"] {display:none;}
+.checkboxnotconnectedorganizations{
     margin-top: 0px;
     margin-bottom: 0px;
     float: left;
 }
-label.checkbox span {
+label.checkboxnotconnectedorganizations span {
     display:inline-block;
+    position: relative;
     background-color: #fafafa;
     border-color: #61AFC5;
     border-style: solid;
@@ -94,19 +95,21 @@ label.checkbox span {
     border-radius: 2px;
 }
 
-label.checkbox :checked + span {
+label.checkboxnotconnectedorganizations :checked + span {
     background-color: #fafafa;
     border-color: #61AFC5;
-    width: 38px;
-    height: 38px;
-    margin: 0px 4px !important;
+    width: 40px;
+    height: 40px;
+    margin: 0px 3px !important;
 }
-label.checkbox :checked + span:after {
+label.checkboxnotconnectedorganizations :checked + span:after {
     content: '\2714';
     font-size: 20px;
     position: absolute;
     color: #61AFC5;
-    left:15px;
+   /* left:15px;*/
+    top: -2px;
+    left: 5px;
 }
 
 
@@ -349,6 +352,14 @@ table.dataTable.no-footer {
     background-image: none;
     border: 2px solid transparent;
     min-height: 34px;
+}
+
+input[type="checkbox"] {
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: -20px;
+    position: inherit !important;
 }
 
 .btn-red {

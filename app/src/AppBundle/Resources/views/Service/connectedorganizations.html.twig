@@ -410,8 +410,11 @@
         <div class="connected_org_pending_actionButtons" id="tablewithcheckbox"
              style="margin-top: 12px; padding-top: 30px">
 
-            <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all_pending" type="checkbox" value=""
-                   name="selectAll">
+            <label class="checkboxnotconnectedorganizations">
+                <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all_pending" type="checkbox" value=""
+                       name="selectAll">
+                <span></span>
+            </label>
             <input id="connected_org_pending_hexaaSearchField" type="text" name="filter"
                    class="hexaaSearchField pull-left"
                    placeholder="Search pending orgs">
@@ -472,7 +475,12 @@
             {% for one_data in all_data %}
                 {% if one_data.status == "pending" %}
                     <tr id="{{ one_data.link_id }}">
-                        <td><input type="checkbox" name="checkbox"></td>
+                        <td>
+                            <label class="checkboxmini-blue">
+                                <input type="checkbox" name="checkbox">
+                                <span></span>
+                            </label>
+                        </td>
                         <td>{{ one_data.name }}</td>
                         {% for one_content in one_data.contents %}
                             {% if one_content.key == "entitlementpacks" %}
@@ -493,8 +501,11 @@
         <div class="connected_org_pendingfromorg_actionButtons" id="tablewithcheckbox"
              style="margin-top: 12px; padding-top: 30px">
 
-            <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all_pendingfromorg" type="checkbox" value=""
-                   name="selectAll">
+            <label class="checkboxnotconnectedorganizations">
+                <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all_pendingfromorg" type="checkbox" value=""
+                       name="selectAll">
+                <span></span>
+            </label>
             <input id="connected_org_pendingfromorg_hexaaSearchField" type="text" name="filter"
                    class="hexaaSearchField pull-left"
                    placeholder="Search pending links">
@@ -504,7 +515,10 @@
             </button>
 
             <div class="visible-xs" style="margin-top: 12px;">
-                <input class="hexaaCheckBox" type="checkbox" value="">
+                <label class="checkboxnotconnectedorganizations">
+                    <input class="hexaaCheckBox" type="checkbox" value="">
+                    <span></span>
+                </label>
             </div>
 
         </div>
@@ -537,7 +551,12 @@
             <tbody>
             {% for one_data in allpending_data %}
                 <tr id="{{ one_data.link_id }}">
-                    <td><input type="checkbox" name="checkbox"></td>
+                    <td>
+                        <label class="checkboxmini-blue">
+                            <input type="checkbox" name="checkbox">
+                            <span></span>
+                        </label>
+                    </td>
                     {% for one_content in one_data.contents %}
                         {% if one_content.key == "entitlementpacks" %}
                             <td> {{ one_content.values }}</td>
@@ -564,7 +583,10 @@
 
     <div class="connected_org_actionButtons" id="tablewithcheckbox" style="padding-top: 30px">
 
-        <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all" type="checkbox" value="" name="selectAll">
+        <label class="checkboxnotconnectedorganizations">
+            <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all" type="checkbox" value="" name="selectAll">
+            <span></span>
+        </label>
         <input id="connected_org_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left"
                placeholder="Search connected orgs">
 
@@ -608,7 +630,12 @@
         {% for one_data in all_data %}
             {% if one_data.status == "accepted" %}
                 <tr id="{{ one_data.link_id }}">
-                    <td><input type="checkbox" name="checkbox"></td>
+                    <td>
+                        <label class="checkboxmini-blue">
+                            <input type="checkbox" name="checkbox">
+                            <span></span>
+                        </label>
+                    </td>
                     <td>{{ one_data.name }}</td>
                     {% for one_content in one_data.contents %}
                         {% if one_content.key == "entitlementpacks" %}
