@@ -287,7 +287,7 @@ buttons array:
         </caption>
     {% endif %}
     <thead {% if attributes is not defined %} style="font-size: medium;" {% else %} style="display: none;" {% endif %}">
-    <tr>
+    <tr style="border-bottom: 1px solid black">
         {% if buttons is defined %}
             {% if ismanager == "true" %}
                 <th></th>
