@@ -81,7 +81,7 @@ class ProfileController extends BaseController
 
             return $this->redirect($request->getUri());
         }
-
+        $servicesToMenu = $this->get('service')->cget($hexaaAdmin);
         $services = $this->get('principal')->getServicesConnectedToPrincipal($hexaaAdmin);
         $servicesEnabled = array();
         $attributespecs = array();
@@ -127,7 +127,7 @@ class ProfileController extends BaseController
               'main' => $user,
               'profilePropertiesForm' => $profilePropertiesForm->createView(),
               "organizations" => $this->get('organization')->cget($hexaaAdmin),
-              "services" => $services,
+              "services" => $servicesToMenu,
               "attributeValuesToAccordion" => $attributeValuesToAccordion,
               'admin' => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
               'organizationsWhereManager' => $this->orgWhereManager(),
