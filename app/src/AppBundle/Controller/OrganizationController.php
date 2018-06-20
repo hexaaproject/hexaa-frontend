@@ -1027,8 +1027,20 @@ class OrganizationController extends BaseController
 
                 // put creator to role
                 if ($data["wantToBeAMember"]) {
+                    $members = $this->get('organization')->getMembers($hexaaAdmin, $id);
                     $self = $this->get('principal')->getSelf($hexaaAdmin, "normal", $this->getUser()->getToken());
-                    $this->get('role')->putPrincipal($hexaaAdmin, $role['id'], $self['id']);
+                    $putmember = false;
+                    foreach ($members['items'] as $member) {
+                        if($member['fedid'] == $self['fedid']) {
+                            $this->get('role')->putPrincipal($hexaaAdmin, $role['id'], $self['id']);
+                            $putmember = true;
+                            break;
+                        }
+                    }
+                    if ($putmember == false) {
+                        $this->get('role')->delete($hexaaAdmin, $role['id']);
+                        throw new \Exception("You can't be member of this role until you aren't a member of this organization!");
+                    }
                 }
 
                 return $this->redirect($request->getUri());
