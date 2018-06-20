@@ -1,4 +1,5 @@
-app
-===
+Documentation
+=============
 
-A Symfony project created on January 9, 2017, 1:04 pm.
+You find the instructions at the official documentation site at [hexaa.eu](http://hexaa.eu).  
+
