@@ -45,7 +45,7 @@ class DefaultController extends Controller
         $organizations = [];
         $services = [];
         $hexaaadmin = $this->get('session')->get('hexaaAdmin');
-        //dump($hexaaadmin);
+        dump($hexaaadmin);
         /*if ($hexaaadmin == null) {
             $this->get('session')->set('hexaaAdmin', 'false');
             $hexaaadmin = "false";
