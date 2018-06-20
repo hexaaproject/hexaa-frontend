@@ -64,6 +64,7 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
         $this->guzzleclient = $guzzleclient;
         $this->shibAttributeMap = $shibAttributeMap;
         $this->principal = $principal;
+        $_SESSION['hexaaAdmin'] = "false";
     }
 
     /**

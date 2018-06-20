@@ -46,10 +46,10 @@ class DefaultController extends Controller
         $services = [];
         $hexaaadmin = $this->get('session')->get('hexaaAdmin');
         //dump($hexaaadmin);
-        if ($hexaaadmin == null) {
+        /*if ($hexaaadmin == null) {
             $this->get('session')->set('hexaaAdmin', 'false');
             $hexaaadmin = "false";
-        }
+        }*/
         $hexaahat = $this->get('session')->get('hexaaHat');
         if ($hexaahat == null) {
             $this->get('session')->set('hexaaHat', 'notactive');
