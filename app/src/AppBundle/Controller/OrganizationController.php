@@ -1391,8 +1391,9 @@ class OrganizationController extends BaseController
     */
     private function isManager($id)
     {
+        dump($this->get('session')->get('hexaaAdmin'));
         $manager = false;
-        $organizations = $this->get('principal')->orgsWhereUserIsManager('true');
+        $organizations = $this->get('principal')->orgsWhereUserIsManager($this->get('session')->get('hexaaAdmin'));
         foreach ($organizations as $oneorg) {
             if ($oneorg['id'] == $id) {
                 $manager = true;

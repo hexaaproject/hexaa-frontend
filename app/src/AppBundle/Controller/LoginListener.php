@@ -11,6 +11,6 @@ class LoginListener
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
         $user = $event->getAuthenticationToken()->getUser();
-        $event->getRequest()->getSession()->set('hexaaAdmin', 'false');
+        /*$event->getRequest()->getSession()->set('hexaaAdmin', 'false');*/
     }
 }

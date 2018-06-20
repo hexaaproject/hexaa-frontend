@@ -45,10 +45,11 @@ class DefaultController extends Controller
         $organizations = [];
         $services = [];
         $hexaaadmin = $this->get('session')->get('hexaaAdmin');
-        /*if ($hexaaadmin == null) {
+        //dump($hexaaadmin);
+        if ($hexaaadmin == null) {
             $this->get('session')->set('hexaaAdmin', 'false');
             $hexaaadmin = "false";
-        }*/
+        }
         $hexaahat = $this->get('session')->get('hexaaHat');
         if ($hexaahat == null) {
             $this->get('session')->set('hexaaHat', 'notactive');
@@ -95,12 +96,15 @@ class DefaultController extends Controller
      */
     public function hexaaAdminAction($hexaaHat)
     {
+        //dump($hexaaHat);
+        //dump($this->get('session')->get('hexaaAdmin'));
         if ($this->get('session')->get('hexaaAdmin') == 'false') {
             $this->get('session')->set('hexaaAdmin', 'true');
         } else {
             $this->get('session')->set('hexaaAdmin', 'false');
         }
 
+        //dump($this->get('session')->get('hexaaAdmin'));
         if ($hexaaHat == 'active' && $this->get('session')->get('hexaaHat') == 'notactive') {
             $this->get('session')->set('hexaaHat', 'active');
         } elseif ($this->get('session')->get('hexaaHat') == 'active') {
@@ -118,6 +122,7 @@ class DefaultController extends Controller
      */
     public function loginAction()
     {
+        $this->get('session')->set('hexaaAdmin', 'false');
         return $this->redirect($this->generateUrl('homepage'));
     }
 
