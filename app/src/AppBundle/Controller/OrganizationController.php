@@ -310,6 +310,7 @@ class OrganizationController extends BaseController
         $defaultRoleName = "";
         $rolesForFieldSource = array();
         $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        dump($hexaaAdmin);
 
         foreach ($roles as $role) {
             if ($organization['default_role_id'] == $role['id']) {
