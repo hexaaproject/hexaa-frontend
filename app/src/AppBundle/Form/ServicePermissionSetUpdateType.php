@@ -67,11 +67,13 @@ class ServicePermissionSetUpdateType extends AbstractType
                 ChoiceType::class,
                 array(
                     "label" => "Type",
+                    "data" => 'private',
                     "label_attr" => array('class' => 'permissioneditlabel'),
                     'choices' => array('private' => 'private', 'public' => 'public'),
                     'multiple' => false,
                     'expanded' => true,
                     'required' => true,
+                    'disabled' => true,
                 )
             )
             ->add(

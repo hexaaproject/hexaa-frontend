@@ -75,6 +75,20 @@ class Principal extends AbstractBaseResource
     }
 
     /**
+     * GET services connected to user
+     *
+     * @param string $hexaaAdmin Admin hat
+     * @param string $verbose    One of minimal, normal or expanded
+     * @param int    $offset     paging: item to start from
+     * @param int    $pageSize   paging: number of items to return
+     * @return array
+     */
+    public function getServicesConnectedToPrincipal(string $hexaaAdmin, string $verbose = "normal", int $offset = 0, int $pageSize = 500)
+    {
+        return $this->getCollection($this->pathName.'/services/related', $hexaaAdmin, $verbose, $offset, $pageSize);
+    }
+
+    /**
      * GET All principals
      *
      * @param string $admin

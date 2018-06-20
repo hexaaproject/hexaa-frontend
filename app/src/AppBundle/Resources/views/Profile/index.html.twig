@@ -39,7 +39,7 @@
                 {{ include('::panel.html.twig', {profile: "true", styleOfContainer: "profilProperties", heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1" }) }}
             </div>
             <div class="col-sm-1"></div>
-            <div class="accountbutton pull-right"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="{{ asset('img/account_history.svg') }}"/><br/><br/>Account history</a></div>
+            <div class="accountbutton pull-right"><a href="{{ path('app_profile_history') }}" style="font-size: large;"> <img class="accountimage" alt="Account history" src="{{ asset('img/account_history.svg') }}"/><br/><br/>Account history</a></div>
         </div>
 
         <div style="padding-top: 12px;" class="edit hidden">

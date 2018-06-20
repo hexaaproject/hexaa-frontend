@@ -42,7 +42,7 @@ class ModifyConnectOrgType extends AbstractType
                 'entitlementpacks',
                 ChoiceType::class,
                 array(
-                    'label' => "Entitlement packs",
+                    'label' => "Permission sets",
                     'choices' => $datas['data']['entitlementpacksToForm'],
                     'data' => $datas['data']['currentEntitlementpacksToForm'],
                     "attr" => array(
@@ -61,7 +61,7 @@ class ModifyConnectOrgType extends AbstractType
                 'entitlements',
                 ChoiceType::class,
                 array(
-                    'label' => "Entitlements (optional)",
+                    'label' => "Permissions (optional)",
                     'choices' => $datas['data']['entitlementsToForm'],
                     'data' => $datas['data']['currentEntitlementsToForm'],
                     "attr" => array(

@@ -35,13 +35,13 @@ class ConnectOrgType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $datas)
     {
-      // dump($datas);exit;
+      
         $builder
             ->add(
                 'entitlementpacks',
                 ChoiceType::class,
                 array(
-                    'label' => "Entitlement packs",
+                    'label' => "Permission sets",
                     'choices' => $datas['data']['datas']['entitlementpacksToForm'],
                     "attr" => array(
                         "class" => "checkstolink",
@@ -55,7 +55,7 @@ class ConnectOrgType extends AbstractType
                 'entitlements',
                 ChoiceType::class,
                 array(
-                    'label' => "Entitlements (optional)",
+                    'label' => "Permissions (optional)",
                     'choices' => $datas['data']['datas']['entitlementsToForm'],
                     "attr" => array(
                         "class" => "checkstolink",

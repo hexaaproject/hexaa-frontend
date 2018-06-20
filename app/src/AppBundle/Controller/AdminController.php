@@ -98,7 +98,8 @@ class AdminController extends BaseController
                     'name' => $data['admin_attribute_spec']['attributeSpecName'],
                     'uri' => $data['admin_attribute_spec']['attributeSpecURI'],
                     'description' => $data['admin_attribute_spec']['attributeSpecDescription'],
-                    'maintainer' => $data['admin_attribute_spec']['attributeSpecMaintainer'],
+                    /*'maintainer' => $data['admin_attribute_spec']['attributeSpecMaintainer'],*/
+                    'maintainer' => 'user',
                     'syntax' => $data['admin_attribute_spec']['attributeSpecSyntax'],
                     'is_multivalue' => $data['admin_attribute_spec']['attributeSpecIsMultivalue'],
                 );
@@ -432,7 +433,7 @@ class AdminController extends BaseController
      */
     public function attributespecificationDeleteAction($id)
     {
-        $this->get('attribute_spec')->deleteAdmin($this->get('session')->get('hexaaAdmin'), $id);
+        $this->get('attribute_spec')->deleteAdmin($id);
         $this->get('session')->getFlashBag()->add('success', 'The attribute specification has been deleted.');
 
         return $this->redirectToRoute("app_admin_attributes", array("admin" => $this->get('principal')->isAdmin($this->get('session')->get('hexaaAdmin'))["is_admin"]));
@@ -521,7 +522,8 @@ class AdminController extends BaseController
                     $attributespec["name"] = $data["name"];
                     $attributespec["description"] = $data["description"];
                     $attributespec["uri"] = $data["uri"];
-                    $attributespec["maintainer"] = $data["maintainer"];
+                    /*$attributespec["maintainer"] = $data["maintainer"];*/
+                    $attributespec["maintainer"] = 'user';
                     $attributespec["is_multivalue"] = $data["Multivalue"];
                     $attributespec["syntax"] = $data["syntax"];
                     try {

@@ -46,7 +46,11 @@
         }}
         </div>
     {% endif %}
-
+    {% if managers is empty and ismanagertoinvite == 'true' %}
+        <div class="col-md-5 col-md-offset-5">
+            <button class="btnhexaa btn-red btn-block btnhexaa-lg" id="invite"><i class="material-icons">add</i> Invite</button>
+        </div>
+    {% endif %}
     {{ include('AppBundle:Service:userInvitation.html.twig', {}) }}
     {% if invite_link is defined %}
         {{ include('AppBundle:Service:userInvitationDone.html.twig', {}) }}

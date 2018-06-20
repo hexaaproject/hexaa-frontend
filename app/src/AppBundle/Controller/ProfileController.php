@@ -81,8 +81,8 @@ class ProfileController extends BaseController
 
             return $this->redirect($request->getUri());
         }
-
-        $services = $this->get('service')->cget($hexaaAdmin);
+        $servicesToMenu = $this->get('service')->cget($hexaaAdmin);
+        $services = $this->get('principal')->getServicesConnectedToPrincipal($hexaaAdmin);
         $servicesEnabled = array();
         $attributespecs = array();
         $attributespecsdetails = array ();
@@ -115,7 +115,6 @@ class ProfileController extends BaseController
             }
             array_push($attributevaluearray[$attributevalueforprincipal['attribute_spec_id']], $attributevalueforprincipal);
         }
-
         $attributeValuesToAccordion = $this->attributeValuesToAccordion($attributevaluearray, $attributespecsdetails, $servicesEnabled, $request);
         if (false === $attributeValuesToAccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
             return $this->redirectToRoute('app_profile_index', array());
@@ -128,7 +127,7 @@ class ProfileController extends BaseController
               'main' => $user,
               'profilePropertiesForm' => $profilePropertiesForm->createView(),
               "organizations" => $this->get('organization')->cget($hexaaAdmin),
-              "services" => $services,
+              "services" => $servicesToMenu,
               "attributeValuesToAccordion" => $attributeValuesToAccordion,
               'admin' => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
               'organizationsWhereManager' => $this->orgWhereManager(),
@@ -278,7 +277,7 @@ class ProfileController extends BaseController
                                 }
                             }
                             if (empty($namevalue)) {
-                                $namevalue = ["Még nincs érték"];
+                                $namevalue = ["No value yet"];
                                 if ($value['is_multivalue'] == true) {
                                       $formBuilder->add($value['id'], CollectionType::class, [
                                           "entry_type" => TextType::class,
@@ -297,7 +296,7 @@ class ProfileController extends BaseController
                                 'deleteurl' => $deleteurls,
                             ]);
                             foreach ($namevalue as $onenamevalue) {
-                                if ($onenamevalue == "Még nincs érték") {
+                                if ($onenamevalue == "No value yet") {
                                     if ($claim != true) {
                                         $claim = true;
                                     }
@@ -388,7 +387,7 @@ class ProfileController extends BaseController
                                                     }
                                                 }
                                                 $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser[0]);
-                                                if (empty($missingvalues) or $missingvalues[0] == "Még nincs érték") {
+                                                if (empty($missingvalues) or $missingvalues[0] == "No value yet") {
                                                     if ($onevalue != null) {
                                                         $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $onevalue, $key, $principal['id']);
                                                     }
@@ -431,7 +430,7 @@ class ProfileController extends BaseController
                                                 }
                                             }
                                             $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser);
-                                            if (empty($missingvalues) or $missingvalues[0] == "Még nincs érték") {
+                                            if (empty($missingvalues) or $missingvalues[0] == "No value yet") {
                                                 if ($value != null) {
                                                     $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $value, $key, $principal['id']);
                                                 }

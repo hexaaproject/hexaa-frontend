@@ -369,8 +369,8 @@
                             {% if item.contents is defined %}
                                 {% for content in item.contents %}
                                     <tr class="accordion">
-                                        <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion accordion-key">{{ content.key }}</td>
-                                        <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion">
+                                        <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion accordion-key" style="vertical-align: top">{{ content.key }}</td>
+                                        <td class="{% if loop.index != 1 %}accordion-hr{% endif %} accordion " style="vertical-align: top">
                                             <ul class="accordion">
                                                 {% for listitem in content.values %}
                                                     {% if content.key == "Multivalue" %}
@@ -381,13 +381,13 @@
                                                             <i class="material-icons">check</i>
                                                         {% endif %}
                                                     {% else %}
-                                                        <li>{{ listitem }}</li>
+                                                        <li style="word-break: break-all;">{{ listitem }}</li>
                                                     {% endif %}
                                                 {% endfor %}
                                             </ul>
                                         </td>
                                         {% if profile is defined %}
-                                            <td>
+                                            <td style="vertical-align: top; padding:5px;">
                                                 {% for deleteitem in content.deleteurl %}
                                                     <i title="delete attribute" role="button" data-behattarget="delete_{{ loop.index }}" class="material-icons accordion-button accordion_delete_button" data-id="{{ itemId }}" data-targeturl="{{ deleteitem }}">delete</i>
                                                     <br>

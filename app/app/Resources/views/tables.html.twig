@@ -26,7 +26,7 @@ buttons array:
     {% stylesheets
     '@protip_min_css'
     filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}"/>
+    <link rel="stylesheet" href="{{ asset_url }}" xmlns:display="http://www.w3.org/1999/xhtml"/>
     {% endstylesheets %}
 {% endblock %}
 
@@ -54,7 +54,7 @@ buttons array:
         {% endif %}
 
         {# hide pagination if one page #}
-        if ($('#{{ table_id }}').DataTable().page.info().pages == 1) {
+        if ($('#{{ table_id }}').DataTable().page.info().pages == 1 || $('#{{ table_id }}').DataTable().page.info().pages == 0  ){
             $('#{{ table_id }}_info').hide();
             $('#{{ table_id }}_paginate').hide();
             $('#{{ table_id }}_length').hide();
@@ -235,10 +235,12 @@ buttons array:
 </script>
 
 <div class="{{ table_id }}_actionButtons" id="tablewithcheckbox">
-
     {% if form is not defined %}
         {% if ismanager == "true" %}
-            <input class="hexaaCheckBox hidden-xs pull-left" id="{{checkbox_all}}" type="checkbox" value="" name="selectAll">
+            <label class="checkboxnotconnectedorganizations">
+                    <input class="hexaaCheckBox hidden-xs pull-left" id="{{checkbox_all}}" type="checkbox" value="" name="selectAll">
+                <span></span>
+            </label>
         {% endif %}
         <input id="{{ table_id }}_hexaaSearchField" type="text" name="filter" class="hexaaSearchField pull-left"
                {% if search_placeholder is defined %}placeholder="{{ search_placeholder }}"{% endif %}>
@@ -286,8 +288,8 @@ buttons array:
 
         </caption>
     {% endif %}
-    <thead>
-    <tr>
+    <thead {% if attributes is not defined %} style="font-size: medium;" {% else %} style="display: none;" {% endif %}">
+    <tr style="border-bottom: 1px solid black">
         {% if buttons is defined %}
             {% if ismanager == "true" %}
                 <th></th>
@@ -296,8 +298,9 @@ buttons array:
         {% if attributes is defined %}
             <th></th>
         {% else %}
-            <th></th>
-            <th></th>
+            <th><strong>Federation id</strong></th>
+            <th><strong>Display name</strong></th>
+            <th><strong>E-mail</strong></th>
         {% endif %}
     </tr>
     </thead>
@@ -306,13 +309,19 @@ buttons array:
         <tr id="{{ user.id }}">
         {% if buttons is defined %}
             {% if ismanager == "true" %}
-                <td><input type="checkbox" name="checkbox" {% if attributes is not defined %} data-id="{{ user.id }}" data-fedid="{{ user.fedid }}" data-behattarget="{{ user.fedid }}" {% endif %}></td>
+                <td>
+                    <label class="checkboxmini-{{ variant }}">
+                        <input type="checkbox" name="checkbox" {% if attributes is not defined %} data-id="{{ user.id }}" data-fedid="{{ user.fedid }}" data-behattarget="{{ user.fedid }}" {% endif %}>
+                        <span></span>
+                    </label>
+                </td>
             {% endif %}
         {% endif %}
         {% if attributes is defined %}
             <td class="{{ tdcolor }}"><strong>{{ user.name }}</strong></td>
         {% else %}
-            <td><strong>{{ user.display_name }}</strong></td>
+            <td>{{ user.fedid }}</td>
+            <td>{{ user.display_name }}</td>
             <td>{{ user.email }}</td>
         {% endif %}
         </tr>

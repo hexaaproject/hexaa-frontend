@@ -66,6 +66,113 @@
     color: #FA8072;
 }
 
+table.dataTable.no-footer{
+    border-bottom: none !important;
+}
+
+.mdl-button--raised.mdl-button--colored{
+    background-color: #61AFC5 !important;
+}
+
+label.checkboxnotconnectedorganizations input[type="checkbox"] {display:none;}
+.checkboxnotconnectedorganizations{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    float: left;
+}
+label.checkboxnotconnectedorganizations span {
+    display:inline-block;
+    position: relative;
+    background-color: #fafafa;
+    border-color: #61AFC5;
+    border-style: solid;
+    border-width: 6px 6px 6px 6px;
+    -webkit-appearance: none;
+    margin: 0px 4px !important;
+    width: 38px;
+    height: 38px;
+    vertical-align: middle;
+    border-radius: 2px;
+}
+
+label.checkboxnotconnectedorganizations :checked + span {
+    background-color: #fafafa;
+    border-color: #61AFC5;
+    width: 40px;
+    height: 40px;
+    margin: 0px 3px !important;
+}
+label.checkboxnotconnectedorganizations :checked + span:after {
+    content: '\2714';
+    font-size: 20px;
+    position: absolute;
+    color: #61AFC5;
+   /* left:15px;*/
+    top: -2px;
+    left: 5px;
+}
+
+
+label.checkboxmini-blue input[type="checkbox"] {display:none;}
+label.checkboxmini-red input[type="checkbox"] {display:none;}
+.checkboxmini-blue, .checkboxmini-red{
+    margin-top: 5px;
+    margin-bottom: 0px;
+    margin-left:9px;
+    float: left;
+}
+label.checkboxmini-red span {
+    display:inline-block;
+    background-color: #fafafa;
+    -webkit-appearance: none;
+    border-radius: 2px;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #FA8072;
+}
+
+label.checkboxmini-red :checked + span {
+    background-color: #fafafa;
+    border-color: #FA8072;
+    width: 20px;
+    height: 20px;
+}
+label.checkboxmini-red :checked + span:after {
+    content: '\2714';
+    position: absolute;
+    color: #FA8072;
+    margin-left: 2px;
+    margin-top: -2px;
+}
+
+label.checkboxmini-blue span {
+    display:inline-block;
+    background-color: #fafafa;
+    -webkit-appearance: none;
+    border-radius: 2px;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #61AFC5;
+}
+
+label.checkboxmini-blue :checked + span {
+    background-color: #fafafa;
+    border-color:  #61AFC5;
+    width: 20px;
+    height: 20px;
+}
+label.checkboxmini-blue :checked + span:after {
+    content: '\2714';
+    position: absolute;
+    color:  #61AFC5;
+    margin-left: 2px;
+    margin-top: -2px;
+}
+
+
+
 .datatable input:checked:after {
     content: '\2714';
     font-size: 14px;
@@ -79,9 +186,11 @@
     text-align: left;
 }
 
-.datatable td:nth-child(odd) {
+/*.datatable td:nth-child(odd) {
     padding-left: 15px;
-}
+}*/
+
+thead, th {text-align: left; padding: 5px;}
 
 .datatable-red {
     border: 2px solid #FA8072;
@@ -245,6 +354,14 @@ table.dataTable.no-footer {
     min-height: 34px;
 }
 
+input[type="checkbox"] {
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: -20px;
+    position: inherit !important;
+}
+
 .btn-red {
     background-color: #EA7373;
     color: white;
@@ -285,6 +402,59 @@ table.dataTable.no-footer {
     color: white;
     border-radius: 0px;
     box-shadow: none;
+}
+
+#principals_table_paginate > div > button.mdl-button.mdl-button--raised.mdl-button--colored {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0px 4px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 2px solid transparent;
+    min-height: 34px;
+    background-color: #61AFC5;
+    color: white;
+    border-radius: 0px;
+    box-shadow: none;
+}
+
+.mdl-button.mdl-button--disabled.mdl-button--disabled, .mdl-button[disabled][disabled] {
+    color: rgba(0,0,0,.26);
+    cursor: default;
+    background-color: transparent;
+}
+
+.mdl-button {
+    background: 0 0;
+    border: none;
+    border-radius: 2px;
+    color: #000;
+    position: relative;
+    height: 36px;
+    margin: 0;
+    min-width: 64px;
+    padding: 0 16px;
+    display: inline-block;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0;
+    overflow: hidden;
+    will-change: box-shadow;
+    transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    line-height: 36px;
+    vertical-align: middle;
 }
 
 .bottom {

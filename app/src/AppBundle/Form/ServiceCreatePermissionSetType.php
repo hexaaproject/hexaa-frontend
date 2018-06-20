@@ -73,11 +73,13 @@ class ServiceCreatePermissionSetType extends AbstractType
                 ChoiceType::class,
                 array(
                     "label" => "Type",
+                    'data' => 'private',
                     "label_attr" => array('class' => 'col-sm-3 formlabel'),
                     'choices' => array('private' => 'private', 'public' => 'public'),
                     'multiple' => false,
                     'expanded' => true,
                     'required' => true,
+                    'disabled' => true,
                 )
             )
             ->add(

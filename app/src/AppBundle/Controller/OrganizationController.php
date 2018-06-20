@@ -343,13 +343,19 @@ class OrganizationController extends BaseController
                 'properties' => $propertiesDatas,
             )
         );
+        $error = false;
 
         $formProperties->handleRequest($request);
+        if ($request->getMethod() == 'POST') {
+            if (!$formProperties->isValid()) {
+              $error = true;
+            }
+        }
 
-//        $formProperties->addError(new FormError("ERROR"));
 
         if ($formProperties->isSubmitted() && $formProperties->isValid()) {
             $data = $request->request->all();
+            $error = false;
             $modified = array(
                 'name' => $data['organization_properties']['name'],
                 'default_role' => $data['organization_properties']['default_role_id'],
@@ -357,7 +363,6 @@ class OrganizationController extends BaseController
                 'url' => $data['organization_properties']['url'],
             );
             $this->get('organization')->patch($hexaaAdmin, $id, $modified);
-
             return $this->redirect($request->getUri());
         }
 
@@ -381,6 +386,7 @@ class OrganizationController extends BaseController
                 'submenu' => 'true',
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => "false",
+                'error' => $error,
                 'ismanager' => $manager,
                 'hexaaHat' => $this->get('session')->get('hexaaHat'),
             )
@@ -1021,8 +1027,20 @@ class OrganizationController extends BaseController
 
                 // put creator to role
                 if ($data["wantToBeAMember"]) {
+                    $members = $this->get('organization')->getMembers($hexaaAdmin, $id);
                     $self = $this->get('principal')->getSelf($hexaaAdmin, "normal", $this->getUser()->getToken());
-                    $this->get('role')->putPrincipal($hexaaAdmin, $role['id'], $self['id']);
+                    $putmember = false;
+                    foreach ($members['items'] as $member) {
+                        if($member['fedid'] == $self['fedid']) {
+                            $this->get('role')->putPrincipal($hexaaAdmin, $role['id'], $self['id']);
+                            $putmember = true;
+                            break;
+                        }
+                    }
+                    if ($putmember == false) {
+                        $this->get('role')->delete($hexaaAdmin, $role['id']);
+                        throw new \Exception("You can't be member of this role until you aren't a member of this organization!");
+                    }
                 }
 
                 return $this->redirect($request->getUri());
@@ -1506,7 +1524,13 @@ class OrganizationController extends BaseController
 
             $members = [];
             foreach ($role['principals'] as $principal) {
-                $members[$principal['principal']['id']] = $principal['principal']['display_name'];
+                if(!(empty($principal['principal']['display_name']))){
+                    $members[$principal['principal']['id']] = $principal['principal']['display_name'];
+                } elseif (!(empty($principal['principal']['email']))){
+                    $members[$principal['principal']['id']] = $principal['principal']['email'];
+                } else {
+                    $members[$principal['principal']['id']] = $principal['principal']['fedid'];
+                }
             }
 
             $permissions = [];

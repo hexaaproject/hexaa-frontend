@@ -15,7 +15,10 @@
     {% endfor %}
 
     {% block stylesheets %}
-        {% stylesheets 'css/tables.css' filter='cssrewrite' %}
+        {#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css" />#}
+        {% stylesheets 
+        'css/tables.css'
+        filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
     {% endblock %}
