@@ -82,7 +82,7 @@ class ProfileController extends BaseController
             return $this->redirect($request->getUri());
         }
 
-        $services = $this->get('service')->cget($hexaaAdmin);
+        $services = $this->get('principal')->getServicesConnectedToPrincipal($hexaaAdmin);
         $servicesEnabled = array();
         $attributespecs = array();
         $attributespecsdetails = array ();
@@ -115,7 +115,6 @@ class ProfileController extends BaseController
             }
             array_push($attributevaluearray[$attributevalueforprincipal['attribute_spec_id']], $attributevalueforprincipal);
         }
-
         $attributeValuesToAccordion = $this->attributeValuesToAccordion($attributevaluearray, $attributespecsdetails, $servicesEnabled, $request);
         if (false === $attributeValuesToAccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
             return $this->redirectToRoute('app_profile_index', array());
