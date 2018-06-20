@@ -1806,7 +1806,7 @@ class OrganizationController extends BaseController
         $entitlementsAccordion = array();
         foreach ($services as $service) {
             $entitlementsAccordion[$service['id']]['title'] = $service['name'];
-            $entitlementsAccordion[$service['id']]['description'] = 'Entitlements';
+            $entitlementsAccordion[$service['id']]['description'] = 'Permissions';
             $entitlementsAccordion[$service['id']]['deleteUrl'] = $this->generateUrl("app_organization_linkdelete", [
                 'servId' => $service['id'],
                 'id' => $id,
