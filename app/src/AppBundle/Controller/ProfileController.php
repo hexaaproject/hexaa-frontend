@@ -104,6 +104,7 @@ class ProfileController extends BaseController
             array_push($attributespecs, $attributespecsofservice);
         }
         $attributevaluesforprincipal = $this->get('principal')->getAttributeValues($hexaaAdmin, 'normal', 0, 500);
+       // dump($attributevaluesforprincipal);
         $attributespecids = array();
         $linkedservices = array();
         $attributevaluearray = null;
@@ -114,6 +115,10 @@ class ProfileController extends BaseController
                 array_push($attributespecids, $attributevalueforprincipal['attribute_spec_id']);
             }
             array_push($attributevaluearray[$attributevalueforprincipal['attribute_spec_id']], $attributevalueforprincipal);
+        }
+        //dump($attributevaluearray);exit;
+        if ($attributevaluearray == null) {
+            $attributevaluearray = array();
         }
         $attributeValuesToAccordion = $this->attributeValuesToAccordion($attributevaluearray, $attributespecsdetails, $servicesEnabled, $request);
         if (false === $attributeValuesToAccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
