@@ -306,7 +306,7 @@ class OrganizationController extends BaseController
     public function propertiesAction(Request $request, int $id, string $action = null)
     {
         $organization = $this->getOrganization($id);
-        $roles = $this->getRoles('true', $organization);
+        $roles = $this->getRoles($organization);
         $defaultRoleName = "";
         $rolesForFieldSource = array();
         $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
@@ -1427,7 +1427,7 @@ class OrganizationController extends BaseController
      */
     private function getRoles($organization)
     {
-        return $this->get('organization')->getRoles($this->get('session')->get('hexaaAdmin'), $organization['id'], 'expanded')['items'];
+        return $this->get('organization')->getRoles('true', $organization['id'], 'expanded')['items'];
     }
 
     /**
