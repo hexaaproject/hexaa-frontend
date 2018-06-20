@@ -46,6 +46,7 @@ class DefaultController extends Controller
         $services = [];
         $hexaaadmin = $this->get('session')->get('hexaaAdmin');
        // dump($hexaaadmin);
+       // dump('HAHA');
         /*if ($hexaaadmin == null) {
             $this->get('session')->set('hexaaAdmin', 'false');
             $hexaaadmin = "false";
@@ -98,12 +99,15 @@ class DefaultController extends Controller
     {
         //dump($hexaaHat);
         //dump($this->get('session')->get('hexaaAdmin'));
-        if ($this->get('session')->get('hexaaAdmin') == 'false') {
+     // dump('HAHAH');
+        if ($this->get('session')->get('hexaaAdmin') === 'false') {
+       //   dump('HAHAH');
             $this->get('session')->set('hexaaAdmin', 'true');
-        } else {
+        } else if ($this->get('session')->get('hexaaAdmin') === 'true'){
+            //dump('HAHA');exit;
             $this->get('session')->set('hexaaAdmin', 'false');
         }
-
+     // dump($this->get('session')->get('hexaaAdmin'));
         //dump($this->get('session')->get('hexaaAdmin'));
         if ($hexaaHat == 'active' && $this->get('session')->get('hexaaHat') == 'notactive') {
             $this->get('session')->set('hexaaHat', 'active');
@@ -122,7 +126,6 @@ class DefaultController extends Controller
      */
     public function loginAction()
     {
-        $this->get('session')->set('hexaaAdmin', 'false');
         return $this->redirect($this->generateUrl('homepage'));
     }
 

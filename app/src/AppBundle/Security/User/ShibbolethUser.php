@@ -41,7 +41,6 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
     private $hexaaScopedKey;
 
     private $guzzleclient;
-
     private $principal;
 
     /**
@@ -51,6 +50,7 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
      * @param string    $baseUri
      * @param Client    $guzzleclient
      * @param Principal $principal
+     * @param Session   $session
      */
     public function __construct($shibAttributeMap, $hexaaScopedKey, $baseUri, Client $guzzleclient, Principal $principal, Session $session)
     {
