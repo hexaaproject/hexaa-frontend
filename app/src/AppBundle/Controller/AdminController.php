@@ -433,7 +433,7 @@ class AdminController extends BaseController
      */
     public function attributespecificationDeleteAction($id)
     {
-        $this->get('attribute_spec')->deleteAdmin($this->get('session')->get('hexaaAdmin'), $id);
+        $this->get('attribute_spec')->deleteAdmin($id);
         $this->get('session')->getFlashBag()->add('success', 'The attribute specification has been deleted.');
 
         return $this->redirectToRoute("app_admin_attributes", array("admin" => $this->get('principal')->isAdmin($this->get('session')->get('hexaaAdmin'))["is_admin"]));
