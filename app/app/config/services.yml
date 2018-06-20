@@ -46,7 +46,7 @@ services:
 
     shibboleth.user.provider:
       class: AppBundle\Security\User\ShibbolethUser
-      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@guzzle.client.hexaa_api", "@principal"]
+      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@guzzle.client.hexaa_api", "@principal", "@session"]
 
     guzzleclient.exceptionlistener:
         class: AppBundle\EventListener\GuzzleClientExceptionListener
