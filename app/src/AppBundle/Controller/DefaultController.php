@@ -94,10 +94,10 @@ class DefaultController extends Controller
      */
     public function hexaaAdminAction($hexaaHat)
     {
-        if ($this->get('session')->get('hexaaAdmin') === 'false') {
+        if ($this->get('session')->get('hexaaAdmin') == 'false') {
 
             $this->get('session')->set('hexaaAdmin', 'true');
-        } elseif ($this->get('session')->get('hexaaAdmin') === 'true'){
+        } else {
             $this->get('session')->set('hexaaAdmin', 'false');
         }
         if ($hexaaHat == 'active' && $this->get('session')->get('hexaaHat') == 'notactive') {
