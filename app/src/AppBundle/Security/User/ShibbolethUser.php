@@ -67,6 +67,9 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
         if($session->get('hexaaAdmin') == null) {
             $session->set('hexaaAdmin', 'false');
         }
+        if ($session->get('hexaaHat') == null) {
+            $session->set('hexaaHat', 'notactive');
+        }
     }
 
     /**
