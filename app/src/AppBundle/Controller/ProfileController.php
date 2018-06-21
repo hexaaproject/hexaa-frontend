@@ -329,16 +329,18 @@ class ProfileController extends BaseController
                             }
                             array_push($attributespecswithvalues2, $attributevalue['attribute_spec_id']);
                         }
-                        dump($attributevalues);
-                        dump($attributespecswithvalues);
-                        dump($attributespecswithvalues2);
-                        dump($attributevaluesname);
+                       // dump($attributevalues);
+                       // dump($attributespecswithvalues);
+                       // dump($attributespecswithvalues2);
+                       // dump($attributevaluesname);
                         $principal = $this->get('principal')->getSelf($hexaaAdmin);
                         foreach ($data as $key => $value) {
                             if ($value != null) {
                                 $servicesids = [];
                                 $services = $this->get('attribute_spec')->getServicesLinkedToAttributeSpec($hexaaAdmin, $key);
-                                dump($services);exit;
+                                dump($services);
+                                dump($key);
+                                dump($value);
                                 if (!in_array($key, $attributespecswithvalues)) {
                                     foreach ($services['items'] as $servicesone) {
                                         array_push($servicesids, $servicesone["service_id"]);
@@ -351,6 +353,7 @@ class ProfileController extends BaseController
                                             }
                                         }
                                     }
+                                    dump($justmodifyinformactive);exit;
                                     if ($justmodifyinformactive == true) {
                                         if (is_array($value)) {
                                             foreach ($value as $onevalue) {
@@ -433,6 +436,7 @@ class ProfileController extends BaseController
                                                     array_push($allvaluefromuser, $value2);
                                                 }
                                             }
+                                            dump($allvaluefromuser);
                                             $allvaluefrombackend = array();
                                             $attributespectoname = $this->get('attribute_spec')->get($hexaaAdmin, $key);
                                             foreach ($attributespecnames as $attributespecname) {
@@ -440,6 +444,7 @@ class ProfileController extends BaseController
                                                     $allvaluefrombackend = $attributespecname['values'];
                                                 }
                                             }
+                                            dump($allvaluefrombackend);exit;
                                             $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser);
                                             if (empty($missingvalues) or $missingvalues[0] == "No value yet") {
                                                 if ($value != null) {
