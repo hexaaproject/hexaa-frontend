@@ -104,7 +104,6 @@ class ProfileController extends BaseController
             array_push($attributespecs, $attributespecsofservice);
         }
         $attributevaluesforprincipal = $this->get('principal')->getAttributeValues($hexaaAdmin, 'normal', 0, 500);
-       // dump($attributevaluesforprincipal);
         $attributespecids = array();
         $linkedservices = array();
         $attributevaluearray = null;
@@ -116,7 +115,6 @@ class ProfileController extends BaseController
             }
             array_push($attributevaluearray[$attributevalueforprincipal['attribute_spec_id']], $attributevalueforprincipal);
         }
-        //dump($attributevaluearray);exit;
         if ($attributevaluearray == null) {
             $attributevaluearray = array();
         }
@@ -317,7 +315,6 @@ class ProfileController extends BaseController
                 if ($form->isSubmitted()) {
                     try {
                         $data = $form->getData();
-                       // dump($data);exit;
                         $attributevalues = $this->get('principal')->getAttributeValues($hexaaAdmin);
                         $attributespecswithvalues = [];
                         $attributespecswithvalues2 = [];
@@ -329,19 +326,11 @@ class ProfileController extends BaseController
                             }
                             array_push($attributespecswithvalues2, $attributevalue['attribute_spec_id']);
                         }
-                       // dump($attributevalues);
-                       // dump($attributespecswithvalues);
-                       // dump($attributespecswithvalues2);
-                       // dump($attributevaluesname);
                         $principal = $this->get('principal')->getSelf($hexaaAdmin);
                         foreach ($data as $key => $value) {
                             if ($value != null) {
                                 $servicesids = [];
                                 $services = $this->get('attribute_spec')->getServicesLinkedToAttributeSpec($hexaaAdmin, $key);
-                                dump($services);
-                                dump($key);
-                                dump($value);
-                                dump($attributespecswithvalues);
                                 if (!in_array($key, $attributespecswithvalues)) {
                                     foreach ($services['items'] as $servicesone) {
                                         array_push($servicesids, $servicesone["service_id"]);
@@ -354,18 +343,15 @@ class ProfileController extends BaseController
                                             }
                                         }
                                     }
-                                    dump($justmodifyinformactive);
                                     if ($justmodifyinformactive == true) {
                                         if (is_array($value)) {
                                             foreach ($value as $onevalue) {
                                                 if ($onevalue != null) {
-                                                  dump($onevalue);
                                                     $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [intval($form->getName())], $onevalue, $key, $principal['id']);
                                                 }
                                             }
                                         } else {
                                             if ($value != null) {
-                                                dump($value);
                                                 $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [intval($form->getName())], $value, $key, $principal['id']);
                                             }
                                         }
@@ -374,7 +360,6 @@ class ProfileController extends BaseController
                                             foreach ($value as $onevalue) {
                                                 foreach ($servicesids as $servicesid) {
                                                     if ($onevalue != null) {
-                                                      dump($onevalue);
                                                         $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$servicesid], $onevalue, $key, $principal['id']);
                                                     }
                                                 }
@@ -382,7 +367,6 @@ class ProfileController extends BaseController
                                         } else {
                                             foreach ($servicesids as $servicesid) {
                                                 if ($value != null) {
-                                                    dump($servicesid);
                                                     $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$servicesid], $value, $key, $principal['id']);
                                                 }
                                             }
@@ -398,7 +382,6 @@ class ProfileController extends BaseController
                                                         array_push($allvaluefromuser, $value2);
                                                     }
                                                 }
-                                                dump($allvaluefromuser);
                                                 $allvaluefrombackend = array();
                                                 $attributespectoname = $this->get('attribute_spec')->get($hexaaAdmin, $key);
                                                 foreach ($attributespecnames as $attributespecname) {
@@ -406,33 +389,27 @@ class ProfileController extends BaseController
                                                         $allvaluefrombackend = $attributespecname['values'];
                                                     }
                                                 }
-                                                dump($allvaluefrombackend);
                                                 $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser[0]);
                                                 if (empty($missingvalues) or $missingvalues[0] == "No value yet") {
                                                     if ($onevalue != null) {
-                                                      dump('HAHO');dump($onevalue);
                                                         $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [intval($form->getName())], $onevalue, $key, $principal['id']);
                                                     }
                                                 }
 
                                                 foreach ($missingvalues as $missingvalue) {
                                                     foreach ($attributevalues['items'] as $attributevalue) {
-                                                        dump($missingvalues);
                                                         if ($attributevalue['value'] == $missingvalue && $attributevalue['attribute_spec_id'] == $key && in_array($form->getName(), $attributevalue['service_ids'])) {
                                                             $missingvalueid = $attributevalue['id'];
-                                                            dump($missingvalueid);
                                                             $servids = $attributevalue['service_ids'];
                                                             if (($keyarray = array_search($form->getName(), $servids)) !== false) {
                                                                 unset($servids[$keyarray]);
                                                             }
-                                                            dump($servids);
                                                             $this->get('attribute_value_principal')->patch($hexaaAdmin, $missingvalueid, [
                                                                 'services' => $servids,
                                                                 'principal' => $principal['id'],
                                                                 'attribute_spec' => $key,
                                                             ]);
                                                             if ($onevalue != null) {
-                                                              dump('MANO');dump($onevalue);
                                                                 $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [intval($form->getName())], $onevalue, $key, $principal['id']);
                                                             }
                                                         }
@@ -448,7 +425,6 @@ class ProfileController extends BaseController
                                                     array_push($allvaluefromuser, $value2);
                                                 }
                                             }
-                                            dump($allvaluefromuser);
                                             $allvaluefrombackend = array();
                                             $attributespectoname = $this->get('attribute_spec')->get($hexaaAdmin, $key);
                                             foreach ($attributespecnames as $attributespecname) {
@@ -456,7 +432,6 @@ class ProfileController extends BaseController
                                                     $allvaluefrombackend = $attributespecname['values'];
                                                 }
                                             }
-                                            dump($allvaluefrombackend);
                                             $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser);
                                             if (empty($missingvalues) or $missingvalues[0] == "No value yet") {
                                                 if ($value != null) {
