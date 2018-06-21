@@ -44,16 +44,15 @@ class DefaultController extends Controller
     {
         $organizations = [];
         $services = [];
-        $hexaaadmin = $this->get('session')->get('hexaaAdmin');
-        if ($hexaaadmin == null) {
-            $this->get('session')->set('hexaaAdmin', 'false');
-            $hexaaadmin = "false";
-        }
         $hexaahat = $this->get('session')->get('hexaaHat');
+       /* if ($hexaahat == 'active') {
+            $this->get('session')->set('hexaaAdmin', 'true');
+        }*/
         if ($hexaahat == null) {
             $this->get('session')->set('hexaaHat', 'notactive');
             $hexaahat = "notactive";
         }
+        $hexaaadmin = $this->get('session')->get('hexaaAdmin');
         if ($this->getUser()) { // authenticated
             try {
                 $organizations = $this->get('organization')->cget($hexaaadmin);
@@ -100,7 +99,6 @@ class DefaultController extends Controller
         } else {
             $this->get('session')->set('hexaaAdmin', 'false');
         }
-
         if ($hexaaHat == 'active' && $this->get('session')->get('hexaaHat') == 'notactive') {
             $this->get('session')->set('hexaaHat', 'active');
         } elseif ($this->get('session')->get('hexaaHat') == 'active') {

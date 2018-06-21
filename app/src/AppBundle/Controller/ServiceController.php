@@ -916,7 +916,7 @@ class ServiceController extends BaseController
     {
         $invitationResource = $this->get('invitation');
         try {
-            $invitationResource->accept($this->get('session')->get('hexaaAdmin'), $token);
+            $invitationResource->accept('true', $token);
         } catch (\Exception $e) {
             $statusCode = $e->getResponse()->getStatusCode();
             switch ($statusCode) {

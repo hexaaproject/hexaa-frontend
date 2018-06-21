@@ -41,7 +41,6 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
     private $hexaaScopedKey;
 
     private $guzzleclient;
-
     private $principal;
 
     /**
@@ -51,8 +50,9 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
      * @param string    $baseUri
      * @param Client    $guzzleclient
      * @param Principal $principal
+     * @param Session   $session
      */
-    public function __construct($shibAttributeMap, $hexaaScopedKey, $baseUri, Client $guzzleclient, Principal $principal)
+    public function __construct($shibAttributeMap, $hexaaScopedKey, $baseUri, Client $guzzleclient, Principal $principal, Session $session)
     {
         foreach (array('eppn', 'displayName', 'email') as $key) {
             if (array_key_exists($shibAttributeMap[$key], $_SERVER)) {
@@ -64,6 +64,12 @@ class ShibbolethUser implements UserInterface, UserProviderInterface, \Serializa
         $this->guzzleclient = $guzzleclient;
         $this->shibAttributeMap = $shibAttributeMap;
         $this->principal = $principal;
+        if($session->get('hexaaAdmin') == null) {
+            $session->set('hexaaAdmin', 'false');
+        }
+        if ($session->get('hexaaHat') == null) {
+            $session->set('hexaaHat', 'notactive');
+        }
     }
 
     /**

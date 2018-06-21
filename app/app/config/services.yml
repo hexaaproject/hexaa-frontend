@@ -46,10 +46,15 @@ services:
 
     shibboleth.user.provider:
       class: AppBundle\Security\User\ShibbolethUser
-      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@guzzle.client.hexaa_api", "@principal"]
+      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@guzzle.client.hexaa_api", "@principal", "@session"]
 
     guzzleclient.exceptionlistener:
         class: AppBundle\EventListener\GuzzleClientExceptionListener
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
         arguments: ["@templating", "@router"]
+    login_listener:
+        class:  AppBundle\Controller\LoginListener
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
+

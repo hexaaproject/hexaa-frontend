@@ -1427,7 +1427,7 @@ class OrganizationController extends BaseController
      */
     private function getRoles($organization)
     {
-        return $this->get('organization')->getRoles($this->get('session')->get('hexaaAdmin'), $organization['id'], 'expanded')['items'];
+        return $this->get('organization')->getRoles('true', $organization['id'], 'expanded')['items'];
     }
 
     /**
@@ -1806,7 +1806,7 @@ class OrganizationController extends BaseController
         $entitlementsAccordion = array();
         foreach ($services as $service) {
             $entitlementsAccordion[$service['id']]['title'] = $service['name'];
-            $entitlementsAccordion[$service['id']]['description'] = 'Entitlements';
+            $entitlementsAccordion[$service['id']]['description'] = 'Permissions';
             $entitlementsAccordion[$service['id']]['deleteUrl'] = $this->generateUrl("app_organization_linkdelete", [
                 'servId' => $service['id'],
                 'id' => $id,

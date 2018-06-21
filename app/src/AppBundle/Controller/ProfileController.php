@@ -115,6 +115,9 @@ class ProfileController extends BaseController
             }
             array_push($attributevaluearray[$attributevalueforprincipal['attribute_spec_id']], $attributevalueforprincipal);
         }
+        if ($attributevaluearray == null) {
+            $attributevaluearray = array();
+        }
         $attributeValuesToAccordion = $this->attributeValuesToAccordion($attributevaluearray, $attributespecsdetails, $servicesEnabled, $request);
         if (false === $attributeValuesToAccordion) { // belső form rendesen le lett kezelve, vissza az alapokhoz
             return $this->redirectToRoute('app_profile_index', array());
@@ -344,12 +347,12 @@ class ProfileController extends BaseController
                                         if (is_array($value)) {
                                             foreach ($value as $onevalue) {
                                                 if ($onevalue != null) {
-                                                    $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $onevalue, $key, $principal['id']);
+                                                    $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [intval($form->getName())], $onevalue, $key, $principal['id']);
                                                 }
                                             }
                                         } else {
                                             if ($value != null) {
-                                                $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $value, $key, $principal['id']);
+                                                $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [intval($form->getName())], $value, $key, $principal['id']);
                                             }
                                         }
                                     } else {
@@ -389,7 +392,7 @@ class ProfileController extends BaseController
                                                 $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser[0]);
                                                 if (empty($missingvalues) or $missingvalues[0] == "No value yet") {
                                                     if ($onevalue != null) {
-                                                        $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $onevalue, $key, $principal['id']);
+                                                        $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [intval($form->getName())], $onevalue, $key, $principal['id']);
                                                     }
                                                 }
 
@@ -407,7 +410,7 @@ class ProfileController extends BaseController
                                                                 'attribute_spec' => $key,
                                                             ]);
                                                             if ($onevalue != null) {
-                                                                $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $onevalue, $key, $principal['id']);
+                                                                $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [intval($form->getName())], $onevalue, $key, $principal['id']);
                                                             }
                                                         }
                                                     }
@@ -432,7 +435,7 @@ class ProfileController extends BaseController
                                             $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser);
                                             if (empty($missingvalues) or $missingvalues[0] == "No value yet") {
                                                 if ($value != null) {
-                                                    $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $value, $key, $principal['id']);
+                                                    $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [intval($form->getName())], $value, $key, $principal['id']);
                                                 }
                                             }
 
@@ -450,7 +453,7 @@ class ProfileController extends BaseController
                                                             'attribute_spec' => $key,
                                                         ]);
                                                         if ($value != null) {
-                                                            $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $value, $key, $principal['id']);
+                                                            $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [intval($form->getName())], $value, $key, $principal['id']);
                                                         }
                                                     }
                                                 }
