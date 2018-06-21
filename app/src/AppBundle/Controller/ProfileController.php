@@ -353,7 +353,7 @@ class ProfileController extends BaseController
                                             }
                                         }
                                     }
-                                    dump($justmodifyinformactive);exit;
+                                    dump($justmodifyinformactive);
                                     if ($justmodifyinformactive == true) {
                                         if (is_array($value)) {
                                             foreach ($value as $onevalue) {
@@ -378,6 +378,7 @@ class ProfileController extends BaseController
                                         } else {
                                             foreach ($servicesids as $servicesid) {
                                                 if ($value != null) {
+                                                    dump($servicesid);
                                                     $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$servicesid], $value, $key, $principal['id']);
                                                 }
                                             }
