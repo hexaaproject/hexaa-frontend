@@ -95,7 +95,6 @@ class DefaultController extends Controller
     public function hexaaAdminAction($hexaaHat)
     {
         if ($this->get('session')->get('hexaaAdmin') == 'false') {
-
             $this->get('session')->set('hexaaAdmin', 'true');
         } else {
             $this->get('session')->set('hexaaAdmin', 'false');

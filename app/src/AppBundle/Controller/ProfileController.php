@@ -317,6 +317,7 @@ class ProfileController extends BaseController
                 if ($form->isSubmitted()) {
                     try {
                         $data = $form->getData();
+                       // dump($data);exit;
                         $attributevalues = $this->get('principal')->getAttributeValues($hexaaAdmin);
                         $attributespecswithvalues = [];
                         $attributespecswithvalues2 = [];
@@ -328,11 +329,16 @@ class ProfileController extends BaseController
                             }
                             array_push($attributespecswithvalues2, $attributevalue['attribute_spec_id']);
                         }
+                        dump($attributevalues);
+                        dump($attributespecswithvalues);
+                        dump($attributespecswithvalues2);
+                        dump($attributevaluesname);
                         $principal = $this->get('principal')->getSelf($hexaaAdmin);
                         foreach ($data as $key => $value) {
                             if ($value != null) {
                                 $servicesids = [];
                                 $services = $this->get('attribute_spec')->getServicesLinkedToAttributeSpec($hexaaAdmin, $key);
+                                dump($services);exit;
                                 if (!in_array($key, $attributespecswithvalues)) {
                                     foreach ($services['items'] as $servicesone) {
                                         array_push($servicesids, $servicesone["service_id"]);
