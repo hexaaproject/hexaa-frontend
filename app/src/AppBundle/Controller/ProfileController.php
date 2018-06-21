@@ -394,6 +394,7 @@ class ProfileController extends BaseController
                                                         array_push($allvaluefromuser, $value2);
                                                     }
                                                 }
+                                                dump($allvaluefromuser);
                                                 $allvaluefrombackend = array();
                                                 $attributespectoname = $this->get('attribute_spec')->get($hexaaAdmin, $key);
                                                 foreach ($attributespecnames as $attributespecname) {
@@ -401,27 +402,33 @@ class ProfileController extends BaseController
                                                         $allvaluefrombackend = $attributespecname['values'];
                                                     }
                                                 }
+                                                dump($allvaluefrombackend);
                                                 $missingvalues = array_diff($allvaluefrombackend, $allvaluefromuser[0]);
                                                 if (empty($missingvalues) or $missingvalues[0] == "No value yet") {
                                                     if ($onevalue != null) {
+                                                      dump('HAHO');dump($onevalue);exit;
                                                         $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $onevalue, $key, $principal['id']);
                                                     }
                                                 }
 
                                                 foreach ($missingvalues as $missingvalue) {
                                                     foreach ($attributevalues['items'] as $attributevalue) {
+                                                        dump($missingvalues);
                                                         if ($attributevalue['value'] == $missingvalue && $attributevalue['attribute_spec_id'] == $key && in_array($form->getName(), $attributevalue['service_ids'])) {
                                                             $missingvalueid = $attributevalue['id'];
+                                                            dump($missingvalueid);
                                                             $servids = $attributevalue['service_ids'];
                                                             if (($keyarray = array_search($form->getName(), $servids)) !== false) {
                                                                 unset($servids[$keyarray]);
                                                             }
+                                                            dump($servids);
                                                             $this->get('attribute_value_principal')->patch($hexaaAdmin, $missingvalueid, [
                                                                 'services' => $servids,
                                                                 'principal' => $principal['id'],
                                                                 'attribute_spec' => $key,
                                                             ]);
                                                             if ($onevalue != null) {
+                                                              dump('MANO');dump($onevalue);
                                                                 $this->get('attribute_value_principal')->postAttributeValue($hexaaAdmin, [$form->getName()], $onevalue, $key, $principal['id']);
                                                             }
                                                         }
