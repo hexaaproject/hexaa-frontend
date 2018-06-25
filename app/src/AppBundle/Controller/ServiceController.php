@@ -475,20 +475,20 @@ class ServiceController extends BaseController
                     }
                 }
 
-                $postarray = [
+                /*$postarray = [
                     "service" => $servid,
                     "entitlement_packs" => [$permissionsetid],
                 ];
                 $response = $this->get('link')->post($hexaaAdmin, $postarray);
                 $headers = $response->getHeader('Location');
                 $headerspartsary = explode("/", $headers[0]);
-                $getlink = $this->get('link')->getNewLinkToken($hexaaAdmin, array_pop($headerspartsary));
+                $getlink = $this->get('link')->getNewLinkToken($hexaaAdmin, array_pop($headerspartsary));*/
 
                 return $this->redirect($this->generateUrl(
                     'app_service_createemail',
                     [
                       'servid' => $servid,
-                      'token' => $getlink['token'],
+                     /* 'token' => $getlink['token'],*/
                       'entity' => $dataToBackend["entityid"],
                       'click' => $click,
                       'clickback' => $clickback,
@@ -523,15 +523,14 @@ class ServiceController extends BaseController
     }
 
     /**
-     * @Route("/createEmail/{servid}/{token}")
+     * @Route("/createEmail/{servid}")
      * @Template()
      * @return Response
      * @param   string  $servid  Service ID
-     * @param   string  $token   generatedtoken
      * @param   Request $request request
      * @param   bool    $click
      */
-    public function createEmailAction($servid, $token, Request $request, $click = "false")
+    public function createEmailAction($servid, Request $request, $click = "false")
     {
         $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $service = $this->getService($servid);
@@ -578,7 +577,6 @@ class ServiceController extends BaseController
                 'AppBundle:Service:created.html.twig',
                 array(
                     'newserv' => $this->get('service')->get($hexaaAdmin, $servid, "expanded"),
-                    'token' => $token,
                     'organizations' => $this->getOrganizations(),
                     'services' => $this->getServices(),
                     "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
@@ -2648,7 +2646,7 @@ class ServiceController extends BaseController
             "app_service_managers" => "Managers",
             "app_service_attributes" => "Attributes",
             "app_service_permissions" => "Permissions",
-            "app_service_permissionssets" => "Permissions sets",
+            "app_service_permissionssets" => "Permission sets",
             "app_service_connectedorganizations" => "Connected organizations",
         );
 

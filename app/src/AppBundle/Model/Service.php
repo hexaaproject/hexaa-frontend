@@ -341,7 +341,7 @@ class Service extends AbstractBaseResource implements WarningableInterface
      */
     public function createPermissionSet(string $hexaaAdmin, string $id, string $name, EntitlementPack $entitlementpack)
     {
-        $response = $this->postCall($this->pathName.'/'.$id.'/entitlementpacks', array("name" => $name, "type" => "public"), $hexaaAdmin);
+        $response = $this->postCall($this->pathName.'/'.$id.'/entitlementpacks', array("name" => $name, "type" => "private"), $hexaaAdmin);
         $locations = $response->getHeader('Location');
         $location = $locations[0];
         $id = preg_replace('#.*/#', '', $location);

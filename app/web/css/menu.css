@@ -23,7 +23,7 @@
     background: orange!important;
 }
 
-.protip-arrow {
+.protip-skin-default--scheme-orange.protip-container .protip-arrow {
     border-color: orange transparent transparent transparent!important;
 }
 
