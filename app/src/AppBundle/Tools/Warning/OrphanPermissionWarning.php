@@ -46,6 +46,6 @@ class OrphanPermissionWarning extends Warning
      */
     public function getShortDescription()
     {
-        return "This permission is not binded to any Organization nor Permission set.";
+        return "This permission is not binded to any Organization or Permission set.";
     }
 }
