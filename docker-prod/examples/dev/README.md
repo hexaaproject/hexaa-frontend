@@ -17,3 +17,5 @@
   `php app/console doctrine:schema:create`
   
   `rm -rf app/cache/* app/logs/*`
+
+5. Make sure you ran `composer install` in your development folder!
