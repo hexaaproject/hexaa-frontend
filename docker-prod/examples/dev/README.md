@@ -14,6 +14,6 @@
   
   `cd /opt/hexaa-backend`
   
-  `php app/console doctrine:schema:create
+  `php app/console doctrine:schema:create`
   
-  rm -rf app/cache/* app/logs/*
+  `rm -rf app/cache/* app/logs/*`
