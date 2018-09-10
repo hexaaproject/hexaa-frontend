@@ -1,0 +1,80 @@
+# docker-compose.yml
+
+# Compose file to run a full HEXAA environment
+
+version: "3"
+
+
+services:
+    mysql:
+        image: mariadb:10.2
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        volumes:
+            - hexaa_db_data:/var/lib/mysql
+    memcached:
+        image: memcached
+        networks:
+            - hexaa
+#        env_file: settings.env
+        restart: always
+    frontend:
+        image: hexaaproject/hexaa-newui:new-dev
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        volumes:
+            - hexaa_ui_source:/opt/hexaa-newui
+    backend:
+        image: hexaaproject/hexaa-backend:new-api-dev
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        depends_on:
+          - mysql
+          - memcached
+        volumes:
+            - hexaa_backend_source:/opt/hexaa-backend
+    web:
+        image: solazs/apache-shib
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        depends_on:
+          - frontend
+          - backend
+        volumes:
+            - hexaa_ui_source:/opt/hexaa-newui
+            - hexaa_backend_source:/opt/hexaa-backend
+#            - ./default-hexaa.conf:/etc/apache2/sites-enabled/000-default.conf
+            - ./default-hexaa-fakeshib.conf:/etc/apache2/sites-enabled/000-default.conf
+            
+
+    
+    smtp:
+        image: mailhog/mailhog
+        networks:
+            - hexaa
+        ports:
+            - "1025:25"
+            - "8025:8025"
+        
+
+networks:
+    hexaa:
+        # Use this to pin the network bridge name (useful when using firewalls)
+        #driver_opts:
+            #com.docker.network.bridge.name: "br-hexaa"
+
+
+volumes:
+    hexaa_db_data:
+    hexaa_ui_source:
+    hexaa_backend_source:
+            
+ 
