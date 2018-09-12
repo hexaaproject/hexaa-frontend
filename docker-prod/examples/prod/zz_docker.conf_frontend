@@ -1,0 +1,11 @@
+[global]
+
+daemonize = no
+
+[www]
+
+listen = /var/run/php/php-fpm-frontend.sock
+listen.owner = www-data
+listen.group = www-data
+listen.mode = 0660
+

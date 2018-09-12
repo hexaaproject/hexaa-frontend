@@ -1,0 +1,116 @@
+# docker-compose.yml
+
+# Compose file to run a full HEXAA environment
+
+version: "3"
+
+
+services:
+    mysql:
+        image: mariadb:10.2
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        volumes:
+            - hexaa_db_data:/var/lib/mysql
+#            - ./hexaa_data_dump.sql:/docker-entrypoint-initdb.d/01-initial.sql
+    memcached:
+        image: memcached
+        networks:
+            - hexaa
+        restart: always
+    frontend:
+        image: docker.hbit.sztaki.hu:5000/hexaa/hexaa-newui:staging
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        volumes:
+            - hexaa_ui_source:/opt/hexaa-newui
+            - ./zz_docker.conf_frontend:/usr/local/etc/php-fpm.d/zz-docker.conf
+            - /var/run/php:/var/run/php
+    backend:
+        image: hexaaproject/hexaa-backend:new-api-dev
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        depends_on:
+          - mysql
+          - memcached
+        volumes:
+            - hexaa_backend_source:/opt/hexaa-backend
+            - ./zz_docker.conf_backend:/usr/local/etc/php-fpm.d/zz-docker.conf
+            - /var/run/php:/var/run/php
+#            - hexaa_sockets:/var/run/php
+
+    hexaa-service-entityids-generator:
+        image: szabogyula/hexaa-service-entityids-generator
+        networks:
+            - hexaa
+        environment:
+          #- METADATA_SOURCE_URLS=https://mdx.eduid.hu/role/sp.xml
+          - METADATA_SOURCE_URLS=https://metadata.eduid.hu/current/href.xml
+          - TARGET_FILE_PATH=/opt/hexaa-backend/app/config/hexaa_entityids.yml
+        restart: "no"
+        depends_on:
+          - backend
+        volumes:
+            - hexaa_backend_source:/opt/hexaa-backend
+    ssp-aa:
+        image: solazs/ssp-aa-php-fpm
+        networks:
+            - hexaa
+        restart: always
+        volumes:
+            - hexaa_aa_source:/opt/simplesamlphp
+            - ./zz_docker.conf_aa:/usr/local/etc/php-fpm.d/zz-docker.conf
+            - /var/run/php:/var/run/php
+#            - hexaa_sockets:/var/run/php
+            - ./simplesamlphp-config.php:/opt/simplesamlphp/config/config.php
+            - ./simplesamlphp-attributeauthority-hosted.php:/opt/simplesamlphp/metadata/attributeauthority-hosted.php
+            - ./dev.hexaa.eu-shib-sp-key.pem:/opt/simplesamlphp/cert/aa.server.key.pem
+            - ./dev.hexaa.eu-shib-sp-cert.pem:/opt/simplesamlphp/cert/aa.server.cert.pem
+    web:
+        image: solazs/apache-shib
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        ports:
+          - 80:80
+          - 443:443
+        depends_on:
+          - frontend
+          - backend
+        volumes:
+            - hexaa_ui_source:/opt/hexaa-newui
+            - hexaa_backend_source:/opt/hexaa-backend
+            - hexaa_aa_source:/opt/simplesamlphp
+            - ./default-hexaa.conf:/etc/apache2/sites-enabled/000-default.conf
+            - ./default-hexaa-ssl.conf_unix:/etc/apache2/sites-enabled/000-default-ssl.conf
+            - ./letsencrypt-root:/opt/letsencrypt
+            - ./shibboleth:/etc/shibboleth
+            - ./dev.hexaa.eu-shib-sp-cert.pem:/etc/shibboleth/dev.hexaa.eu-shib-sp-cert.pem
+            - ./dev.hexaa.eu-shib-sp-key.pem:/etc/shibboleth/dev.hexaa.eu-shib-sp-key.pem
+            - /etc/letsencrypt/live/dev.hexaa.eu/fullchain.pem:/opt/hexaa.pem
+            - /etc/letsencrypt/live/dev.hexaa.eu/privkey.pem:/opt/hexaa_key.pem
+            - /var/run/php:/var/run/php
+#            - hexaa_sockets:/var/run/php
+        
+
+networks:
+    hexaa:
+        # Use this to pin the network bridge name (useful when using firewalls)
+        #driver_opts:
+            #com.docker.network.bridge.name: "br-hexaa"
+
+
+volumes:
+    hexaa_db_data:
+    hexaa_ui_source:
+    hexaa_backend_source:
+    hexaa_aa_source:
+#    hexaa_sockets:
+            
