@@ -1,4 +1,4 @@
-FROM php:7.2.1-fpm-stretch
+FROM php:7.2.11-fpm-stretch
 LABEL MAINTAINER Balázs SOLTÉSZ <solazs@sztaki.hu>
 
 # Install some dependencies
@@ -24,7 +24,7 @@ RUN chmod +x /usr/local/bin/composer_downloader.sh \
     && /usr/local/bin/composer_downloader.sh \
     && mv /usr/local/bin/composer.phar /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer
-    
+
 # Install dependencies, and other stuff
 RUN cd /opt/hexaa-newui \
     && composer install -o \
@@ -38,7 +38,7 @@ RUN cd /opt/hexaa-newui \
     && touch /var/run/php/php-fpm-frontend.sock \
     && chown www-data /var/run/php/php-fpm-frontend.sock
 
-VOLUME /opt/hexaa-newui /var/run/php
+#VOLUME /opt/hexaa-newui /var/run/php
 
 COPY docker-prod/boot.sh /usr/local/bin/
 
