@@ -22,6 +22,10 @@ class AppKernel extends Kernel
             new Devmachine\Bundle\FormBundle\DevmachineFormBundle(),
         ];
 
+        if (in_array($this->getEnvironment(), ['staging', 'prod'], true)) {
+            $bundles[] = new Sentry\SentryBundle\SentryBundle();
+        }
+
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();

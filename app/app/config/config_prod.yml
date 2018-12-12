@@ -19,3 +19,8 @@ monolog:
             level: debug
         console:
             type:  console
+
+sentry:
+    dsn: "%sentry_dsn%"
+    options:
+        environment: "%kernel.environment%"

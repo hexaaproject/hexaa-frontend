@@ -27,3 +27,5 @@ parameters:
     mailer_port: 1025
     mailer_user: ~
     mailer_password: ~
+    
+    sentry_dsn: ${SENTRY_DSN}
