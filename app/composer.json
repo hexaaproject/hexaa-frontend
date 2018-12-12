@@ -79,7 +79,8 @@
     "botmonster/jquery-bootpag": "^1.0.7",
     "twig/extensions": "^1.5",
     "huynguyen/bootstrap-tagsinput": "^0.4.2",
-    "DoclerLabs/Protip": "^1.4.1"
+    "DoclerLabs/Protip": "^1.4.1",
+    "sentry/sentry-symfony": "^2.1"
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",
