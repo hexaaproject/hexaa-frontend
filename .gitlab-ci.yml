@@ -11,7 +11,7 @@ services:
 
 stages:
 - build
-- test
+# - test
 - release
 - deploy
 
@@ -43,10 +43,8 @@ before_script:
 build:
   stage: build
   script:
-    - docker build -t $CONTAINER_TEST_IMAGE .
+    - docker build -t $CONTAINER_TEST_IMAGE -f docker-prod/Dockerfile .
     - docker push $CONTAINER_TEST_IMAGE
-  tags:
-    - dind
   except:
     - staging
 
@@ -152,85 +150,85 @@ build_staging:
 #    - dind
 
 
-test-organization:
-  stage: test
-  script:
-    - docker network create hexaa-test
-    - docker run --network=hexaa-test -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
-    - docker run --network=hexaa-test -d --name memcached memcached
-    - docker run --network=hexaa-test -d --name grid -e USE_SELENIUM=2 elgalu/selenium:3.2.0-p4
-    - docker run --network=hexaa-test -d --name smtp mailhog/mailhog
-    - docker run --network=hexaa-test -d --name project.local $CONTAINER_TEST_IMAGE
-    - docker run --network=hexaa-test -d --name hexaa-test-data-manager hexaaproject/hexaa-test-data-manager:for-dev
-    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
-    - docker run --network=hexaa-test -d --name hexaa-backend hexaaproject/hexaa-backend:for-dev
-    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
-    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
-    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml -n --tags reset,organization'
-  tags:
-    - dind
-  except:
-    - staging
+#test-organization:
+#  stage: test
+#  script:
+#    - docker network create hexaa-test
+#    - docker run --network=hexaa-test -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
+#    - docker run --network=hexaa-test -d --name memcached memcached
+#    - docker run --network=hexaa-test -d --name grid -e USE_SELENIUM=2 elgalu/selenium:3.2.0-p4
+#    - docker run --network=hexaa-test -d --name smtp mailhog/mailhog
+#    - docker run --network=hexaa-test -d --name project.local $CONTAINER_TEST_IMAGE
+#    - docker run --network=hexaa-test -d --name hexaa-test-data-manager hexaaproject/hexaa-test-data-manager:for-dev
+#    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
+#    - docker run --network=hexaa-test -d --name hexaa-backend hexaaproject/hexaa-backend:for-dev
+#    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
+#    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
+#    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml -n --tags reset,organization'
+#  tags:
+#    - dind
+#  except:
+#    - staging
 
-test-service:
-  stage: test
-  script:
-    - docker network create hexaa-test
-    - docker run --network=hexaa-test -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
-    - docker run --network=hexaa-test -d --name memcached memcached
-    - docker run --network=hexaa-test -d --name grid -e USE_SELENIUM=2 elgalu/selenium:3.2.0-p4
-    - docker run --network=hexaa-test -d --name smtp mailhog/mailhog
-    - docker run --network=hexaa-test -d --name project.local $CONTAINER_TEST_IMAGE
-    - docker run --network=hexaa-test -d --name hexaa-test-data-manager hexaaproject/hexaa-test-data-manager:for-dev
-    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
-    - docker run --network=hexaa-test -d --name hexaa-backend hexaaproject/hexaa-backend:for-dev
-    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
-    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
-    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml -n --tags reset,service'
-  tags:
-    - dind
-  except:
-    - staging
-
-test-profile:
-  stage: test
-  script:
-    - docker network create hexaa-test
-    - docker run --network=hexaa-test -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
-    - docker run --network=hexaa-test -d --name memcached memcached
-    - docker run --network=hexaa-test -d --name grid -e USE_SELENIUM=2 elgalu/selenium:3.2.0-p4
-    - docker run --network=hexaa-test -d --name smtp mailhog/mailhog
-    - docker run --network=hexaa-test -d --name project.local $CONTAINER_TEST_IMAGE
-    - docker run --network=hexaa-test -d --name hexaa-test-data-manager hexaaproject/hexaa-test-data-manager:for-dev
-    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
-    - docker run --network=hexaa-test -d --name hexaa-backend hexaaproject/hexaa-backend:for-dev
-    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
-    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
-    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml -n --tags reset,profile'
-  tags:
-    - dind
-  except:
-    - staging
-
-test-admin:
-  stage: test
-  script:
-    - docker network create hexaa-test
-    - docker run --network=hexaa-test -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
-    - docker run --network=hexaa-test -d --name memcached memcached
-    - docker run --network=hexaa-test -d --name grid -e USE_SELENIUM=2 elgalu/selenium:3.2.0-p4
-    - docker run --network=hexaa-test -d --name smtp mailhog/mailhog
-    - docker run --network=hexaa-test -d --name project.local $CONTAINER_TEST_IMAGE
-    - docker run --network=hexaa-test -d --name hexaa-test-data-manager hexaaproject/hexaa-test-data-manager:for-dev
-    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
-    - docker run --network=hexaa-test -d --name hexaa-backend hexaaproject/hexaa-backend:for-dev
-    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
-    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
-    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml -n --tags reset,admin'
-  tags:
-    - dind
-  except:
-    - staging
+#test-service:
+#  stage: test
+#  script:
+#    - docker network create hexaa-test
+#    - docker run --network=hexaa-test -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
+#    - docker run --network=hexaa-test -d --name memcached memcached
+#    - docker run --network=hexaa-test -d --name grid -e USE_SELENIUM=2 elgalu/selenium:3.2.0-p4
+#    - docker run --network=hexaa-test -d --name smtp mailhog/mailhog
+#    - docker run --network=hexaa-test -d --name project.local $CONTAINER_TEST_IMAGE
+#    - docker run --network=hexaa-test -d --name hexaa-test-data-manager hexaaproject/hexaa-test-data-manager:for-dev
+#    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
+#    - docker run --network=hexaa-test -d --name hexaa-backend hexaaproject/hexaa-backend:for-dev
+#    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
+#    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
+#    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml -n --tags reset,service'
+#  tags:
+#    - dind
+#  except:
+#    - staging
+#
+#test-profile:
+#  stage: test
+#  script:
+#    - docker network create hexaa-test
+#    - docker run --network=hexaa-test -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
+#    - docker run --network=hexaa-test -d --name memcached memcached
+#    - docker run --network=hexaa-test -d --name grid -e USE_SELENIUM=2 elgalu/selenium:3.2.0-p4
+#    - docker run --network=hexaa-test -d --name smtp mailhog/mailhog
+#    - docker run --network=hexaa-test -d --name project.local $CONTAINER_TEST_IMAGE
+#    - docker run --network=hexaa-test -d --name hexaa-test-data-manager hexaaproject/hexaa-test-data-manager:for-dev
+#    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
+#    - docker run --network=hexaa-test -d --name hexaa-backend hexaaproject/hexaa-backend:for-dev
+#    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
+#    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
+#    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml -n --tags reset,profile'
+#  tags:
+#    - dind
+#  except:
+#    - staging
+#
+#test-admin:
+#  stage: test
+#  script:
+#    - docker network create hexaa-test
+#    - docker run --network=hexaa-test -d --name db -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_USER=someuser -e MYSQL_PASSWORD=somepass -e MYSQL_DATABASE=hexaa mysql
+#    - docker run --network=hexaa-test -d --name memcached memcached
+#    - docker run --network=hexaa-test -d --name grid -e USE_SELENIUM=2 elgalu/selenium:3.2.0-p4
+#    - docker run --network=hexaa-test -d --name smtp mailhog/mailhog
+#    - docker run --network=hexaa-test -d --name project.local $CONTAINER_TEST_IMAGE
+#    - docker run --network=hexaa-test -d --name hexaa-test-data-manager hexaaproject/hexaa-test-data-manager:for-dev
+#    - docker run --network=hexaa-test dmfenton/wait db:3306 -t 120
+#    - docker run --network=hexaa-test -d --name hexaa-backend hexaaproject/hexaa-backend:for-dev
+#    - docker run --network=hexaa-test dmfenton/wait hexaa-backend:80 -t 120
+#    - docker run --network=hexaa-test dmfenton/wait project.local:443 -t 120
+#    - docker exec -t project.local sh -c '/var/www/project/vendor/bin/behat -c /var/www/project/behat.yml -n --tags reset,admin'
+#  tags:
+#    - dind
+#  except:
+#    - staging
 
 release:
   stage: release
@@ -240,6 +238,18 @@ release:
     - docker push $CONTAINER_RELEASE_IMAGE
   only:
     - master
+  tags:
+    - dind
+
+release-production:
+  stage: release
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE hexaaproject/hexaa-newui:latest
+    - docker login -u $DOCKERHUB_REGISTRY_USER -p $DOCKERHUB_REGISTRY_PASSWORD
+    - docker push hexaaproject/hexaa-newui:latest
+  only:
+    - dockerhub_ci
   tags:
     - dind
 
@@ -253,14 +263,6 @@ release_staging:
     - staging
   tags:
     - dind
-deploy_to_sztaki:
-  stage: deploy
-  script:
-    - ssh -A gitlab@$DEPLOY_SZTAKI_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000; docker pull $CONTAINER_TEST_IMAGE; docker stop $DEPLOY_TARGET; docker rm $DEPLOY_TARGET; docker run -d --name $DEPLOY_TARGET --network=docker_default -e PROJECT_HOSTNAME=$DEPLOY_TARGET -v "/etc/pki:/etc/pki:ro" -p 443:443 $CONTAINER_TEST_IMAGE;"
-  tags:
-    - dind
-  except:
-    - staging
 
 deploy_to_staging:
   stage: deploy
@@ -270,3 +272,8 @@ deploy_to_staging:
     - staging
   tags:
     - dind
+
+trigger_deploy:
+  stage: deploy
+  script:
+    - $HEXAA_GROUP_DEPLOY_TRIGGER
