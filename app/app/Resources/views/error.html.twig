@@ -13,9 +13,6 @@
             <label class="detailslabel">Request method: </label>
             {{ clientexception.getRequest().getMethod() }}
             <br>
-            <label class="detailslabel">Request body: </label>
-            {{ clientexception.getRequest().getBody() }}
-            <br>
             <label class="detailslabel">Response code: </label>
             {{ clientexception.getResponse().getStatusCode() }}
             <br>
@@ -36,9 +33,6 @@
             <br>
             <label class="detailslabel">Request method: </label>
             {{ serverexception.getRequest().getMethod() }}
-            <br>
-            <label class="detailslabel">Request body: </label>
-            {{ serverexception.getRequest().getBody() }}
             <br>
             <label class="detailslabel">Response code: </label>
             {{ serverexception.getResponse().getStatusCode() }}
