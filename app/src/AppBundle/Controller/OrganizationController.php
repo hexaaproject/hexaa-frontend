@@ -794,6 +794,10 @@ class OrganizationController extends BaseController
         $form1 = $this->createForm(OrganizationUserMessageType::class);
         $form2 = $this->createForm(OrganizationUserMessageManagerType::class);
         $pids = $request->get('userId');
+        if (! $pids) {
+            $this->get('session')->getFlashBag()->add('error', 'Not processable without user ID.');
+            return $this->redirect($this->generateUrl('app_organization_users', array('id' => $id)));
+        }
         $emails = array();
         foreach ($pids as $pid) {
             $principal = $this->get('principals')->getById($this->get('session')->get('hexaaAdmin'), $pid);
