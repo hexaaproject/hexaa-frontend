@@ -31,6 +31,7 @@ use AppBundle\Form\OrganizationUserMessageManagerType;
 use AppBundle\Form\OrganizationUserMessageType;
 use AppBundle\Form\ConnectServiceType;
 use GuzzleHttp\Exception\ClientException;
+use Monolog\Logger;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -821,9 +822,9 @@ class OrganizationController extends BaseController
             try {
                 $message = $mailer->createMessage()
                     ->setSubject($data['subject'])
-                    ->setFrom($currentPrincipal['email'])
+                    ->setFrom($config['reply-to'])
                     ->setCc($emails)
-                    ->setReplyTo($config['reply-to'])
+                    ->setReplyTo($currentPrincipal['email'])
                     ->setBody(
                         $this->render(
                             'AppBundle:Organization:sendEmail.txt.twig',
@@ -836,6 +837,7 @@ class OrganizationController extends BaseController
                     );
 
                 $mailer->send($message);
+                $this->get('logger')->info('Invitation sent to this addresses: '. implode(', ', $emails).' org id: '.$id);
                 $this->get('session')->getFlashBag()->add('success', 'Message sent succesfully.');
             } catch (\Exception $e) {
                 $this->get('session')->getFlashBag()->add('error', 'Message sending failure. <br>'.$e->getMessage());
