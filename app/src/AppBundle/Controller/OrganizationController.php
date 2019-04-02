@@ -704,6 +704,7 @@ class OrganizationController extends BaseController
                         );
 
                     $mailer->send($message);
+                    $this->get('logger')->info('Invitation to organization (id: '.$id.') sent to this addresses: '. $email );
                     $this->get('session')
                       ->getFlashBag()
                       ->add('success', 'Invitations sent succesfully.');
