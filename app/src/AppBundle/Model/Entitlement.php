@@ -28,6 +28,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 class Entitlement extends AbstractBaseResource
 {
     protected $pathName = 'entitlements';
+    private $entitlementCache = [];
 
     /**
      * @param string $hexaaAdmin Admin hat
@@ -39,13 +40,20 @@ class Entitlement extends AbstractBaseResource
      */
     public function getEntitlement(string $hexaaAdmin, string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection(
+	$key = implode('_', array($hexaaAdmin, $id, $verbose, $offset, $pageSize));
+	if (! array_key_exists($key, $this->entitlementCache)){
+          dump('miss');
+          $this->entitlementCache[$key] = $this->getCollection(
             $this->pathName.'/'.$id,
             $hexaaAdmin,
             $verbose,
             $offset,
             $pageSize
-        );
+          );
+	} else {
+	  dump('hit');
+	}
+	return $this->entitlementCache[$key];
     }
 
     /**
