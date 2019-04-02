@@ -42,7 +42,6 @@ class Entitlement extends AbstractBaseResource
     {
 	$key = implode('_', array($hexaaAdmin, $id, $verbose, $offset, $pageSize));
 	if (! array_key_exists($key, $this->entitlementCache)){
-          dump('miss');
           $this->entitlementCache[$key] = $this->getCollection(
             $this->pathName.'/'.$id,
             $hexaaAdmin,
@@ -51,7 +50,6 @@ class Entitlement extends AbstractBaseResource
             $pageSize
           );
 	} else {
-	  dump('hit');
 	}
 	return $this->entitlementCache[$key];
     }
