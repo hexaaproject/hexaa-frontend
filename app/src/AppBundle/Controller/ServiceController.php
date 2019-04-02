@@ -21,6 +21,7 @@ namespace AppBundle\Controller;
 use AppBundle\Form\ConnectOrgType;
 use AppBundle\Form\ModifyConnectOrgType;
 use AppBundle\Model\Entitlement;
+use AppBundle\Model\Service;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -1231,6 +1232,7 @@ class ServiceController extends BaseController
         if ($hexaaAdmin == "true") {
             $manager = "true";
         }
+        /** @var Service $service */
         $service = $this->get('service');
         $allpermissionset = $service->getEntitlementPacks($hexaaAdmin, $id);
         $permissionssets = $allpermissionset['items'];

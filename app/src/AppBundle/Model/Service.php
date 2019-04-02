@@ -35,6 +35,8 @@ class Service extends AbstractBaseResource implements WarningableInterface
 {
     protected $pathName = 'services';
 
+    private $entitlementPacks;
+
     /**
      * GET attribute specifications of Service
      *
@@ -130,13 +132,18 @@ class Service extends AbstractBaseResource implements WarningableInterface
      */
     public function getEntitlementPacks(string $hexaaAdmin, string $id, string $verbose = "normal", int $offset = 0, int $pageSize = 25)
     {
-        return $this->getCollection(
-            $this->pathName.'/'.$id.'/entitlementpacks',
-            $hexaaAdmin,
-            $verbose,
-            $offset,
-            $pageSize
-        );
+        $parameterDump = implode("_", [$hexaaAdmin, $id, $verbose, $offset, $pageSize]);
+        if (! array_key_exists($parameterDump, $this->entitlementPacks)) {
+            $this->entitlementPacks[$parameterDump] =  $this->getCollection(
+                $this->pathName.'/'.$id.'/entitlementpacks',
+                $hexaaAdmin,
+                $verbose,
+                $offset,
+                $pageSize
+            );
+        }
+
+        return $this->entitlementPacks[$parameterDump];
     }
 
     /**
