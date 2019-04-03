@@ -2030,6 +2030,22 @@ class ServiceController extends BaseController
         return new JsonResponse($serializedData);
     }
 
+    /**
+     * @Route("/getEntitlementName/{id}")
+     * @param string $id entitlementId
+     *
+     * @return JsonResponse
+     */
+    public function getEntitlementName($id)
+    {
+        //$hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+        $serializer = $this->get('serializer');
+
+	$data = $this->get('entitlement')->getEntitlement(true, $id);
+        $serializedData = $serializer->serialize($data['name'], 'json');
+
+        return new JsonResponse($serializedData);
+    }
   /**
      * Replace accents
      *
@@ -2325,7 +2341,6 @@ class ServiceController extends BaseController
         foreach ($permissions['items'] as $permission) {
             $permissionsAccordion[$permission['id']]['title'] = $permission['name'];
 
-            // FIXME @annamari, nem találok permission delete url-t.
             $permissionsAccordion[$permission['id']]['deleteUrl'] = $this->generateUrl("app_service_permissiondelete", [
                 'servId' => $servId,
                 'id' => $permission['id'],
@@ -2368,7 +2383,7 @@ class ServiceController extends BaseController
                 $permissionsChoices = [];
                 if (array_key_exists('entitlement_ids', $permissionSet) and !(empty($permissionSet['entitlement_ids']))) {
                     foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
-                        $entitlement = $this->get('entitlement')->get($hexaaAdmin, $entitlementid);
+                        $entitlement = $this->get('entitlement')->getEntitlement($hexaaAdmin, $entitlementid);
                         $permissionsChoices['permissions'][$entitlementid] = $entitlement['name'];
                         $permissionsChoices['name'] = $permissionSet['name'];
                         $permissionsChoices['description'] = $permissionSet['description'];
@@ -2409,8 +2424,7 @@ class ServiceController extends BaseController
                 array_push($description, $permissionSet['description']);
                 array_push($type, $permissionSet['type']);
                 foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
-                    $entitlement = $this->get('entitlement')->getEntitlement($hexaaAdmin, $entitlementid);
-                    array_push($permissions, $entitlement['name']);
+                    array_push($permissions, ['target' => 'service/getEntitlementName/'.$entitlementid]);
                 }
                 $permissionsAccordionSet[$permissionSet['id']]['contents'] = [
                     [
