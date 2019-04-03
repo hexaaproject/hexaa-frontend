@@ -2436,7 +2436,7 @@ class ServiceController extends BaseController
 
                 $servicepermissions = $this->get('service')->getEntitlements($hexaaAdmin, $servId, $verbose, 0, 100000);
                 if (!empty($permissionsChoices)) {
-                    if ($form->isValid() and $form->isSubmitted()) {
+                    if ($form->isSubmitted() and $form->isValid()) {
                         $data = $form->getData();
                         $entitlementpackResource = $this->get('entitlement_pack');
                         try {
