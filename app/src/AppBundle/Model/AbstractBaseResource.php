@@ -35,6 +35,7 @@ abstract class AbstractBaseResource
     protected $client;
     protected $token;
     protected $tokenStorage;
+    private $cachedResources = [];
 
     /**
      * BaseResource constructor.
@@ -105,7 +106,12 @@ abstract class AbstractBaseResource
     */
     public function get(string $hexaaAdmin, string $id, string $verbose = "normal"): array
     {
-        return $this->getSingular($this->pathName.'/'.$id, $hexaaAdmin, $verbose);
+	$key = implode('_', array($hexaaAdmin, $id, $verbose));
+	if (! array_key_exists($key, $this->cachedResources)){
+	    $this->cachedResources[$key] = $this->getSingular($this->pathName.'/'.$id, $hexaaAdmin, $verbose);
+	}
+
+	return $this->cachedResources[$key];
     }
 
     /**
