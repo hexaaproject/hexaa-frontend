@@ -212,3 +212,9 @@ td.accordion-hr {
 .label {
     border-radius: 0px;
 }
+
+/* loader font size */
+.loader span {
+  font-size: unset;
+}
+

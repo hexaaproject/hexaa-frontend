@@ -10,10 +10,11 @@ security:
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|images|js|bundles\/guzzle\/(css|js))/
             security: false
 
         default:
+            logout_on_user_change: true
             anonymous: ~
             guard:
                 authenticators:
