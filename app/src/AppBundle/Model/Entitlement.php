@@ -49,8 +49,8 @@ class Entitlement extends AbstractBaseResource
             $offset,
             $pageSize
           );
-	} else {
 	}
+
 	return $this->entitlementCache[$key];
     }
 
