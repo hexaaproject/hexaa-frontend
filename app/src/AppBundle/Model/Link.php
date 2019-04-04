@@ -25,6 +25,8 @@ namespace AppBundle\Model {
     class Link extends AbstractBaseResource
     {
         protected $pathName = 'links';
+	private $cachedEntitlements = [];
+	private $cachedEntitlementPacks = [];
 
         /**
          * Generate new link token
@@ -47,7 +49,12 @@ namespace AppBundle\Model {
          */
         public function getEntitlementPacks(string $hexaaAdmin, string $id): array
         {
-            return $this->getCollection($this->pathName.'/'.$id.'/entitlementpacks', $hexaaAdmin);
+            $key = implode('_', array($hexaaAdmin, $id));
+	    if (! array_key_exists($key, $this->cachedEntitlementPacks)){
+                $this->cachedEntitlementPacks[$key] = $this->getCollection($this->pathName.'/'.$id.'/entitlementpacks', $hexaaAdmin);
+	    }
+
+            return $this->cachedEntitlementPacks[$key];
         }
 
         /**
@@ -59,7 +66,11 @@ namespace AppBundle\Model {
          */
         public function getEntitlements(string $hexaaAdmin, string $id): array
         {
-            return $this->getCollection($this->pathName.'/'.$id.'/entitlements', $hexaaAdmin);
+            $key = implode('_', array($hexaaAdmin, $id));
+	    if (! array_key_exists($key, $this->cachedEntitlements)){
+                $this->cachedEntitlements[$key] = $this->getCollection($this->pathName.'/'.$id.'/entitlements', $hexaaAdmin);
+	    }
+            return $this->cachedEntitlements[$key];
         }
 
         /**

@@ -1379,6 +1379,7 @@ class ServiceController extends BaseController
         }
 
         $requestslinks = $this->get('service')->getLinkRequests($hexaaAdmin, $id);
+        $entitlementsserv = $this->get('service')->getEntitlements($hexaaAdmin, $id, 'normal', 0, 100000);
 
         $allData = array();
         foreach ($requestslinks['items'] as $requestlink) {
@@ -1397,7 +1398,6 @@ class ServiceController extends BaseController
             $entitlements = $this->get('link')->getEntitlements($hexaaAdmin, $requestlink['id']);
             $duplicate = array();
 
-            $entitlementsserv = $this->get('service')->getEntitlements($hexaaAdmin, $id, 'normal', 0, 100000);
             foreach ($entitlementpacks['items'] as $entitlementpack) {
                 foreach ($entitlementpack['entitlement_ids'] as $entitlementid) {
                    /* array_push($entitlements['items'], $this->get('entitlement')->get($entitlementid));*/
@@ -1436,7 +1436,6 @@ class ServiceController extends BaseController
         }
 
         $entitlementpacks = $this->get('service')->getEntitlementPacks($hexaaAdmin, $id, 'normal', 0, 100000);
-        $entitlements = $this->get('service')->getEntitlements($hexaaAdmin, $id);
         $totalnumber = $entitlements['item_number'];
         $totalpages = ceil($totalnumber / 25);
         $offset = 25;
@@ -1539,7 +1538,7 @@ class ServiceController extends BaseController
 
             foreach ($linkEntitlementpacks['items'] as $linkEntitlementpack) {
                 foreach ($linkEntitlementpack['entitlement_ids'] as $entitlementid) {
-                    array_push($linkentitlements['items'], $this->get('entitlement')->get($hexaaAdmin, $entitlementid));
+                    array_push($linkentitlements['items'], $this->get('entitlement')->getEntitlement($hexaaAdmin, $entitlementid));
                 }
             }
 
