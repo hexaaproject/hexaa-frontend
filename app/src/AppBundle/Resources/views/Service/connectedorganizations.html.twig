@@ -484,7 +484,7 @@
                         <td>{{ one_data.name }}</td>
                         {% for one_content in one_data.contents %}
                             {% if one_content.key == "entitlementpacks" %}
-                                <td> {{ one_content.values }}</td>
+                                <td> {{ one_content.values|join(', ') }}</td>
                             {% endif %}
                         {% endfor %}
                         <!-- <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="/img/red_rubbishbin.svg" onclick="deletelink()"/></td>
@@ -559,12 +559,12 @@
                     </td>
                     {% for one_content in one_data.contents %}
                         {% if one_content.key == "entitlementpacks" %}
-                            <td> {{ one_content.values }}</td>
+                            <td> {{ one_content.values|join(', ') }}</td>
                         {% endif %}
                     {% endfor %}
                     {% for one_content in one_data.contents %}
                         {% if one_content.key == "entitlements" %}
-                            <td> {{ one_content.values }}</td>
+                            <td> {{ one_content.values|join(', ') }}</td>
                         {% endif %}
                     {% endfor %}
                     {% for one_content in one_data.contents %}
@@ -639,12 +639,12 @@
                     <td>{{ one_data.name }}</td>
                     {% for one_content in one_data.contents %}
                         {% if one_content.key == "entitlementpacks" %}
-                            <td> {{ one_content.values }}</td>
+                            <td> {{ one_content.values|join(', ') }}</td>
                         {% endif %}
                     {% endfor %}
                     {% for one_content in one_data.contents %}
                         {% if one_content.key == "entitlements" %}
-                            <td> {{ one_content.values }}</td>
+                            <td> {{ one_content.values|join(', ') }}</td>
                         {% endif %}
                     {% endfor %}
                      <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="{{ asset('img/gray_pencil.svg') }}" onclick="editlink({{ one_data.link_id }})"/></td>

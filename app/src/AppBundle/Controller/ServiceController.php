@@ -1389,16 +1389,9 @@ class ServiceController extends BaseController
             $allData[$requestlink['organization_id']]['link_id'] = $requestlink['id'];
             $entitlementpacks = $this->get('link')->getEntitlementPacks($hexaaAdmin, $requestlink['id']);
 
-            $entitlementpackNames = null;
-            $i = 0;
-            $len = count($entitlementpacks['items']);
+            $entitlementpackNameArray = [];
             foreach ($entitlementpacks['items'] as $entitlementpack) {
-                if ($i == $len - 1) {
-                    $entitlementpackNames = $entitlementpackNames.$entitlementpack['name'];
-                } else {
-                    $entitlementpackNames = $entitlementpackNames.$entitlementpack['name'].', ';
-                }
-                $i++;
+	        $entitlementpackNameArray[] = $entitlementpack['name'];	
             }
 
             $entitlements = $this->get('link')->getEntitlements($hexaaAdmin, $requestlink['id']);
@@ -1416,28 +1409,20 @@ class ServiceController extends BaseController
                 }
             }
 
-            $entitlementNames = null;
-            $j = 0;
+            $entitlementNameArray = [];
             $withoutduplicate = array_unique($entitlements['items'], SORT_REGULAR);
-
-            $len2 = count($withoutduplicate);
             foreach ($withoutduplicate as $entitlement) {
-                if ($j == $len2 - 1) {
-                    $entitlementNames = $entitlementNames.$entitlement['name'];
-                } else {
-                    $entitlementNames = $entitlementNames.$entitlement['name'].', ';
-                }
-                $j++;
+                $entitlementNameArray[]=$entitlement['name'];
             }
 
             $allData[$requestlink['organization_id']]['contents'] = array(
                 array(
                     'key' => 'entitlementpacks',
-                    'values' => $entitlementpackNames,
+                    'values' => $entitlementpackNameArray,
                 ),
                 array(
                     'key' => 'entitlements',
-                    'values' => $entitlementNames,
+                    'values' => $entitlementNameArray,
                 ),
             );
         }
@@ -1615,8 +1600,7 @@ class ServiceController extends BaseController
                 $eNames = array();
                 foreach ($oneData['contents'] as $onecontent) {
                     if ($onecontent['key'] == 'entitlementpacks') {
-                        $names = explode(', ', $onecontent['values']);
-                        foreach ($names as $name) {
+                        foreach ($entitlementpackNameArray as $name) {
                             foreach ($entitlementpacks['items'] as $entitlementpack) {
                                 if ($entitlementpack['name'] == trim($name)) {
                                     $epackNames[trim($name)] = $entitlementpack['id'];
@@ -1625,8 +1609,7 @@ class ServiceController extends BaseController
                         }
                     }
                     if ($onecontent['key'] == 'entitlements') {
-                        $names = explode(',', $onecontent['values']);
-                        foreach ($names as $name) {
+                        foreach ($entitlementNameArray as $name) {
                             foreach ($entitlements['items'] as $entitlement) {
                                 if ($entitlement['name'] == trim($name)) {
                                     $eNames[trim($name)] = $entitlement['id'];
