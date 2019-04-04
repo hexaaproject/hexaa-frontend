@@ -1,5 +1,8 @@
 {% extends "AppBundle:Service:layout.html.twig" %}
 
+{% set pending = allpending_data is not empty %}
+{% dump(pending) %}
+
 {% block container %}
     {% block stylesheets %}
 
@@ -184,7 +187,7 @@
                 });
                 {% endif %}
 
-                {% if pendinglinkIDs != null %}
+                {% if pending %}
                 {# hide pagination if one page #}
                 if (($('#connected_org_pendingfromorg').DataTable().page.info().pages == 1) | ($('#connected_org_pendingfromorg').DataTable().page.info().pages == 0)) {
                     $('#connected_org_pendingfromorg_info').hide();
@@ -302,7 +305,7 @@
                 });
                 {% endif %}
 
-                {% if pendinglinkIDs != null %}
+                {% if pending %}
                 var pendingFromOrgTableActionButtons = $('.connected_org_pendingfromorg_actionButtons');
                 var pendingFromOrgDelete = $('#connectedlinksRemovePending');
                 pendingFromOrgTableActionButtons.on('click', '#deletePendingFromOrg', function (event) {
@@ -433,7 +436,8 @@
             </div>
 
         </div>
-<div>
+
+        <div>
         {{ include('::modal.html.twig',
         {
             id: 'connectedOrganizationsAccept',
@@ -447,7 +451,8 @@
             },
             formaction: path('app_service_acceptconnectedorganizations', {id: service.id })
         }) }}
-</div>
+        </div>
+
         {{ include('::modal.html.twig',
         {
             id: 'connectedOrganizationsRemovePending',
@@ -462,7 +467,7 @@
             formaction: path('app_service_removeconnectedorganizations', {id: service.id })
         }) }}
 
-        <h2 style="color: #61AFC5">Pending from Serv manager</h2>
+        <h2 style="color: #61AFC5">Pending from service managers</h2>
 
         <table class="datatable datatable-blue" id="connected_org_pending">
             <thead>
@@ -499,7 +504,7 @@
     {% endif %}
 
 
-    {% if pendinglinkIDs != null %}
+    {% if pending %}
         <div class="connected_org_pendingfromorg_actionButtons" id="tablewithcheckbox"
              style="margin-top: 12px; padding-top: 30px">
 
