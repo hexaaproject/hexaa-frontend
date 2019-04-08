@@ -2,7 +2,7 @@
 
 1. Copy contents of examples/dev to a directory
 
-2. Modify backend and/or frontend path to development directory in docker-compose.yml. E.g. hexaa_ui_source:/opt/hexaa-newui -> /your/dev/ui/path/app:/opt/hexaa-newui and/or hexaa_backend_source:/opt/hexaa-backend -> /your/dev/backend/path:/opt/hexaa-backend
+2. Modify backend and/or frontend path to development directory in docker-compose.yml. E.g. hexaa_ui_source:/opt/hexaa-frontend -> /your/dev/ui/path/app:/opt/hexaa-frontend and/or hexaa_backend_source:/opt/hexaa-backend -> /your/dev/backend/path:/opt/hexaa-backend
 
     2.1.  Keep in mind, that the webserver in the container needs write acces to the var/cache, var/logs, var/session directories in the UI directory, and the app/cache, app/logs directories in the backend directory.
     

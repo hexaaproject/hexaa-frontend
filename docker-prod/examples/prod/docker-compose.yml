@@ -21,13 +21,13 @@ services:
             - hexaa
         restart: always
     frontend:
-        image: docker.hbit.sztaki.hu:5000/hexaa/hexaa-newui:staging
+        image: docker.hbit.sztaki.hu:5000/hexaa/hexaa-frontend:staging
         networks:
             - hexaa
         env_file: settings.env
         restart: always
         volumes:
-            - hexaa_ui_source:/opt/hexaa-newui
+            - hexaa_ui_source:/opt/hexaa-frontend
             - ./zz_docker.conf_frontend:/usr/local/etc/php-fpm.d/zz-docker.conf
             - /var/run/php:/var/run/php
     backend:
@@ -85,7 +85,7 @@ services:
           - frontend
           - backend
         volumes:
-            - hexaa_ui_source:/opt/hexaa-newui
+            - hexaa_ui_source:/opt/hexaa-frontend
             - hexaa_backend_source:/opt/hexaa-backend
             - hexaa_aa_source:/opt/simplesamlphp
             - ./default-hexaa.conf:/etc/apache2/sites-enabled/000-default.conf

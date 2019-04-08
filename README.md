@@ -1,4 +1,4 @@
-[![pipeline status](https://git.hbit.sztaki.hu/hexaa/hexaa-newui/badges/master/pipeline.svg)](https://git.hbit.sztaki.hu/hexaa/hexaa-newui/commits/master)
+[![pipeline status](https://git.hbit.sztaki.hu/hexaa/hexaa-frontend/badges/master/pipeline.svg)](https://git.hbit.sztaki.hu/hexaa/hexaa-frontend/commits/master)
 
 
 Fejlesztő környezet
@@ -45,7 +45,7 @@ Lépj be a szerverre és buildeltesd le az assetic-kel:
 
 ```
 ssh ubuntu@newaai.niif.hu
-cd hexaa-newui/app
+cd hexaa-frontend/app
 php bin/console assetic:dump
 ```
 
@@ -79,7 +79,7 @@ Ezt a metodikát próbáljuk követni:
 1. keletkezik issue, mint feladat a Gitlab-ban
 2. ha ott tart az issue, hogy érdemes kódolni, akkor a Gitlab-ban `New branch` gombbal már készíthetünk is egy új branch-et
 3. lehetőség szerint a teszt megírásával kezdük, és a fejlesztés folyamán zöldítsük ki. keyword: BDD
-4. ha új assetet gyártottunk, amit mások is fel tudnak használni, csináljunk egy snippetet, hogy hogyan kell használni: `https://git.hbit.sztaki.hu/hexaa/hexaa-newui/snippets`
+4. ha új assetet gyártottunk, amit mások is fel tudnak használni, csináljunk egy snippetet, hogy hogyan kell használni: `https://git.hbit.sztaki.hu/hexaa/hexaa-frontend/snippets`
 5. futtassunk phpcs-t a kódra, mert a CI tesztelni fogja (kövi fejezet)
 6. mehet a merge request a gitlabban a masterba. 
 
@@ -147,7 +147,7 @@ https://jqueryvalidation.org/
 Github szelet
 -------------
 
-git remote add github git@github.com:hexaaproject/hexaa-newui.git
+git remote add github git@github.com:hexaaproject/hexaa-frontend.git
 csak az app könyvtárat publikáljuk:
 
 git subtree push --prefix app github master

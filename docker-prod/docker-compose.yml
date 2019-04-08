@@ -21,13 +21,13 @@ services:
 #        env_file: settings.env
         restart: always
     frontend:
-        image: hexaaproject/hexaa-newui:new-dev
+        image: hexaaproject/hexaa-frontend:new-dev
         networks:
             - hexaa
         env_file: settings.env
         restart: always
         volumes:
-            - hexaa_ui_source:/opt/hexaa-newui
+            - hexaa_ui_source:/opt/hexaa-frontend
     backend:
         image: hexaaproject/hexaa-backend:new-api-dev
         networks:
@@ -49,7 +49,7 @@ services:
           - frontend
           - backend
         volumes:
-            - hexaa_ui_source:/opt/hexaa-newui
+            - hexaa_ui_source:/opt/hexaa-frontend
             - hexaa_backend_source:/opt/hexaa-backend
             - ./default-hexaa.conf:/etc/apache2/sites-enabled/000-default.conf
 #            - ./default-hexaa-fakeshib.conf:/etc/apache2/sites-enabled/000-default.conf
