@@ -1,0 +1,99 @@
+{% extends "AppBundle:Service:layout.html.twig" %}
+
+{% block title %}AppBundle:Service:show{% endblock %}
+
+{% block container %}
+    
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    
+    {% block stylesheets %}
+        {% stylesheets 'css/tables.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+
+
+
+    {% if managers is defined and managers|length %}
+        <div class="row">
+            <div class="col-md-15">
+                {{ include('::tables.html.twig', {protiptext: 'Managers of the Service have full administrative rights over the Service.', ismanager: ismanager, variant: 'red', checkbox_all: 'Servmanagers', tdcolor:'base', caption: 'Managers', checkbox: true, users: managers, table_id: 'managers_table', buttons: managers_buttons, search_placeholder: 'Search manager' }) }}
+            </div>
+        
+        {{ include('::modal.html.twig',
+            {
+                id: 'managersRemove',
+                title: 'Remove managers',
+                bodyhead: 'Are you ready to remove these managers from your service?',
+                bodycontent: 'Optional',
+                button:
+                    {
+                        text: 'Remove',
+                        class: 'btn-red'
+                    },
+                formaction: path('app_service_removemanagers', {id: service.id })
+            })
+        }}
+        </div>
+    {% endif %}
+    {% if managers is empty and ismanagertoinvite == 'true' %}
+        <div class="col-md-5 col-md-offset-5">
+            <button class="btnhexaa btn-red btn-block btnhexaa-lg" id="invite"><i class="material-icons">add</i> Invite</button>
+        </div>
+    {% endif %}
+    {{ include('AppBundle:Service:userInvitation.html.twig', {}) }}
+    {% if invite_link is defined %}
+        {{ include('AppBundle:Service:userInvitationDone.html.twig', {}) }}
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}    
+    {% javascripts
+            '@datatables_js'
+            'js/clipboard.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function () {
+            function populateList(
+                    ul,
+                    el) {
+                var row = $(el).closest('tr');
+                var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
+                var objectId = row.attr('id');
+                ul.append('<li>' + displayString + '</li>');
+                ul.append('<input name="userId[]" value="' + objectId + '" class="hidden">');
+            }
+        {% if managers is defined and managers|length %}
+                var managersTableActionButtons = $('.managers_table_actionButtons');
+                var managersRemove = $('#managersRemove');
+                managersTableActionButtons.on('click', '#remove', function (
+                        event) {
+                    event.preventDefault();
+                    var content = managersRemove.find('.modal-body-content');
+                    content.empty();
+                    content.append('<ul></ul>');
+                    var ul = managersRemove.find('ul');
+                    $('#managers_table input:checked').each(function (
+                            index,
+                            el) {
+                        populateList(ul, el);
+                    });
+                    managersRemove.modal('show');
+                });
+        {% endif %}
+            });
+    </script>
+{% endblock %}

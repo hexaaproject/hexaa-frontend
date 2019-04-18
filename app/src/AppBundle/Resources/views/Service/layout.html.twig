@@ -1,0 +1,28 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}HEXAA Services{% endblock %}
+
+{% block body %}
+    {% stylesheets
+    'css/service.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+    <script>
+        var serv = $("#serv");
+        serv.css('background-color', "#61AFC5");
+        var org = $("#org");
+        org.css('background-color', "#333333");
+    </script>
+    {% if service is defined %}
+        {{ include('::navbar.html.twig', {entity: service, names: servsubmenubox, entity_show_path: path('app_service_show', {id: service.id})}) }}
+    {% else %}
+        {{ include('::navbar.html.twig') }}
+    {% endif %}
+    <div class="entity-container">
+        <div class="container">
+            {% block container %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

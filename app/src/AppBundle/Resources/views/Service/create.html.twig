@@ -1,0 +1,134 @@
+{% extends "AppBundle:Service:layout.html.twig" %}
+
+{% block title %}Claim service{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'css/progressbar.css'
+    '@protip_min_css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block container %}
+
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
+    {{ form_start(form) }}
+
+    <div id="first" class="progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Claim service',
+                    protiptext: 'You can claim a service if it is known to this HEXAA system.',
+                    percent: 25,
+                    next_id: 'second',
+                    next_button_id: 'next-1'
+                }
+                ) }}
+            </div>
+        </div>
+
+
+        <div class="text-center progressbar-order">Enter your service's main parameters
+        </div>
+        <fieldset id="createServiceFormFields">
+            {% for key, field in form  %}
+                {% if field.vars.name == 'name' or field.vars.name == 'description' or field.vars.name == 'url' %}
+                    {{ form_widget(field) }}
+
+                    {% if field.vars.errors|length %}
+                        <div class="col-sm-offset-4 col-sm-11 has-error"><i class="material-icons">error</i> {{ field.vars.errors}}</div>
+                    {% endif %}
+                {% endif %}
+                {% if field.vars.name == 'entityid' %}
+                    <div id="scrollable-dropdown-menu">
+                        {{ form_widget(field) }}
+                        {% if field.vars.errors|length %}
+                            <div class="col-sm-offset-4 col-sm-11 has-error"><i class="material-icons">error</i> {{ field.vars.errors}}</div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        </fieldset>
+    </div>
+
+
+    <div id="second" class="hidden progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Claim service',
+                    protiptext: 'You can claim a service if it is known to this HEXAA system.',
+                    prev_id: 'first',
+                    done: 'next',
+                    percent: 50,
+                }
+                ) }}
+            </div>
+        </div>
+
+        <div class="text-center progressbar-order">Create your entitlements of your service</div>
+        <fieldset>
+            {% for key, field in form  %}
+                {% if field.vars.name == 'entitlement' or field.vars.name == 'entitlementplus1' or field.vars.name == 'entitlementplus2' %}
+                    {{ form_widget(field) }}
+                        {% if field.vars.errors|length %}
+                            <div class="col-sm-offset-4 col-sm-11 has-error"><i class="material-icons">error</i> {{ field.vars.errors}}</div>
+                        {% endif %}
+                {% endif %}
+            {% endfor %}
+        </fieldset>
+    </div>
+
+
+    {{ form_end(form) }}
+
+    {% javascripts
+    '@typeahead_js'
+    '@protip_min_js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {{ form_javascript(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        {{ include('::progressbar.js.twig') }}
+         $( document ).ready(function() {
+             $.protip();
+             var tooltip = $('.actionbutton');
+             tooltip.protipSet({
+                 trigger: 'click'
+             });
+
+            {% if click == "true" %}
+                $('#next-1').click();
+            {% endif %}
+
+             {% if clickback == "true" and firstpageerror == "false" %}
+                $('#back').click();
+             {% endif %}
+        });
+    </script>
+{% endblock %}
+
+

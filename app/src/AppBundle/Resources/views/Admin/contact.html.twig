@@ -1,0 +1,124 @@
+{% extends "AppBundle:Admin:layout.html.twig" %}
+
+{% block container %}
+
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
+    {% block content %}
+
+
+        <div class="col-sm-11 col-sm-offset-2">
+            <p style="font-size: x-large">Contact to</p>
+            <button type="button"
+                    id="leftbutton" {% if orgEmailSended is defined and orgEmailSended == "true" or orgEmailSended == 1 %} class="pull-left btnhexaa btnhexaa-md btn-blue-inverse" {% else %} class="pull-left btnhexaa btnhexaa-md btn-blue" {% endif %}>
+                Service managers
+            </button>
+            <button type="button"
+                    id="rightbutton" {% if orgEmailSended is defined and orgEmailSended == "true" or orgEmailSended == 1 %} class="pull-right btnhexaa btnhexaa-md btn-blue" {% else %} class="pull-right btnhexaa btnhexaa-md btn-blue-inverse" {% endif %}>
+                Organization managers
+            </button>
+        </div>
+        <div id="servManagers" class="col-sm-11 col-sm-offset-2"
+             style="margin-top: 12px; {% if orgEmailSended is defined and orgEmailSended == "true" %} display:none; {% endif %}">
+            {{ form_start(formManagers) }}
+            <div id="scrollable-dropdown-menu">
+                {{ form_row(formManagers.service) }}
+            </div>
+            {{ form_row(formManagers.managersTitle) }}
+            {{ form_row(formManagers.managersMessage) }}
+            {{ form_end(formManagers) }}
+            <!--<div class="servicesname hidden" data-is-names-of-services="{/{ servicesName }}">
+                <!-- ... -->
+            <!--</div> -->
+            <button type="submit" id="servManagersSend" class="pull-right btnhexaa btn-red">Send</button>
+        </div>
+        <div id="orgManagers"
+             style="{% if orgEmailSended is defined and orgEmailSended == "true" %} display:inline; {% else %} display: none; {% endif %} margin-top: 12px"
+             class="col-sm-11 col-sm-offset-2">
+            {{ form_start(formOrgManagers) }}
+            {{ form_row(formOrgManagers.organization) }}
+            {{ form_row(formOrgManagers.orgManagersTitle) }}
+            {{ form_row(formOrgManagers.orgManagersMessage) }}
+            {{ form_end(formOrgManagers) }}
+
+            <button type="submit" id="orgManagersSend" class="pull-right btnhexaa btn-red">Send</button>
+        </div>
+
+    {% endblock %}
+
+    {% javascripts
+    '@typeahead_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {{ form_javascript(formManagers) }}
+    {{ form_javascript(formOrgManagers) }}
+
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', 'button#leftbutton', function (event) {
+                event.preventDefault();
+                $('#orgManagers').hide();
+                $('.flash-error').remove();
+                $('.flash-success').remove();
+                $('#servManagers').show();
+                $('#leftbutton').attr('class', 'pull-left btnhexaa btnhexaa-md btn-blue');
+                $('#rightbutton').attr('class', 'pull-right btnhexaa btnhexaa-md btn-blue-inverse');
+            });
+
+            $(document).on('click', 'button#rightbutton', function (event) {
+                event.preventDefault();
+                $('#servManagers').hide();
+                $('.flash-error').remove();
+                $('.flash-success').remove();
+                $('#orgManagers').show();
+                $('#rightbutton').attr('class', 'pull-right btnhexaa btnhexaa-md btn-blue');
+                $('#leftbutton').attr('class', 'pull-left btnhexaa btnhexaa-md btn-blue-inverse');
+            });
+
+            $(document).on('click', '#orgManagersSend', function (event) {
+                event.preventDefault();
+                $('form[name=org_managers_contact]').submit();
+
+            });
+
+            $(document).on('click', '#servManagersSend', function (event) {
+                event.preventDefault();
+                $('form[name=serv_managers_contact]').submit();
+            });
+
+            /*   $("#typeahead_serv_managers_contact_service").typeahead().on('typeahead:opened', function (obj, datum, name) {
+             $('span.tt-dropdown-menu').unbind(); //UNBINDS TYPEAHEAD SELECTION EVENT
+             });
+
+             $("#typeahead_org_managers_contact_organization").typeahead().on('typeahead:opened', function (obj, datum, name) {
+             $('span.tt-dropdown-menu').unbind(); //UNBINDS TYPEAHEAD SELECTION EVENT
+             });*/
+
+            /* var names = $('.servicesname').data('is-names-of-services');*/
+
+            /*  $("#typeahead_managers_contact_service").typeahead({source: names}).blur(validateSelection);
+
+             function validateSelection() {
+             if ($.inArray($(this).val(), names) === -1) {
+             alert("Nincs ilyen nevű szolgáltatás, válassz másikat!")
+             }
+             }*/
+        });
+    </script>
+
+
+{% endblock %}
+
+

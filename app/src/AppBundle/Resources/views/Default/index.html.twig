@@ -1,0 +1,125 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    {% set hasServices = services.items is defined and services.item_number > 0 %}
+    {% if not hasServices %}
+        <div id="welcomediv">
+            <div id="welcomecontent">
+                {% include 'AppBundle:Default:welcomediv.html.twig' %}
+                <div id="mobilemaincontrols">
+                    {% include 'AppBundle:Default:mobilebuttons.html.twig' %}
+                </div>
+            </div>
+        </div>
+        <div id="maindiv">
+            <div id="maindivcontents">
+                {{ include('AppBundle:Default:welcomepagebuttons.html.twig', { desktopbuttonimageafterlogin: "desktopbuttonimageafterloginlarge"}) }}
+            </div>
+        </div>
+    {% else %}
+        <div id="mainafterlogin">
+            <div id="welcomediv">
+                <div id="welcomecontent">
+                    {% include 'AppBundle:Default:welcomediv.html.twig' %}
+                    <br>
+                    <div id="mobilemaincontrols">
+                        {% include 'AppBundle:Default:mobilebuttons.html.twig' %}
+                    </div>
+                </div>
+            </div>
+            <div id="maindivafterlogin">
+                <div id="maindivcontentsafterlogin">
+                    {{ include('AppBundle:Default:welcomepagebuttons.html.twig', { hasService: false, desktopbuttonimageafterlogin: "desktopbuttonimageafterloginsmall"}) }}
+                </div>
+            </div>
+    {% endif %}
+    <div class="clearfix"></div>
+        <div class="maintables container">
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class=" col-sm-13">
+                    <div class="hr">
+                    <hr/>
+                </div>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row" {% if hasServices %} style="display: flex; {% endif %}">
+                {% if hasServices %}
+                    <div class="col-sm-2"></div>
+                {% else %}
+                    <div class="col-sm-5"></div>
+                {% endif %}
+                <div {% if hasServices %} class="col tablemain" style="border: 1px solid #61AFC5;" {% else %} class="col-sm-5 tablemain" style=" padding: 1em; border: 1px solid #61AFC5; width: 300px;" {% endif %}>
+                    <div id="orgtablemain">
+                        <div id="orgtableheader" class="tableheader"><b>ORGANIZATIONS</b></div>
+                        {% if (organizations.items | length) > 3 %}
+                            <input id="hexaaSearchFieldOrg" type="text" name="filter" class="hexaaSearchField pull-left" placeholder="Search organization">
+                        {% endif %}
+                        {% if ((organizations.items | length) > 3 and (services.items| length) > 3) or ((organizations.items| length) > 3) or ((services.items| length) > 3) %}
+                            <br><br>
+                        {% endif %}
+                        {% if organizations.items == null %}
+                            <div id="emptyorgtable" style="font-style: italic">(No organizations yet)</div>
+                        {% endif %}
+                        {% for organization in organizations.items %}
+                            {% if hexaaHat == "active" %}
+                                <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
+                            {% else %}
+                                {% for orgWhereManager in organizationsWhereManager %}
+                                    {% if orgWhereManager.id == organization.id %}
+                                        <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_show', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
+                                        {% set manager = "true" %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if manager == "false" %}
+                                    <div id="orgtablecontent" class="orgs"><a href="{{ path('app_organization_properties', {id: organization.id}) }}">{% if hasServices %} {{ organization.name|truncate(25) }} {% else %}{{ organization.name|truncate(25) }} {% endif %}</a></div>
+                                {% endif %}
+                                {% set manager = "false" %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% if hasServices %}
+                    <div class="col-sm-2"></div>
+                    <div class="col tablemain" style="border: 1px solid #FA8072; margin-right: 5px;">
+                        <div id="servtablemain">
+                            <div id="servtableheader" class="tableheader"><b>SERVICES</b></div>
+                            {% if services.items | length > 3 %}
+                                <input id="hexaaSearchFieldServ" type="text" name="filter" class="hexaaSearchField pull-left" placeholder="Search service">
+                            {% endif %}
+                            {% if ((organizations.items | length) > 3 and (services.items| length) > 3) or ((organizations.items| length) > 3) or ((services.items| length) > 3) %}
+                                <br><br>
+                            {% endif %}
+                            {% for service in services.items %}
+                                <div id="servtablecontent" class="servs"><a href="{{ path('app_service_show', {id: service.id}) }}">{{ service.name|truncate(25) }}</a></div>
+                                {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                {% else %}
+                    <div class="clearfix"></div>
+                    <div class="col-sm-5"></div>
+                    <div class="col-sm-11">
+                        <div id="footertext">
+                            Are you an expert hexaa user? <a href="{{ path('app_service_create') }}">Claim your own service.</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% block javascript %}
+        {% javascripts
+        '@instafilta_js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script>
+            $(document).ready(function () {
+                $('#hexaaSearchFieldOrg').instaFilta({targets:'.orgs'});
+                $('#hexaaSearchFieldServ').instaFilta({targets:'.servs'});
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

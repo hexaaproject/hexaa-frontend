@@ -1,0 +1,93 @@
+form[name="admin_attribute_spec"]{
+}
+
+#createAttributeSpecBlock {
+    border: 2px solid #61AFC5;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 10px;
+}
+
+.formlabel2 {
+    font-size: medium;
+    display: inline;
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+    margin-top: 5px;
+}
+
+#createAttributeSpecBlock .form-group {
+    margin-bottom: 0em;
+}
+
+.radio {
+    margin-right: 10px;
+}
+
+.loader span {
+    color: #61AFC5;
+    font-size: 35px;
+    animation-name: blink;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
+form[name="admin_attribute_spec"] .form-group{
+    padding-right: 110px;
+}
+
+#admin_attribute_spec_attributeSpecName, #admin_attribute_spec_attributeSpecURI, #admin_attribute_spec_attributeSpecDescription{
+    font-size: inherit;
+    color: #61AFC5;
+    background-color: #DFEDEE;
+    border: 1px solid #61AFC5;
+    border-radius: 0px !important;
+    height: 30px;
+    width: 400px;
+}
+
+#admin_attribute_spec_attributeSpecMaintainer, #admin_attribute_spec_attributeSpecSyntax, #admin_attribute_spec_attributeSpecIsMultivalue{
+    height: 30px;
+    width: 100px;
+    float: right !important;
+    margin-right: 300px;
+    display: flex;
+}
+
+form[name="admin_attribute_spec"] .header{
+    text-align: left;
+    color: #61AFC5;
+    font-size: x-large;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-bottom: 0.5em;
+}
+
+.actionbutton{
+    cursor: pointer;
+    border: none;
+    background-color: white;
+}
+
+#admin_attribute_spec_attributeSpecMaintainer .radio, #admin_attribute_spec_attributeSpecSyntax .radio, #admin_attribute_spec_attributeSpecIsMultivalue .radio{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#admin_attribute_spec_attributeSpecSyntax .formlabel{
+    padding-right: 10px;
+}
+
+#admin_attribute_spec_attributeSpecMaintainer .formlabel{
+    padding-right: 17.1px;
+}
+
+#admin_attribute_spec_attributeSpecIsMultivalue .formlabel {
+    padding-right: 19.2px;
+}
+
+#admin_attribute_spec_attributeSpecDescription {
+    resize: vertical;
+}

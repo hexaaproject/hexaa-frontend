@@ -1,0 +1,40 @@
+{% extends "AppBundle:Service:layout.html.twig" %}
+
+{% block title %}Claim service{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'css/progressbar.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block container %}
+
+    <div id="fourth" class="progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Claim service',
+                    percent: 100,
+                    done: 'Claimed'
+                }
+                ) }}
+            </div>
+        </div>
+
+        <div class="col-md-11 col-md-offset-2" style="text-align: center">
+            <div style="color:#EA7373; font-weight:bold; font-size: larger">Your service is done.</div>
+           {# <div style="color:#EA7373; font-size: large">Generated token: {{ token }} </div>#}
+            <p>
+                <a href="{{ path('app_service_show', {'id': newserv.id}) }}"
+                   style="color:#EA7373; font-weight:bold; font-size: larger">Start managing your service</a>
+            </p>
+            <img src="{{ asset('img/mosoly.PNG') }}"></img>
+        </div>
+    </div>
+
+{% endblock %}
+

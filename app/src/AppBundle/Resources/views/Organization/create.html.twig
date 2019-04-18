@@ -1,0 +1,129 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block title %}Add organization{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'css/progressbar.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block container %}
+
+    {{ form_start(form) }}
+
+    <div id="first" class="progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    percent: 20,
+                    next_id: 'second',
+                    next_button_id: 'next-1'
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                <div class="text-center progressbar-order">Enter your organization's main parameters
+                </div>
+                <fieldset>
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.description) }}
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div id="second" class="hidden progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    prev_id: 'first',
+                    percent: 40,
+                    next_id: 'third',
+                    next_button_id: 'next-2'
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                <div class="text-center progressbar-order">Enter the name of default role
+                </div>
+                <fieldset>
+                    {{ form_row(form.role) }}
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div id="third" class="hidden progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    prev_id: 'second',
+                    percent: 60,
+                    next_id: 'fourth',
+                    next_button_id: 'next-3'
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                <div class="text-center progressbar-order">Connect service with token</div>
+                <div class="text-center progressbar-order">Optional. If you don't have a token yet or don't know what it is, that is perfectly fine! Just click next.</div>
+                <fieldset>
+                    {{ form_row(form.service_token) }}
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div id="fourth" class="hidden progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    prev_id: 'third',
+                    done: 'finish',
+                    percent: 80,
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                <div class="text-center progressbar-order">Invite members to default role</div>
+                <div class="text-center progressbar-order">Optional. Here you can invite members right away if you want.</div>
+                <fieldset>
+                    {{ form_row(form.invitation_emails) }}
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    {{ include('::progressbar.js.twig') }}
+    $( document ).ready(function() {
+        {% if secondpageerror == "true" %}
+            $('#next-1').click();
+        {% endif %}
+    });
+</script>
+{% endblock %}

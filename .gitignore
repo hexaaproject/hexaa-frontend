@@ -1,0 +1,7 @@
+/.idea
+/nbproject/
+/vendor/
+/config.php
+app/web/assetic/
+app/web/config.php
+app/web/fonts/

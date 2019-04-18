@@ -1,0 +1,140 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block stylesheets %}
+    {% stylesheets
+        'css/modal.css'
+        filter='cssrewrite'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block container %}
+    <div id="srvmain">
+            <div id="maindivcontents">
+                <div class="desktopbuttonorg" id="createDiv"><a href="{{ path('app_organization_roles', {"id": entity.id, "action": "create"}) }}"><img class="desktopbuttonimage" src="{{ asset('img/create_role_160x160.svg') }}"/><br/> <p id="createText"><b>Create role</b></p></a></div>
+                {% if ismanager == 'true' %}
+                    <div class="desktopbuttonorg" id="connectDiv"><img class="desktopbuttonimage" src="{{ asset('img/connect_to_service_160x160.svg') }}"/><br/><p id="connectText"><b>Connect to service</b></p></div>
+                {% endif %}
+
+                {#<div class="desktopbuttonorg" id="attrDiv"><img class="desktopbuttonimage" src="{{ asset('img/edit_attributes_160x160.svg') }}"/><br/><p id="attrText"><b>Edit attributes</b></p></div>#}
+                
+                <div class="desktopbuttonorg" id="manageDiv"><a href="{{ path("app_organization_users", {"id": entity.id}) }}"><img class="desktopbuttonimage" src="{{ asset('img/manage_users_160x160.svg') }}"/><br/><p id="manageText"><b>Manage users</b></p></a></div>
+                
+                <div class="desktopbuttonorg" id="editDiv"><a href="{{ path("app_organization_properties", {"id": entity.id, "action": "edit"}) }}"><img class="desktopbuttonimage" src="{{ asset('img/edit_properties_130x130.svg') }}"/><br/><p id="editText"><b>Edit properties</b></p></a></div>
+                
+                <div class="desktopbuttonorg" id="viewDiv"><a href="{{ path("app_organization_history", {"id": entity.id}) }}" style="outline: none;"><img class="desktopbuttonimage" src="{{ asset('img/view_history_151x130.svg') }}"/><br/><p id="viewText"><b>View history</b></p></a></div>
+                
+                <div class="desktopbuttonorg" id="deleteDiv"><img class="desktopbuttonimage" src="{{ asset('img/delete_organization_130x130.svg') }}"/><br/><p id="deleteText"><b>Delete organization</b></p></div>
+            </div>
+    </div>
+    {{ include('::modal.html.twig',
+        {
+            id: 'deleteBox',
+            title: 'Are you sure?',
+            bodycontent: 'If you press the delete button, your organization will be deleted.',
+            button:
+                {
+                    text: 'Delete organization',
+                    class: 'btn-red',
+                    id: 'deleteButton'
+                },
+            leftbutton:
+                {
+                    text: 'Cancel',
+                    class: 'btn-blue',
+                    id: 'id_of_leftbutton',
+                    dismiss: true
+                },
+            formaction: path('app_organization_delete', {id: entity.id })
+        })
+     }}
+
+    {% if manager %}
+        {{ include('::modal.html.twig',
+        {
+            id: 'connect',
+            title: 'Connect service with token',
+            button:
+            {
+                text: 'Connect',
+                class: 'btn-red'
+            },
+            leftbutton:
+            {
+                text: 'Cancel',
+                class: 'btn-blue',
+                id: "connect_cancel",
+                dismiss: true
+            },
+            bodycontent: form_start(tokenForm)
+            ~ form_row(tokenForm.token)
+            ~ form_end(tokenForm)
+        })
+        }}
+    {% endif %}
+
+    <script>
+        $(document).ready(function() {
+            $('#maindivcontents').on('click', '#deleteDiv', function(event) {
+                event.preventDefault();
+                $('#deleteBox').modal('show');
+            });
+            {% if manager %}
+                $('#maindivcontents').on('click', '#connectDiv', function(event) {
+                    event.preventDefault();
+                    $('#connect').modal('show');
+                });
+
+                $(document).on('click', '.modal#connect button[type=submit]', function (event) {
+                    event.preventDefault();
+                    $('form[name=connect_service]').submit();
+                });
+            {% endif %}
+        });
+        $( "#srvmain" ).parent().css("max-width", "none");
+
+        $('#deleteDiv').hover(function () {
+            $('#deleteText').css('background-color', 'LightGray');
+        }, function () {
+            $('#deleteText').css('background-color', '');
+        })
+
+        $('#viewDiv').hover(function () {
+            $('#viewText').css('background-color', 'LightGray');
+        }, function () {
+            $('#viewText').css('background-color', '');
+        })
+
+        $('#editDiv').hover(function () {
+            $('#editText').css('background-color', 'LightGray');
+        }, function () {
+            $('#editText').css('background-color', '');
+        })
+
+        $('#manageDiv').hover(function () {
+            $('#manageText').css('background-color', 'LightGray');
+        }, function () {
+            $('#manageText').css('background-color', '');
+        })
+
+        $('#attrDiv').hover(function () {
+            $('#attrText').css('background-color', 'LightGray');
+        }, function () {
+            $('#attrText').css('background-color', '');
+        })
+
+        $('#connectDiv').hover(function () {
+            $('#connectText').css('background-color', 'LightGray');
+        }, function () {
+            $('#connectText').css('background-color', '');
+        })
+
+        $('#createDiv').hover(function () {
+            $('#createText').css('background-color', 'LightGray');
+        }, function () {
+            $('#createText').css('background-color', '');
+        })
+
+    </script>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'css/grid_panel.css'
+    '@bootstrap_tagsinput_css'
+    '@protip_min_css'
+    filter='cssrewrite'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+    {% block javascripts %}
+        {{ parent() }}
+        {% javascripts
+        '@bootstrap_tagsinput_js'
+        '@protip_min_js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script>
+            $(document).ready(function () {
+                $('').tagsinput();
+            });
+            $.protip();
+            var tooltip = $('.actionbutton');
+            tooltip.protipSet({
+                trigger: 'click'
+            });
+        </script>
+    {% endblock %}
+
+{% block container %}
+
+
+    <script>
+        function showCreateForm(){
+            $('#createRoleForm').removeClass('hidden');
+            $('#actionButtons').addClass('hidden');
+            $('#panel_container').find('form').attr("id", "current_form");
+            $('#current_form').find('input:first').focus();
+        }
+
+        function cancel(){
+            $('#actionButtons').removeClass('hidden');
+            $('#createRoleForm').addClass('hidden');
+        }
+
+        {% if action == "create" %}
+        $(document).ready(function () {
+           showCreateForm();
+        });
+        {% endif %}
+
+        $(document).ready(function () {
+
+            {% if error == 'true' %}
+                $("#createrole").click();
+            {% endif %}
+        });
+
+    </script>
+
+    {% if ismanager == "true" %}
+        <div class="row" style="margin-bottom: 24px;">
+
+            <div id="actionButtons">
+                <div id="newRoleButton" class="col-md-5 col-md-offset-5">
+                    <button id="createrole" class="btnhexaa btn-red btn-block btnhexaa-lg" onclick="showCreateForm()"><i class="material-icons" aria-hidden="true">add</i> New role</button>
+                </div>
+            </div>
+
+            <div id="createRoleForm" class="col-md-9 col-md-offset-3 hidden">
+                <div class="grid_panel">
+                    <div class="header">
+                        Create role
+                        <div class="pull-right">
+                            <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i class="material-icons">clear</i></button>
+                            <button type="submit" id="submitbutton" class="actionbutton" onclick="$('#current_form').submit();" ><i class="material-icons">done</i></button>
+                        </div>
+                    </div>
+                    <div id="panel_container">
+                        {{ form_start(form) }}
+                        {% for key, field in form  %}
+                            <div class="row {% if ("_token" == key) %} hidden {% endif %}" style="padding-top: 12px;">
+                                <div class="col-sm-3 propname2">{{ form_label(field) }}</div>
+                                <div class="col-sm-11"> {{ form_widget(field) }}</div>
+                                {% if field.vars.errors|length %}
+                                    <div class="col-sm-offset-3 col-sm-11 has-error">{{ field.vars.errors|length }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {% endif %}
+
+    {% if roles is defined and roles|length %}
+    <div class="row">
+        <div class="col-md-11 col-md-offset-2">
+            {#<div class="accordion-container-notform accordion-style-dark">#}
+                {{ include('::accordions.html.twig', { protiptextnull:'Permissions are provided by the Services connected to this organization. This Organization has no connected services yet', protiptextnotnull: 'These permissions are provided by the Services connected to the Organization', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Roles", variant: "dark", items: roles_accordion }) }}
+           {# </div>#}
+        </div>
+    </div>
+    {% endif %}
+    {% if roles is empty and ismanager == false %}
+        <div class="col-md-5 col-md-offset-5">
+            <div style="text-align: center; color:#61AFC5; font-size: medium">
+                <strong>There aren't any roles yet. Please come back later!</strong>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

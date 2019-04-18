@@ -1,0 +1,60 @@
+{% block stylesheets %}
+    {% stylesheets
+    '@protip_min_css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{{ include('::modal.html.twig',
+    {
+        id: 'add_attributespec',
+        title: 'Add attribute specification to this service',
+        protiptext: 'The service will accept attributes from the Organizations if they are defined here.',
+        button:
+            {
+                text: 'Create',
+                class: 'btn-blue',
+            },
+        leftbutton:
+            {
+                text: 'Cancel',
+                class: 'btn-blue',
+                id: "add_cancel",
+                dismiss: true
+            },
+        bodycontent: form_start(addAttributeSpecForm)
+                    ~ form_row(addAttributeSpecForm.specname)
+                    ~ form_end(addAttributeSpecForm)
+    })
+}}
+
+{% block javascripts %}
+    {% javascripts
+    '@protip_min_js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+<script>
+    $(document).ready(function () {
+        $.protip();
+        var tooltip = $('.actionbutton');
+        tooltip.protipSet({
+            trigger: 'click'
+        });
+        $(document).on('click', 'button#add', function (
+                event) {
+            event.preventDefault();
+            $('#add_attributespec').modal({backdrop: 'static'});
+        });
+
+        $(document).on('click', '.modal#add_attributespec button[type=submit]', function (
+                event) {
+            event.preventDefault();
+            $('form[name=service_add_attribute_specification]').submit();
+        });
+
+    });
+</script>
+{% endblock %}

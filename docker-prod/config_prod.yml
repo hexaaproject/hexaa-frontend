@@ -1,0 +1,13 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    router:
+        strict_requirements: null
+
+monolog:        
+    handlers:
+        main:
+            type:  stream
+            path:  "php://stdout"
+            level: info

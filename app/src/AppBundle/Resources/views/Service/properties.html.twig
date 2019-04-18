@@ -1,0 +1,166 @@
+{% extends "AppBundle:Service:layout.html.twig" %}
+
+{% block container %}
+
+    {% block stylesheets %}
+        {% stylesheets
+        'css/panel.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
+    {% javascripts
+    '@typeahead_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {{ form_javascript(propertiesform) }}
+    <script>
+
+        function property() {
+            $(".propertyblocknoedit").addClass('hidden');
+            $(".sendbutton").removeClass('hidden');
+            $(".propertyblockedit").removeClass('hidden');
+            $("#pencil-2").hide();
+            $("#pencil-3").hide();
+        }
+
+        function owner() {
+            $(".ownerblocknoedit").addClass('hidden');
+            $(".sendownerbutton").removeClass('hidden');
+            $(".ownerblockedit").removeClass('hidden');
+            $("#pencil-1").hide();
+            $("#pencil-3").hide();
+        }
+
+        function privacy() {
+            $(".privacyblocknoedit").addClass('hidden');
+            $(".sendprivacybutton").removeClass('hidden');
+            $(".privacyblockedit").removeClass('hidden');
+            $("#pencil-1").hide();
+            $("#pencil-2").hide();
+        }
+
+        function cancelproperty() {
+            $(".propertyblocknoedit").removeClass('hidden');
+            $(".sendbutton").addClass('hidden');
+            $(".propertyblockedit").addClass('hidden');
+            $("#pencil-2").show();
+            $("#pencil-3").show();
+        }
+
+        function cancelowner() {
+            $(".ownerblocknoedit").removeClass('hidden');
+            $(".sendownerbutton").addClass('hidden');
+            $(".ownerblockedit").addClass('hidden');
+            $("#pencil-1").show();
+            $("#pencil-3").show();
+        }
+
+        function cancelprivacy() {
+            $(".privacyblocknoedit").removeClass('hidden');
+            $(".sendprivacybutton").addClass('hidden');
+            $(".privacyblockedit").addClass('hidden');
+            $("#pencil-1").show();
+            $("#pencil-2").show();
+        }
+
+    </script>
+
+    {{ include('::warning.html.twig', {url: path('app_service_getwarnings', {id: service.id, ismanager: 1}) }) }}
+
+    <div class="propertyblocknoedit">
+        {{ include('::panel.html.twig', { styleOfContainer: "propertiespanelnoedit", heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1"}) }}
+    </div>
+
+    <div class="propertyblockedit hidden">
+        {{ form_start(propertiesform) }}
+        <div class="header">
+            Properties
+            <button type="submit" class="sendbutton pull-right" alt="done-1" id="done1"><i
+                        class="material-icons" alt="done-1" name="done-1">done</i></button>
+            <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelproperty()"><i
+                        class="material-icons">clear</i></button>
+        </div>
+        <div class="row">
+            {{ form_row(propertiesform.serviceName) }}
+        </div>
+        <div class="row">
+            {{ form_row(propertiesform.serviceDescription) }}
+        </div>
+        <div class="row" style="padding-top: 0.5em;">
+            {{ form_row(propertiesform.serviceURL) }}
+        </div>
+        <div id="scrollable-dropdown-menu" class="row">
+            {{ form_row(propertiesform.serviceSAML) }}
+        </div>
+
+        {{ form_end(propertiesform) }}
+    </div>
+
+    <br>
+    <div class="ownerblocknoedit">
+        {{ include('::panel.html.twig', {styleOfContainer: "propertiespanelnoedit", heading: "Owner details", buttonappear: "inline", main: main, items: ownerbox, changeedit:"owner", changebutton:"owner()", pencilid:"2"}) }}
+    </div>
+
+    <div class="ownerblockedit hidden">
+        {{ form_start(ownerform) }}
+        <div class="header">
+            Owner details
+            <button type="submit" class="sendownerbutton pull-right" id="done2"><i
+                        class="material-icons">done</i></button>
+            <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelowner()"><i
+                        class="material-icons">clear</i></button>
+        </div>
+        <div class="row">
+            {{ form_row(ownerform.serviceOwnerName) }}
+        </div>
+        <div class="row">
+            {{ form_row(ownerform.serviceOwnerShortName) }}
+        </div>
+        <div class="row">
+            {{ form_row(ownerform.serviceOwnerDescription) }}
+        </div>
+        <div class="row" style="padding-top: 0.5em;">
+            {{ form_row(ownerform.serviceOwnerURL) }}
+        </div>
+        {{ form_end(ownerform) }}
+    </div>
+
+    <br>
+    <div class="privacyblocknoedit">
+        {{ include('::panel.html.twig', {styleOfContainer: "propertiespanelnoedit", heading: "Privacy information", buttonappear: "inline", main: main, items: privacybox, changeedit:"privacy", changebutton:"privacy()", pencilid:"3"}) }}
+    </div>
+
+    <div class="privacyblockedit hidden">
+        {{ form_start(privacyform) }}
+        <div class="header">
+            Privacy Information
+            <button type="submit" class="sendprivacybutton pull-right" id="done3"><i
+                        class="material-icons" id="ic1">done</i></button>
+            <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelprivacy()"><i
+                        class="material-icons">clear</i></button>
+        </div>
+        <div class="row">
+            {{ form_row(privacyform.servicePrivacyURL) }}
+        </div>
+        <div class="row">
+            {{ form_row(privacyform.servicePrivacyDescription) }}
+        </div>
+        {{ form_end(privacyform) }}
+    </div>
+
+{% endblock %}

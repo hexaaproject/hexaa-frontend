@@ -1,0 +1,137 @@
+{#
+
+Usage:
+
+{{ include('::modal.html.twig',
+    {
+        id: 'modalBoxId',
+        title: 'Modal title',
+        bodyhead: 'Optional header text in modal-body',
+        bodycontent: 'Optional content in modal-body',
+        button:
+            {
+                text: 'text of form submitter button',
+                class: 'btn-red',
+                formid: 'form_id',
+                id: 'idofthebutton'
+            },
+        rightbuttons:      // optional
+            [
+                {
+                    text: 'text of any other button',
+                    class: 'btn-red',
+                    value: 'anyvalue',
+                    formid: 'form_id',
+                    id: 'idofthebutton1'
+                },
+                {
+                    text: 'text of any other button',
+                    class: 'btn-red',
+                    value: 'anyvalue',
+                    formid: 'form_id',
+                    id: 'idofthebutton2'
+                },
+            ],
+        leftbutton: // optional
+            {
+                text: 'text of form back or cancel left button',
+                class: 'btn-blue' //optional
+                id: 'id_of_leftbutton' //optional
+                dismiss: true/false //optional if true on click the modal is close
+            }
+        formaction: path('app_anything_actions_route_path_with_paramters', {id: anything.id }) //optional
+    })
+}}
+
+<script>
+    $(document).ready(function() {
+        $('.any_wrapper_element_actionButtons').on('click', '#buttonId', function(event) {
+            event.preventDefault();
+            var content = $('#modalBoxId').find('.modal-body-content');
+            content.empty();
+            content.append('New text in modal content');
+            $('#modalBoxId').find('form').attr("action", $(this).data('targeturl'));
+            $('#modalBoxId').modal('show');
+        });
+    });
+</script>
+
+#}
+{% block stylesheets %}
+    {% stylesheets
+    'css/modal.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+<div class="modal fade" id="{{ id }}">
+    <div class="modal-dialog">
+        <div class="modal-content protip-target">
+            {% if formaction is defined %}
+              <form action="{{ formaction }}" method="POST">
+            {% endif %}
+            <div class="modal-header">
+                <button type="button" class="close" title="Close" data-dismiss="modal" aria-hidden="true">
+                    <i class="material-icons" style="color: black">clear</i>
+                </button>
+                <h4 class="modal-title" style="display: initial">{{ title }}</h4>
+                {% if protiptext is defined %}
+                    <button type="button" id="help" class="actionbutton protip" style="outline: none; display: inline-flex;" data-pt-arrow="true" data-pt-scheme="blue" data-pt-gravity="true" data-pt-title="{{ protiptext }}" ><i class="material-icons" style="font-size: 22px; color: #369; vertical-align: middle">help</i></button>
+                {% endif %}
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-head">{% if bodyhead is defined %}{{ bodyhead }}{% endif %}</div>
+                <div class="modal-body-content">{% if bodycontent is defined %}{{ bodycontent|raw }}{% endif %}</div>
+            </div>
+            <div class="modal-footer">
+                {% if leftbutton is defined %}
+                    <button type="button"
+                            id="{% if leftbutton.id is defined %}{{ leftbutton.id }}{% else %}leftbutton{% endif %}"
+                            class="pull-left btnhexaa
+                                   {% if leftbutton.class is defined %}
+                                       {{ leftbutton.class }}
+                                   {% else %}
+                                       btn-blue
+                                   {% endif %}"
+                            {% if leftbutton.dismiss is defined %}
+                                data-dismiss="modal"
+                            {% endif %}>
+                        {{ leftbutton.text }}
+                    </button>
+                {% else %}
+                    <button type="button" id="leftbutton" class="pull-left btnhexaa btn-blue" data-dismiss="modal">
+                        Cancel
+                    </button>
+                {% endif %}
+                <div class="pull-right">
+                    {% if rightbuttons is defined %}
+                        {% for button in rightbuttons %}
+                            <button type="submit" {% if button.id is defined %} id="{{ button.id }}" {% endif %}
+                                    {% if button.value is defined %} value="{{ button.value }}" {% endif %}
+                                    class="btnhexaa {{ button.class }}">
+                                {{ button.text }}
+                            </button>
+                        {% endfor %}
+                    {% endif %}
+                    <button type="submit" {% if button.id is defined %} id="{{ button.id }}" {% endif %}
+                            {% if button.value is defined %} value="{{ button.value }}" {% endif %}
+                            {% if button.behattarget is defined %} data-behattarget="{{ button.behattarget }}" {% endif %}
+                           class="btnhexaa {{ button.class }}">
+                        {{ button.text }}
+                    </button>
+                </div>
+            </div>
+            {% if formaction is defined %}</form>{% endif %}
+        </div>
+    </div>
+</div>
+
+{% javascripts
+'@typeahead_js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% if form is defined %}
+    {{ form_javascript(form) }}
+{% endif %}

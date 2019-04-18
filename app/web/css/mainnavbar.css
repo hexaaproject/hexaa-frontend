@@ -1,0 +1,65 @@
+.navbar{
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 0px;
+    border: none;
+}
+
+.navbar-default{
+    background-color: #333333;
+}
+
+@media only screen and (min-width: 768px){
+    .navbar {
+        border-radius: 0px;
+    }
+}
+
+#cornerlogo{
+    width:90px;
+    height:100%;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: white;
+    font-size:18px;
+}
+
+#serv, #org, #admin, #fullfill{
+    height: 53px;
+}
+
+.dropdown-menu{
+    background-color: #333333;
+    border: none;
+    border-radius: 0px;
+}
+
+.dropdown-menu > li > a {
+    color:white;
+    font-size:medium;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color: #080808;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus{
+    color: #fff;
+    background-color: #080808;
+}
+
+.dropdown-menu > li > a:hover{
+    background-color: #080808;
+    color: #fff;
+}
+
+.navbar-default .navbar-nav > li > a{
+    font-size: large;
+}
+
+.navbar-default .navbar-nav > #admin.active > a, .navbar-default .navbar-nav > #admin.active > a:hover, .navbar-default .navbar-nav > #admin.active > a:focus {
+    background-color: #EA7E73;
+    color: #fff;
+}

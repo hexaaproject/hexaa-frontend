@@ -1,0 +1,205 @@
+{% extends "AppBundle:Service:layout.html.twig" %}
+
+{% block container %}
+    {% block stylesheets %}
+        {% stylesheets
+        'css/accordions.css'
+        '@bootstrap_tagsinput_css'
+        '@protip_min_css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
+    {% javascripts
+    '@instafilta_js'
+    '@jquery_bootpag_js'
+    '@bootstrap_tagsinput_js'
+    '@typeahead_js'
+    '@bloodhound_js'
+    '@protip_min_js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {{ form_javascript(formCreatePermissionsSet) }}
+    <script>
+        $(document).ready(function () {
+
+            $.protip();
+            var tooltip = $('.protip');
+            tooltip.protipSet({
+                trigger: 'click'
+            });
+
+            {% if permissionsets is defined and permissionsets['items']|length %}
+                {% if error == 'true' %}
+                    $("#createButton").click();
+                {% endif %}
+            {% elseif  permissionsets is defined %}
+                {% if error == 'true' %}
+                    $("#add").click();
+                {% endif %}
+            {% endif %}
+
+            $('#hexaaSearchFieldPermissionSet').instaFilta({
+                onFilterComplete: function(matchedItems) {
+                    var allnum = {{ total_number|json_encode }}
+                    if (allnum != matchedItems.length) {
+                        $('#1').addClass('hidden');
+                        {% if total_pages != 1 %}
+                            {% for i in (1..total_pages) %}
+                                $("#" +{{ i }}).addClass("hidden");
+                            {% endfor %}
+                        {% endif %}
+
+                        $('#toSearch').removeClass('hidden');
+                        $('.show_paginator').addClass('hidden');
+                        loader('stop');
+                    }
+                    if (allnum == matchedItems.length) {
+                        if(!($('#toSearch').hasClass('hidden'))){
+                            $('#toSearch').addClass('hidden');
+                            $('#1').removeClass('hidden');
+                                {% if total_pages != 1 %}
+                                    $('.show_paginator').removeClass('hidden');
+                                {% endif %}
+                            loader('stop');
+                        }
+                    }
+                    loader('stop');
+                }
+            });
+            $('#hexaaSearchFieldPermissionSet').keyup(function(){
+                loader();
+                $(".caretbutton").each(function (index) {
+                    if ($(this).text() == 'arrow_drop_up') {
+                        $(this).text('arrow_drop_down');
+                    }
+                });
+                $( ".accordion-panel" ).each(function( index ) {
+                    $( this ).css({ 'display': "none" });
+                });
+            });
+            $('.show_paginator').bootpag({
+                total: {{ total_pages }},
+                page: 1,
+                maxVisible: 5,
+                leaps: false,
+                firstLastUse: true,
+                first: '←',
+                last: '→',
+                wrapClass: 'pagination',
+                activeClass: 'active',
+                disabledClass: 'disabled',
+                nextClass: 'next',
+                prevClass: 'prev',
+                lastClass: 'last',
+                firstClass: 'first'
+
+            }).on('page', function(event, num)
+            {
+                console.log(num);
+                {% for i in (1..total_pages) %}
+                $("#"+{{ i }}).addClass("hidden");
+                {% endfor %}
+                $("#"+num).removeClass("hidden"); // or some ajax content loading...
+            });
+        });
+    </script>
+
+    <script>
+        function showCreateForm() {
+            $("#createPermissionsSetBlock").removeClass('hidden');
+            $('#createButton').addClass('hidden');
+            $('#hexaaSearchFieldPermissionSet').addClass('hidden');
+            $('#add').addClass('hidden');
+        }
+
+        function cancel() {
+            $('#createButton').removeClass('hidden');
+            $('#createPermissionsSetBlock').addClass('hidden');
+            $('#hexaaSearchFieldPermissionSet').removeClass('hidden');
+            $('#add').removeClass('hidden');
+        }
+
+    </script>
+
+
+    <div class="col-sm-11 col-sm-offset-2">
+        <div class="createPermissionSet hidden" id="createPermissionsSetBlock">
+            {{ form_start(formCreatePermissionsSet) }}
+            <div class="header">
+                <span>Create Permission Set</span>
+                <button type="button" id="help" class="actionbutton protip" style="outline: none; display: inline-flex;" data-pt-arrow="true" data-pt-scheme="blue" data-pt-gravity="true" data-pt-title="Permission sets bundle together permissions to make permission delegation to Organizations easier." ><i class="material-icons" style="font-size: 22px; color: #369; vertical-align: middle">help</i></button>
+                <div class="pull-right">
+                    <button type="button" id="cancelbutton" class="actionbutton" style="vertical-align: middle;" onclick="cancel()"><i
+                                class="material-icons">clear</i></button>
+                    <button type="submit" id="submitbutton" class="actionbutton" style="vertical-align: middle;"><i class="material-icons">done</i>
+                    </button>
+                </div>
+
+            </div>
+            <div class="row">
+                {{ form_row(formCreatePermissionsSet.permissionSetName) }}
+            </div>
+            <div class="row">
+                {{ form_row(formCreatePermissionsSet.permissionSetType) }}
+            </div>
+            <div class="row">
+                {{ form_row(formCreatePermissionsSet.permissionSetDescription) }}
+            </div>
+            <div class="row">
+                {{ form_row(formCreatePermissionsSet.permissions) }}
+            </div>
+
+            {{ form_end(formCreatePermissionsSet) }}
+        </div>
+    </div>
+
+{% if permissionsets is defined and permissionsets['items']|length %}
+    <div class="col-sm-11 col-sm-offset-2">
+        <div class="row" style="padding-left: 15px;">
+            <input id="hexaaSearchFieldPermissionSet" type="text" name="filter" class="hexaaSearchField pull-left"
+               placeholder="Search permission set">
+            <div class="loader"></div>
+            <button class="btnhexaa btn-red btnhexaa-sm pull-right" onclick="showCreateForm()" id="createButton"><i class="material-icons">add</i> Create</button>
+        </div>
+        {% if total_pages != 1 %}
+            <div class="show_paginator"></div>
+        {% endif %}
+    </div>
+    <div class="col-sm-11 col-sm-offset-2" {% if total_pages != 1 %} style="margin-top: 5px" {% else %} style="margin-top: 12px" {% endif %}>
+        <div id="1">
+            {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[0], service_id: service.id, permissionsname: permissionsname}) }}
+        </div>
+        {% if total_pages != 1 %}
+            {% for i in (1..total_pages-1) %}
+                <div class="hidden" id="{{ i+1 }}">
+                    {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Permission sets", variant: "dark", items: permissions_accordion_set[i], service_id: service.id, permisssionsname: permissionsname}) }}
+                </div>
+            {% endfor %}
+            <div class="show_paginator"></div>
+        {% endif %}
+        <div class="hidden" id="toSearch">
+            {{ include('::accordions.html.twig', {classToFilter:'service_permissionset_search', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: 'Permission sets', variant: 'dark', items: allpermissions_accordion_set }) }}
+        </div>
+    </div>
+{% elseif permissionsets is defined %}
+    <button class="btnhexaa btn-red" id="add" style="font-size: 25px; padding: 12px 15px; margin-left: 400px;" onclick="showCreateForm()">
+        <i class="material-icons">add</i>
+        Create
+    </button>
+{% endif %}
+{% endblock %}

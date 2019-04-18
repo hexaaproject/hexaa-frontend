@@ -1,0 +1,220 @@
+/*
+Copyright 2017 Mihály Héder <mihaly.heder@sztaki.mta.hu>.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+/* 
+    Created on : Jan 23, 2017, 2:25:47 PM
+    Author     : Mihály Héder <mihaly.heder@sztaki.mta.hu>
+*/
+
+div.accordion-header {
+    font-weight: bold;
+    font-size: x-large;
+    margin-bottom: 12px
+}
+
+div.accordion-container-notform {
+    padding: 8px 10px;
+}
+
+div.accordion-container-form {
+    padding-bottom: 10px;
+    margin: 0px;
+}
+
+div.accordion-style-dark {
+    background-color: #68b3c7;
+    color: white;
+    text-align: left;
+}
+
+div.accordion-style-light {
+    background-color: white;
+    color: #68b3c7;
+    text-align: left;
+}
+
+div.accordion-title {
+    cursor: pointer;
+    padding: 5px 15px;
+    font-weight: bold;
+    font-size: large;
+    margin-top: 4px;
+    margin-bottom: 0px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    vertical-align: middle;
+}
+
+div.accordion-title-style-dark-notform {
+    background-color: white;
+    color: #68b3c7;
+}
+
+div.accordion-title-style-light-form {
+    background-color: white;
+    color: #68b3c7;
+    border: 1px solid #68b3c7;
+}
+
+div.accordion-title-style-light-notform {
+    background-color: #68b3c7;
+    color: white;
+}
+
+div.accordion-title-style-dark-notform::after {
+    color: #68b3c7;
+}
+
+div.accordion-title-style-light-notform::after {
+    background-color: #68b3c7;
+    color: white;
+}
+
+div.accordion-title-style-dark-notform.active, div.accordion-title-dark-notform:hover {
+    color: #ec666a;
+}
+
+div.accordion-title-style-light-notform.active, div.accordion-title-light-notform:hover {
+    background-color: #ec666a;
+    color: white;
+}
+
+.accordion-panel {
+    padding-top: 8px;
+}
+
+div.accordion-panel-notform, div.accordion-panel-form {
+    margin-top: 0px;
+    margin-bottom: 2px;
+    padding-top: 0px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    display: none;
+}
+
+div.accordion-panel-notform.active {
+    border-color: #ec666a;
+ /*   display: block;*/
+}
+
+div.accordion-panel-form.active {
+    border-color: #68b3c7;
+}
+
+td.accordion-key {
+    vertical-align: top;
+}
+
+div.accordion-panel-style-dark {
+    background-color: white;
+    color: #68b3c7;
+    font-size: medium;
+}
+
+div.accordion-panel-style-light {
+    background-color: white;
+    color: #68b3c7;
+    border: 1px solid;
+    font-size: medium;
+}
+
+td.accordion-key {
+    color: #68b3c7;
+    width: 20%;
+}
+
+ul.accordion {
+    list-style-type: none;
+}
+
+table.accordion {
+    width: 100%;
+}
+
+td.accordion {
+    padding: 5px;
+}
+
+td.accordion-hr {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #68b3c7;
+}
+
+.accordion-buttons {
+}
+
+.accordion-title-text {
+}
+
+.accordion-title-right {
+}
+
+#othersize {
+    font-size: medium;
+}
+
+.accordion-title-middle {
+    font-style: italic;
+    font-weight: lighter;
+    margin-left: 12px;
+    font-size: medium;
+}
+
+.accordion-description {
+    font-weight: bold;
+    font-size: x-large;
+    margin-top: 12px;
+    margin-left: 16px;
+}
+
+#generatedtoken {
+    width: 250px;
+    margin-left: 40px;
+}
+
+.accordion_button_row {
+    margin-right: 12px;
+}
+
+.accordion-button {
+    cursor: pointer;
+    font-size: large;
+}
+
+.accordion-editform > form {
+    padding: 12px;
+}
+
+
+/* tagsinput */
+
+.bootstrap-tagsinput {
+    border-radius: 0px;
+}
+
+.label {
+    border-radius: 0px;
+}
+
+/* loader font size */
+.loader span {
+  font-size: unset;
+}
+

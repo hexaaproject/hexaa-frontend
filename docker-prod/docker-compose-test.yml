@@ -1,0 +1,100 @@
+# docker-compose.yml
+
+# Compose file to run a full HEXAA environment
+
+version: "3"
+
+
+services:
+    mysql:
+        image: mariadb:10.2
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        volumes:
+            - hexaa_db_data:/var/lib/mysql
+    memcached:
+        image: memcached
+        networks:
+            - hexaa
+        restart: always
+    frontend:
+        image: hexaaproject/hexaa-frontend:new-dev
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        volumes:
+            - hexaa_ui_source:/opt/hexaa-frontend
+    backend:
+        image: hexaaproject/hexaa-backend:new-api-dev
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        depends_on:
+          - mysql
+          - memcached
+        volumes:
+            - hexaa_backend_source:/opt/hexaa-backend
+    web:
+        image: solazs/apache-shib
+        networks:
+            - hexaa
+        env_file: settings.env
+        restart: always
+        depends_on:
+          - frontend
+          - backend
+        volumes:
+            - hexaa_ui_source:/opt/hexaa-frontend
+            - hexaa_backend_source:/opt/hexaa-backend
+#            - ./default-hexaa.conf:/etc/apache2/sites-enabled/000-default.conf
+            - ./default-hexaa-fakeshib.conf:/etc/apache2/sites-enabled/000-default.conf
+    hexaa-test-data-manager:
+        image: hexaaproject/hexaa-test-data-manager:for-dev
+        ports:
+            - "8082:80"
+        depends_on:
+            - mysql
+            - backend
+        networks:
+            - hexaa
+        container_name: hexaa-test-data-manager
+    grid:
+        image: elgalu/selenium:3.2.0-p4
+        container_name: grid
+        networks:
+            - hexaa
+        ports:
+            - 5900:25900
+            - 6080:26080
+        environment:
+            - NOVNC=true
+            - USE_SELENIUM=2
+            - SCREEN_WIDTH=1024
+            - SCREEN_HEIGHT=768
+    
+    smtp:
+        image: mailhog/mailhog
+        networks:
+            - hexaa
+        container_name: smtp
+        ports:
+            - "1025:25"
+            - "8025:8025"
+        
+
+networks:
+    hexaa:
+        # Use this to pin the network bridge name (useful when using firewalls)
+        #driver_opts:
+            #com.docker.network.bridge.name: "br-hexaa"
+
+
+volumes:
+    hexaa_db_data:
+    hexaa_ui_source:
+    hexaa_backend_source:
+            

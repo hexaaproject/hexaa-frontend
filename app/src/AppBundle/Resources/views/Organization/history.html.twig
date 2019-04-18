@@ -1,0 +1,76 @@
+{% extends 'AppBundle:Organization:layout.html.twig' %}
+
+{% block container %}
+<h2>History</h2>
+    <div class="loader"></div>
+    <table class="datatable datatable-blue hidden" id="history">
+        <thead>
+        <tr>
+                <th>Title</th>
+                <th>Message</th>
+                <th>User</th>
+                <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.material.min.css" />
+    {% stylesheets
+    '@datatables_css'
+    'css/tables.css'
+    filter='cssrewrite'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts
+    '@datatables_js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        loader();
+        $(document).ready(function() {
+            var dataArray = [];
+            $.ajax({
+                url: "{{ path('app_organization_historyjson', { id: entity.id }) }}"
+            }).done(function(rawjson) {
+                var table = $('#history').DataTable({
+                    "dom": '<"top"f>rt<"bottom"ilp><"clear">',
+                    "language": {
+                        "search": ""
+                    },
+                    "process": true,
+                    "order": [[ 3, "desc" ]],
+                    "data": dataArray,
+                    "columns": [
+                        { "data": "title" },
+                        { "data": "message" },
+                        { "data": "principal_display_name" },
+                        { "data": "created_at" }
+                    ]
+                });
+                table.clear().draw();
+                table.rows.add(rawjson.items); // Add new data
+                table.columns.adjust().draw(); // Redraw the DataTable
+                loader('stop');
+                $('#history').removeClass('hidden');
+            }).fail(function() {
+                loader('stop');
+                alert('Error in load history');
+            });
+        } );
+    </script>
+{% endblock %}

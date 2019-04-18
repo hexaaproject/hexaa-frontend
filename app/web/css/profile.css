@@ -1,0 +1,157 @@
+
+#profilemain {
+    text-align: center;
+}
+
+.withoutpoints {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+table#profileproperties, #profileattributes {
+    width: 60%;
+    display: inline-table;
+    text-align: left;
+    padding-top: 30px;
+}
+
+#properties {
+    border: 0.2em solid #808080;
+    padding-top: 10px;
+}
+
+.accountbutton, .accountbutton-form {
+    width: 150px;
+    text-align: center;
+    margin-right: 100px;
+}
+
+.accountimage {
+    width: 100px;
+}
+
+.descriptionsprofile {
+    text-align: left;
+    padding-left: 11em;
+    padding-right: 1em;
+}
+
+.inlineprofile {
+    display: inline;
+    float: left;
+    padding-left: 1.5em;
+}
+
+#headerlabelprofile {
+    color: #61AFC5;
+    font-weight: bold;
+    font-size: 1.5em;
+    float: left;
+    font-family: Georgia;
+}
+
+.accordionattributes {
+    background-color: #808080;
+    color: #FFFFFF;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    margin-top: 0.5em;
+}
+
+.accordionattributes:before {
+    content: '\25BC';
+    font-size: 13px;
+    color: #FFFFFF;
+    float: right;
+}
+
+.accordionattributes.active {
+    color: #EA7E73;
+}
+
+.accordionattributes.active:before {
+    content: "\25B2";
+    font-size: 13px;
+    color: #FFFFFF;
+    float: right;
+}
+
+.panelattributes {
+    background-color: white;
+    display: none;
+    min-width: 130%;
+    transition: 0.4s;
+    padding: 10px;
+}
+
+.panelattributes.show {
+    display: inline-block;
+    text-align: left;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+.panelattributes p {
+    width: 100%;
+    display: inline-block;
+    text-align: left;
+}
+
+#profilPropertiesContainer{
+    border: 2px solid #61AFC5;
+    padding-bottom: 12px;
+    padding-right: 5px;
+    padding-top: 12px;
+    margin-bottom: 12px;
+    width: 550px;
+}
+
+form[name="profile_properties"]{
+}
+
+form[name="profile_properties"] .form-group{
+   padding-right: 60px;
+}
+
+form[name="profile_properties"] .form-control{
+    margin-right: 30px;
+}
+
+#profile_properties_principalName, #profile_properties_principalEmail, #profile_properties_adminFedID{
+    width: 300px;
+}
+
+#profile_properties_principalFedID{
+    color: #61AFC5;
+    height: 30px;
+    width: 300px;
+    border: none;
+    background: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+form[name="profile_properties"] .header{
+}
+
+.actionbutton{
+    cursor: pointer;
+    border: none;
+    background-color: white;
+}
+
+.profileformlabel {
+    display: inline;
+    font-weight: bold;
+    font-size: medium;
+    margin-top: 7px;
+}
+
+#profilProperties .header, #profilPropertiesContainer .header {
+    padding-left: 6px;
+}

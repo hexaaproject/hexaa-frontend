@@ -1,0 +1,190 @@
+
+.adminhref {
+    background-color: #2e2d2d;
+    position: relative;
+    padding-left: 8%;
+    font-size: medium;
+    border: #2e2d2d;
+    cursor: pointer;
+    display: inline-block;
+    height: 100%;
+    width: 200px;
+    text-align: center;
+    outline: 0;
+    text-decoration: none;
+    padding-top: 14px;
+}
+
+#hexaaHat.active {
+    background-color: #FA8072;;
+}
+
+.protip-skin-default--scheme-orange.protip-container{
+    background: orange!important;
+}
+
+.protip-skin-default--scheme-orange.protip-container .protip-arrow {
+    border-color: orange transparent transparent transparent!important;
+}
+
+.dropbtn, .servicecl {
+    background-color: #2e2d2d;
+    color: white;
+    position: relative;
+    padding-left: 8%;
+    font-size: medium;
+    border: #2e2d2d;
+    cursor: pointer;
+    display: inline-block;
+    height: 100%;
+    width: 200px;
+    text-align: center;
+    outline: 0;
+    text-decoration: none;
+}
+
+.adminhref:link, .usernamehref:link{
+    color: white;
+}
+.adminhref:visited, .usernamehref:visited{
+    color: white;
+}
+.adminhref:hover, .usernamehref:hover{
+    color: white;
+}
+.adminhref:focus, .usernamehref:focus{
+    color: white;
+}
+.adminhref:active, .usernamehref:active{
+    color: white;
+}
+
+.dropdowns {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    height: 100%;
+}
+
+#leftpanel {
+    float: left;
+    height: 100%;
+    display: inline-block;
+}
+
+.dropdown-content1, .dropdown-content2 {
+    display: none;
+    position: absolute;
+    background-color: #2e2d2d;
+    width: 200px;
+    z-index: 2;
+}
+
+.dropdown-content1 a, .dropdown-content2 a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+#menudiv {
+    margin-left: 12em;
+    height: 100%;
+}
+
+#menupoints {
+    padding-left: 15em;
+}
+
+.menupointsbutton:hover {
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.show {
+    display: block;
+}
+
+#topdivcontent {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#cornerlogobox {
+    display: inline-block;
+    position: absolute;
+    padding-top: 12px;
+    padding-bottom: 10px;
+}
+
+#cornerlogo {
+    height: 60%;
+    width: 70%;
+}
+
+#topdiv {
+    color: #ffffff;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-color: #2e2d2d;
+    height: 50px;
+    position: relative;
+}
+
+#loginstatus {
+    display: inline-block;
+    padding-top: 15px;
+    padding-right: 2em;
+    height: 100%;
+}
+
+#logout {
+    display: inline-block;
+    padding-right: 0.5em;
+    padding-top: 15px;
+    height: 100%;
+}
+
+#container {
+    float: right;
+    display: inline-block;
+    height: 100%;
+
+}
+
+#logpng {
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+@media only screen and (min-width: 481px) {
+    #hamburger {
+        display: none;
+    }
+
+    #hamburgerSelect {
+        display: none;
+    }
+
+    .dropdown {
+        display: none;
+    }
+
+    .panelaccordionhamburger {
+        display: none;
+    }
+
+    .link {
+        display: none;
+    }
+
+    .accordionhamburger {
+        display: none;
+    }
+
+    .linksubmenu {
+        display: none;
+    }
+
+}

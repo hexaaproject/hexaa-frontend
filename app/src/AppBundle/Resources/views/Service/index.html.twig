@@ -1,0 +1,151 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Service:index{% endblock %}
+
+{% block body %}
+	<div id="srvmenu">
+	    <div id="srvmenucontent">
+	        <span id="servicename">{{ service.name }}</span>
+	        <span id="srvmenupoints">
+	            <a class="srvlink{% if menu == "properties" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=properties">&nbsp;&nbsp;Properties&nbsp;&nbsp;</a>
+	            <a class="srvlink{% if menu == "managers" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=managers">&nbsp;&nbsp;Managers&nbsp;&nbsp;</a>
+	            <a class="srvlink{% if menu == "attributes" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=attributes">&nbsp;&nbsp;Attributes&nbsp;&nbsp;</a>
+	            <a class="srvlink{% if menu == "permissions" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=permissions">&nbsp;&nbsp;Permissions&nbsp;&nbsp;</a>
+	            <a class="srvlink{% if menu == "permissionsets" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=permissionsets">&nbsp;&nbsp;Permission sets&nbsp;&nbsp;</a>
+	            <a class="srvlink{% if menu == "connectedorganizations" %} srvlinkactive{% endif %}" href="service.php?id={{ service.id }}&menu=connectedorganizations">&nbsp;&nbsp;Connected organizations&nbsp;&nbsp;</a>
+	        </span>
+	    </div>          
+	</div>
+
+	<div id="srvmain">
+	    {% if menu == "main" %}
+	        <div id="maindivcontents">
+	            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="{{ asset('img/create_permission.svg') }}"/><br/> <p><b>Create permission</b></p></div>
+	            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="{{ asset('img/invite_organization.svg') }}"/><br/><p><b>Invite organization</b></p></div>
+	            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="{{ asset('img/add_attribute_specification.svg') }}"/><br/><p><b>Add attribute specification</b></p></div>
+	            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="{{ asset('img/invite_manager.svg') }}"/><br/><p><b>Invite manager</b></p></div>
+	            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="{{ asset('img/contact_admin.svg') }}"/><br/><p><b>Contact admin</b></p></div>
+	            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="{{ asset('img/view_history.svg') }}"/><br/><p><b>View history</b></p></div>
+	            <div class="desktopbuttonorg"><img class="desktopbuttonimage" src="{{ asset('img/delete_organization.svg') }}"/><br/><p><b>Delete service</b></p></div>
+	        </div>
+	    {% endif %}
+	    {% if menu == "properties" %}
+	        <table id="centertableservicesprop">
+	            <tr>
+	                <td class="uniqueproperty" style="background-color: #FFFFFF" width="110%" height="110%">
+	                    <div id="propertyname">
+	                        <b> Properties </b>
+	                        <button class="editproperty"></button>
+	                    </div>
+	                    <div >
+	                        <div class="inline"><b>Name</b></div>
+	                        <div class="descriptions" >{{service.name}}</div>
+	                    </div>
+	                    <div>
+	                        <div class="inline"><b>Description</b></div>
+	                        <div class="descriptions" >{{service.description}}</div>
+
+	                    </div>
+	                    <div>
+	                        <div class="inline"><b>Home Page</b></div>
+	                        <div class="descriptions">{{service.url}}</div>
+	                    </div>
+	                    <div>
+	                        <div class="inline"><b>SAML SP Entity ID</b></div>
+	                        <div class="descriptions">{{service.entityid}}</div>
+	                    </div>
+	                    <div>
+	                        <div class="inline"><b>Created</b></div>
+	                        <div class="descriptions">{{service.created_at}}</div>
+	                    </div>
+	                    <div>
+	                        <div class="inline"><b>Last updated</b></div>
+	                        <div class="descriptions">{{service.updated_at}}</div>
+	                    </div>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td class="uniquebuttons" style="background-color: #FFFFFF" width="110%" height="110%"></td>
+	            </tr>
+	            <tr>
+	                <td class="uniqueproperty" style="background-color: #FFFFFF" width="110%" height="110%">
+	                    <div id="propertyname">
+	                        <b> Owner Details </b>
+	                        <button class="editproperty"></button>
+	                    </div>
+	                    {% if service.org_name %}
+	                    <div >
+	                        <div class="inline"><b>Name</b></div>
+	                        <div class="descriptions" >{{service.org_name}}</div>
+	                    </div>
+	                    {% endif %}
+	                    
+	                    {% if service.org_short_name %}
+	                    <div>
+	                        <div class="inline"><b>Short name</b></div>
+	                        <div class="descriptions" >{{service.org_short_name}}</div>
+	                    </div>
+	                    {% endif %}
+	                    
+	                    {% if service.org_description %}
+	                    <div>
+	                        <div class="inline"><b>Description</b></div>
+	                        <div class="descriptions">{{service.org_description}}</div>
+	                    </div>
+	                    {% endif %}
+	                    
+	                    {% if service.org_url %}
+	                    <div>
+	                        <div class="inline"><b>Home page</b></div>
+	                        <div class="descriptions">{{service.org_url}}</div>
+	                    </div>
+	                    {% endif %}
+	                    
+	                </td>
+	            </tr>
+	            <tr>
+	                <td class="uniquebuttons" style="background-color: #FFFFFF" width="110%" height="110%"></td>
+	            </tr>
+	            <tr>
+	                <td class="uniqueproperty" style="background-color: #FFFFFF" width="110%" height="110%">
+	                    <div id="propertyname">
+	                        <b> Privacy Information </b>
+	                        <button class="editproperty"></button>
+	                    </div>
+	                    {% if service.priv_url %}
+	                    <div>
+	                        <div class="inline"><b>URL</b></div>
+	                        <div class="descriptions" >{{service.priv_url}}</div>
+	                    </div>
+	                    {% endif %}
+	                    {% if service.priv_description %}
+	                    <div>
+	                        <div class="inline"><b>Description</b></div>
+	                        <div class="descriptions" >{{service.priv_description}}</div>
+	                    </div>
+	                    {% endif %}
+	                </td>
+	            </tr>
+	        </table>
+	    {% endif %}
+
+	</div>
+
+	<script>
+	    var b = $(".servicecl");
+	    for (i = 0; i < b.length; i++) {
+	        b[i].style.backgroundColor = "#61AFC5";
+	        a=b[i].getElementsByTagName("a");
+	         for (j = 0; j < a.length; j++) {
+	             if(a[j].innerHTML=="Tesztelő szolgáltatás"){
+	                 a[j].style.backgroundColor = "#61AFC5";
+	             }
+	         }
+	    }
+	    var b2 = $(".dropbtn");
+	    for (i = 0; i < b2.length; i++) {
+	        b2[i].style.backgroundColor = "#2e2d2d";
+	    }
+
+	</script>
+{% endblock %}

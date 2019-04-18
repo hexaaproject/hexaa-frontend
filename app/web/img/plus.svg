@@ -1,0 +1,11 @@
+<svg id="profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+    <defs>
+        <style>.cls-1{fill:#333;}</style>
+    </defs>
+    <title>plus</title>
+    <g id="content">
+        <rect class="cls-1" x="7.79" width="2.42" height="18"/>
+        <rect class="cls-1" x="8513.78" y="10281.83" width="2.42" height="18"
+              transform="translate(10299.83 -8505.99) rotate(90)"/>
+    </g>
+</svg>

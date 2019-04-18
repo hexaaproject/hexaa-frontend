@@ -1,0 +1,64 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}HEXAA Organizations{% endblock %}
+
+{% block body %}
+    {% stylesheets
+        'css/organization.css'
+        filter='cssrewrite'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    {% if submenu is defined %}
+        {% if ismanager == "true" %}
+            {% set names = {
+                app_organization_properties: "Properties",
+                app_organization_users: "Users",
+                app_organization_roles: "Roles",
+                app_organization_connectedservices: "Connected services",
+                app_organization_history: "View history"
+                }
+            %}
+        {% else %}
+            {% set names = {
+            app_organization_properties: "Properties",
+            app_organization_users: "Users",
+            app_organization_roles: "Roles",
+            app_organization_history: "View history"
+            }
+            %}
+        {% endif %}
+    {% endif %}
+
+    {{ include('::navbar.html.twig') }}
+
+    <div class="entity-container">
+        <div class="container">
+            <div class="notification-area">
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                    <div class="flash-error flash">
+                        <h4>There was some failure!</h4>
+                        {{ flashMessage|raw }}
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <div class="flash-success flash">
+                        <h4>Success!</h4>
+                        {{ flashMessage|raw }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% block container %}{% endblock %}
+        </div>
+    </div>
+
+
+    <script>
+        var serv = $("#serv");
+        serv.css('background-color', "#333333");
+        var org = $("#org");
+        org.css('background-color', "#61AFC5");
+    </script>
+{% endblock %}

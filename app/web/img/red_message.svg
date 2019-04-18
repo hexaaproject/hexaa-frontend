@@ -1,0 +1,11 @@
+<svg id="vo_manager4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 16">
+    <defs>
+        <style>.cls-1{fill:#ea7e73;}</style>
+    </defs>
+    <title>red_message</title>
+    <g id="content">
+        <path class="cls-1"
+              d="M1291,8759.62h-16a2,2,0,0,0-2,2v12a2,2,0,0,0,2,2h16a2,2,0,0,0,2-2v-12A2,2,0,0,0,1291,8759.62Zm0,14h-16v-10l8,5,8-5v10Zm-8-7-8-5h16Z"
+              transform="translate(-1272.99 -8759.62)"/>
+    </g>
+</svg>

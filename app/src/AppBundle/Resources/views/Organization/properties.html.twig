@@ -1,0 +1,63 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block container %}
+    {% block stylesheets %}
+        {% stylesheets
+            'css/accordions.css'
+            'css/grid_panel.css'
+        filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+
+    {% javascripts
+    '@typeahead_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        $(document).ready(function() {
+            if ("{{ action }}" == "edit") {
+                edit();
+            }
+        });
+    </script>
+    {% if ismanager == false %}
+        {% set ismanager = 0 %}
+    {% endif %}
+    {{ include('::warning.html.twig', {url: path('app_organization_getwarnings', {id: entity.id, ismanager: ismanager }) }) }}
+
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-11">
+                {{ include('::grid_panel.html.twig', {
+                    heading: "Properties",
+                    buttonappear: "inline",
+                    main: entity,
+                    items: propertiesbox,
+                    changeedit: "property",
+                    changebutton: "property_button",
+                    panel_id: "1",
+                    form: propertiesform,
+                    error: error
+                    })
+                }}
+        </div>
+    </div>
+
+    {% if roles is defined and roles|length %}
+        <div class="row">
+            <div class="col-sm-offset-2 col-sm-11" style="padding-top: 12px;">
+                    {{ include('::accordions.html.twig', {
+                        formaccordion: 'notform',
+                        formtitle: 'notform',
+                        formpanel: 'notform',
+                        heading: "Roles",
+                        variant: "dark",
+                        items: roles
+                        })
+                    }}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

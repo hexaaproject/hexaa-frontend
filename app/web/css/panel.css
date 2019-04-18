@@ -1,0 +1,135 @@
+#propertiespanelnoedit {
+    font-size: medium;
+}
+
+#propertiespanel {
+    width: 930px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-left: 15px;
+    font-size: medium;
+}
+
+.propertyblockedit, .privacyblockedit, .ownerblockedit{
+    font-size: medium;
+}
+
+.propertyblocknoedit, .privacyblocknoedit, .ownerblocknoedit  {
+    border: 2px solid #61AFC5;
+    padding-bottom: 12px;
+    padding-right: 5px;
+    padding-top: 12px;
+    margin-bottom: 12px;
+}
+
+.propname {
+    display: inline;
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+}
+
+.property {
+    resize: vertical;
+}
+
+.areaname {
+    display: inline;
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+    margin-right: 45px;
+}
+
+#propdescription {
+    text-align: left;
+    padding-bottom: 0.5em;
+}
+
+#areadescription {
+    text-align: left;
+}
+
+.header {
+    text-align: left;
+    color: #61AFC5;
+    font-size: x-large;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-bottom: 0.5em;
+}
+
+.editbutton {
+    cursor: pointer;
+    border: none;
+    float: right;
+    background-color: white;
+    color: #ec666a;
+}
+
+.sendbutton, .sendownerbutton, .sendprivacybutton {
+    border: none;
+    background-color: white;
+    color: #61AFC5;
+}
+
+.form-control {
+    width: 500px;
+    display: inline;
+    margin-right: 165px;
+}
+
+.container {
+    text-align: left;
+}
+
+.formlabel {
+    display: inline;
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+}
+
+#row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+form[name="service_properties"] {
+}
+
+.propertyblockedit, .privacyblockedit, .ownerblockedit {
+    border: 2px solid #61AFC5;
+    padding-bottom: 12px;
+    padding-right: 5px;
+    padding-top: 12px;
+    margin-bottom: 12px;
+}
+
+.propertyblockedit .form-group {
+    margin-bottom: 0px;
+}
+
+form[name="service_owner"] {
+}
+
+form[name="service_privacy"] {
+}
+
+select[multiple] {
+    height: 90px;
+}
+
+#profilProperties{
+   /* width: 550px;*/
+    font-size: medium;
+   /* padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border: 2px solid #61AFC5;
+    margin-left: 15px;*/
+   /* border: 2px solid #61AFC5;
+    padding-bottom: 12px;
+    padding-right: 5px;
+    padding-top: 12px;
+    margin-bottom: 12px;*/
+}

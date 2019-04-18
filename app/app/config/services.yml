@@ -1,0 +1,78 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    organization:
+      class: AppBundle\Model\Organization
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    service:
+      class: AppBundle\Model\Service
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    principal:
+      class: AppBundle\Model\Principal
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    principals:
+      class: AppBundle\Model\Principals
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    role:
+      class: AppBundle\Model\Role
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    entitlement:
+      class: AppBundle\Model\Entitlement
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    entitlement_pack:
+      class: AppBundle\Model\EntitlementPack
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    attribute_spec:
+      class: AppBundle\Model\AttributeSpec
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    attribute_value_organization:
+      class: AppBundle\Model\AttributeValueOrganization
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    attribute_value_principal:
+      class: AppBundle\Model\AttributeValuePrincipal
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    invitation:
+      class: AppBundle\Model\Invitation
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    link:
+      class: AppBundle\Model\Link
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+    entity_id:
+      class: AppBundle\Model\EntityID
+      arguments: ["@guzzle.client.hexaa_api", "@security.token_storage"]
+      public: true
+
+    shibboleth.user.provider:
+      class: AppBundle\Security\User\ShibbolethUser
+      arguments: ["%shib_attribute_map%", "%hexaa_scoped_key%", "%hexaa_base_uri%", "@guzzle.client.hexaa_api", "@principal", "@session"]
+      public: true
+
+    guzzleclient.exceptionlistener:
+      class: AppBundle\EventListener\GuzzleClientExceptionListener
+      tags:
+        - { name: kernel.event_listener, event: kernel.exception }
+      arguments: ["@templating", "@router"]
+      public: true
+    login_listener:
+      class:  AppBundle\Controller\LoginListener
+      tags:
+        - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
+      public: true
+    Assetic\Filter\CssRewriteFilter: 
+        public: true
+

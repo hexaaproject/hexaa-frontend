@@ -1,0 +1,67 @@
+.progress {
+    border: 2px solid #61AFC5;
+    background-color: white;
+    box-shadow: none;
+}
+
+.progress-bar {
+    background-color: #61AFC5;
+    box-shadow: none;
+    padding-left: 20px;
+}
+
+.formcontainer {
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 2em;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #61AFC5;
+}
+
+.todo {
+    font-style: italic;
+    color: #61AFC5;
+    font-weight: bold;
+}
+
+.form-control {
+    display: block;
+    width: 400px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #61AFC5;
+    font-weight: bold;
+    font-style: italic;
+    background-color: #d1e0e0;
+    background-image: none;
+    border: 1px solid #61AFC5;
+    border-radius: 0px;
+}
+
+.form-group {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form-control::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #61AFC5;
+}
+
+.form-control::-moz-placeholder { /* Firefox 19+ */
+    color: #61AFC5;
+}
+
+.form-control:-ms-input-placeholder { /* IE 10+ */
+    color: #61AFC5;
+}
+
+.form-control:-moz-placeholder { /* Firefox 18- */
+    color: #61AFC5;
+}

@@ -1,0 +1,14 @@
+<svg id="service1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 159.71 160">
+    <defs>
+        <style>.cls-1{fill:#333;}.cls-2{fill:#ea7e73;}</style>
+    </defs>
+    <title>add_attribute_specification</title>
+    <g id="icons">
+        <path class="cls-1"
+              d="M1139.11,11013.76l55,152H1179.1l-14.9-43.86-0.92-2.71h-69.86l-1,2.65-15.76,43.93H1063l57.16-152h18.94m-41.9,94.26h61l-1.77-5.27-23.62-70.42-0.92-2.73h-6.12l-1,2.63-25.63,70.42-2,5.37m44.71-98.26H1117.4l-60.17,160h22.28l16.71-46.57h64.18l15.82,46.57h23.62l-57.94-160h0Zm-39,94.26,25.63-70.42H1129l23.62,70.42h-49.69Z"
+              transform="translate(-1040.15 -11009.76)"/>
+        <rect class="cls-2" x="14.8" width="4.59" height="34.18"/>
+        <rect class="cls-2" x="1054.94" y="11009.76" width="4.59" height="34.18"
+              transform="translate(11043.94 -1040.15) rotate(90)"/>
+    </g>
+</svg>

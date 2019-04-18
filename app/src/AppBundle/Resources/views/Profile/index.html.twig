@@ -1,0 +1,77 @@
+{% extends "::base.html.twig" %}
+{% block body %}
+    {% block container %}
+
+        {% block stylesheets %}
+            {% stylesheets
+            'css/panel.css'
+            filter='cssrewrite'
+            %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
+
+        <script>
+            function property() {
+                $(".noedit").addClass('hidden');
+                $(".edit").removeClass('hidden');
+            }
+
+            function cancelprofilproperty() {
+                $(".noedit").removeClass('hidden');
+                $(".edit").addClass('hidden');
+            }
+        </script>
+<div class="container">
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash" style="margin-top: 12px">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash" style="margin-top: 12px">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+        <div class="noedit" style="padding-top: 12px;">
+            <div class="col-sm-11 col-sm-offset-1" id="profilPropertiesContainer">
+                {{ include('::panel.html.twig', {profile: "true", styleOfContainer: "profilProperties", heading: "Properties", buttonappear: "inline", main: main, items: propertiesbox, changeedit:"property", changebutton:"property()", pencilid:"1" }) }}
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="accountbutton pull-right"><a href="{{ path('app_profile_history') }}" style="font-size: large;"> <img class="accountimage" alt="Account history" src="{{ asset('img/account_history.svg') }}"/><br/><br/>Account history</a></div>
+        </div>
+
+        <div style="padding-top: 12px;" class="edit hidden">
+        <div class="col-sm-11 col-sm-offset-1 profilPropertiesEdit" id="profilPropertiesContainer">
+            {{ form_start(profilePropertiesForm) }}
+            <div class="header">
+                Properties
+                <button type="submit" class="sendbutton pull-right" alt="done-1" id="done1"><i
+                            class="material-icons" alt="done-1" name="done-1">done</i></button>
+                <button type="button" id="cancelbutton" class="actionbutton pull-right" onclick="cancelprofilproperty()"><i
+                            class="material-icons">clear</i></button>
+            </div>
+            <div class="row">
+                {{ form_row(profilePropertiesForm.principalName) }}
+            </div>
+            <div class="row">
+                {{ form_row(profilePropertiesForm.principalEmail) }}
+            </div>
+            <div class="row">
+                {{ form_row(profilePropertiesForm.principalFedID) }}
+            </div>
+
+            {{ form_end(profilePropertiesForm) }}
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="accountbutton-form pull-right"><a href="{{ path('app_profile_history') }}"> <img class="accountimage" alt="Account history" src="{{ asset('img/account_history.svg') }}"/><br/><br/>Account history</a></div>
+        </div>
+        {% if attributeValuesToAccordion is not empty %}
+            <div class="col-sm-13" style="margin-top: 12px; margin-left: 35px">
+                {{ include('::accordions.html.twig', {profile: 'true', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter:'null', heading: "Expected attributes of services", variant: "light", items: attributeValuesToAccordion }) }}
+            </div>
+        {% endif %}
+</div>
+    {% endblock %}
+{% endblock %}

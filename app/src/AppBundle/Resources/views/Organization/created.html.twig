@@ -1,0 +1,38 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block title %}Add organization{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'css/progressbar.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block container %}
+
+    <div id="fifth" class="progresswrapper">
+        <div class="row">
+            <div class="col-md-11 col-md-offset-2">
+                {{ include('::progressbar.html.twig',
+                {
+                    header: 'Create virtual organization',
+                    percent: 100,
+                    next_button_color: 'red',
+                }
+                ) }}
+            </div>
+        </div>
+        <div class="col-md-11 col-md-offset-2" style="text-align: center">
+            <div style="color:#EA7373; font-weight:bold; font-size: larger">Your organization is done.</div>
+            <p>
+                <a href="{{ path('app_organization_show', {'id': neworg.id}) }}"
+                   style="color:#EA7373; font-weight:bold; font-size: larger">Get your new organization</a>
+            </p>
+            <img src="{{ asset('img/mosoly.PNG') }}"></img>
+        </div>
+    </div>
+
+{% endblock %}
+

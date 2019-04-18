@@ -1,0 +1,188 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    - { resource: fonts.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+framework:
+    #esi:             ~
+    #translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    # session:
+    #     # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+    #     handler_id:  session.handler.native_file
+    #     save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    session:         ~
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    form_themes:
+        - 'form/fields.html.twig'
+services:
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+assetic:
+    bundles:
+        - AppBundle
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+    assets:
+        datatables_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/datatables/datatables/media/css/jquery.dataTables.css"
+                - "%kernel.root_dir%/../vendor/datatables/datatables/media/css/dataTables.material.css"
+            filters: [cssrewrite]
+        datatables_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.js"
+                - "%kernel.root_dir%/../vendor/datatables/datatables/media/js/dataTables.material.js"
+        instafilta_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/chromawoods/instaFilta/instafilta.js"
+        jquery_bootpag_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/botmonster/jquery-bootpag/lib/jquery.bootpag.js"
+        bootstrap_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.css"
+            filters: [cssrewrite]
+        bootstrap_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.js"
+        jquery_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/components/jquery/jquery.js"
+        material_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/mervick/material-design-icons/css/material-icons.css"
+        material_fonts_eot:
+            inputs:
+                - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.eot'
+            output: fonts/MaterialIcons-Regular.eot
+        material_fonts_svg:
+            inputs:
+                - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.svg'
+            output: fonts/MaterialIcons-Regular.svg
+        material_fonts_ttf:
+            inputs:
+                - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.ttf'
+            output: fonts/MaterialIcons-Regular.ttf
+        material_fonts_woff:
+            inputs:
+                - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.woff'
+            output: fonts/MaterialIcons-Regular.woff
+        material_fonts_woff2:
+            inputs:
+                - '%kernel.root_dir%/../vendor/mervick/material-design-icons/fonts/MaterialIcons-Regular.woff2'
+            output: fonts/MaterialIcons-Regular.woff2
+        typeahead_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twitter/typeahead.js/dist/typeahead.jquery.js"
+        bloodhound_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twitter/typeahead.js/dist/bloodhound.js"
+        bootstrap_tagsinput_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/huynguyen/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"
+        bootstrap_tagsinput_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/huynguyen/bootstrap-tagsinput/dist/bootstrap-tagsinput.css"
+            filters: [cssrewrite]
+        protip_min_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/DoclerLabs/Protip/protip.min.js"
+        protip_min_css:
+            inputs:
+                - "%kernel.root_dir%/../vendor/DoclerLabs/Protip/protip.min.css"
+            filters: [cssrewrite]
+
+
+
+# Doctrine Configuration
+# doctrine:
+#     dbal:
+#         driver:   pdo_mysql
+#         host:     "%database_host%"
+#         port:     "%database_port%"
+#         dbname:   "%database_name%"
+#         user:     "%database_user%"
+#         password: "%database_password%"
+#         charset:  UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+
+    # orm:
+    #     auto_generate_proxy_classes: "%kernel.debug%"
+    #     naming_strategy: doctrine.orm.naming_strategy.underscore
+    #     auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    port:      "%mailer_port%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+niif_shib_auth:
+    # baseURL:          "%shib_auth_base_url%" # optional, have default value:  /Shibboleth.sso/
+    # sessionInitiator: "%shib_auth_session_initiator%" # optional, have default value: Login
+    # logoutPath:       "%shib_auth_logout_path%" # optional, have default value: Logout
+    # logoutReturnPath:       "%shib_auth_logout_return_path%" # optional, have default value: "/"
+    logoutReturnPath:  "%shib_auth_logout_return_path%" # optional, have default value: "/"
+    usernameAttribute: "%shib_auth_username_attribute%" # optional, have default value: REMOTE_USER
+    moduleAttribute:   "%shib_auth_module_attribute%"   # optional, has default value: HTTP_SHIB_APPLICATION_ID
+
+
+guzzle:
+    # (de)activate logging/profiler; default: %kernel.debug%
+    logging: true
+
+    clients:
+        hexaa_api:
+            base_url: "%hexaa_base_uri%"
+
+            # custom headers (@deprecated, will be removed in v6; new: "headers" in options (see below))
+            headers:
+                Accept: "application/json"
+
+            # guzzle client options (full description here: https://guzzle.readthedocs.org/en/latest/request-options.html)
+            # NOTE: "headers" option is not accepted here as it is provided as described above.
+            options:
+                headers:
+                    Accept: "application/json"
+
+                timeout: 30

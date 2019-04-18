@@ -1,0 +1,120 @@
+{% extends "AppBundle:Admin:layout.html.twig" %}
+
+{% block container %}
+    {% block stylesheets %}
+        {% stylesheets
+        'css/accordions.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+
+    {% javascripts
+    '@instafilta_js'
+    '@jquery_bootpag_js'
+    'js/loader.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        $(document).ready(function () {
+            $('#hexaaSearchFieldEntityIDs').instaFilta({
+                onFilterComplete: function(matchedItems) {
+                    var allnum = {{ total_number|json_encode }}
+                    if (allnum != matchedItems.length) {
+                        $('#1').addClass('hidden');
+                        {% if total_pages != 1 %}
+                            {% for i in (1..total_pages) %}
+                                $("#" +{{ i }}).addClass("hidden");
+                            {% endfor %}
+                        {% endif %}
+
+                        $('#toSearch').removeClass('hidden');
+                        $('.show_paginator').addClass('hidden');
+                        loader('stop');
+                    }
+                    if (allnum == matchedItems.length) {
+                        if(!($('#toSearch').hasClass('hidden'))){
+                            $('#toSearch').addClass('hidden');
+                            $('#1').removeClass('hidden');
+                            $('.show_paginator').removeClass('hidden');
+                           // stop();
+                            loader('stop');
+                        }
+                    }
+                    loader('stop');
+                }
+            });
+
+            $('#hexaaSearchFieldEntityIDs').keyup(function(){
+                loader();
+                $(".caretbutton").each(function (index) {
+                    if ($(this).text() == 'arrow_drop_up') {
+                        $(this).text('arrow_drop_down');
+                    }
+                });
+                $( ".accordion-panel" ).each(function( index ) {
+                    $( this ).css({ 'display': "none" });
+                });
+            });
+
+            $('.show_paginator').bootpag({
+                total: {{ total_pages }},
+                page: 1,
+                maxVisible: 5,
+                leaps: false,
+                firstLastUse: true,
+                first: '←',
+                last: '→',
+                wrapClass: 'pagination',
+                activeClass: 'active',
+                disabledClass: 'disabled',
+                nextClass: 'next',
+                prevClass: 'prev',
+                lastClass: 'last',
+                firstClass: 'first'
+
+            }).on('page', function(event, num)
+            {
+                {% if total_pages != 1 %}
+                    {% for i in (1..total_pages) %}
+                        $("#"+{{ i }}).addClass("hidden");
+                    {% endfor %}
+                {% endif %}
+                $("#"+num).removeClass("hidden"); // or some ajax content loading...
+            });
+
+        });
+
+    </script>
+
+    <div class="col-sm-11 col-sm-offset-2" id="animate-bottom">
+        <div class="row" style="padding-left: 15px;">
+            <input id="hexaaSearchFieldEntityIDs" type="text" name="filter" class="hexaaSearchField pull-left"
+               placeholder="Search entity IDs">
+            <div class="loader"></div>
+        </div>
+
+        {% if total_pages != 1 %}
+            <div class="show_paginator"></div>
+        {% endif %}
+    </div>
+    <div class="col-sm-11 col-sm-offset-2" id="mainaccordionplace" {% if total_pages != 1 %} style="margin-top: 5px" {% else %} style="margin-top: 12px" {% endif %}>
+        <div id="1">
+            {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[0] }) }}
+        </div>
+        {% if total_pages != 1 %}
+            {% for i in (1..total_pages-1) %}
+                <div class="hidden" id="{{ i+1 }}">
+                    {{ include('::accordions.html.twig', {formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: "Entity IDs", variant: "dark", items: entityids_accordion[i] }) }}
+                </div>
+            {% endfor %}
+            <div class="show_paginator"></div>
+        {% endif %}
+        <div class="hidden" id="toSearch">
+            {{ include('::accordions.html.twig', { classToFilter:'admin_entity_search', formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', heading: 'Entity IDs', variant: 'dark', items: all_entityid }) }}
+        </div>
+    </div>
+
+{% endblock %}

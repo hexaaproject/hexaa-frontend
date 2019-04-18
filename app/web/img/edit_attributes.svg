@@ -1,0 +1,14 @@
+<svg id="vo_manager1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+    <defs>
+        <style>.cls-1{fill:#333;}.cls-2{fill:#61afc5;}</style>
+    </defs>
+    <title>edit_attributes</title>
+    <g id="icons">
+        <path class="cls-1"
+              d="M1086.38,5279.29l-16.71,46.57h-22.28l60.17-160h24.51l57.94,160h-23.62l-15.82-46.57h-64.18Zm56.38-19.16-23.62-70.42h-0.45l-25.63,70.42h49.69Z"
+              transform="translate(-1030 -5165.87)"/>
+        <path class="cls-2"
+              d="M1030,5197v6.91h6.91l20.39-20.39-6.91-6.91Zm32.64-18.82a1.84,1.84,0,0,0,0-2.6l-4.31-4.31a1.84,1.84,0,0,0-2.6,0l-3.37,3.37,6.91,6.91Z"
+              transform="translate(-1030 -5165.87)"/>
+    </g>
+</svg>

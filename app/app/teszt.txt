@@ -1,0 +1,1 @@
+Ez a fájl azért van itt, hogy tesztelhessem vele a gerritet.

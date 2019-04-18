@@ -1,0 +1,144 @@
+{{ include('::modal.html.twig',
+    {
+        id: 'invite_1',
+        title: 'Create invitation',
+        button:
+            {
+                text: 'Create',
+                class: 'btn-blue'
+            },
+        leftbutton:
+            {
+                text: 'Cancel',
+                class: 'btn-blue',
+                id: "invite_1_cancel",
+                dismiss: true
+            },
+        bodycontent: form_start(inviteForm)
+                    ~ form_row(inviteForm.role)
+                    ~ form_row(inviteForm.limit)
+                    ~ form_row(inviteForm.landing_url)
+                    ~ form_row(inviteForm.start_date)
+                    ~ form_row(inviteForm.end_date)
+                    ~ form_end(inviteForm)
+    })
+}}
+
+{{ include('::modal.html.twig',
+    {
+            id: 'invite_2',
+            title: 'Your invitation is done',
+            button:
+            {
+                text: 'Done',
+                class: 'btn-red',
+                id: 'sendinvitation'
+            },
+            leftbutton:
+            {
+                text: 'Close',
+                dismiss: true
+            },
+            bodycontent: form_start(sendInEmailForm)
+                ~ form_row(sendInEmailForm.link)
+                ~ '<div class="col-md-5"><button class="btnhexaa btn-blue btn-block copy" title="Copied!" type="button" data-clipboard-target="#organization_user_invitation_send_email_link" data-trigger="click">Copy</button></div>'
+                ~ form_row(sendInEmailForm.emails)
+                ~ form_row(sendInEmailForm.message)
+                ~ form_end(sendInEmailForm)
+    })
+}}
+<script>
+    $(document).ready(function () {
+
+        var copy = new Clipboard('.copy');
+        $('.copy').tooltip();
+
+        function submitFormByAjax(form, callback) {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize()
+            })
+            .done(function (data) {
+                callback(data);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                console.log('fail');
+                if (typeof jqXHR.responseJSON !== 'undefined') {
+                    if (jqXHR.responseJSON.hasOwnProperty('form')) {
+                        $('#form_body').html(jqXHR.responseJSON.form);
+                    }
+
+                    $('.form_error').html(jqXHR.responseJSON.message);
+
+                } else {
+                    console.log(errorThrown);
+                }
+
+            });
+        }
+
+        function invitationDone(data) {
+            $('#invite_1').modal('hide');
+            $('#invite_2').modal({backdrop: 'static'});
+            $('#organization_user_invitation_send_email_link').val(data.link);
+        }
+
+        {% if not inviteForm.vars.valid %}
+            $('#invite_1').modal({backdrop: 'static'});
+        {% endif %}
+
+        $(document).on('click', 'button#invite', function (event) {
+            event.preventDefault();
+            $('#invite_1').modal({backdrop: 'static'});
+        });
+
+        var form = $('form[name=organization_user_invitation]');
+        form.validate();
+
+        $(document).on('click', '.modal#invite_1 button[type=submit]', function (event) {
+            event.preventDefault();
+            var startDate = new Date(
+                $('#organization_user_invitation_start_date_year').val(),
+                $('#organization_user_invitation_start_date_month').val(),
+                $('#organization_user_invitation_start_date_day').val()
+            );
+            var endDate = new Date(
+                $('#organization_user_invitation_end_date_year').val(),
+                $('#organization_user_invitation_end_date_month').val(),
+                $('#organization_user_invitation_end_date_day').val()
+            );
+            if (startDate > endDate) {
+                $('#organization_user_invitation_end_date').after('<p class="help-block has-error">Invalid date range.</p>')
+                return;
+            }
+            if (! form.valid()) {
+                return;
+            }
+            $(this).closest('.modal-footer').append('<i class="mdi mdi-sync"></i>'); // progress
+            $('#organization_user_invitation_send_email_role_id').val($('#organization_user_invitation_role').val());
+            submitFormByAjax(form, invitationDone);
+        });
+
+        $(document).on('click', '.modal#invite_2 button[type=submit]', function (event) {
+            event.preventDefault();
+            $('form[name=organization_user_invitation_send_email]').submit();
+        });
+
+        $(document).on('click', '.modal#invite_2 button#rightbutton', function (event) {
+            event.preventDefault();
+            $('#invite_2').modal('hide');
+            $('#invite_1').modal('show');
+        });
+
+        $('#organization_user_invitation_send_email_message').hide();
+
+        $(document).on('keyup', '#organization_user_invitation_send_email_emails', function (event) {
+            if ($('#organization_user_invitation_send_email_emails').val().length) {
+                $('#organization_user_invitation_send_email_message').show();
+            } else {
+                $('#organization_user_invitation_send_email_message').hide();
+            }
+        });
+    });
+</script>

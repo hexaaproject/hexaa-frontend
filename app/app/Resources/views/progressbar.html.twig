@@ -1,0 +1,49 @@
+{#
+
+usage in twig example:
+
+{{ include('::progressbar.html.twig',
+    {
+        header: 'Create virtual organization',
+        prev_id: 'first',
+        percent: 20,
+        next_id: 'third',
+        next_button_id: 'next-2',
+        next_button_color: 'red'
+     }
+    )
+}}
+
+#}
+{% set next_button_class="btn-blue" %}
+{% if next_button_color is defined %}
+    {% set next_button_class="btn-" ~ next_button_color %}
+{% endif %}
+
+<div class="row">
+    <span class="progressbar-header" style="display: inline-block; vertical-align: middle;  margin-top: 5px; {% if protiptext is defined %} margin-top: 0px; {% endif %}">{{ header }} </span>
+    {% if protiptext is defined %}
+        <button type="button" id="help" class="actionbutton protip" style="outline: none; margin-top: 5px;" data-pt-arrow="true" data-pt-scheme="blue" data-pt-gravity="true" data-pt-title="{{ protiptext }}" ><i class="material-icons" style="font-size: 22px; color: #369; vertical-align: middle">help</i></button>
+    {% endif %}
+    <span class="pull-right">
+        {% if prev_id is defined %}
+            <button id="back" class="stepper btnhexaa btn-blue" data-target="{{ prev_id }}" type="button">Back</button>
+        {% endif %}
+        {% if next_id is defined %}
+            <button {% if next_button_id is defined %} id="{{ next_button_id }}" {% endif %} class="stepper nextstepper btnhexaa {{ next_button_class }}" data-target="{{ next_id }}" type="button" disabled >Next</button>
+        {% endif %}
+        {% if done is defined and done =='finish' %}
+            <input class="btnhexaa {{ next_button_class }}" type="submit" role="button" value="Finish"></input>
+        {% endif %}
+        {% if done is defined and done =='next' %}
+            <input class="btnhexaa {{ next_button_class }}" id="next" type="submit" role="button" value="Next"></input>
+        {% endif %}
+    </span>
+</div>
+<div class="row" style="margin-top: 12px;">
+    <div class="progress">
+        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="{{ percent }}"
+             aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%;">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,123 @@
+{% extends "AppBundle:Organization:layout.html.twig" %}
+
+{% block container %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-success flash">
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+
+    {% block stylesheets %}
+        {% stylesheets
+            'css/accordions.css'
+            'css/grid_panel.css'
+            '@protip_min_css'
+        filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+
+    {% javascripts
+    '@instafilta_js'
+    '@protip_min_js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+
+        function showCreateForm(){
+            $('#newConnectionForm').removeClass('hidden');
+            $('#actionButtons').addClass('hidden');
+            $('#panel_container').find('form').attr("id", "current_form");
+            $('#current_form').find('input:first').focus();
+        }
+
+        function cancel(){
+            $('#actionButtons').removeClass('hidden');
+            $('#newConnectionForm').addClass('hidden');
+        }
+
+        {% if action == "create" %}
+            $(document).ready(function () {
+                showCreateForm();
+            });
+        {% endif %}
+
+        $(document).ready(function () {
+
+            $.protip();
+            var tooltip = $('.actionbutton');
+            tooltip.protipSet({
+                trigger: 'click'
+            });
+
+            $('#hexaaSearchFieldPermissionSet').instaFilta();
+            $('#hexaaSearchFieldPermissionSet').keypress(function(){
+                $(".caretbutton").each(function (index) {
+                    if ($(this).text() == 'arrow_drop_up') {
+                        $(this).text('arrow_drop_down');
+                    }
+                });
+                $( ".accordion-panel" ).each(function( index ) {
+                    $( this ).css({ 'display': "none" });
+                });
+            });
+        });
+
+    </script>
+    {{ include('::warning.html.twig', {url: path('app_organization_getwarnings', {id: entity.id, ismanager: ismanager}) }) }}
+    <div class="col-sm-16 col-sm-offset-0" id="actionButtons">
+        <input type="" id="hexaaSearchFieldPermissionSet" class="hexaaSearchField" name="" placeholder="Search service or manager">
+        <button class="btnhexaa btn-red pull-right" onclick="showCreateForm()" {% if manager == false %} disabled {% endif %}><i class="material-icons" aria-hidden="true">add</i> Connect service</button>
+    </div>
+
+
+    <div id="newConnectionForm" class="col-md-9 col-md-offset-3 hidden">
+        <div class="grid_panel">
+            <div class="header">
+                Connect service
+                <div class="pull-right">
+                    <button type="button" id="cancelbutton" class="actionbutton" onclick="cancel()"><i class="material-icons">clear</i></button>
+                    <button type="submit" id="submitbutton" class="actionbutton" onclick="$('#current_form').submit();" ><i class="material-icons">done</i></button>
+                </div>
+            </div>
+            <div id="panel_container">
+                {{ form_start(form) }}
+                {% for key, field in form  %}
+                    <div class="row {% if ("_token" == key) %} hidden {% endif %}" style="padding-top: 12px;">
+                        <div class="col-sm-2 formlabel" style="margin-top:7px;">{{ form_label(field) }}</div>
+                        <button type="button" id="help" class="actionbutton protip col-sm-1" style="outline: none; margin-top: 3px;" data-pt-arrow="true" data-pt-scheme="blue" data-pt-gravity="true" data-pt-title="Tokens are acquired from the administrators of a Service." ><i class="material-icons" style="font-size: 22px; color: #369; vertical-align: middle">help</i></button>
+                        <div class="col-sm-11"> {{ form_widget(field) }}</div>
+                        {% if field.vars.errors|length %}
+                            <div class="col-sm-offset-3 col-sm-11 has-error">{{ field.vars.errors|length }}</div>
+                        {% endif %}
+
+                    </div>
+                {% endfor %}
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {%  if services_accordion %}
+            <div class="col-sm-7" style="margin-top: 20px">
+                {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter: "service_connected_org_search", heading: "Connected permission sets", variant: "light", items: services_accordion }) }}
+            </div>
+            <div class="col-sm-1"></div>
+        {% endif %}
+        {% if entitlements_accordion %}
+            <div class="col-sm-7" style="margin-top: 20px">
+                {{ include('::accordions.html.twig', { formaccordion: 'notform', formtitle: 'notform', formpanel: 'notform', classToFilter: "service_connected_org_search", heading: "Connected permissions", variant: "light", items: entitlements_accordion }) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

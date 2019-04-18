@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}HEXAA{% endblock %}</title>
+
+
+    {% block stylesheets %}
+    {% endblock %}
+
+    {% stylesheets
+    '@bootstrap_css'
+    '@material_css'
+    '@opensans_css'
+    'css/fonts.css'
+    'css/hexaagrid.css'
+    'css/mainpage.css'
+    'css/menu.css'
+    'css/profile.css'
+    'css/mobile.css'
+    'css/buttons.css'
+    'css/navbarwidget.css'
+    'css/mainnavbar.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ asset('apple-touch-icon-57x57.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ asset('apple-touch-icon-114x114.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ asset('apple-touch-icon-72x72.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ asset('apple-touch-icon-144x144.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="{{ asset('apple-touch-icon-60x60.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ asset('apple-touch-icon-120x120.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{ asset('apple-touch-icon-76x76.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ asset('apple-touch-icon-152x152.png') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon-196x196.png') }}" sizes="196x196" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon-16x16.png') }}" sizes="16x16" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon-128.png') }}" sizes="128x128" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="{{ asset('mstile-144x144.png') }}" />
+    <meta name="msapplication-square70x70logo" content="{{ asset('mstile-70x70.png') }}" />
+    <meta name="msapplication-square150x150logo" content="{{ asset('mstile-150x150.png') }}" />
+    <meta name="msapplication-wide310x150logo" content="{{ asset('mstile-310x150.png') }}" />
+    <meta name="msapplication-square310x310logo" content="{{ asset('mstile-310x310.png') }}" />
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% javascripts
+    '@jquery_js'
+    '@bootstrap_js'
+    'js/jquery.validate.js'
+    'js/loader.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+</head>
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('homepage') }}">
+                <img id="cornerlogo" src="{{ asset('img/hexaa-logo-blue.png') }}" alt="hexaa logo"/>
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                {% if organizations is defined and organizations.item_number > 0 %}
+                    <li class="dropdown" id="org">
+                        <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Organizations
+                            <span class="caret"> </span></a>
+                        {% if organizations.items != null %}
+                            <ul class="dropdown-menu">
+                                {% for organization in organizations.items %}
+                                    {% if hexaaHat == "active" %}
+                                        <li>
+                                            <a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a>
+                                        </li>
+                                    {% else %}
+                                        {% for orgWhereManager in organizationsWhereManager %}
+                                            {% if orgWhereManager.id == organization.id %}
+                                                <li>
+                                                    <a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a>
+                                                </li>
+                                                {% set manager = "true" %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if manager == "false" %}
+                                            <li>
+                                                <a href="{{ path("app_organization_properties", { id: organization.id }) }}">{{ organization.name|e }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% set manager = "false" %}
+                                    {% endif %}
+                                    {# <li><a href="{{ path("app_organization_show", { id: organization.id }) }}">{{ organization.name|e }}</a></li>#}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endif %}
+                {% if services is defined and services.item_number > 0 %}
+                    <li class="dropdown" id="serv">
+                        <a class="dropdown-toggle" id="fullfill" data-toggle="dropdown" href="#">Services
+                            <span class="caret"> </span></a>
+                        {% if services.items != null %}
+                            <ul class="dropdown-menu">
+                                {% for service in services.items %}
+                                    <li>
+                                        <a href="{{ path("app_service_show", { id: service.id }) }}">{{ service.name|e }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endif %}
+                {% if admin is defined and (admin == "true" or admin == "1") %}
+                    <li id="admin" {% if app.request.get('_route') starts with "app_admin" %} class="active" {% endif %}>
+                        <a
+                                id="fullfill" href="{{ path("app_admin_attributes", { admin: admin }) }}">Admin</a></li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if admin is defined and (admin == "true" or admin == "1") %}
+                    <li><a id="hexaaHat" class={{ hexaaHat }}  style="height:53px;" href="{{ path('app_default_hexaaadmin', { hexaaHat: 'active'}) }}"><i class="material-icons" style=" color: white;">visibility</i></a></li>
+                {% endif %}
+                <li><a href="{{ path("app_profile_index") }}">{{ app.user.username }}</a></li>
+                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li><a href="{{ path('app_default_login') }}" id="login_button" role="button">
+                            <img id="logpng" src="{{ asset('img/logout.png') }}">
+                        </a></li>
+                {% else %}
+                    <li><a href="{{ logout_path('default') }}" id="logout_button" role="button">
+                            <img id="logpng" src="{{ asset('img/logout.png') }}">
+                        </a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% block alertcontainer %}
+    <div class="alert-danger alert alertContainer hidden">
+        Alert <div id="alert"></div>
+    </div>
+{% endblock %}
+
+<div class="body-container">
+{% block body %}
+{% endblock %}
+</div>
+
+<script>
+    $(document).ready(function () {
+        /* jquery.validate defaults */
+        $.validator.setDefaults({
+            errorClass: "help-block has-error",
+            errorElement: "p"
+        });
+
+        // tooltip init
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    });
+
+    function alert(message) {
+        $('#alert').text(message);
+        $('.alertContainer').removeClass('hidden');
+    }
+
+</script>
+{% block javascripts %}
+{% endblock %}
+
+</body>
+</html>

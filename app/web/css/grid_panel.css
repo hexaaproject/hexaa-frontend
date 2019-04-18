@@ -1,0 +1,45 @@
+.grid_panel {
+    border: 2px solid #61AFC5;
+    padding-bottom: 12px;;
+    padding-right: 5px;
+    padding-top: 12px;
+    margin-bottom: 12px;
+}
+
+.header {
+    text-align: left;
+    color: #61AFC5;
+    font-size: x-large;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-bottom: 0.5em;
+}
+
+.editbutton {
+    color: #ec666a;
+}
+.actionbutton {
+    cursor: pointer;
+    border: none;
+    background-color: white;
+}
+
+.propname {
+    display: inline;
+    font-weight: bold;
+    padding-left: 1.75em;
+    padding-bottom: 0.5em;
+}
+
+#propdescription {
+    text-align: left;
+    padding-bottom: 0.5em;
+}
+
+#areadescription {
+    text-align: left;
+}
+
+#panel_container {
+    font-size: medium;
+}

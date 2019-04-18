@@ -1,0 +1,31 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+
+    # A secret key that's used to generate certain security-related tokens
+    secret:            ThisTokenIsNotSoSecretChangeIt
+
+    shib_auth_username_attribute: eduPersonPrincipalName
+    shib_auth_module_attribute: HTTP_SHIB_APPLICATION_ID
+    shib_attribute_map:
+        eppn: eduPersonPrincipalName
+        displayName: displayName
+        email: mail
+    shib_auth_logout_return_path: homepage
+    hexaa_base_uri: http://hexaa-backend/api/
+    hexaa_permissionprefix: 'some:entitlement:prefix:hexaa'
+    # to be acquired from hexaa_backend_dir/app/config/parameters.yml
+    hexaa_scoped_key: InsertSomeSecretHere
+    invitation_config:
+        subject: "[HEXAA] invitation"
+        from: "no_reply@hexaa.eduid.hu"
+        reply-to: "no_reply@hexaa.eduid.hu"
+        footer: "sincerely: hexaa.eduid.hu"
+    mailer_transport: smtp
+    mailer_host: smtp
+    mailer_port: 1025
+    mailer_user: ~
+    mailer_password: ~
+    
+    sentry_dsn: ${SENTRY_DSN}

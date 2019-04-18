@@ -1,0 +1,69 @@
+@media only screen and (max-width: 480px) {
+    #maindiv, #logout, #maindivafterlogin, #maintables, .hr {
+        display: none;
+    }
+
+    #welcomediv {
+        color: #FFFFFF;
+        text-align: center;
+        padding-top: 3%;
+        padding-bottom: 3%;
+        background: linear-gradient(to right, #a5d5bc, #4377a7);
+        height: 90vh;
+        position: relative;
+    }
+
+    .mobilebutton {
+        border: white 1px solid;
+        padding: 2%;
+        width: 90%;
+        margin: 5% auto;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    #mobilemaincontrols {
+        display: inline-block;
+    }
+
+    .dropdowns {
+        display: none;
+    }
+
+    #hamburger {
+
+        border: none;
+        width: 45px;
+        height: 100%;
+        background-size: cover;
+        display: inline-block;
+        vertical-align: middle;
+        cursor: pointer;
+        float: right;
+        background-color: #2e2d2d;
+    }
+
+    .white {
+        color: white;
+        background-color: #2e2d2d;
+        font-size: 25px;
+    }
+
+    #menudiv {
+        margin-left: 0em;
+
+    }
+
+    #topdiv {
+        padding-left: 0%;
+    }
+
+    #cornerlogo {
+        margin-left: 2%;
+    }
+
+    .dropdown {
+        display: inline-block;
+    }
+
+}

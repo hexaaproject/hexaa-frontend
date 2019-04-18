@@ -1,0 +1,31 @@
+{% extends "AppBundle:Service:layout.html.twig" %}
+
+{% block title %}Enable service{% endblock %}
+
+{% block container %}
+
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="flash-error flash">
+            <h4>There was some failure!</h4>
+            {{ flashMessage|raw }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="col-md-11 col-md-offset-2" style="text-align: center">
+            <div class="success"><strong>{{ flashMessage|raw }}</strong></div>
+            <br>
+            <img src="{{ asset('img/mosoly.PNG') }}" style="width: 30%;"></img>
+        </div>
+    {% endfor %}
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    </script>
+{% endblock %}
+
+
