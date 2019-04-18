@@ -21,7 +21,7 @@ services:
             - hexaa
         restart: always
     frontend:
-        image: docker.hbit.sztaki.hu:5000/hexaa/hexaa-frontend:staging
+        image: hexaaproject/hexaa-frontend:staging
         networks:
             - hexaa
         env_file: settings.env

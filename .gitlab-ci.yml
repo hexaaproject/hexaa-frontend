@@ -2,9 +2,11 @@
 image: gitlab/dind
 
 variables:
-  CONTAINER_TEST_IMAGE: docker.hbit.sztaki.hu:5000/hexaa/hexaa-frontend:$CI_BUILD_REF_NAME
-  CONTAINER_RELEASE_IMAGE: docker.hbit.sztaki.hu:5000/hexaa/hexaa-frontend:latest
-  CONTAINER_STAGING_RELEASE_IMAGE: docker.hbit.sztaki.hu:5000/hexaa/hexaa-frontend:staging
+  CONTAINER_TEST_IMAGE:    $REGISTRY_ADDR/hexaa/hexaa-frontend:$CI_COMMIT_REF_NAME
+  CONTAINER_STAGING_IMAGE: $REGISTRY_ADDR/hexaa/hexaa-frontend:staging
+  CONTAINER_STABLE_IMAGE:  $REGISTRY_ADDR/hexaa/hexaa-frontend:latest
+  CONTAINER_STAGING_RELEASE_IMAGE: hexaaproject/hexaa-frontend:staging
+  CONTAINER_STABLE_RELEASE_IMAGE:  hexaaproject/hexaa-frontend:latest
 
 services:
 - docker:dind
@@ -21,7 +23,7 @@ before_script:
   - hostname
 
   # Log into our private docker hub
-  - docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000
+  - docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REGISTRY_ADDR
 
   # Install ssh-agent if not already installed, it is required by Docker.
   # (change apt-get to yum if you use a CentOS-based image)
@@ -230,34 +232,31 @@ build_staging:
 #  except:
 #    - staging
 
-release:
+release_stable:
   stage: release
   script:
     - docker pull $CONTAINER_TEST_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-    - docker push $CONTAINER_RELEASE_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_STABLE_IMAGE
+    - docker push $CONTAINER_STABLE_IMAGE
+
+    # log in to hub.docker.com
+    - docker login -u $DOCKERHUB_REGISTRY_USER -p $DOCKERHUB_REGISTRY_PASS
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_STABLE_RELEASE_IMAGE
+    - docker push $CONTAINER_STABLE_RELEASE_IMAGE
   only:
     - master
   tags:
     - dind
 
-release-production:
-  stage: release
-  script:
-    - docker pull $CONTAINER_TEST_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE hexaaproject/hexaa-frontend:latest
-    - docker login -u $DOCKERHUB_REGISTRY_USER -p $DOCKERHUB_REGISTRY_PASSWORD
-    - docker push hexaaproject/hexaa-frontend:latest
-  only:
-    - dockerhub_ci
-  tags:
-    - dind
 
 release_staging:
   stage: release
   script:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_STAGING_RELEASE_IMAGE
+
+    # log in to hub.docker.com
+    - docker login -u $DOCKERHUB_REGISTRY_USER -p $DOCKERHUB_REGISTRY_PASS
     - docker push $CONTAINER_STAGING_RELEASE_IMAGE
   only:
     - staging
@@ -267,7 +266,8 @@ release_staging:
 deploy_to_staging:
   stage: deploy
   script:
-    - ssh -A gitlab@$DEPLOY_STAGING_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.hbit.sztaki.hu:5000; docker pull $CONTAINER_STAGING_RELEASE_IMAGE; cd /opt/hexaa; docker-compose down; docker volume rm hexaa_hexaa_ui_source; docker-compose up -d;"
+    - echo TODO
+    #- ssh -A gitlab@$DEPLOY_STAGING_TARGET "docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REGISTRY_ADDR; docker pull $CONTAINER_STAGING_RELEASE_IMAGE; cd /opt/hexaa; docker-compose down; docker volume rm hexaa_hexaa_ui_source; docker-compose up -d;"
   only:
     - staging
   tags:
