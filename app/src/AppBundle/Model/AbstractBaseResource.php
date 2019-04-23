@@ -19,10 +19,12 @@
 namespace AppBundle\Model;
 
 use AppBundle\Exception\BackendException;
+use AppBundle\Exception\FedidNotPresentException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class AbstractBaseResource
@@ -56,11 +58,15 @@ abstract class AbstractBaseResource
     /**
      * GET token
      * @return token
+     * @throws FedidNotPresentException
     */
     public function getToken()
     {
         if ($this->tokenStorage->getToken()) {
             $user = $this->tokenStorage->getToken()->getUser();
+            if (! is_a($user, UserInterface::class)) {
+                throw new FedidNotPresentException("Federation ID not found. Please contact the administrators.");
+            }
             $this->token = $user->getToken();
         }
 

@@ -18,9 +18,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Model\AbstractBaseResource;
-use AppBundle\Model\Organization;
-use GuzzleHttp\Client;
+use AppBundle\Exception\FedidNotPresentException;
 use GuzzleHttp\Exception\ServerException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -67,8 +65,12 @@ class DefaultController extends Controller
             }
         }
 
-        $servicesWhereManager = $this->get('principal')->servsWhereUserIsManager($hexaaadmin);
-        $organizationsWhereManager = $this->get('principal')->orgsWhereUserIsManager($hexaaadmin);
+        try {
+            $servicesWhereManager = $this->get('principal')->servsWhereUserIsManager($hexaaadmin);
+            $organizationsWhereManager = $this->get('principal')->orgsWhereUserIsManager($hexaaadmin);
+        } catch (FedidNotPresentException $exception) {
+            return $this->render('error.html.twig', array('clientexception' => $exception));
+        }
 
         return $this->render(
             'AppBundle:Default:index.html.twig',
