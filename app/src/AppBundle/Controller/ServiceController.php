@@ -1378,10 +1378,14 @@ class ServiceController extends BaseController
             $manager = "true";
         }
 
-        $requestslinks = $this->get('service')->getLinkRequests($hexaaAdmin, $id);
-        $entitlementsserv = $this->get('service')->getEntitlements($hexaaAdmin, $id, 'normal', 0, 100000);
+        $requestslinksCount = $this->get('service')->getLinkRequests($hexaaAdmin, $id, 'normal', 0 , 0);
+        $requestslinks = $this->get('service')->getLinkRequests($hexaaAdmin, $id, 'normal', 0 , $requestslinksCount['item_number']);
+        $entitlementsservCount = $this->get('service')->getEntitlements($hexaaAdmin, $id, 'normal', 0, 0);
+        $entitlementsserv = $this->get('service')->getEntitlements($hexaaAdmin, $id, 'normal', 0, $entitlementsservCount['item_number']);
 
+        /* build all connection array */
         $allData = array();
+        $entitlements = ['item_number' => 0, 'items' => []];
         foreach ($requestslinks['items'] as $requestlink) {
             $allData[$requestlink['organization_id']]['name'] = $this->get('organization')->get($hexaaAdmin, $requestlink['organization_id'])['name'];
             $allData[$requestlink['organization_id']]['id'] = $requestlink['organization_id'];
@@ -1396,11 +1400,9 @@ class ServiceController extends BaseController
             }
 
             $entitlements = $this->get('link')->getEntitlements($hexaaAdmin, $requestlink['id']);
-            $duplicate = array();
 
             foreach ($entitlementpacks['items'] as $entitlementpack) {
                 foreach ($entitlementpack['entitlement_ids'] as $entitlementid) {
-                   /* array_push($entitlements['items'], $this->get('entitlement')->get($entitlementid));*/
                     foreach ($entitlementsserv['items'] as $entitlementserv) {
                         if ($entitlementserv['id'] == $entitlementid) {
                             array_push($entitlements['items'], $entitlementserv);
@@ -1443,7 +1445,6 @@ class ServiceController extends BaseController
         $organizations = $this->get('organization')->getAll();
 
         $datasToForm = array();
-        $organizationsToForm = array();
         $organizationsNotToForm = array();
         $organizationsAllForm = array();
         foreach ($organizations['items'] as $organization) {
@@ -1500,7 +1501,8 @@ class ServiceController extends BaseController
             );
         }
 
-        $links = $this->get('service')->getLinksOfService($hexaaAdmin, $id);
+        $linksCount = $this->get('service')->getLinksOfService($hexaaAdmin, $id, 'normal', 0, 0);
+        $links = $this->get('service')->getLinksOfService($hexaaAdmin, $id, 'normal', 0, $linksCount['item_number']);
         $allpendingdata = array();
         if ($links != null) {
             foreach ($links['items'] as $link) {
@@ -1522,9 +1524,9 @@ class ServiceController extends BaseController
                     }
         
                     $withoutduplicatelinks = array_unique($linkentitlements['items'], SORT_REGULAR);
-	            $linkentitlementNamesArray = [];
+	                $linkentitlementNamesArray = [];
                     foreach ($withoutduplicatelinks as $entitlement) {
-	                $linkentitlementNamesArray[] = $entitlement['name'];
+	                    $linkentitlementNamesArray[] = $entitlement['name'];
                     }
                     $linkentitlementNames = implode(', ', $linkentitlementNamesArray);
         
@@ -1556,7 +1558,7 @@ class ServiceController extends BaseController
         $acceptedNumber = 0;
         $datasToLinkId = array();
         $forms = array ();
-	$formviews = array();
+	    $formviews = array();
         foreach ($allData as $oneData) {
             $allChoosenData = null;
             if ($oneData['status'] == 'accepted') {

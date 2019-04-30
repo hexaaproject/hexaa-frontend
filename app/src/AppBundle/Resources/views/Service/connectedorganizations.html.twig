@@ -2,6 +2,14 @@
 
 {% set pending = allpending_data is not empty %}
 
+{% set pending_exists = false %}
+
+{% for one_data in all_data %}
+    {% if one_data.status == "pending" %}
+      {% set pending_exists = true %}
+    {% endif %}
+{% endfor %}
+
 {% block container %}
     {% block stylesheets %}
 
@@ -205,8 +213,7 @@
                 {# toggle disabled action buttons #}
                 $('#connected_org_pendingfromorg').on('change', 'input[type=checkbox]', function () {
                     var checked = false;
-                    $('#connected_org_pendingfromorg input[type=checkbox]').each(function (index,
-                                                                                    el) {
+                    $('#connected_org_pendingfromorg input[type=checkbox]').each(function (index, el) {
 
                         if ($(this).prop('checked')) {
                             checked = true;
@@ -282,8 +289,7 @@
                     content.empty();
                     content.append('<ul></ul>');
                     var ul = connectedOrgAccept.find('ul');
-                    $('#connected_org_pending input:checked').each(function (index,
-                                                                             el) {
+                    $('#connected_org_pending input:checked').each(function (index, el) {
                         populateList(ul, el);
                     });
                     connectedOrgAccept.modal('show');
@@ -296,8 +302,7 @@
                     content.empty();
                     content.append('<ul></ul>');
                     var ul = connectedOrgDelete.find('ul');
-                    $('#connected_org_pending input:checked').each(function (index,
-                                                                             el) {
+                    $('#connected_org_pending input:checked').each(function (index, el) {
                         populateList(ul, el);
                     });
                     connectedOrgDelete.modal('show');
@@ -313,8 +318,7 @@
                     content.empty();
                     content.append('<ul></ul>');
                     var ul = pendingFromOrgDelete.find('ul');
-                    $('#connected_org_pendingfromorg input:checked').each(function (index,
-                                                                             el) {
+                    $('#connected_org_pendingfromorg input:checked').each(function (index, el) {
                         populateList(ul, el);
                     });
                     pendingFromOrgDelete.modal('show');
@@ -371,14 +375,34 @@
         <button type="button" id="help" class="actionbutton protip" style="vertical-align: middle; outline: none" data-pt-arrow="true" data-pt-scheme="blue" data-pt-gravity="true" data-pt-title="Here you can connect organizations to your service or create links with tokens for non existing organizations." ><i class="material-icons" style="font-size: 22px; color:  #369; vertical-align: middle">help</i></button>
     </div>
 
-    {% set i = 0 %}
+    {# create form #}
+    {{ include('::modal.html.twig',
+        {
+            id: 'connectNewOrg',
+            title: 'Connect new organization',
+            form: connectNewOrgForm,
+            button:
+            {
+                text: 'Create',
+                class: 'btn-red'
+            },
+            bodycontent: form_start(connectNewOrgForm)
+            ~ form_row(connectNewOrgForm.entitlementpacks)
+            ~ form_row(connectNewOrgForm.entitlements)
+            ~ '<div id= "scrollable-dropdown-menu" class= "neworg">' ~ form_row(connectNewOrgForm.organizations) ~ '</div>'
+            ~ form_end(connectNewOrgForm),
+        })
+    }}
+
+    {# modify forms #}
     {% for form in forms %}
+        {% set link_id = form.vars.data.link_id %}
         {{ include('::modal.html.twig',
         {
-            id: datasToLinkId[i],
+            id: link_id,
             title: 'Modify connected organizations',
             form: form,
-            bodycontent: form_start(form, {'name' : datasToLinkId[i]})
+            bodycontent: form_start(form, {'name': link_id})
             ~ form_row(form.entitlementpacks)
             ~ form_row(form.entitlements)
             ~ form_end(form),
@@ -388,31 +412,13 @@
                 class: 'btn-red'
             },
         }) }}
-        {% set i = i + 1 %}
     {% endfor %}
 
-    {{ include('::modal.html.twig',
-    {
-        id: 'connectNewOrg',
-        title: 'Connect new organization',
-        form: connectNewOrgForm,
-        button:
-        {
-            text: 'Create',
-            class: 'btn-red'
-        },
-        bodycontent: form_start(connectNewOrgForm)
-        ~ form_row(connectNewOrgForm.entitlementpacks)
-        ~ form_row(connectNewOrgForm.entitlements)
-        ~ '<div id= "scrollable-dropdown-menu" class= "neworg">' ~ form_row(connectNewOrgForm.organizations) ~ '</div>'
-        ~ form_end(connectNewOrgForm),
-    })
-    }}
 
 
-    {% if pending == true %}
+    {% if pending %}
         <div class="connected_org_pending_actionButtons" id="tablewithcheckbox"
-             style="margin-top: 12px; padding-top: 30px">
+             style=" margin-top: 12px; padding-top: 30px">
 
             <label class="checkboxnotconnectedorganizations">
                 <input class="hexaaCheckBox hidden-xs pull-left" id="checkbox_all_pending" type="checkbox" value=""
@@ -466,6 +472,7 @@
             formaction: path('app_service_removeconnectedorganizations', {id: service.id })
         }) }}
 
+
         <h2 style="color: #61AFC5">Pending from service managers</h2>
 
         <table class="datatable datatable-blue" id="connected_org_pending">
@@ -500,10 +507,11 @@
             {% endfor %}
             </tbody>
         </table>
-    {% endif %}
 
+        {% endif %}
 
-    {% if pending %}
+        {% if pending == true or pending_exists %}
+
         <div class="connected_org_pendingfromorg_actionButtons" id="tablewithcheckbox"
              style="margin-top: 12px; padding-top: 30px">
 
@@ -582,7 +590,7 @@
             {% endfor %}
             </tbody>
         </table>
-    {% endif %}
+    {% endif %} {# pending #}
 
 
 
@@ -653,8 +661,9 @@
                             <td> {{ one_content.values|join(', ') }}</td>
                         {% endif %}
                     {% endfor %}
-                     <td><input type="image" id="deleteBin" style="height: 30px; width: 30px;" src="{{ asset('img/gray_pencil.svg') }}" onclick="editlink({{ one_data.link_id }})"/></td>
-                     <!-- <td><button type="button" class="btnhexaa btnhexaa-sm btn-red" onclick="acceptlink()">Accept</button></td>-->
+                    <td>
+                        <i title="edit connection" role="button" class="material-icons btn-blue-inverse accordion-button accordion_edit_button" onclick="editlink({{ one_data.link_id }})">create</i>
+                    </td>
                 </tr>
             {% endif %}
         {% endfor %}
