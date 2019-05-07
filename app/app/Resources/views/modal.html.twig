@@ -81,7 +81,7 @@ Usage:
                 {% endif %}
             </div>
             <div class="modal-body">
-                <div class="modal-body-head">{% if bodyhead is defined %}{{ bodyhead }}{% endif %}</div>
+                <div class="modal-body-head">{% if bodyhead is defined %}{{ bodyhead|raw }}{% endif %}</div>
                 <div class="modal-body-content">{% if bodycontent is defined %}{{ bodycontent|raw }}{% endif %}</div>
             </div>
             <div class="modal-footer">
@@ -117,6 +117,7 @@ Usage:
                     <button type="submit" {% if button.id is defined %} id="{{ button.id }}" {% endif %}
                             {% if button.value is defined %} value="{{ button.value }}" {% endif %}
                             {% if button.behattarget is defined %} data-behattarget="{{ button.behattarget }}" {% endif %}
+                            {% if button.formid is defined %} form="{{ button.formid }}" {% endif %}
                            class="btnhexaa {{ button.class }}">
                         {{ button.text }}
                     </button>

@@ -18,12 +18,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Exception;
 use AppBundle\Form\ConnectOrgType;
 use AppBundle\Form\ModifyConnectOrgType;
-use AppBundle\Model\Entitlement;
+use AppBundle\Model\Link;
 use AppBundle\Model\Service;
 use GuzzleHttp\Exception\ServerException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -45,7 +45,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Devmachine\Bundle\FormBundle\Form\Type\TypeaheadType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use WebDriver\Exception;
 
 /**
  * @Route("/service")
@@ -529,7 +528,7 @@ class ServiceController extends BaseController
      * @return Response
      * @param   string  $servid  Service ID
      * @param   Request $request request
-     * @param   bool    $click
+     * @param   string    $click
      */
     public function createEmailAction($servid, Request $request, $click = "false")
     {
@@ -1600,26 +1599,6 @@ class ServiceController extends BaseController
             }
         }
 
-        foreach ($forms as $form) {
-            $form->handleRequest($request);
-            if ($form->isSubmitted()) {
-                $data = $form->getData();
-                $entitlementpackIds = array();
-                $entitlementsIds = array();
-                foreach ($data['entitlementpacks'] as $epack) {
-                    array_push($entitlementpackIds, $epack);
-                }
-                foreach ($data['entitlements'] as $e) {
-                    array_push($entitlementsIds, $e);
-                }
-                $modified['entitlement_packs'] = $entitlementpackIds;
-                $modified['entitlements'] = $entitlementsIds;
-                $this->get('link')->editlink($hexaaAdmin, $data['link_id'], $modified);
-
-                return $this->redirect($request->getUri());
-            }
-        }
-
         return $this->render(
             'AppBundle:Service:connectedorganizations.html.twig',
             array(
@@ -1988,11 +1967,105 @@ class ServiceController extends BaseController
         //$hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $serializer = $this->get('serializer');
 
-	$data = $this->get('entitlement')->getEntitlement(true, $id);
+        $data = $this->get('entitlement')->getEntitlement(true, $id);
         $serializedData = $serializer->serialize($data['name'], 'json');
 
         return new JsonResponse($serializedData);
     }
+
+    /**
+     * @Route("/getLinkForm/{linkid}/service/{serviceid}")
+     * @param Request $request
+     * @param $linkid
+     * @param $serviceid
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getLinkForm(Request $request, $linkid, $serviceid)
+    {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+
+        /** @var Link $linkService */
+        $linkService = $this->get('link');
+
+        $linkedEntitlementPacks = $linkService->getEntitlementPacks($hexaaAdmin, $linkid);
+        $linkedEntitlementPacksChoices = array_map(
+            function($row) { return $row['id']; },
+            $linkedEntitlementPacks['items']
+        );
+
+        $linkedEntitlements = $linkService->getEntitlements($hexaaAdmin, $linkid);
+        $linkedEntitlementsChoices = array_map(
+            function($row) { return $row['id']; },
+            $linkedEntitlements['items']
+        );
+
+        /** @var Service $serviceService */
+        $serviceService = $this->get('service');
+
+        $resultToCount = $serviceService->getEntitlementPacks($hexaaAdmin, $serviceid, "normal", 0, 0);
+        $count = $resultToCount['item_number'];
+
+        $serviceEntitlementPacks = $serviceService->getEntitlementPacks($hexaaAdmin, $serviceid,"normal", 0, $count);
+        $serviceEntitlementPacksChoices = array_map(
+            function($row) { return [$row['name'] => $row['id']]; },
+            $serviceEntitlementPacks['items']
+        );
+
+        $resultToCount = $serviceService->getEntitlements($hexaaAdmin, $serviceid, "normal", 0, 0);
+        $count = $resultToCount['item_number'];
+
+        $serviceEntitlements = $serviceService->getEntitlements($hexaaAdmin, $serviceid, "normal", 0, $count);
+        $serviceEntitlementsChoices = array_map(
+            function($row) { return [$row['name'] => $row['id']]; },
+            $serviceEntitlements['items']
+        );
+
+        $form = $this->createForm(
+            ModifyConnectOrgType::class,
+            [
+                'entitlementpacksToForm' => $serviceEntitlementPacksChoices,
+                'currentEntitlementpacksToForm' => $linkedEntitlementPacksChoices,
+                'entitlementsToForm' => $serviceEntitlementsChoices,
+                'currentEntitlementsToForm' => $linkedEntitlementsChoices,
+                'link_id' => $linkid
+            ],
+            [
+                'attr' => ['id' => 'editlink-form']
+            ]
+        );
+        $form->handleRequest($request);
+        $responseCode = 200;
+        if ($form->isSubmitted()) {
+            $responseCode = 409; // invalid form
+            if ($form->isValid()) {
+                $responseCode = 200;
+                $data = $form->getData();
+                $entitlementpackIds = array();
+                $entitlementsIds = array();
+                foreach ($data['entitlementpacks'] as $epack) {
+                    array_push($entitlementpackIds, $epack);
+                }
+                foreach ($data['entitlements'] as $e) {
+                    array_push($entitlementsIds, $e);
+                }
+                $modified['entitlement_packs'] = $entitlementpackIds;
+                $modified['entitlements'] = $entitlementsIds;
+                try {
+                    $this->get('link')->editlink($hexaaAdmin, $data['link_id'], $modified);
+                } catch (Exception $exception) {
+                    $responseCode = 500;
+                    $form->addError(new FormError($exception->getMessage()));
+                }
+                $this->get('session')->getFlashBag()->add('success', 'Connection modified succesfully.');
+            }
+        }
+        $formView = $this->renderView('::form.html.twig', array('form' => $form->createView()));
+
+        return new JsonResponse($formView, $responseCode);
+    }
+
+
   /**
      * Replace accents
      *

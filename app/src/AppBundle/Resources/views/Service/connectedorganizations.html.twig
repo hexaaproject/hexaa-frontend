@@ -10,354 +10,382 @@
     {% endif %}
 {% endfor %}
 
-{% block container %}
-    {% block stylesheets %}
+{% block stylesheets %}
 
-        {% stylesheets
-        '@datatables_css'
-        'css/tables.css'
-        '@protip_min_css'
-        filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset_url }}"/>
-        {% endstylesheets %}
-    {% endblock %}
+    {% stylesheets
+    '@datatables_css'
+    'css/tables.css'
+    '@protip_min_css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
 
-    {% block javascripts %}
-        {% javascripts
-        '@datatables_js'
-        '@protip_min_js'
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
+{% block javascripts %}
+    {% javascripts
+    '@datatables_js'
+    '@protip_min_js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
-        <script>
-            $('#connected_org').DataTable({
-                "columnDefs": [{
-                    "targets": 0,
-                    "orderable": false
-                },
-                    {
-                        "targets": 4,
-                        "orderable":false
-                    }
-                ],
-                'aaSorting': [[1, 'asc']]
+    <script>
+        loader();
+        $('#connected_org').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false
+            },
+                {
+                    "targets": 4,
+                    "orderable":false
+                }
+            ],
+            'aaSorting': [[1, 'asc']]
+        });
+
+        $('#connected_org_pending').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false
+            }],
+            'aaSorting': [[1, 'asc']]
+        });
+        $('#connected_org_pendingfromorg').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false
+            }],
+            'aaSorting': [[1, 'asc']]
+        });
+
+    </script>
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            $.protip();
+            var tooltip = $('.actionbutton');
+            tooltip.protipSet({
+                trigger: 'click'
             });
 
-            $('#connected_org_pending').DataTable({
-                "columnDefs": [{
-                    "targets": 0,
-                    "orderable": false
-                }],
-                'aaSorting': [[1, 'asc']]
-            });
-            $('#connected_org_pendingfromorg').DataTable({
-                "columnDefs": [{
-                    "targets": 0,
-                    "orderable": false
-                }],
-                'aaSorting': [[1, 'asc']]
-            });
-
-        </script>
-
-        <script type="text/javascript">
-
-
-            $(document).ready(function () {
-
-                $.protip();
-                var tooltip = $('.actionbutton');
-                tooltip.protipSet({
-                    trigger: 'click'
-                });
-
-                {# hide pagination if one page #}
-                if (($('#connected_org').DataTable().page.info().pages == 1) | ($('#connected_org').DataTable().page.info().pages == 0)) {
-                    $('#connected_org_info').hide();
-                    $('#connected_org_paginate').hide();
-                    $('#connected_org_length').hide();
-                }
-
-                {# hide filter label (text: Search:) #}
-                $('#connected_org_filter').children('label').contents().first().remove();
-                $('#connected_org_filter input').addClass('hexaaSearchField');
-
-                $('#connected_org_hexaaSearchField').on('keyup', function () {
-                    $('#connected_org').DataTable().search(this.value).draw();
-                });
-
-                {# toggle disabled action buttons #}
-                $('#connected_org').on('change', 'input[type=checkbox]', function () {
-                    var checked = false;
-                    $('#connected_org input[type=checkbox]').each(function (index,
-                                                                            el) {
-                        if ($(this).prop('checked') && {{ ismanager }}) {
-                            checked = true;
-                            $('.connected_org_actionButtons button.dependent').each(function (index,
-                                                                                              val) {
-                                $(this).prop('disabled', false);
-                            });
-
-                            {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
-                            $('#checkbox_all').prop('checked', false);
-                        }
-                    });
-
-                    if (!checked) {
-                        $('.connected_org_actionButtons button.dependent').each(function (index,
-                                                                                          val) {
-                            $(this).prop('disabled', 'disabled');
-                        });
-                    }
-                });
-                $('#checkbox_all').click(function () {
-                    var checkedStatus = this.checked;
-                    $('#connected_org tbody tr').find('td:first :checkbox').each(function () {
-                        $(this).prop('checked', checkedStatus);
-
-                    });
-                    if ($(this).prop('checked')) {
-                        $('.connected_org_actionButtons button.dependent').each(function (index,
-                                                                                          val) {
-                            $(this).prop('disabled', false);
-                        });
-                    }
-                    if (!$(this).prop('checked')) {
-                        $('.connected_org_actionButtons button.dependent').each(function (index,
-                                                                                          val) {
-                            $(this).prop('disabled', 'disabled');
-                        });
-                    }
-
-                });
-                {% if pending == true %}
-                {# hide pagination if one page #}
-                if (($('#connected_org_pending').DataTable().page.info().pages == 1) | ($('#connected_org_pending').DataTable().page.info().pages == 0)) {
-                    $('#connected_org_pending_info').hide();
-                    $('#connected_org_pending_paginate').hide();
-                    $('#connected_org_pending_length').hide();
-                }
-
-                {# hide filter label (text: Search:) #}
-                $('#connected_org_pending_filter').children('label').contents().first().remove();
-                $('#connected_org_pending_filter input').addClass('hexaaSearchField');
-
-                $('#connected_org_pending_hexaaSearchField').on('keyup', function () {
-                    $('#connected_org_pending').DataTable().search(this.value).draw();
-                });
-
-                {# toggle disabled action buttons #}
-                $('#connected_org_pending').on('change', 'input[type=checkbox]', function () {
-                    var checked = false;
-                    $('#connected_org_pending input[type=checkbox]').each(function (index,
-                                                                                    el) {
-
-                        if ($(this).prop('checked')) {
-                            checked = true;
-                            $('.connected_org_pending_actionButtons button.dependent').each(function (index,
-                                                                                                      val) {
-                                $(this).prop('disabled', false);
-                            });
-
-                            {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
-                            $('#checkbox_all_pending').prop('checked', false);
-                        }
-                    });
-
-                    if (!checked) {
-                        $('.connected_org_pending_actionButtons button.dependent').each(function (index,
-                                                                                                  val) {
-                            $(this).prop('disabled', 'disabled');
-                        });
-                    }
-                });
-                $('#checkbox_all_pending').click(function () {
-                    var checkedStatus = this.checked;
-                    $('#connected_org_pending tbody tr').find('td:first :checkbox').each(function () {
-                        $(this).prop('checked', checkedStatus);
-
-                    });
-                    if ($(this).prop('checked')) {
-                        $('.connected_org_pending_actionButtons button.dependent').each(function (index,
-                                                                                                  val) {
-                            $(this).prop('disabled', false);
-                        });
-                    }
-                    if (!$(this).prop('checked')) {
-                        $('.connected_org_pending_actionButtons button.dependent').each(function (index,
-                                                                                                  val) {
-                            $(this).prop('disabled', 'disabled');
-                        });
-                    }
-
-                });
-                {% endif %}
-
-                {% if pending %}
-                {# hide pagination if one page #}
-                if (($('#connected_org_pendingfromorg').DataTable().page.info().pages == 1) | ($('#connected_org_pendingfromorg').DataTable().page.info().pages == 0)) {
-                    $('#connected_org_pendingfromorg_info').hide();
-                    $('#connected_org_pendingfromorg_paginate').hide();
-                    $('#connected_org_pendingfromorg_length').hide();
-                }
-
-                {# hide filter label (text: Search:) #}
-                $('#connected_org_pendingfromorg_filter').children('label').contents().first().remove();
-                $('#connected_org_pendingfromorg_filter input').addClass('hexaaSearchField');
-
-                $('#connected_org_pendingfromorg_hexaaSearchField').on('keyup', function () {
-                    $('#connected_org_pendingfromorg').DataTable().search(this.value).draw();
-                });
-
-                {# toggle disabled action buttons #}
-                $('#connected_org_pendingfromorg').on('change', 'input[type=checkbox]', function () {
-                    var checked = false;
-                    $('#connected_org_pendingfromorg input[type=checkbox]').each(function (index, el) {
-
-                        if ($(this).prop('checked')) {
-                            checked = true;
-                            $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
-                                                                                                      val) {
-                                $(this).prop('disabled', false);
-                            });
-
-                            {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
-                            $('#checkbox_all_pendingfromorg').prop('checked', false);
-                        }
-                    });
-
-                    if (!checked) {
-                        $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
-                                                                                                  val) {
-                            $(this).prop('disabled', 'disabled');
-                        });
-                    }
-                });
-                $('#checkbox_all_pendingfromorg').click(function () {
-                    var checkedStatus = this.checked;
-                    $('#connected_org_pendingfromorg tbody tr').find('td:first :checkbox').each(function () {
-                        $(this).prop('checked', checkedStatus);
-
-                    });
-                    if ($(this).prop('checked')) {
-                        $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
-                                                                                                  val) {
-                            $(this).prop('disabled', false);
-                        });
-                    }
-                    if (!$(this).prop('checked')) {
-                        $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
-                                                                                                  val) {
-                            $(this).prop('disabled', 'disabled');
-                        });
-                    }
-
-                });
-                {% endif %}
-
-
-                function populateList(ul,
-                                      el) {
-                    var row = $(el).closest('tr');
-                    var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
-                    var objectId = row.attr('id');
-                    ul.append('<li>' + displayString + '</li>');
-                    ul.append('<input name="linkId[]" value="' + objectId + '" class="hidden">');
-                }
-
-                var connectedOrgTableActionButtons = $('.connected_org_actionButtons');
-                var connectedOrgRemove = $('#connectedOrganizationsRemove');
-                connectedOrgTableActionButtons.on('click', '#delete', function (event) {
-                    event.preventDefault();
-                    var content = connectedOrgRemove.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = connectedOrgRemove.find('ul');
-                    $('#connected_org input:checked').each(function (index,
-                                                                     el) {
-                        populateList(ul, el);
-                    });
-                    connectedOrgRemove.modal('show');
-                });
-                {% if pending == true %}
-                var pendingConnectedOrgTableActionButtons = $('.connected_org_pending_actionButtons');
-                var connectedOrgAccept = $('#connectedOrganizationsAccept');
-                pendingConnectedOrgTableActionButtons.on('click', '#accept', function (event) {
-                    event.preventDefault();
-                    var content = connectedOrgAccept.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = connectedOrgAccept.find('ul');
-                    $('#connected_org_pending input:checked').each(function (index, el) {
-                        populateList(ul, el);
-                    });
-                    connectedOrgAccept.modal('show');
-                });
-
-                var connectedOrgDelete = $('#connectedOrganizationsRemovePending');
-                pendingConnectedOrgTableActionButtons.on('click', '#deletePending', function (event) {
-                    event.preventDefault();
-                    var content = connectedOrgDelete.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = connectedOrgDelete.find('ul');
-                    $('#connected_org_pending input:checked').each(function (index, el) {
-                        populateList(ul, el);
-                    });
-                    connectedOrgDelete.modal('show');
-                });
-                {% endif %}
-
-                {% if pending %}
-                var pendingFromOrgTableActionButtons = $('.connected_org_pendingfromorg_actionButtons');
-                var pendingFromOrgDelete = $('#connectedlinksRemovePending');
-                pendingFromOrgTableActionButtons.on('click', '#deletePendingFromOrg', function (event) {
-                    event.preventDefault();
-                    var content = pendingFromOrgDelete.find('.modal-body-content');
-                    content.empty();
-                    content.append('<ul></ul>');
-                    var ul = pendingFromOrgDelete.find('ul');
-                    $('#connected_org_pendingfromorg input:checked').each(function (index, el) {
-                        populateList(ul, el);
-                    });
-                    pendingFromOrgDelete.modal('show');
-                });
-                {% endif %}
-
-                $('#connectNewOrgButton').on('click', function(event) {
-                    event.preventDefault();
-                    var content = $('#connectNewOrg').find('.modal-body-content');
-                    $('#connectNewOrg').modal('show');
-                });
-
-                $(document).on('click', '.modal#connectNewOrg button[type=submit]', function (event) {
-                    event.preventDefault();
-                    $('form[name=connect_org]').submit();
-                });
-
-            });
-        </script>
-
-        <script>
-            function editlink(linkid) {
-                console.log(linkid);
-
-                var content = $('#'+linkid).find('.modal-body-content');
-                $('#'+linkid).modal('show');
+            {# hide pagination if one page #}
+            if (($('#connected_org').DataTable().page.info().pages == 1) | ($('#connected_org').DataTable().page.info().pages == 0)) {
+                $('#connected_org_info').hide();
+                $('#connected_org_paginate').hide();
+                $('#connected_org_length').hide();
             }
 
-            {% for link in datasToLinkId %}
-            $(document).on('click', '.modal#' + {{ link }} + ' button[type=submit]', function (event) {
-                event.preventDefault();
-                $('form[name='+ {{ link }}+']').submit();
+            {# hide filter label (text: Search:) #}
+            $('#connected_org_filter').children('label').contents().first().remove();
+            $('#connected_org_filter input').addClass('hexaaSearchField');
+
+            $('#connected_org_hexaaSearchField').on('keyup', function () {
+                $('#connected_org').DataTable().search(this.value).draw();
             });
-            {% endfor %}
 
-        </script>
-    {% endblock %}
+            {# toggle disabled action buttons #}
+            $('#connected_org').on('change', 'input[type=checkbox]', function () {
+                var checked = false;
+                $('#connected_org input[type=checkbox]').each(function (index,
+                                                                        el) {
+                    if ($(this).prop('checked') && {{ ismanager }}) {
+                        checked = true;
+                        $('.connected_org_actionButtons button.dependent').each(function (index,
+                                                                                          val) {
+                            $(this).prop('disabled', false);
+                        });
 
-    <!--<div class="loader"></div>-->
+                        {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
+                        $('#checkbox_all').prop('checked', false);
+                    }
+                });
+
+                if (!checked) {
+                    $('.connected_org_actionButtons button.dependent').each(function (index,
+                                                                                      val) {
+                        $(this).prop('disabled', 'disabled');
+                    });
+                }
+            });
+            $('#checkbox_all').click(function () {
+                var checkedStatus = this.checked;
+                $('#connected_org tbody tr').find('td:first :checkbox').each(function () {
+                    $(this).prop('checked', checkedStatus);
+
+                });
+                if ($(this).prop('checked')) {
+                    $('.connected_org_actionButtons button.dependent').each(function (index,
+                                                                                      val) {
+                        $(this).prop('disabled', false);
+                    });
+                }
+                if (!$(this).prop('checked')) {
+                    $('.connected_org_actionButtons button.dependent').each(function (index,
+                                                                                      val) {
+                        $(this).prop('disabled', 'disabled');
+                    });
+                }
+
+            });
+            {% if pending == true %}
+            {# hide pagination if one page #}
+            if (($('#connected_org_pending').DataTable().page.info().pages == 1) | ($('#connected_org_pending').DataTable().page.info().pages == 0)) {
+                $('#connected_org_pending_info').hide();
+                $('#connected_org_pending_paginate').hide();
+                $('#connected_org_pending_length').hide();
+            }
+
+            {# hide filter label (text: Search:) #}
+            $('#connected_org_pending_filter').children('label').contents().first().remove();
+            $('#connected_org_pending_filter input').addClass('hexaaSearchField');
+
+            $('#connected_org_pending_hexaaSearchField').on('keyup', function () {
+                $('#connected_org_pending').DataTable().search(this.value).draw();
+            });
+
+            {# toggle disabled action buttons #}
+            $('#connected_org_pending').on('change', 'input[type=checkbox]', function () {
+                var checked = false;
+                $('#connected_org_pending input[type=checkbox]').each(function (index,
+                                                                                el) {
+
+                    if ($(this).prop('checked')) {
+                        checked = true;
+                        $('.connected_org_pending_actionButtons button.dependent').each(function (index,
+                                                                                                  val) {
+                            $(this).prop('disabled', false);
+                        });
+
+                        {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
+                        $('#checkbox_all_pending').prop('checked', false);
+                    }
+                });
+
+                if (!checked) {
+                    $('.connected_org_pending_actionButtons button.dependent').each(function (index,
+                                                                                              val) {
+                        $(this).prop('disabled', 'disabled');
+                    });
+                }
+            });
+            $('#checkbox_all_pending').click(function () {
+                var checkedStatus = this.checked;
+                $('#connected_org_pending tbody tr').find('td:first :checkbox').each(function () {
+                    $(this).prop('checked', checkedStatus);
+
+                });
+                if ($(this).prop('checked')) {
+                    $('.connected_org_pending_actionButtons button.dependent').each(function (index,
+                                                                                              val) {
+                        $(this).prop('disabled', false);
+                    });
+                }
+                if (!$(this).prop('checked')) {
+                    $('.connected_org_pending_actionButtons button.dependent').each(function (index,
+                                                                                              val) {
+                        $(this).prop('disabled', 'disabled');
+                    });
+                }
+
+            });
+            {% endif %}
+
+            {% if pending %}
+            {# hide pagination if one page #}
+            if (($('#connected_org_pendingfromorg').DataTable().page.info().pages == 1) | ($('#connected_org_pendingfromorg').DataTable().page.info().pages == 0)) {
+                $('#connected_org_pendingfromorg_info').hide();
+                $('#connected_org_pendingfromorg_paginate').hide();
+                $('#connected_org_pendingfromorg_length').hide();
+            }
+
+            {# hide filter label (text: Search:) #}
+            $('#connected_org_pendingfromorg_filter').children('label').contents().first().remove();
+            $('#connected_org_pendingfromorg_filter input').addClass('hexaaSearchField');
+
+            $('#connected_org_pendingfromorg_hexaaSearchField').on('keyup', function () {
+                $('#connected_org_pendingfromorg').DataTable().search(this.value).draw();
+            });
+
+            {# toggle disabled action buttons #}
+            $('#connected_org_pendingfromorg').on('change', 'input[type=checkbox]', function () {
+                var checked = false;
+                $('#connected_org_pendingfromorg input[type=checkbox]').each(function (index, el) {
+
+                    if ($(this).prop('checked')) {
+                        checked = true;
+                        $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
+                                                                                                  val) {
+                            $(this).prop('disabled', false);
+                        });
+
+                        {# disable checkbox_all when one of the checkbox "clicked out" after checkbox_all clicked #}
+                        $('#checkbox_all_pendingfromorg').prop('checked', false);
+                    }
+                });
+
+                if (!checked) {
+                    $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
+                                                                                              val) {
+                        $(this).prop('disabled', 'disabled');
+                    });
+                }
+            });
+            $('#checkbox_all_pendingfromorg').click(function () {
+                var checkedStatus = this.checked;
+                $('#connected_org_pendingfromorg tbody tr').find('td:first :checkbox').each(function () {
+                    $(this).prop('checked', checkedStatus);
+
+                });
+                if ($(this).prop('checked')) {
+                    $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
+                                                                                              val) {
+                        $(this).prop('disabled', false);
+                    });
+                }
+                if (!$(this).prop('checked')) {
+                    $('.connected_org_pendingfromorg_actionButtons button.dependent').each(function (index,
+                                                                                              val) {
+                        $(this).prop('disabled', 'disabled');
+                    });
+                }
+
+            });
+            {% endif %}
+
+
+            function populateList(ul,
+                                  el) {
+                var row = $(el).closest('tr');
+                var displayString = $(row.children()[1]).text() + ' &lt;' + $(row.children()[2]).text() + '&gt;';
+                var objectId = row.attr('id');
+                ul.append('<li>' + displayString + '</li>');
+                ul.append('<input name="linkId[]" value="' + objectId + '" class="hidden">');
+            }
+
+            var connectedOrgTableActionButtons = $('.connected_org_actionButtons');
+            var connectedOrgRemove = $('#connectedOrganizationsRemove');
+            connectedOrgTableActionButtons.on('click', '#delete', function (event) {
+                event.preventDefault();
+                var content = connectedOrgRemove.find('.modal-body-content');
+                content.empty();
+                content.append('<ul></ul>');
+                var ul = connectedOrgRemove.find('ul');
+                $('#connected_org input:checked').each(function (index,
+                                                                 el) {
+                    populateList(ul, el);
+                });
+                connectedOrgRemove.modal('show');
+            });
+            {% if pending == true %}
+            var pendingConnectedOrgTableActionButtons = $('.connected_org_pending_actionButtons');
+            var connectedOrgAccept = $('#connectedOrganizationsAccept');
+            pendingConnectedOrgTableActionButtons.on('click', '#accept', function (event) {
+                event.preventDefault();
+                var content = connectedOrgAccept.find('.modal-body-content');
+                content.empty();
+                content.append('<ul></ul>');
+                var ul = connectedOrgAccept.find('ul');
+                $('#connected_org_pending input:checked').each(function (index, el) {
+                    populateList(ul, el);
+                });
+                connectedOrgAccept.modal('show');
+            });
+
+            var connectedOrgDelete = $('#connectedOrganizationsRemovePending');
+            pendingConnectedOrgTableActionButtons.on('click', '#deletePending', function (event) {
+                event.preventDefault();
+                var content = connectedOrgDelete.find('.modal-body-content');
+                content.empty();
+                content.append('<ul></ul>');
+                var ul = connectedOrgDelete.find('ul');
+                $('#connected_org_pending input:checked').each(function (index, el) {
+                    populateList(ul, el);
+                });
+                connectedOrgDelete.modal('show');
+            });
+            {% endif %}
+
+            {% if pending %}
+            var pendingFromOrgTableActionButtons = $('.connected_org_pendingfromorg_actionButtons');
+            var pendingFromOrgDelete = $('#connectedlinksRemovePending');
+            pendingFromOrgTableActionButtons.on('click', '#deletePendingFromOrg', function (event) {
+                event.preventDefault();
+                var content = pendingFromOrgDelete.find('.modal-body-content');
+                content.empty();
+                content.append('<ul></ul>');
+                var ul = pendingFromOrgDelete.find('ul');
+                $('#connected_org_pendingfromorg input:checked').each(function (index, el) {
+                    populateList(ul, el);
+                });
+                pendingFromOrgDelete.modal('show');
+            });
+            {% endif %}
+
+            $('#connectNewOrgButton').on('click', function(event) {
+                event.preventDefault();
+                var content = $('#connectNewOrg').find('.modal-body-content');
+                $('#connectNewOrg').modal('show');
+            });
+
+            $(document).on('click', '.modal#connectNewOrg button[type=submit]', function (event) {
+                event.preventDefault();
+                $('form[name=connect_org]').submit();
+            });
+
+            /**
+             * show link form in modal
+             */
+            $(document).on('click', '.editlink_button', function (event) {
+                var url = $(this).data('url');
+                var content = $('#editlink').find('.modal-body-content');
+                $('.editlink-submit').data('url', url);
+                loader('start');
+                content.html('');
+                $('#editlink').modal('show');
+
+                $.ajax({
+                    url: url
+                }).done(function(form) {
+                    loader('stop');
+                    content.html(form);
+                }).fail(function() {
+                    loader('stop');
+                    content.html('Error in load form.');
+                });
+            });
+
+            /**
+             * submit link form
+             */
+            $(document).on('click', '.editlink-submit', function (event) {
+                event.preventDefault();
+                loader('start');
+                var url = $(this).data('url');
+                var data = $('#editlink-form').serialize();
+                var content = $('#editlink').find('.modal-body-content');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data
+                }).done(function() {
+                    location.reload();
+                }).fail(function(response) {
+                    loader('stop');
+                    content.html(response.responseJSON);
+                });
+            });
+
+        });
+    </script>
+{% endblock %}
+
+
+{% block container %}
+
     {% for flashMessage in app.session.flashbag.get('error') %}
         <div class="flash-error flash">
             <h4>There was some failure!</h4>
@@ -394,27 +422,19 @@
         })
     }}
 
-    {# modify forms #}
-    {% for form in forms %}
-        {% set link_id = form.vars.data.link_id %}
-        {{ include('::modal.html.twig',
+    {# modify forms see: getEditLink ajax call#}
+    {{ include('::modal.html.twig',
         {
-            id: link_id,
+            id: 'editlink',
             title: 'Modify connected organizations',
-            form: form,
-            bodycontent: form_start(form, {'name': link_id})
-            ~ form_row(form.entitlementpacks)
-            ~ form_row(form.entitlements)
-            ~ form_end(form),
+            bodyhead: '<div class="row"><div class="col-md-2 col-md-offset-5"><div class="loader"></div></div></div>',
             button:
             {
                 text: 'Modify',
-                class: 'btn-red'
+                class: 'btn-red editlink-submit',
             },
-        }) }}
-    {% endfor %}
-
-
+        })
+    }}
 
     {% if pending %}
         <div class="connected_org_pending_actionButtons" id="tablewithcheckbox"
@@ -662,7 +682,7 @@
                         {% endif %}
                     {% endfor %}
                     <td>
-                        <i title="edit connection" role="button" class="material-icons btn-blue-inverse accordion-button accordion_edit_button" onclick="editlink({{ one_data.link_id }})">create</i>
+                        <i title="edit connection" role="button" class="material-icons btn-blue-inverse accordion-button accordion_edit_button editlink_button" data-url="{{ path('app_service_getlinkform', { linkid: one_data.link_id, serviceid: service.id }) }}" >create</i>
                     </td>
                 </tr>
             {% endif %}
