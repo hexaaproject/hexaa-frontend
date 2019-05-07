@@ -50,9 +50,9 @@ namespace AppBundle\Model {
         public function getEntitlementPacks(string $hexaaAdmin, string $id): array
         {
             $key = implode('_', array($hexaaAdmin, $id));
-	    if (! array_key_exists($key, $this->cachedEntitlementPacks)){
+	        if (! array_key_exists($key, $this->cachedEntitlementPacks)){
                 $this->cachedEntitlementPacks[$key] = $this->getCollection($this->pathName.'/'.$id.'/entitlementpacks', $hexaaAdmin);
-	    }
+	        }
 
             return $this->cachedEntitlementPacks[$key];
         }
@@ -67,9 +67,9 @@ namespace AppBundle\Model {
         public function getEntitlements(string $hexaaAdmin, string $id): array
         {
             $key = implode('_', array($hexaaAdmin, $id));
-	    if (! array_key_exists($key, $this->cachedEntitlements)){
+	        if (! array_key_exists($key, $this->cachedEntitlements)){
                 $this->cachedEntitlements[$key] = $this->getCollection($this->pathName.'/'.$id.'/entitlements', $hexaaAdmin);
-	    }
+	        }
             return $this->cachedEntitlements[$key];
         }
 
