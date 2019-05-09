@@ -2,9 +2,10 @@
 image: gitlab/dind
 
 variables:
-  CONTAINER_TEST_IMAGE:    $REGISTRY_ADDR/hexaa/hexaa-frontend:$CI_COMMIT_REF_NAME
-  CONTAINER_STAGING_IMAGE: $REGISTRY_ADDR/hexaa/hexaa-frontend:staging
-  CONTAINER_STABLE_IMAGE:  $REGISTRY_ADDR/hexaa/hexaa-frontend:latest
+  CONTAINER_TEST_IMAGE:        $REGISTRY_ADDR/hexaa/hexaa-frontend:$CI_COMMIT_REF_NAME
+  CONTAINER_DEVELOPMENT_IMAGE: $REGISTRY_ADDR/hexaa/hexaa-frontend:development
+  CONTAINER_STAGING_IMAGE:     $REGISTRY_ADDR/hexaa/hexaa-frontend:staging
+  CONTAINER_STABLE_IMAGE:      $REGISTRY_ADDR/hexaa/hexaa-frontend:latest
   CONTAINER_STAGING_RELEASE_IMAGE: hexaaproject/hexaa-frontend:staging
   CONTAINER_STABLE_RELEASE_IMAGE:  hexaaproject/hexaa-frontend:latest
 
@@ -46,7 +47,9 @@ build:
   stage: build
   script:
     - docker build -t $CONTAINER_TEST_IMAGE -f docker-prod/Dockerfile .
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_DEVELOPMENT_IMAGE
     - docker push $CONTAINER_TEST_IMAGE
+    - docker push $CONTAINER_DEVELOPMENT_IMAGE
   except:
     - staging
 

@@ -18,12 +18,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Exception;
 use AppBundle\Form\ConnectOrgType;
 use AppBundle\Form\ModifyConnectOrgType;
-use AppBundle\Model\Entitlement;
+use AppBundle\Model\Link;
 use AppBundle\Model\Service;
 use GuzzleHttp\Exception\ServerException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -45,7 +45,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Devmachine\Bundle\FormBundle\Form\Type\TypeaheadType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use WebDriver\Exception;
 
 /**
  * @Route("/service")
@@ -529,7 +528,7 @@ class ServiceController extends BaseController
      * @return Response
      * @param   string  $servid  Service ID
      * @param   Request $request request
-     * @param   bool    $click
+     * @param   string    $click
      */
     public function createEmailAction($servid, Request $request, $click = "false")
     {
@@ -1378,9 +1377,14 @@ class ServiceController extends BaseController
             $manager = "true";
         }
 
-        $requestslinks = $this->get('service')->getLinkRequests($hexaaAdmin, $id);
+        $requestslinksCount = $this->get('service')->getLinkRequests($hexaaAdmin, $id, 'normal', 0 , 0);
+        $requestslinks = $this->get('service')->getLinkRequests($hexaaAdmin, $id, 'normal', 0 , $requestslinksCount['item_number']);
+        $entitlementsservCount = $this->get('service')->getEntitlements($hexaaAdmin, $id, 'normal', 0, 0);
+        $entitlementsserv = $this->get('service')->getEntitlements($hexaaAdmin, $id, 'normal', 0, $entitlementsservCount['item_number']);
 
+        /* build all connection array */
         $allData = array();
+        $entitlements = ['item_number' => 0, 'items' => []];
         foreach ($requestslinks['items'] as $requestlink) {
             $allData[$requestlink['organization_id']]['name'] = $this->get('organization')->get($hexaaAdmin, $requestlink['organization_id'])['name'];
             $allData[$requestlink['organization_id']]['id'] = $requestlink['organization_id'];
@@ -1389,25 +1393,15 @@ class ServiceController extends BaseController
             $allData[$requestlink['organization_id']]['link_id'] = $requestlink['id'];
             $entitlementpacks = $this->get('link')->getEntitlementPacks($hexaaAdmin, $requestlink['id']);
 
-            $entitlementpackNames = null;
-            $i = 0;
-            $len = count($entitlementpacks['items']);
+            $entitlementpackNameArray = [];
             foreach ($entitlementpacks['items'] as $entitlementpack) {
-                if ($i == $len - 1) {
-                    $entitlementpackNames = $entitlementpackNames.$entitlementpack['name'];
-                } else {
-                    $entitlementpackNames = $entitlementpackNames.$entitlementpack['name'].', ';
-                }
-                $i++;
+	        $entitlementpackNameArray[] = $entitlementpack['name'];	
             }
 
             $entitlements = $this->get('link')->getEntitlements($hexaaAdmin, $requestlink['id']);
-            $duplicate = array();
 
-            $entitlementsserv = $this->get('service')->getEntitlements($hexaaAdmin, $id, 'normal', 0, 100000);
             foreach ($entitlementpacks['items'] as $entitlementpack) {
                 foreach ($entitlementpack['entitlement_ids'] as $entitlementid) {
-                   /* array_push($entitlements['items'], $this->get('entitlement')->get($entitlementid));*/
                     foreach ($entitlementsserv['items'] as $entitlementserv) {
                         if ($entitlementserv['id'] == $entitlementid) {
                             array_push($entitlements['items'], $entitlementserv);
@@ -1416,42 +1410,25 @@ class ServiceController extends BaseController
                 }
             }
 
-            $entitlementNames = null;
-            $j = 0;
+            $entitlementNameArray = [];
             $withoutduplicate = array_unique($entitlements['items'], SORT_REGULAR);
-
-            $len2 = count($withoutduplicate);
             foreach ($withoutduplicate as $entitlement) {
-                if ($j == $len2 - 1) {
-                    $entitlementNames = $entitlementNames.$entitlement['name'];
-                } else {
-                    $entitlementNames = $entitlementNames.$entitlement['name'].', ';
-                }
-                $j++;
+                $entitlementNameArray[]=$entitlement['name'];
             }
 
             $allData[$requestlink['organization_id']]['contents'] = array(
                 array(
                     'key' => 'entitlementpacks',
-                    'values' => $entitlementpackNames,
+                    'values' => $entitlementpackNameArray,
                 ),
                 array(
                     'key' => 'entitlements',
-                    'values' => $entitlementNames,
+                    'values' => $entitlementNameArray,
                 ),
             );
         }
 
-        $pending = false;
-        foreach ($allData as $oneData) {
-            if ($oneData['status'] == 'pending') {
-                $pending = true;
-                break;
-            }
-        }
-
         $entitlementpacks = $this->get('service')->getEntitlementPacks($hexaaAdmin, $id, 'normal', 0, 100000);
-        $entitlements = $this->get('service')->getEntitlements($hexaaAdmin, $id);
         $totalnumber = $entitlements['item_number'];
         $totalpages = ceil($totalnumber / 25);
         $offset = 25;
@@ -1467,7 +1444,6 @@ class ServiceController extends BaseController
         $organizations = $this->get('organization')->getAll();
 
         $datasToForm = array();
-        $organizationsToForm = array();
         $organizationsNotToForm = array();
         $organizationsAllForm = array();
         foreach ($organizations['items'] as $organization) {
@@ -1524,172 +1500,72 @@ class ServiceController extends BaseController
             );
         }
 
-        $links = $this->get('service')->getLinksOfService($hexaaAdmin, $id);
-        $pendinglinkIDs = array();
+        $linksCount = $this->get('service')->getLinksOfService($hexaaAdmin, $id, 'normal', 0, 0);
+        $links = $this->get('service')->getLinksOfService($hexaaAdmin, $id, 'normal', 0, $linksCount['item_number']);
+        $allpendingdata = array();
         if ($links != null) {
             foreach ($links['items'] as $link) {
                 if (($link['organization_id'] == null) && $link['status'] == "pending" && $link['service_id'] == $id) {
-                    array_push($pendinglinkIDs, $link['id']);
-                }
-            }
-        }
-
-        $allpendingdata = array();
-        foreach ($pendinglinkIDs as $pendinglinkID) {
-            $allpendingdata[$pendinglinkID]['link_id'] = $pendinglinkID;
-            $linkEntitlementpacks = $this->get('link')->getEntitlementPacks($hexaaAdmin, $pendinglinkID);
-            $linkEntitlementpacksNames = null;
-            $i = 0;
-            $len = count($linkEntitlementpacks['items']);
-            foreach ($linkEntitlementpacks['items'] as $linkEntitlementpack) {
-                if ($i == $len - 1) {
-                    $linkEntitlementpacksNames = $linkEntitlementpacksNames.$linkEntitlementpack['name'];
-                } else {
-                    $linkEntitlementpacksNames = $linkEntitlementpacksNames.$linkEntitlementpack['name'].', ';
-                }
-                $i++;
-            }
-
-            $linkentitlements = $this->get('link')->getEntitlements($hexaaAdmin, $pendinglinkID);
-
-            foreach ($linkEntitlementpacks['items'] as $linkEntitlementpack) {
-                foreach ($linkEntitlementpack['entitlement_ids'] as $entitlementid) {
-                    array_push($linkentitlements['items'], $this->get('entitlement')->get($hexaaAdmin, $entitlementid));
-                }
-            }
-
-            $linkentitlementNames = null;
-            $j = 0;
-            $withoutduplicatelinks = array_unique($linkentitlements['items'], SORT_REGULAR);
-            $len2 = count($withoutduplicatelinks);
-            foreach ($withoutduplicatelinks as $entitlement) {
-                if ($j == $len2 - 1) {
-                    $linkentitlementNames = $linkentitlementNames.$entitlement['name'];
-                } else {
-                    $linkentitlementNames = $linkentitlementNames.$entitlement['name'].', ';
-                }
-                $j++;
-            }
-
-            $tokens = $this->get('link')->getTokens($hexaaAdmin, $pendinglinkID);
-            $linktokens = null;
-            $i = 0;
-            $len3 = count($tokens);
-            foreach ($tokens as $token) {
-                if ($i == $len3 - 1) {
-                    $linktokens = $linktokens.$token['token'];
-                } else {
-                    $linktokens = $linktokens.$token['token'].', ';
-                }
-                $i++;
-            }
-
-            $allpendingdata[$pendinglinkID]['contents'] = array(
-                array(
-                    'key' => 'entitlementpacks',
-                    'values' => $linkEntitlementpacksNames,
-                ),
-                array(
-                    'key' => 'entitlements',
-                    'values' => $linkentitlementNames,
-                ),
-                array(
-                    'key' => 'tokens',
-                    'values' => $linktokens,
-                ),
-            );
-        }
-
-        $acceptedNumber = 0;
-        $allChoosenData = null;
-        $datasToLinkId = array();
-        $forms = array ();
-        foreach ($allData as $oneData) {
-            $allChoosenData = null;
-            $form1 = null;
-            if ($oneData['status'] == 'accepted') {
-                $acceptedNumber++;
-                $allChoosenData['entitlementpacksToForm'] =  $datasToForm['entitlementpacksToForm'];
-                $allChoosenData['entitlementsToForm']  =  $datasToForm['entitlementsToForm'];
-                $epackNames = array();
-                $eNames = array();
-                foreach ($oneData['contents'] as $onecontent) {
-                    if ($onecontent['key'] == 'entitlementpacks') {
-                        $names = explode(', ', $onecontent['values']);
-                        foreach ($names as $name) {
-                            foreach ($entitlementpacks['items'] as $entitlementpack) {
-                                if ($entitlementpack['name'] == trim($name)) {
-                                    $epackNames[trim($name)] = $entitlementpack['id'];
-                                }
-                            }
+                    $pendinglinkID = $link['id'];
+                    $allpendingdata[$pendinglinkID]['link_id'] = $pendinglinkID;
+                    $linkEntitlementpacks = $this->get('link')->getEntitlementPacks($hexaaAdmin, $pendinglinkID);
+                    $linkEntitlementpacksNamesArray = [];
+                    foreach ($linkEntitlementpacks['items'] as $linkEntitlementpack) {
+                        $linkEntitlementpacksNamesArray[] = $linkEntitlementpack['name'];
+                    }
+                    $linkEntitlementpacksNames = implode(', ', $linkEntitlementpacksNamesArray);
+        
+                    $linkentitlements = $this->get('link')->getEntitlements($hexaaAdmin, $pendinglinkID);
+                    foreach ($linkEntitlementpacks['items'] as $linkEntitlementpack) {
+                        foreach ($linkEntitlementpack['entitlement_ids'] as $entitlementid) {
+                            array_push($linkentitlements['items'], $this->get('entitlement')->getEntitlement($hexaaAdmin, $entitlementid));
                         }
                     }
-                    if ($onecontent['key'] == 'entitlements') {
-                        $names = explode(',', $onecontent['values']);
-                        foreach ($names as $name) {
-                            foreach ($entitlements['items'] as $entitlement) {
-                                if ($entitlement['name'] == trim($name)) {
-                                    $eNames[trim($name)] = $entitlement['id'];
-                                }
-                            }
-                        }
+        
+                    $withoutduplicatelinks = array_unique($linkentitlements['items'], SORT_REGULAR);
+	                $linkentitlementNamesArray = [];
+                    foreach ($withoutduplicatelinks as $entitlement) {
+	                    $linkentitlementNamesArray[] = $entitlement['name'];
                     }
+                    $linkentitlementNames = implode(', ', $linkentitlementNamesArray);
+        
+                    $tokens = $this->get('link')->getTokens($hexaaAdmin, $pendinglinkID);
+                    $linktokensArray = [];
+                    foreach ($tokens as $token) {
+                        $linktokensArray[] = $token['token'];
+                    }
+                    $linktokens = implode(', ', $linktokensArray);
+        
+                    $allpendingdata[$pendinglinkID]['contents'] = array(
+                        array(
+                            'key' => 'entitlementpacks',
+                            'values' => $linkEntitlementpacksNames,
+                        ),
+                        array(
+                            'key' => 'entitlements',
+                            'values' => $linkentitlementNames,
+                        ),
+                        array(
+                            'key' => 'tokens',
+                            'values' => $linktokens,
+                        ),
+                    );
                 }
-                $allChoosenData['currentEntitlementpacksToForm'] = $epackNames;
-                $allChoosenData['currentEntitlementsToForm'] = $eNames;
-                $allChoosenData['link_id'] = $oneData['link_id'];
-                $form1 = $this->createForm(
-                    ModifyConnectOrgType::class,
-                    $allChoosenData
-                );
-                array_push($forms, $form1);
-                array_push($datasToLinkId, $oneData['link_id']);
-                $allChoosenData = null;
-                $form1 = null;
             }
         }
 
-        foreach ($forms as $form) {
-            $form->handleRequest($request);
-            if ($form->isSubmitted()) {
-                $data = $form->getData();
-                $entitlementpackIds = array();
-                $entitlementsIds = array();
-                foreach ($data['entitlementpacks'] as $epack) {
-                    array_push($entitlementpackIds, $epack);
-                }
-                foreach ($data['entitlements'] as $e) {
-                    array_push($entitlementsIds, $e);
-                }
-                $modified['entitlement_packs'] = $entitlementpackIds;
-                $modified['entitlements'] = $entitlementsIds;
-                $this->get('link')->editlink($hexaaAdmin, $data['link_id'], $modified);
-
-                return $this->redirect($request->getUri());
-            }
-        }
-
-        $formviews = array();
-        foreach ($forms as $form) {
-            array_push($formviews, $form->createView());
-        }
         return $this->render(
             'AppBundle:Service:connectedorganizations.html.twig',
             array(
                 'organizations' => $this->getOrganizations(),
                 'services' => $this->getServices(),
                 'service' => $this->getService($id),
-                "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
+                'admin' => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'all_data' => $allData,
                 'allpending_data' => $allpendingdata,
-                'datasToLinkId' => $datasToLinkId,
-                'pending'  => $pending,
                 'connectNewOrgForm' => $connectNewOrgForm->createView(),
                 'token' => $token,
-                'pendinglinkIDs' => $pendinglinkIDs,
-                'acceptedNumber' => $acceptedNumber,
-                'forms' => $formviews,
                 'ismanager' => $manager,
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => false,
@@ -2043,11 +1919,105 @@ class ServiceController extends BaseController
         //$hexaaAdmin = $this->get('session')->get('hexaaAdmin');
         $serializer = $this->get('serializer');
 
-	$data = $this->get('entitlement')->getEntitlement(true, $id);
+        $data = $this->get('entitlement')->getEntitlement(true, $id);
         $serializedData = $serializer->serialize($data['name'], 'json');
 
         return new JsonResponse($serializedData);
     }
+
+    /**
+     * @Route("/getLinkForm/{linkid}/service/{serviceid}")
+     * @param Request $request
+     * @param $linkid
+     * @param $serviceid
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getLinkForm(Request $request, $linkid, $serviceid)
+    {
+        $hexaaAdmin = $this->get('session')->get('hexaaAdmin');
+
+        /** @var Link $linkService */
+        $linkService = $this->get('link');
+
+        $linkedEntitlementPacks = $linkService->getEntitlementPacks($hexaaAdmin, $linkid);
+        $linkedEntitlementPacksChoices = array_map(
+            function($row) { return $row['id']; },
+            $linkedEntitlementPacks['items']
+        );
+
+        $linkedEntitlements = $linkService->getEntitlements($hexaaAdmin, $linkid);
+        $linkedEntitlementsChoices = array_map(
+            function($row) { return $row['id']; },
+            $linkedEntitlements['items']
+        );
+
+        /** @var Service $serviceService */
+        $serviceService = $this->get('service');
+
+        $resultToCount = $serviceService->getEntitlementPacks($hexaaAdmin, $serviceid, "normal", 0, 0);
+        $count = $resultToCount['item_number'];
+
+        $serviceEntitlementPacks = $serviceService->getEntitlementPacks($hexaaAdmin, $serviceid,"normal", 0, $count);
+        $serviceEntitlementPacksChoices = array_map(
+            function($row) { return [$row['name'] => $row['id']]; },
+            $serviceEntitlementPacks['items']
+        );
+
+        $resultToCount = $serviceService->getEntitlements($hexaaAdmin, $serviceid, "normal", 0, 0);
+        $count = $resultToCount['item_number'];
+
+        $serviceEntitlements = $serviceService->getEntitlements($hexaaAdmin, $serviceid, "normal", 0, $count);
+        $serviceEntitlementsChoices = array_map(
+            function($row) { return [$row['name'] => $row['id']]; },
+            $serviceEntitlements['items']
+        );
+
+        $form = $this->createForm(
+            ModifyConnectOrgType::class,
+            [
+                'entitlementpacksToForm' => $serviceEntitlementPacksChoices,
+                'currentEntitlementpacksToForm' => $linkedEntitlementPacksChoices,
+                'entitlementsToForm' => $serviceEntitlementsChoices,
+                'currentEntitlementsToForm' => $linkedEntitlementsChoices,
+                'link_id' => $linkid
+            ],
+            [
+                'attr' => ['id' => 'editlink-form']
+            ]
+        );
+        $form->handleRequest($request);
+        $responseCode = 200;
+        if ($form->isSubmitted()) {
+            $responseCode = 409; // invalid form
+            if ($form->isValid()) {
+                $responseCode = 200;
+                $data = $form->getData();
+                $entitlementpackIds = array();
+                $entitlementsIds = array();
+                foreach ($data['entitlementpacks'] as $epack) {
+                    array_push($entitlementpackIds, $epack);
+                }
+                foreach ($data['entitlements'] as $e) {
+                    array_push($entitlementsIds, $e);
+                }
+                $modified['entitlement_packs'] = $entitlementpackIds;
+                $modified['entitlements'] = $entitlementsIds;
+                try {
+                    $this->get('link')->editlink($hexaaAdmin, $data['link_id'], $modified);
+                } catch (Exception $exception) {
+                    $responseCode = 500;
+                    $form->addError(new FormError($exception->getMessage()));
+                }
+                $this->get('session')->getFlashBag()->add('success', 'Connection modified succesfully.');
+            }
+        }
+        $formView = $this->renderView('::form.html.twig', array('form' => $form->createView()));
+
+        return new JsonResponse($formView, $responseCode);
+    }
+
+
   /**
      * Replace accents
      *
