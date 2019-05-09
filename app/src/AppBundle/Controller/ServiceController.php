@@ -1554,51 +1554,6 @@ class ServiceController extends BaseController
             }
         }
 
-        $acceptedNumber = 0;
-        $datasToLinkId = array();
-        $forms = array ();
-	    $formviews = array();
-        foreach ($allData as $oneData) {
-            $allChoosenData = null;
-            if ($oneData['status'] == 'accepted') {
-                $acceptedNumber++;
-                $allChoosenData['entitlementpacksToForm'] =  $datasToForm['entitlementpacksToForm'];
-                $allChoosenData['entitlementsToForm']  =  $datasToForm['entitlementsToForm'];
-                $epackNames = array();
-                $eNames = array();
-                foreach ($oneData['contents'] as $onecontent) {
-                    if ($onecontent['key'] == 'entitlementpacks') {
-                        foreach ($entitlementpackNameArray as $name) {
-                            foreach ($entitlementpacks['items'] as $entitlementpack) {
-                                if ($entitlementpack['name'] == trim($name)) {
-                                    $epackNames[trim($name)] = $entitlementpack['id'];
-                                }
-                            }
-                        }
-                    }
-                    if ($onecontent['key'] == 'entitlements') {
-                        foreach ($entitlementNameArray as $name) {
-                            foreach ($entitlements['items'] as $entitlement) {
-                                if ($entitlement['name'] == trim($name)) {
-                                    $eNames[trim($name)] = $entitlement['id'];
-                                }
-                            }
-                        }
-                    }
-                }
-                $allChoosenData['currentEntitlementpacksToForm'] = $epackNames;
-                $allChoosenData['currentEntitlementsToForm'] = $eNames;
-                $allChoosenData['link_id'] = $oneData['link_id'];
-                $form = $this->createForm(
-                    ModifyConnectOrgType::class,
-                    $allChoosenData
-                );
-                array_push($forms, $form);
-                array_push($formviews, $form->createView());
-                array_push($datasToLinkId, $oneData['link_id']);
-            }
-        }
-
         return $this->render(
             'AppBundle:Service:connectedorganizations.html.twig',
             array(
@@ -1609,11 +1564,8 @@ class ServiceController extends BaseController
                 'servsubmenubox' => $this->getServSubmenuPoints(),
                 'all_data' => $allData,
                 'allpending_data' => $allpendingdata,
-                'datasToLinkId' => $datasToLinkId,
                 'connectNewOrgForm' => $connectNewOrgForm->createView(),
                 'token' => $token,
-                'acceptedNumber' => $acceptedNumber,
-                'forms' => $formviews,
                 'ismanager' => $manager,
                 'organizationsWhereManager' => $this->orgWhereManager(),
                 'manager' => false,
