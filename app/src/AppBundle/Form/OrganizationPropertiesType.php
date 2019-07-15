@@ -25,7 +25,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Devmachine\Bundle\FormBundle\Form\Type\TypeaheadType;
-use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
 
 /**
@@ -52,11 +53,10 @@ class OrganizationPropertiesType extends AbstractType
                     'data' => $datas['data']['properties']['name'],
                     'attr' => array(),
                     'required' => true,
-                    'constraints' => array(
-                        new Regex(array(
-                          'pattern' => "/\w{3,}$/",
-                          'match'   => true,
-                          'message' => 'Legalább három karakter hosszúnak kell lennie!')),)
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length([ 'min' => 3 ]),
+                    ]
                 )
             )
             ->add(

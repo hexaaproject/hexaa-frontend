@@ -185,4 +185,6 @@ guzzle:
                 headers:
                     Accept: "application/json"
 
+                verify: "%ssl_cert_verify%"
+
                 timeout: 30
