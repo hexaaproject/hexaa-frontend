@@ -16,8 +16,9 @@ Take a look at the ansible role:
 
 [Ansible role for hexaa frontend](https://github.com/hexaaproject/ansible-role-hexaa-frontend)
 
+[Ansible playbook with localhost config](https://github.com/hexaaproject/ansible-hexaa)
+
 
 Docker image
 -------------
 https://hub.docker.com/r/hexaaproject/hexaa-frontend
-

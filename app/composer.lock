@@ -1,19 +1,17 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "786dda81be33573309107d50316e9bc1",
+    "content-hash": "2e79b89f67e3733f63515e8dad7dc13a",
     "packages": [
         {
             "name": "DoclerLabs/Protip",
             "version": "1.4.1",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/DoclerLabs/Protip/archive/master.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/DoclerLabs/Protip/archive/master.zip"
             },
             "type": "library"
         },
@@ -22,9 +20,7 @@
             "version": "1.0.7",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/botmonster/jquery-bootpag/archive/master.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/botmonster/jquery-bootpag/archive/master.zip"
             },
             "type": "library"
         },
@@ -33,9 +29,7 @@
             "version": "1.4.4",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/chromawoods/instaFilta/archive/master.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/chromawoods/instaFilta/archive/master.zip"
             },
             "type": "library"
         },
@@ -1019,12 +1013,12 @@
             "version": "v2.6.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/doctrine2.git",
+                "url": "https://github.com/doctrine/orm.git",
                 "reference": "434820973cadf2da2d66e7184be370084cc32ca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/434820973cadf2da2d66e7184be370084cc32ca8",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/434820973cadf2da2d66e7184be370084cc32ca8",
                 "reference": "434820973cadf2da2d66e7184be370084cc32ca8",
                 "shasum": ""
             },
@@ -3730,16 +3724,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.4.20",
+            "version": "v3.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "f6b8ddc362b1cf3fb06548693c3adbb736092412"
+                "reference": "1b89e7baec9891c323bbf1ec81af77d901fc60c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/f6b8ddc362b1cf3fb06548693c3adbb736092412",
-                "reference": "f6b8ddc362b1cf3fb06548693c3adbb736092412",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/1b89e7baec9891c323bbf1ec81af77d901fc60c9",
+                "reference": "1b89e7baec9891c323bbf1ec81af77d901fc60c9",
                 "shasum": ""
             },
             "require": {
@@ -3881,7 +3875,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-12-06T15:24:36+00:00"
+            "time": "2019-04-17T15:57:27+00:00"
         },
         {
             "name": "twbs/bootstrap",
@@ -5107,12 +5101,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JakubOnderka/PHP-Var-Dump-Check.git",
-                "reference": "1f62bf9eef630943219f9b24371f44f9b7f749aa"
+                "reference": "eef28e2d7bf71ca1530243dbba5939d9eae09aaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JakubOnderka/PHP-Var-Dump-Check/zipball/1f62bf9eef630943219f9b24371f44f9b7f749aa",
-                "reference": "1f62bf9eef630943219f9b24371f44f9b7f749aa",
+                "url": "https://api.github.com/repos/JakubOnderka/PHP-Var-Dump-Check/zipball/eef28e2d7bf71ca1530243dbba5939d9eae09aaf",
+                "reference": "eef28e2d7bf71ca1530243dbba5939d9eae09aaf",
                 "shasum": ""
             },
             "require": {
@@ -5145,7 +5139,7 @@
                 }
             ],
             "description": "Find forgotten variables dump in PHP source code.",
-            "time": "2018-10-23 19:19:53"
+            "time": "2019-01-05T20:21:47+00:00"
         },
         {
             "name": "knplabs/friendly-contexts",
@@ -5294,7 +5288,7 @@
                     "email": "shelburt02@gmail.com"
                 },
                 {
-                    "name": "Théo FIDRY",
+                    "name": "Théo Fidry",
                     "email": "theo.fidry@gmail.com"
                 }
             ],
