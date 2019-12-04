@@ -53,7 +53,7 @@
   ],
   "require": {
     "php": ">=5.5.9",
-    "symfony/symfony": "3.4.*,>=3.4.26",
+    "symfony/symfony": "3.4.*,>=3.4.35",
     "doctrine/orm": "^2.5",
     "doctrine/doctrine-bundle": "^1.6",
     "doctrine/doctrine-cache-bundle": "^1.2",
@@ -75,11 +75,11 @@
     "webfontkit/open-sans": "^1.0",
     "devmachine/form-bundle": "^2.1",
     "twitter/typeahead.js": "^0.11.1",
-    "chromawoods/instaFilta": "^1.4.4",
+    "chromawoods/instafilta": "^1.4.4",
     "botmonster/jquery-bootpag": "^1.0.7",
     "twig/extensions": "^1.5",
     "huynguyen/bootstrap-tagsinput": "^0.4.2",
-    "DoclerLabs/Protip": "^1.4.1",
+    "doclerlabs/protip": "^1.4.1",
     "sentry/sentry-symfony": "^2.1"
   },
   "require-dev": {
