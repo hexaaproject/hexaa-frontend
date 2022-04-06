@@ -78,7 +78,6 @@
     "chromawoods/instafilta": "^1.4.4",
     "botmonster/jquery-bootpag": "^1.0.7",
     "twig/extensions": "^1.5",
-    "huynguyen/bootstrap-tagsinput": "^0.4.2",
     "doclerlabs/protip": "^1.4.1",
     "sentry/sentry-symfony": "^2.1",
     "symfony/phpunit-bridge": ">=3.4.26,^3.0"
