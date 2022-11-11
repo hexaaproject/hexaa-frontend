@@ -1,6 +1,6 @@
 {
-  "name": "gyufi/app",
-  "license": "proprietary",
+  "name": "hexaa/hexaa-frontend",
+  "license": "Apache-2.0",
   "type": "project",
   "autoload": {
     "psr-4": {

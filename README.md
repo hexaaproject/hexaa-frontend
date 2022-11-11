@@ -9,6 +9,8 @@ Functionality includes:
 + Storage of personal (IdP-independent) attributes
 + Solutions for multiple applications: OpenNebula, Liferay and more!
 
+You can find the instructions at the official documentation site at [hexaa.eu](http://hexaa.eu).
+
 Installing HEXAA
 ----------------
 
@@ -22,3 +24,8 @@ Take a look at the ansible role:
 Docker image
 -------------
 https://hub.docker.com/r/hexaaproject/hexaa-frontend
+
+Building from this repository:
+```bash
+docker build -t hexaaproject/hexaa-frontend:$TAG -f docker-prod/Dockerfile .
+```
