@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a26f8831abef8732a6bd342a072e669",
+    "content-hash": "9b9aca4b3cb5362bf6395abf27137716",
     "packages": [
         {
             "name": "DoclerLabs/protip",
@@ -2449,16 +2449,16 @@
         },
         {
             "name": "niif/shib-auth-bundle",
-            "version": "v1.2.8",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NIIF/ShibAuthBundle.git",
-                "reference": "e541de3866e28b19e4ba63b0aaa0d0ea83a99877"
+                "reference": "f137e9fbbdaf9c7dfb870181a91d5d26e78ba687"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NIIF/ShibAuthBundle/zipball/e541de3866e28b19e4ba63b0aaa0d0ea83a99877",
-                "reference": "e541de3866e28b19e4ba63b0aaa0d0ea83a99877",
+                "url": "https://api.github.com/repos/NIIF/ShibAuthBundle/zipball/f137e9fbbdaf9c7dfb870181a91d5d26e78ba687",
+                "reference": "f137e9fbbdaf9c7dfb870181a91d5d26e78ba687",
                 "shasum": ""
             },
             "require-dev": {
@@ -6179,6 +6179,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "niif/shib-auth-bundle": 20,
         "jakub-onderka/php-var-dump-check": 20
     },
     "prefer-stable": false,
