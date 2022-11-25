@@ -1,0 +1,23 @@
+{
+    "name": "huynguyen/bootstrap-tagsinput",
+    "authors": [
+        {
+            "name": "Huy Nguyễn",
+            "email": "huynguyen1059@gmail.com"
+        }
+    ],
+    "require": {},
+    "cleanup": [
+        "README.md",
+        "LICENSE",
+        "CHANGELOG.md",
+        "phpunit.xml.dist",
+        "composer.json",
+        "bower.json",
+        ".gitignore",
+        ".htaccess",
+        ".idea",
+        "nbproject"
+    ],
+    "skip_autoload": "true"
+}

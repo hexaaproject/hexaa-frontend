@@ -537,17 +537,25 @@ class ServiceController extends BaseController
         $entityids = $this->get('entity_id')->cget($hexaaAdmin);
         //type, email, surName
         $contacts = array();
+        $contact_attrs = array();
         foreach ($entityids['items'] as $key => $value) {
             if ($key == $service['entityid']) {
                 if (sizeof($value) >= 1) {
                     foreach ($value as $val) {
-                        $contacts[$val['type'].' ('.$val['email'].')'] = $val['type'];
+                        $label = $val['type'] . ' (' . $val['email'] . ')';
+                        $contacts[$label] = $val['type'];
+                        if (array_key_exists('email', $val)) {
+                            $contact_attrs[$label] = ['checked'=>'checked'];
+                        } else {
+                            $contact_attrs[$label] = ['disabled'=>'disabled'];
+                        }
                     }
                 }
             }
         }
 
-        $form = $this->createForm(ServiceCreateEmailType::class, array('contacts' => $contacts));
+        $form = $this->createForm(ServiceCreateEmailType::class,
+            array('contacts' => $contacts, 'contact_attrs' => $contact_attrs));
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -555,12 +563,23 @@ class ServiceController extends BaseController
             $types = $data['contactType'];
             $contactsSelected = array();
             $contactOne = array();
+            $formError = false;
             foreach ($entityids['items'] as $key => $value) {
                 if ($key == $service['entityid']) {
                     if (sizeof($value) >= 1) {
                         foreach ($value as $val) {
                             foreach ($types as $type) {
                                 if ($val['type'] == $type) {
+                                    if (!array_key_exists('email', $val)) {
+                                        $this->get('session')
+                                             ->getFlashBag()
+                                             ->add('error',
+                                                 'Cannot send the service activation e-mail:<br>'
+                                                 . 'Missing e-mail address for the <i>'
+                                                 . $type . '</i> contact');
+                                        $formError = true;
+                                    }
+
                                     $contactOne['surName'] = $val['surName'];
                                     $contactOne['email'] = $val['email'];
                                     $contactOne['type'] = $val['type'];
@@ -571,37 +590,38 @@ class ServiceController extends BaseController
                     }
                 }
             }
-            $this->get('service')->notifySP($hexaaAdmin, $servid, $contactsSelected);
+            if (!$formError) {
+                $this->get('service')->notifySP($hexaaAdmin, $servid, $contactsSelected);
 
-            return $this->render(
-                'AppBundle:Service:created.html.twig',
-                array(
-                    'newserv' => $this->get('service')->get($hexaaAdmin, $servid, "expanded"),
-                    'organizations' => $this->getOrganizations(),
-                    'services' => $this->getServices(),
-                    "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
-                    'manager' => "false",
-                    'click' => $click,
-                    'organizationsWhereManager' => $this->orgWhereManager(),
-                    'hexaaHat' => $this->get('session')->get('hexaaHat'),
-                )
-            );
+                return $this->render(
+                    'AppBundle:Service:created.html.twig',
+                    array(
+                        'newserv' => $this->get('service')->get($hexaaAdmin, $servid, "expanded"),
+                        'organizations' => $this->getOrganizations(),
+                        'services' => $this->getServices(),
+                        "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
+                        'manager' => "false",
+                        'click' => $click,
+                        'organizationsWhereManager' => $this->orgWhereManager(),
+                        'hexaaHat' => $this->get('session')->get('hexaaHat'),
+                    )
+                );
+            }
         }
 
-
-          return $this->render(
-              'AppBundle:Service:createEmail.html.twig',
-              array(
-                  'emailForm' => $form->createView(),
-                  'organizations' => $this->getOrganizations(),
-                  'services' => $this->getServices(),
-                  "admin" => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
-                  'click' => $click,
-                  'manager' => "false",
-                  'organizationsWhereManager' => $this->orgWhereManager(),
-                  'hexaaHat' => $this->get('session')->get('hexaaHat'),
-              )
-          );
+        return $this->render(
+            'AppBundle:Service:createEmail.html.twig',
+            array(
+                'emailForm' => $form->createView(),
+                'organizations' => $this->getOrganizations(),
+                'services' => $this->getServices(),
+                'admin' => $this->get('principal')->isAdmin($hexaaAdmin)["is_admin"],
+                'click' => $click,
+                'manager' => "false",
+                'organizationsWhereManager' => $this->orgWhereManager(),
+                'hexaaHat' => $this->get('session')->get('hexaaHat'),
+            )
+        );
     }
 
     /**
@@ -2356,12 +2376,12 @@ class ServiceController extends BaseController
                 $permissionsChoices = [];
                 if (array_key_exists('entitlement_ids', $permissionSet) and !(empty($permissionSet['entitlement_ids']))) {
                     foreach ($permissionSet['entitlement_ids'] as $entitlementid) {
-			if (empty($namehash)) {
+                        if (empty($namehash)) {
                             $entitlement = $this->get('entitlement')->getEntitlement($hexaaAdmin, $entitlementid);
                             $permissionsChoices['permissions'][$entitlementid] = $entitlement['name'];
-			} else {
+                        } else {
                             $permissionsChoices['permissions'][$entitlementid] = $namehash[$entitlementid];
-			}
+                        }
                         $permissionsChoices['name'] = $permissionSet['name'];
                         $permissionsChoices['description'] = $permissionSet['description'];
                         $permissionsChoices['type'] = $permissionSet['type'];

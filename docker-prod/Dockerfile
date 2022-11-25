@@ -1,4 +1,4 @@
-FROM php:7.2.24-fpm-buster
+FROM php:7.4.33-fpm-bullseye
 LABEL MAINTAINER Balázs SOLTÉSZ <solazs@sztaki.hu>
 
 # Install some dependencies
@@ -17,6 +17,7 @@ COPY docker-prod/config_prod.yml /root/
 COPY app /opt/hexaa-frontend
 
 # Install composer
+ARG COMPOSER_VERSION=1.10.26
 COPY docker-prod/composer_downloader.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/composer_downloader.sh \
     && sync \
@@ -33,7 +34,7 @@ RUN cd /opt/hexaa-frontend \
     && chmod g+r /opt/hexaa-frontend -R \
     && chmod g+w /opt/hexaa-frontend/var/cache -R\
     && chmod g+w /opt/hexaa-frontend/var/logs -R \
-    && mkdir /var/lib/php5 && chown www-data /var/lib/php5 \
+    && mkdir /var/lib/php7 && chown www-data /var/lib/php7 \
     && mkdir /var/run/php \
     && touch /var/run/php/php-fpm-frontend.sock \
     && chown www-data /var/run/php/php-fpm-frontend.sock

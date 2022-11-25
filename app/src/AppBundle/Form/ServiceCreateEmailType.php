@@ -45,8 +45,8 @@ class ServiceCreateEmailType extends AbstractType
                 ChoiceType::class,
                 array(
                     'label' => false,
-                    'data' => $datas['data']['contacts'],
                     'choices' => $datas['data']['contacts'],
+                    'choice_attr' => $datas['data']['contact_attrs'],
                     "attr" => array(
                         "class" => "contacts",
                     ),
